@@ -19,7 +19,7 @@ import javax.validation.constraints.NotNull;
 public class PlanEntity {
     @Id
     @Column(name = "plan_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Column(name = "plan_type")
