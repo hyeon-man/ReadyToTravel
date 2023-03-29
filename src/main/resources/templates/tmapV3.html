@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>simpleMap</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="/css/index.css">
+    <script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=yIMaVf12xnauu7aRo40iL6EWEJXjwVhnbBr6Lc3d"></script>
+
+</head>
+<body>
+<div id="container">
+    <div id="sidebar1">
+        <div>
+            <input type="checkbox" id="checkbox1" onchange="myFunction1()">
+            <label for="checkbox1">체크박스1</label>
+        </div>
+        <div>
+            <input type="checkbox" id="checkbox2" onchange="myFunction2()">
+            <label for="checkbox2">체크박스2</label>
+        </div>
+    </div>
+
+    <div id="map_div"></div>
+
+    <div id="sidebar2">
+        <!-- #sidebar2 안의 내용 -->
+    </div>
+
+</div>
+
+<a href="/tmapV2">tmapV2 가기</a>
+<script type="text/javascript" src="/js/tmapV3.js"></script>
+
+</body>
+</html>
