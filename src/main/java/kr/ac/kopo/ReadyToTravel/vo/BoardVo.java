@@ -1,28 +1,26 @@
-package kr.ac.kopo.ReadyToTravel.model;
+package kr.ac.kopo.ReadyToTravel.vo;
 
-import kr.ac.kopo.ReadyToTravel.util.FileUpload;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Getter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @Builder
 public class BoardVo {
-    private List<MultipartFile> multipartFile;
-    private List<String> filename;
+
+    private List<MultipartFile> multipartFile = new ArrayList<>();
+    private List<String> filename = new ArrayList<>();
+
     private Long boardId;
     private String boardName;
     private String boardContent;
     private Date boardDateCreate;
     private String boardWriter;
 
-    public void setFilename(List<String> filename) {
-        this.filename = filename;
-    }
 }

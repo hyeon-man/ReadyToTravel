@@ -9,13 +9,12 @@ import javax.persistence.Id;
 
 @Getter
 @Setter
-@Entity(name = "member")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MemberEntity {
+@Entity(name = "plan_group")
+public class PlanGroupEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long memberNum;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)    private Long groupNum;
 
 }

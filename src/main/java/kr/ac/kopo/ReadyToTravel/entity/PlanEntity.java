@@ -1,14 +1,8 @@
 package kr.ac.kopo.ReadyToTravel.entity;
 
 import lombok.*;
-import org.hibernate.annotations.GeneratorType;
-import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
-import javax.validation.Valid;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
@@ -17,10 +11,11 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @Builder
 public class PlanEntity {
+
     @Id
-    @Column(name = "plan_id")
+    @Column(name = "plan_num")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+    private Long num;
 
     @Column(name = "plan_type")
     private int planType;

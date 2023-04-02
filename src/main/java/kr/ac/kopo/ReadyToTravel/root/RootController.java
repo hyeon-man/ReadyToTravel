@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 
+
+/// TODO: 2023-04-02 전부 수정해야합니다.
 public class RootController {
     @RequestMapping("/tmapV3")
     public String tmapV3() {

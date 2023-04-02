@@ -1,14 +1,19 @@
-package kr.ac.kopo.ReadyToTravel.model;
+package kr.ac.kopo.ReadyToTravel.vo;
 
-import lombok.Getter;
+import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+@Builder
 public class PlanVo {
+    //todo 이거 검증식 바꿔야합니다
+
+
     private Long id;
 
     @NotNull
