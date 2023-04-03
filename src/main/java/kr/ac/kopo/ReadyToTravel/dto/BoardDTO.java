@@ -30,16 +30,15 @@ public class BoardDTO {
 
 
     /**
-     * @param boardDto
+     * @param dto
      * @return 사용자에게 입력받은 DTO를 토대로 Entity화 시킵니다.
      */
-    public static BoardEntity convertToEntity(BoardDTO dto, List<BoardAttachEntity> attachEntities) {
+    public static BoardEntity convertToEntity(BoardDTO dto) {
         BoardEntity entity = BoardEntity.builder()
                 .boardName(dto.getBoardName())
                 .boardContent(dto.getBoardContent())
                 .boardDateCreate(new Date())
                 .boardWriter(dto.getBoardWriter())
-                .attachEntities(attachEntities)
                 .build();
         return entity;
     }

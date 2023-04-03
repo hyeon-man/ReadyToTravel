@@ -20,7 +20,7 @@ import java.util.List;
 public class BoardEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "board_num")
     private Long boardNum;
 

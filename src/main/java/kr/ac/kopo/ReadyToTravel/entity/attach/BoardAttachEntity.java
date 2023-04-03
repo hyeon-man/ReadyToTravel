@@ -19,7 +19,7 @@ import java.util.List;
 public class BoardAttachEntity extends Attach {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "board_attach_num")
     private Long boardAttachNum;
 

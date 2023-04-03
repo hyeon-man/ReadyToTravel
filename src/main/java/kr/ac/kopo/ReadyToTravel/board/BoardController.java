@@ -24,23 +24,7 @@ public class BoardController {
 
     @RequestMapping("/board/create")
     public void boardCreate(BoardDTO boardDTO) {
-        List<BoardAttachEntity> attachEntities = new ArrayList<>();
 
-        for (int i = 0; i < boardDTO.getMultipartFile().size(); i++) {
-            MultipartFile attach = boardDTO.getMultipartFile().get(i);
-            String filename = FileUpload.fileUpload(attach);
-            if (filename != null) {
-                BoardAttachEntity attachEntity = new BoardAttachEntity();
-                attachEntity.setFileName(filename);
-                attachEntities.add(attachEntity);
-
-            }
-        }
-
-        BoardEntity entity = BoardDTO.convertToEntity(boardDTO, attachEntities);
-        BoardAttachEntity.attachLog(attachEntities);
-
-        service.save(entity);
-
+        service.save(boardDTO);
     }
 }
