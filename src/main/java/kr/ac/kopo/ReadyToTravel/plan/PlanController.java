@@ -1,6 +1,6 @@
 package kr.ac.kopo.ReadyToTravel.plan;
 
-import kr.ac.kopo.ReadyToTravel.vo.PlanVo;
+import kr.ac.kopo.ReadyToTravel.dto.PlanDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,7 +33,7 @@ public class PlanController {
      * @return
      */
     @PostMapping("/makePlan")
-    public String makePlan(@Valid PlanVo plan){
+    public String makePlan(@Valid PlanDTO plan){
         service.makePlan(plan);
 
         // TODO: 2023-03-29 로직이 완성되면 그룹 페이지로 이동한다

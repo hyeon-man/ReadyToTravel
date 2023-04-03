@@ -1,4 +1,4 @@
-package kr.ac.kopo.ReadyToTravel.vo;
+package kr.ac.kopo.ReadyToTravel.dto;
 
 import lombok.*;
 
@@ -6,13 +6,14 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Getter
+@Setter
+
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 @Builder
-public class PlanVo {
-    //todo 이거 검증식 바꿔야합니다
-
+public class PlanDTO {
+    //todo 검증 바꿔야함 어케할지 구상
 
     private Long id;
 

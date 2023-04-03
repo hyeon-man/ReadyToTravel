@@ -1,24 +1,46 @@
 package kr.ac.kopo.ReadyToTravel.board;
 
-import kr.ac.kopo.ReadyToTravel.vo.BoardVo;
+import kr.ac.kopo.ReadyToTravel.dto.BoardDTO;
+import kr.ac.kopo.ReadyToTravel.entity.attach.BoardAttachEntity;
+import kr.ac.kopo.ReadyToTravel.entity.board.BoardEntity;
 import kr.ac.kopo.ReadyToTravel.util.FileUpload;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 @RestController
-//todo 이거 Rest 하게 할건지 동기로 할건지 선택 해야함
 public class BoardController {
+    final BoardService service;
+
+    public BoardController(BoardService service) {
+        this.service = service;
+    }
+
     @RequestMapping("/board/create")
-    public void boardCreate(BoardVo vo){
+    public void boardCreate(BoardDTO boardDTO) {
+        List<BoardAttachEntity> attachEntities = new ArrayList<>();
 
-
-        //todo Controller => Service 로 로직 이동.
-        for (int i = 0; i < vo.getMultipartFile().size(); i++) {
-            String filename = FileUpload.fileUpload(vo.getMultipartFile().get(i));
+        for (int i = 0; i < boardDTO.getMultipartFile().size(); i++) {
+            MultipartFile attach = boardDTO.getMultipartFile().get(i);
+            String filename = FileUpload.fileUpload(attach);
             if (filename != null) {
-                vo.getFilename().add(filename);
+                BoardAttachEntity attachEntity = new BoardAttachEntity();
+                attachEntity.setFileName(filename);
+                attachEntities.add(attachEntity);
+
             }
         }
-        System.out.println(vo.getFilename());
+
+        BoardEntity entity = BoardDTO.convertToEntity(boardDTO, attachEntities);
+        BoardAttachEntity.attachLog(attachEntities);
+
+        service.save(entity);
+
     }
 }

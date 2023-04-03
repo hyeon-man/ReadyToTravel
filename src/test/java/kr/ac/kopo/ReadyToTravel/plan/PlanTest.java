@@ -1,6 +1,6 @@
 package kr.ac.kopo.ReadyToTravel.plan;
 
-import kr.ac.kopo.ReadyToTravel.vo.PlanVo;
+import kr.ac.kopo.ReadyToTravel.dto.PlanDTO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,7 @@ public class PlanTest {
     PlanService service;
     @Autowired
     PlanController controller;
-    PlanVo vo = new PlanVo();
+    PlanDTO vo = new PlanDTO();
 
     @Test
     @DisplayName("계획 생성 테스트 입니다.")

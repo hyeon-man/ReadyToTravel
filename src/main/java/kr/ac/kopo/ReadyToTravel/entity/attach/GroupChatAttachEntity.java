@@ -1,15 +1,12 @@
 package kr.ac.kopo.ReadyToTravel.entity.attach;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
+import javax.persistence.*;
 
-@Entity
-
+@Entity(name = "group_chat_attach")
 public class GroupChatAttachEntity extends Attach {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int groupNum;
 
 }

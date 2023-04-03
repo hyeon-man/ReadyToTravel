@@ -10,10 +10,8 @@ import javax.persistence.MappedSuperclass;
 
 @Getter
 @Setter
-//@MappedSuperclass = 상위 클래스에 필드를 하위 클래스에게도 매핑
-@MappedSuperclass
+@MappedSuperclass // 상속받은 하위 클래스에 상위 클래스 필드 매핑
 public class Attach {
-
 
     @Column(name = "file_name")
     String fileName;

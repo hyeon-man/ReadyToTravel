@@ -1,7 +1,7 @@
 package kr.ac.kopo.ReadyToTravel.plan;
 
 import kr.ac.kopo.ReadyToTravel.entity.PlanEntity;
-import kr.ac.kopo.ReadyToTravel.vo.PlanVo;
+import kr.ac.kopo.ReadyToTravel.dto.PlanDTO;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,7 +14,7 @@ public class PlanServiceImpl implements PlanService {
 
 
     @Override
-    public void makePlan(PlanVo planVo) {
+    public void makePlan(PlanDTO planVo) {
         // TODO: 2023-03-29 PlanVo 로 PlanEntity 생성 후 DB저장
 
         PlanEntity entity = new PlanEntity();

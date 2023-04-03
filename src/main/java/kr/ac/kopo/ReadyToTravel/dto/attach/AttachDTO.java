@@ -1,13 +1,15 @@
-package kr.ac.kopo.ReadyToTravel.vo;
+package kr.ac.kopo.ReadyToTravel.dto.attach;
 
 import lombok.*;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 @Builder
-public class AttachVo {
+
+public class AttachDTO {
     private String filename;
 
 }

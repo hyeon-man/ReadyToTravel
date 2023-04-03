@@ -1,7 +1,7 @@
 package kr.ac.kopo.ReadyToTravel.plan;
 
-import kr.ac.kopo.ReadyToTravel.vo.PlanVo;
+import kr.ac.kopo.ReadyToTravel.dto.PlanDTO;
 
 public interface PlanService {
-    void makePlan(PlanVo vo);
+    void makePlan(PlanDTO vo);
 }

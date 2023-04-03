@@ -23,6 +23,32 @@
     </form>
 </div>
 
+<div>
+    <form method="post" enctype="multipart/form-data" action="/board/create">
+
+        <div>
+            <label>첨부 파일</label>
+            <input type="file" name="multipartFile"/>
+        </div>
+
+        <div>
+            <label>첨부 파일</label>
+            <input type="file" name="multipartFile"/>
+        </div>
+
+        <div>
+            <label>게시글 제목</label>
+            <input type="text" name="boardName"/>
+        </div>
+
+        <div>
+            <label>게시글 내용</label>
+            <input type="text" name="boardContent">
+        </div>
+
+        <button>테스트</button>
+    </form>
+</div>
 
 </body>
 </html>
