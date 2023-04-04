@@ -24,7 +24,7 @@ public class BoardController {
 
     @RequestMapping("/board/create")
     public void boardCreate(BoardDTO boardDTO) {
-
+        String asd = "asd";
         service.save(boardDTO);
     }
 }
