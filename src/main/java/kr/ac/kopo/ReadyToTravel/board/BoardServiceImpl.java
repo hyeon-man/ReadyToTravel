@@ -35,7 +35,7 @@ public class BoardServiceImpl implements BoardService {
         for (int i = 0; i < boardDTO.getMultipartFile().size(); i++) {
             MultipartFile attach = boardDTO.getMultipartFile().get(i);
             String filename = FileUpload.fileUpload(attach);
-
+//여기서 사용 했으니깐 여기쪽 한번 보셔용
             if (filename != null) {
                 BoardAttachEntity attachEntity = new BoardAttachEntity();
                 attachEntity.setFileName(filename);

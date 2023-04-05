@@ -18,7 +18,7 @@ public class PassEncode {
 
             // Base64 인코딩
             return Base64.getEncoder().encodeToString(hash);
-
+    //이거 한번 읽어보시고
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
