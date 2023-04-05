@@ -1,21 +1,50 @@
 package kr.ac.kopo.ReadyToTravel.entity;
 
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import javax.validation.constraints.Email;
+import java.util.Date;
 
-@Getter
-@Setter
-@Entity(name = "member")
+@Getter @Setter
+@Entity
+@Table(name = "Member")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class MemberEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long memberNum;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "member_num")
+    private Long num;
+    // 아이디
+
+    @Column(name = "member_Id")
+    private String memberId;
+
+    //비밀번호
+    @Column
+    private String password;
+
+    //프로필 사진
+    @Column(name = "profile_img")
+    private String profileIMG;
+
+    //가입 일자
+    @Column
+    private Date signupDate;
+
+    //이메일
+    @Email
+    @Column
+    private String email;
+
+    //핸드폰 번호
+
+    @Column
+    private String phoneNum;
 }
+
+

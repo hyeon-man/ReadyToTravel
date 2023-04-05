@@ -9,11 +9,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Getter
-@Setter
-@Entity
+@Getter @Setter
 @ToString
 @Table(name = "board")
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
