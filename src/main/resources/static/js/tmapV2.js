@@ -129,7 +129,7 @@ function reverseGeo(lon, lat) {
             // n번째 배열을 스페이스 기준으로 나눠진 값으로 불러옴 대전광역시 서구 ~~~ => 대전광역시
             console.log(splitResult[0]);
 
-            fetch('../weather/changeAddress', {
+            fetch('weather/api/changeAddress', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -138,55 +138,50 @@ function reverseGeo(lon, lat) {
             })
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data);
 
-                    let today = new Date();
+                    var today = new Date();
 
-                    let year = today.getFullYear(); // 년도
-                    let month = today.getMonth() + 1;  // 월
-                    let date = today.getDate();  // 날짜
+                    var year = today.getFullYear();
+                    var month = ('0' + (today.getMonth() + 1)).slice(-2);
+                    var day = ('0' + today.getDate()).slice(-2);
+
+                    var toDate = year + month + day;
 
                     const code = data.cityCode;
-
-                    console.log(code);
-
+                    console.log(code)
                     var xhr = new XMLHttpRequest();
                     var url = 'http://apis.data.go.kr/1360000/MidFcstInfoService/getMidLandFcst'; /*URL*/
                     var queryParams = '?' + encodeURIComponent('serviceKey') + '=' + 'gKP4gLj7CA1GF0xfchCjLXWeYf9lD6II81CJhYLb%2BLLxxT%2Fz8rVgvR0wwC4us75JxkrgSX7oQoiku8468mW1cg%3D%3D'; /*Service Key*/
                     queryParams += '&' + encodeURIComponent('pageNo') + '=' + encodeURIComponent('1'); /**/
                     queryParams += '&' + encodeURIComponent('numOfRows') + '=' + encodeURIComponent('10'); /**/
                     queryParams += '&' + encodeURIComponent('dataType') + '=' + encodeURIComponent('json'); /**/
+                    // queryParams += '&' + encodeURIComponent('stnId') + '=' + encodeURIComponent('133'); /**/
                     queryParams += '&' + encodeURIComponent('regId') + '=' + encodeURIComponent(code); /**/
-                    queryParams += '&' + encodeURIComponent('tmFc') + '=' + encodeURIComponent(year + '0' + month + date + '0600'); /**/
+                    queryParams += '&' + encodeURIComponent('tmFc') + '=' + encodeURIComponent(toDate + '0600'); /**/
                     xhr.open('GET', url + queryParams);
                     xhr.onreadystatechange = function () {
                         if (this.readyState == 4) {
                             console.log('Status: ' + this.status + 'nHeaders: ' + JSON.stringify(this.getAllResponseHeaders()) + 'nBody: ' + this.responseText);
+                            const jsonResponse = JSON.parse(this.responseText)
 
-                            // Json 값을 가져옴
-                            const response = JSON.parse(this.responseText);
+                            /*
+                            weather.wf3AM , wf3Pm 흐림 맑음 등등
+                            weather.rnSt3Am, rnSt3Pm  강수확률
+                             */
+                            const weather = jsonResponse.response.body.items.item[0];
 
-                            // JSON 안에 있는 값들 중 필요한 값이 있는 곳을 고른다
-                            const items = response.response.body.items.item;
+                            $('#wf4AmInfo').attr("src", getWeatherImg(weather.wf3Am))
 
-                            // 반복문으로 하나씩 item에 넣는다
-                            for (let i = 0; i < items.length; i++) {
-                                const item = items[i];
-
-                                // 필요한 정보가 들어있는 것을 html id가 부여된 곳에 값을 넣어준다.
-                                $('#wf3PmInfo').attr("src", getWeatherImageUrl(item.wf3Pm));
-                                $('#wf4PmInfo').attr("src", getWeatherImageUrl(item.wf4Pm));
-                                $('#wf5PmInfo').attr("src", getWeatherImageUrl(item.wf5Pm));
-                                $('#wf6PmInfo').attr("src", getWeatherImageUrl(item.wf6Pm));
-                                $('#wf6PmInfo').attr("src", getWeatherImageUrl(item.wf7Pm));
-                                $('#wf6PmInfo').attr("src", getWeatherImageUrl(item.wf8));
-
-                            }
+                            console.log("wf3am", weather.wf3Am);
                         }
                     };
 
                     xhr.send('');
 
+                    console.log(this.response);
+
+
+                    console.log(data);
                 })
                 .catch((error) => {
                     console.error('Error:', error);
@@ -201,17 +196,16 @@ function reverseGeo(lon, lat) {
     });
 }
 
-// todo 날씨 이미지 반환하는 것 이미지 퍼오고 다른 날씨 추가하면 끝
-function getWeatherImageUrl(weatherStatus) {
-    let imageUrl = ''; // 이미지 URL 초기화
-
-    if (weatherStatus === '맑음') {
-        imageUrl = '/weatherImg/sunny.png'; // 맑음
-    } else if (weatherStatus === '구름많음') {
-        imageUrl = '/weatherImg/cloudy.png'; // 구름많음
-    } else {
-        imageUrl = '/weatherImg/rainy.png'; // 그 외의 날씨
-    }
-
-    return imageUrl;
+function getWeatherImg(weather) {
+    if (weather == "맑음") {
+        return "/weatherImg/sunny.png"
+    } else if (weather == "구름많음") {
+        return "/weatherImg/sunnycloudy.png"
+    } else if (weather == "흐림") {
+        return "/weatherImg/cloudy.png"
+    } else if (weather == "비") {
+        return "/weatherImg/rainy.png"
+    } else if (weather == "눈") {
+        return "/weatherImg/snow.png"
+    } else return "/weatherImg/snow.png"
 }

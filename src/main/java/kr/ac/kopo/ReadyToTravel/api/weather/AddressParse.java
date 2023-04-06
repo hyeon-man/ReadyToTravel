@@ -29,6 +29,7 @@ public class AddressParse {
         if (locationMap.containsKey(address)) {
             return AddressChanger.get(address, locationMap.get(address));
         }
+
         return null;
     }
 }

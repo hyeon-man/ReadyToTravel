@@ -19,5 +19,6 @@ public class AddressChanger implements Serializable {
                 .city(city)
                 .cityCode(cityCode)
                 .build();
+
     }
 }

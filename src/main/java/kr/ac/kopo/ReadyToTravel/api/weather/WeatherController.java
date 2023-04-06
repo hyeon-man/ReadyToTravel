@@ -15,13 +15,12 @@ import java.net.URLEncoder;
 @Controller
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/weather")
+@RequestMapping("/weather/api")
 public class WeatherController {
+    AddressParse parse = new AddressParse();
 
     @PostMapping("/changeAddress")
     public ResponseEntity<AddressChanger> changeAddress(@RequestBody String splitResult) throws Exception {
-        AddressParse parse = new AddressParse();
-
         String substring = splitResult.substring(1, splitResult.length()-1);
 
         AddressChanger changer = parse.changer(substring);
