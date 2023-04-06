@@ -1,6 +1,7 @@
 package kr.ac.kopo.ReadyToTravel.member;
 
 import kr.ac.kopo.ReadyToTravel.dto.MemberDTO;
+import kr.ac.kopo.ReadyToTravel.entity.MemberEntity;
 import kr.ac.kopo.ReadyToTravel.util.PassEncode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Date;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -24,6 +27,9 @@ public class MemberTest {
 
     @Autowired
     MemberService service;
+
+    @Autowired
+    MemberRepository repository;
 
     @Test
     @DisplayName("아이디 중복 체크")
@@ -66,6 +72,44 @@ public class MemberTest {
         // 서비스의 removeMember() 메소드 호출
         service.removeMember(1L);
 
+
+    }
+
+    @Test
+    @DisplayName("회원 로그인 테스트 - 로그인 성공")
+    public void login_success() {
+
+        MemberEntity memberEntity = new MemberEntity();
+        memberEntity.setMemberId("test123");
+        memberEntity.setPassword(PassEncode.encode("password"));
+
+        repository.save(memberEntity);
+
+        MemberDTO memberDTO = new MemberDTO();
+        memberDTO.setMemberId("test123");
+        memberDTO.setPassword("password");
+
+        boolean result = service.login(memberDTO);
+
+        assertTrue(result);
+    }
+
+    @Test
+    @DisplayName("회원 로그인 테스트 - 로그인 실패")
+    public void login_fail() {
+        MemberEntity memberEntity = new MemberEntity();
+        memberEntity.setMemberId("test123");
+        memberEntity.setPassword(PassEncode.encode("password"));
+
+        repository.save(memberEntity);
+
+        MemberDTO memberDTO = new MemberDTO();
+        memberDTO.setMemberId("test123");
+        memberDTO.setPassword("wrong_password");
+
+        boolean result = service.login(memberDTO);
+
+        assertFalse(result);
 
     }
 }

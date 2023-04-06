@@ -12,11 +12,9 @@ public class PassEncode {
      */
     public static String encode(String password) {
         try {
-            // SHA-512 해시 함수 생성
             MessageDigest digest = MessageDigest.getInstance("SHA-512");
             byte[] hash = digest.digest(password.getBytes());
 
-            // Base64 인코딩
             return Base64.getEncoder().encodeToString(hash);
 
         } catch (NoSuchAlgorithmException e) {

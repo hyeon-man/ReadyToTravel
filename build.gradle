@@ -40,7 +40,20 @@ dependencies {
             }
         }
     }
+
+    compileJava {
+        options.annotationProcessorPath = configurations.annotationProcessor
+        options.compilerArgs = [
+                "-Aquerydsl.processorPackage=kr.ac.kopo.ReadyToTravel.entity"
+        ]
+    }
+
 }
+
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+void useJUnitPlatform() {
+
 }

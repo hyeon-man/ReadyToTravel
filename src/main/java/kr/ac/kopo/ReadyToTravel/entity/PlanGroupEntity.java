@@ -15,7 +15,7 @@ import javax.persistence.Id;
 @Entity(name = "plan_group")
 public class PlanGroupEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long groupNum;
 
 }

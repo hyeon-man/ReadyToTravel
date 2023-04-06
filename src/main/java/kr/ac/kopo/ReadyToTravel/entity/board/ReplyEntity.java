@@ -15,7 +15,7 @@ public class ReplyEntity {
 
     @Id
     @Column(name = "reply_num")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long replyNum;
 
 }

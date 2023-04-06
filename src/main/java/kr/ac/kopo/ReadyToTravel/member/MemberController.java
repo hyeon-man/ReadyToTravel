@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/member")
@@ -39,7 +40,7 @@ public class MemberController {
 
     @RequestMapping("/removerMember")
     @ResponseBody
-    public void delete(HttpServletRequest request){
+    public void delete(HttpServletRequest request) {
         MemberDTO dto = (MemberDTO) request.getSession().getAttribute("memberDTO");
         Long num = dto.getNum();
 
@@ -50,9 +51,19 @@ public class MemberController {
     @GetMapping("/checkId/findPassword")
     public String findPassword() {
 
-        return "member/findPassword";
+        return "member/findPass";
     }
 
+    @PostMapping("/login")
+    public String login(MemberDTO memberDTO) {
 
+        boolean isValid = service.login(memberDTO);
 
+        if (service.login(memberDTO)) {
+
+            return "index";
+        } else {
+            return "member/login";
+        }
+    }
 }

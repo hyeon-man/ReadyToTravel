@@ -14,7 +14,7 @@ public class PlanEntity {
 
     @Id
     @Column(name = "plan_num")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long num;
 
     @Column(name = "plan_type")

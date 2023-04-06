@@ -45,9 +45,20 @@ public class MemberServiceImpl implements MemberService {
 
         if (optionalMemberEntity.isPresent()) {
             repository.deleteById(num);
-            System.out.println("지웠음");
+            System.out.println("지움");
         } else {
             System.out.println(num + "에 해당하는 회원이 없습니다");
         }
+    }
+
+    @Override
+    public boolean login(MemberDTO memberDTO) {
+        MemberEntity memberEntity = MemberDTO.convertToEntity(memberDTO);
+
+        String id = memberEntity.getMemberId();
+        String pass = PassEncode.encode(memberEntity.getPassword());
+
+        return repository.existsByMemberIdAndPassword(id, pass);
+
     }
 }

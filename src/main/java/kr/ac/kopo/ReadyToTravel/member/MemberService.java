@@ -8,4 +8,6 @@ public interface MemberService {
     void singUp(MemberDTO memberDTO);
 
     void removeMember(Long num);
+
+    boolean login(MemberDTO memberDTO);
 }
