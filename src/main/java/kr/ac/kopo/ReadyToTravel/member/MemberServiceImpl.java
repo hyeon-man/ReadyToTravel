@@ -3,7 +3,6 @@ package kr.ac.kopo.ReadyToTravel.member;
 import kr.ac.kopo.ReadyToTravel.dto.MemberDTO;
 import kr.ac.kopo.ReadyToTravel.entity.MemberEntity;
 import kr.ac.kopo.ReadyToTravel.util.PassEncode;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -29,7 +28,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void singUp(MemberDTO memberDTO) {
         // Convert DTO to Entity
-        MemberEntity entity = MemberDTO.convertToEntity(memberDTO);
+        MemberEntity entity = memberDTO.convertToEntity(memberDTO);
 
         // Encode password to SHA-512
         String encodedPassword = PassEncode.encode(entity.getPassword());
@@ -53,7 +52,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public boolean login(MemberDTO memberDTO) {
-        MemberEntity memberEntity = MemberDTO.convertToEntity(memberDTO);
+        MemberEntity memberEntity = memberDTO.convertToEntity(memberDTO);
 
         String id = memberEntity.getMemberId();
         String pass = PassEncode.encode(memberEntity.getPassword());
