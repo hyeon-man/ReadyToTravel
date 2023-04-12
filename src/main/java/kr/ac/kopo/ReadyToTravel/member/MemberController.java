@@ -55,7 +55,7 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public String login(MemberDTO memberDTO) {
+    public String login(MemberDTO memberDTO,HttpSession session) {
 
         boolean isValid = service.login(memberDTO);
 

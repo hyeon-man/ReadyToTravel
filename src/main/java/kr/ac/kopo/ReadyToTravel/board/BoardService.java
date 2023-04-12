@@ -5,4 +5,6 @@ import kr.ac.kopo.ReadyToTravel.entity.board.BoardEntity;
 
 public interface BoardService {
     void save(BoardDTO boardDTO);
+
+    void boardRemove(Long num);
 }

@@ -46,6 +46,16 @@ public class BoardServiceImpl implements BoardService {
 
         // attach 저장
         boardAttachRepository.saveAll(attachEntities); // 모든 BoardAttachEntity 저장
+
+        System.out.println("저장 성공");
+    }
+
+    @Override
+    public void boardRemove(Long num) {
+        repository.deleteById(num);
+
+        System.out.println("삭제 실패");
+
     }
 }
 
