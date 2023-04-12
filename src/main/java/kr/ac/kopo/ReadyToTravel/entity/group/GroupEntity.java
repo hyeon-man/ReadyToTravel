@@ -1,4 +1,4 @@
-package kr.ac.kopo.ReadyToTravel.entity;
+package kr.ac.kopo.ReadyToTravel.entity.group;
 
 import lombok.*;
 
@@ -13,7 +13,7 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @Builder
 @Entity(name = "plan_group")
-public class PlanGroupEntity {
+public class GroupEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long groupNum;
