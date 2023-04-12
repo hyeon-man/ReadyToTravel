@@ -15,4 +15,9 @@ public class RootController {
     public String test() {
         return "tmapTest";
     }
+
+    @RequestMapping("/tmapTest2")
+    public String test2() {
+        return "tmapTest2";
+    }
 }

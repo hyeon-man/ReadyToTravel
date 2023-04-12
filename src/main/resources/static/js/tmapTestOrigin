@@ -1,4 +1,4 @@
-// Tmap API 경로 최적화 구현 전 날씨 및 시작 끝 경유지 마커 찍는 기능
+Tmap API 경로 최적화 구현 전 날씨 및 시작 끝 경유지 마커 찍는 기능
 
 var map, marker;
 var lonlat;

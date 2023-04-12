@@ -1,10 +1,10 @@
 let map, marker;
-let lonlat;
 
 let markers = []; // 경유지 마커들
 let marker_s; // 시작
 let marker_e; // 끝
 
+var prevPolyline_;
 // 페이지가 로딩이 된 후 호출하는 함수입니다.
 window.onload = function initTmap() {
     // map 생성
@@ -53,57 +53,74 @@ function onClick(e) {
             marker_e = marker;
             marker_e.setIcon("http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_e.png");
 
-            if (marker_s != null && marker_e != null) {
-                createReq(marker_s, marker_e);
-            }
-
             console.log("end lat : " + marker_e.getPosition().lat());
             console.log("end lng : " + marker_e.getPosition().lng());
         } else {
             markers.push(marker);
+            ajaxParams(markers, marker_s, marker_e);
         }
-
-        markers = []; // 경유지 마커 배열 초기화
     }
 }
 
-function createReq(marker_s, marker_e) {
-    const req = {
-        reqCoordType: "WGS84GEO",
-        resCoordType: "WGS84GEO",
-        startName: start,
-        startX: marker_s.getPosition().lng(),
-        startY: marker_s.getPosition().lat(),
-        startTime: "202304120800",
-        endName: end,
-        endX: marker_e.getPosition().lng(),
-        endY: marker_e.getPosition().lat(),
-        searchOption: "0",
-        viaPoints: [
-            {
-                viaPointId: "0",
-                viaPointName: "경유지",
-                viaX: "127.45422567640077",
-                viaY: "37.56626352138058"
-            }
-        ]
+// TODO 1 경유지 최적화하고 여러 경유지 마커 생성시 기존의 polyline 삭제 하는 작업 해야함
+// TODO 2 보도로 변경 할 것도 고려해야함
+function ajaxParams(markers, marker_s, marker_e) {
+    if (marker_s != null && marker_e != null) {
+        var viaPoints = makeViaPoints(markers);
+        const data1 = marker_s.getPosition();
+        const data2 = marker_e.getPosition();
+
+        const params = {
+            reqCoordType: "WGS84GEO",
+            resCoordType: "EPSG3857",
+            startName: "출발",
+            startX: data1.lng().toString(),
+            startY: data1.lat().toString(),
+            startTime: "202304120800",
+            endName: "도착",
+            endX: data2.lng().toString(),
+            endY: data2.lat().toString(),
+            viaPoints
+        };
+        ajaxReq(params);
     }
 }
 
+function makeViaPoints(markers) {
+    var viaPoints = [];
 
-var headers = {};
-headers["appKey"] = "6Q3ySMpue88CUObnAszWH6dpde24rGCPRqHtUYC8";
+    for (let i = 0; i < markers.length; i++) {
+        var viaPoint = {};
+        viaPoint.viaPointId = "Id" + i;
+        viaPoint.viaPointName = "경유지" + i;
+        data3 = markers[i].getPosition()
+        viaPoint.viaX = data3.lng().toString();
+        viaPoint.viaY = data3.lat().toString();
+        viaPoints.push(viaPoint);
+    }
+    return viaPoints;
+}
 
-function markerAjax(reqJson) {
-    console.log(reqJson);
+function ajaxReq(req) {
+
+    console.log(req);
+    var headers = {};
+    headers["appKey"] = "yIMaVf12xnauu7aRo40iL6EWEJXjwVhnbBr6Lc3d";
+
     $.ajax({
         type: "POST",
         headers: headers,
         url: "https://apis.openapi.sk.com/tmap/routes/routeOptimization10?version=1&format=json",//
         async: false,
         contentType: "application/json",
-        data: reqJson,
+        data: JSON.stringify(req),
         success: function (response) {
+
+            if (prevPolyline_) {
+                console.log("들어왔다")
+                prevPolyline_.setMap(null);
+            }
+
             var resultData = response.properties;
             var resultFeatures = response.features;
 
@@ -117,7 +134,6 @@ function markerAjax(reqJson) {
             for (var i in resultFeatures) {
                 var geometry = resultFeatures[i].geometry;
                 var properties = resultFeatures[i].properties;
-                var polyline_;
 
                 drawInfoArr = [];
 
@@ -133,11 +149,11 @@ function markerAjax(reqJson) {
                         drawInfoArr.push(convertChange);
                     }
 
-                    polyline_ = new Tmapv2.Polyline({
+                    prevPolyline_ = new Tmapv2.Polyline({
                         path: drawInfoArr,
                         strokeColor: "#FF0000",
                         strokeWeight: 6,
-                        map: map
+                        map: map,
                     });
                 }
             }
