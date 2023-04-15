@@ -18,4 +18,10 @@ public class ReplyEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long replyNum;
 
+    @Column(nullable = false)
+    private String content;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "board_num", nullable = false)
+    private BoardEntity boardEntity;
 }

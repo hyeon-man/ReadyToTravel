@@ -21,6 +21,7 @@ public class BoardDTO {
     private List<MultipartFile> multipartFile = new ArrayList<>();
     private List<String> filename = new ArrayList<>();
 
+    private Long boardNum;
     private String boardName;
     private String boardContent;
     private Date boardDateCreate;
@@ -35,6 +36,7 @@ public class BoardDTO {
      */
     public static BoardEntity convertToEntity(BoardDTO dto) {
         BoardEntity entity = BoardEntity.builder()
+                .boardNum(dto.getBoardNum())
                 .boardName(dto.getBoardName())
                 .boardContent(dto.getBoardContent())
                 .boardDateCreate(new Date())
@@ -42,6 +44,18 @@ public class BoardDTO {
                 .build();
         return entity;
     }
+    public static BoardDTO convertToDTO(BoardEntity entity) {
+        BoardDTO boardDTO = new BoardDTO();
+        boardDTO.setBoardNum(entity.getBoardNum());
+        boardDTO.setBoardName(entity.getBoardName());
+        boardDTO.setBoardContent(entity.getBoardContent());
+        boardDTO.setBoardDateCreate(entity.getBoardDateCreate());
+        boardDTO.setBoardWriter(entity.getBoardWriter());
+//        boardDTO.setAttachEntities(entity.getAttachEntities());
+
+        return boardDTO;
+    }
+
 
 
 }

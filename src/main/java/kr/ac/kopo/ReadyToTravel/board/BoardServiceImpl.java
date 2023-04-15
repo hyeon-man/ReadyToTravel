@@ -4,7 +4,6 @@ import kr.ac.kopo.ReadyToTravel.dto.BoardDTO;
 import kr.ac.kopo.ReadyToTravel.entity.attach.BoardAttachEntity;
 import kr.ac.kopo.ReadyToTravel.entity.board.BoardEntity;
 import kr.ac.kopo.ReadyToTravel.util.FileUpload;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,7 +21,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public void save(BoardDTO boardDTO) {
+    public void create(BoardDTO boardDTO) {
         // 첨부파일을 저장할 Board Attach List
         List<BoardAttachEntity> attachEntities = new ArrayList<>();
 
@@ -46,6 +45,42 @@ public class BoardServiceImpl implements BoardService {
 
         // attach 저장
         boardAttachRepository.saveAll(attachEntities); // 모든 BoardAttachEntity 저장
+    }
+
+    @Override
+    public List<BoardDTO> findAll() {
+        List<BoardEntity> entityList = repository.findAll();
+        List<BoardDTO> boardDTOs = new ArrayList<>();
+        for (BoardEntity boardEntity : entityList) {
+            BoardDTO boardDTO = BoardDTO.convertToDTO(boardEntity);
+            boardDTOs.add(boardDTO);
+        }
+        return boardDTOs;
+    }
+
+    @Override
+    public BoardDTO findById(BoardDTO boardDTO, Long boardNum) {
+        BoardEntity entity = repository.findById(boardNum)
+                .orElseThrow(() -> new IllegalArgumentException("잘못된 게시번호:" + boardDTO.getBoardNum()));
+        return BoardDTO.convertToDTO (entity);
+    }
+
+    @Override
+    public BoardDTO update(BoardDTO boardDTO,Long boardNum) {
+        BoardEntity entity = repository.findById(boardNum)
+                .orElseThrow(() -> new IllegalArgumentException("잘못된 게시번호:" + boardDTO.getBoardNum()));
+
+        entity.setBoardName(boardDTO.getBoardName());
+        entity.setBoardContent(boardDTO.getBoardContent());
+
+        repository.save(entity);
+
+        return BoardDTO.convertToDTO (entity);
+    }
+
+    @Override
+    public void delete(Long boardNum) {
+        repository.deleteById(boardNum);
     }
 }
 

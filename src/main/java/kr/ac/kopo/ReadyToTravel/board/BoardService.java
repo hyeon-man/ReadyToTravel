@@ -1,8 +1,18 @@
 package kr.ac.kopo.ReadyToTravel.board;
 
 import kr.ac.kopo.ReadyToTravel.dto.BoardDTO;
-import kr.ac.kopo.ReadyToTravel.entity.board.BoardEntity;
+
+import java.util.List;
 
 public interface BoardService {
-    void save(BoardDTO boardDTO);
+    void create(BoardDTO boardDTO);
+
+    List<BoardDTO> findAll();
+
+    BoardDTO findById(BoardDTO boardDTOm,Long boardNum);
+
+    BoardDTO update(BoardDTO boardDTO, Long boardNum);
+    void delete(Long boardNum);
+
+
 }
