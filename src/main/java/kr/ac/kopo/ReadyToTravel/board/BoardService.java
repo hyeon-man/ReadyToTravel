@@ -9,7 +9,8 @@ public interface BoardService {
 
     List<BoardDTO> findAll();
 
-    BoardDTO findById(BoardDTO boardDTOm,Long boardNum);
+
+    BoardDTO findById(Long boardNum);
 
     BoardDTO update(BoardDTO boardDTO, Long boardNum);
     void delete(Long boardNum);

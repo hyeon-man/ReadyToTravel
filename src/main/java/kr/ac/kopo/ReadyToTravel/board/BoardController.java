@@ -25,8 +25,8 @@ public class BoardController {
     }
 
     @GetMapping("/board/{boardNum}")
-    public BoardDTO boardFindById(@PathVariable BoardDTO boardDTO,Long boardNum) {
-        return service.findById(boardDTO,boardNum);
+    public BoardDTO boardFindById(@PathVariable Long boardNum) {
+        return service.findById(boardNum);
     }
 
     @PutMapping("/board/{boardNum}")

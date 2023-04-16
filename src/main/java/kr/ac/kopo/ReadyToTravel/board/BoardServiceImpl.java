@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BoardServiceImpl implements BoardService {
@@ -49,19 +51,28 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public List<BoardDTO> findAll() {
-        List<BoardEntity> entityList = repository.findAll();
-        List<BoardDTO> boardDTOs = new ArrayList<>();
-        for (BoardEntity boardEntity : entityList) {
-            BoardDTO boardDTO = BoardDTO.convertToDTO(boardEntity);
-            boardDTOs.add(boardDTO);
-        }
-        return boardDTOs;
+         return repository.findAll().stream()
+                 .map(boardEntity ->{
+                     BoardDTO boardDTO = new BoardDTO();
+                     boardDTO.setBoardNum(boardEntity.getBoardNum());
+                     boardDTO.setBoardName(boardEntity.getBoardName());
+                     boardDTO.setBoardDateCreate(boardEntity.getBoardDateCreate());
+                     return boardDTO;
+                 })
+                 .collect(Collectors.toList());
     }
+//    List<BoardEntity> entityList = repository.findAll();
+//    List<BoardDTO> boardDTOs = new ArrayList<>();
+//        for (BoardEntity boardEntity : entityList) {
+//        BoardDTO boardDTO = BoardDTO.convertToDTO(boardEntity);
+//        boardDTOs.add(boardDTO);
+//    }
+//        return boardDTOs;
 
     @Override
-    public BoardDTO findById(BoardDTO boardDTO, Long boardNum) {
+    public BoardDTO findById(Long boardNum) {
         BoardEntity entity = repository.findById(boardNum)
-                .orElseThrow(() -> new IllegalArgumentException("잘못된 게시번호:" + boardDTO.getBoardNum()));
+                .orElseThrow(() -> new IllegalArgumentException("잘못된 게시번호") );
         return BoardDTO.convertToDTO (entity);
     }
 
