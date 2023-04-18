@@ -18,4 +18,6 @@ public class GroupEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long groupNum;
 
+
+
 }

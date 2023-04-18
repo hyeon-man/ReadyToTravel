@@ -1,8 +1,11 @@
 package kr.ac.kopo.ReadyToTravel.plan.group;
 
 import kr.ac.kopo.ReadyToTravel.dto.GroupDTO;
+import kr.ac.kopo.ReadyToTravel.entity.board.BoardEntity;
 import kr.ac.kopo.ReadyToTravel.entity.group.GroupEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 @Service
@@ -29,5 +32,6 @@ public class GroupServiceImpl implements GroupService {
     public void groupAddMember(Long GroupNum, Long memberNum) {
 
     }
+
 
 }

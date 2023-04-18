@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/board")
 public class BoardController {
     final BoardService service;
-
     public BoardController(BoardService service) {
         this.service = service;
     }
