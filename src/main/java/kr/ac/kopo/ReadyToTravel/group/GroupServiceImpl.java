@@ -1,4 +1,4 @@
-package kr.ac.kopo.ReadyToTravel.plan.group;
+package kr.ac.kopo.ReadyToTravel.group;
 
 import kr.ac.kopo.ReadyToTravel.dto.GroupDTO;
 import kr.ac.kopo.ReadyToTravel.entity.group.GroupEntity;
