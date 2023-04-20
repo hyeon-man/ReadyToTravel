@@ -24,43 +24,50 @@ public class PlanTest {
     @DisplayName("계획생성")
     public void makePlanTest() {
         // given
-        PlanDTO dto = new PlanDTO();
-        dto.setPlanType(TravelType.FAMILY);
-        dto.setName("Test name");
-        dto.setLeader("Test leader");
-        dto.setContents("Test contents");
+        PlanDTO planDTO = new PlanDTO();
+        planDTO.setNum(1L);
+        planDTO.setPlanType(TravelType.FAMILY);
+        planDTO.setName("Test name");
+        planDTO.setMemberNum(1L);
+        planDTO.setContents("Test contents");
 
-        Map<Date, List<LonLatDTO>> lonLatListByDate = new HashMap<>();
         Date date = new Date(123);
-        System.out.println("date = " + date);
+        LonLatDTO lonLatDTO1 = new LonLatDTO();
+        lonLatDTO1.setPlanNum(planDTO.getNum());
+        lonLatDTO1.setLon("36test");
+        lonLatDTO1.setLat("127test");
+        lonLatDTO1.setCalendars(date);
+
+        LonLatDTO lonLatDTO2 = new LonLatDTO();
+        lonLatDTO2.setPlanNum(planDTO.getNum());
+        lonLatDTO2.setLon("36tes");
+        lonLatDTO2.setLat("127tes");
+        lonLatDTO2.setCalendars(date);
+
+        LonLatDTO lonLatDTO3 = new LonLatDTO();
+        lonLatDTO3.setPlanNum(planDTO.getNum());
+        lonLatDTO3.setLon("36.123");
+        lonLatDTO3.setLat("127.512512");
+        lonLatDTO3.setCalendars(date);
+
+        LonLatDTO lonLatDTO4 = new LonLatDTO();
+        lonLatDTO4.setPlanNum(planDTO.getNum());
+        lonLatDTO4.setLon("36.6161");
+        lonLatDTO4.setLat("127.523234");
+        lonLatDTO4.setCalendars(date);
 
         List<LonLatDTO> lonLatDTOList = new ArrayList<>();
-        LonLatDTO lonLat1 = new LonLatDTO();
-        LonLatDTO lonLat2 = new LonLatDTO();
-        LonLatDTO lonLat3 = new LonLatDTO();
 
-        lonLat1.setLon("127");
-        lonLat1.setLat("36");
-        lonLat1.setCalendars(date);
+        lonLatDTOList.add(lonLatDTO1);
+        lonLatDTOList.add(lonLatDTO2);
+        lonLatDTOList.add(lonLatDTO3);
+        lonLatDTOList.add(lonLatDTO4);
 
-        lonLat2.setLon("126");
-        lonLat2.setLat("35");
-        lonLat2.setCalendars(date);
+        planDTO.setLonLatDTOList(lonLatDTOList);
 
-        lonLat3.setLon("125");
-        lonLat3.setLat("34");
-        lonLat3.setCalendars(date);
-
-        lonLatDTOList.add(lonLat1);
-        lonLatDTOList.add(lonLat2);
-        lonLatDTOList.add(lonLat3);
-
-        lonLatListByDate.put(date, lonLatDTOList);
-
-        dto.setLonLatListByDate(lonLatListByDate);
 
         // when
-        planService.makePlan(dto);
+        planService.makePlan(planDTO);
 
     }
 

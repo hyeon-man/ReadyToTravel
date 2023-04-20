@@ -4,6 +4,8 @@ import kr.ac.kopo.ReadyToTravel.dto.plan.LonLatDTO;
 import kr.ac.kopo.ReadyToTravel.dto.plan.PlanDTO;
 import kr.ac.kopo.ReadyToTravel.entity.plan.PlanEntity;
 
+import java.util.List;
+
 public interface PlanService {
     void makePlan(PlanDTO plan);
 
