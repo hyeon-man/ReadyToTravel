@@ -20,7 +20,6 @@ public class FileUpload {
             try {
                 String filename = attach.getOriginalFilename();
                 attach.transferTo(new File(path + filename));
-// 하고 여기 이거랑
                 return filename;
             } catch (IOException e) {
                 System.out.println("FileUpload.fileUpload");
