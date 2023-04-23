@@ -3,6 +3,7 @@ package kr.ac.kopo.ReadyToTravel.member;
 import kr.ac.kopo.ReadyToTravel.dto.MemberDTO;
 import kr.ac.kopo.ReadyToTravel.entity.MemberEntity;
 import kr.ac.kopo.ReadyToTravel.util.PassEncode;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -11,12 +12,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockMultipartFile;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -112,4 +114,42 @@ public class MemberTest {
         assertFalse(result);
 
     }
+    private GreenMail smtpServer;
+
+    @BeforeEach
+    public void setUp() {
+        smtpServer = new GreenMail(ServerSetup.SMTP);
+        smtpServer.start();
+        javaMailSender.setPort(smtpServer.getSmtpPort());
+        javaMailSender.setHost("localhost");
+    }
+
+    @Test
+    public void testInitPassword() throws MessagingException {
+        String email = "test@example.com";
+        passwordInitService.initPassword(email);
+
+        // 이메일 수신 확인
+        MimeMessage[] receivedMessages = smtpServer.getReceivedMessages();
+        assertEquals(1, receivedMessages.length);
+        assertEquals("ReadyToTravel 비밀번호 초기화 안내", receivedMessages[0].getSubject());
+        assertEquals(email, receivedMessages[0].getAllRecipients()[0].toString());
+    }
+
+    @Test
+    public void testSendMail() throws MessagingException {
+        String email = "test@example.com";
+        String title = "test title";
+        String text = "test text";
+        passwordInitService.sendMail(email, title, text);
+
+        // 이메일 수신 확인
+        MimeMessage[] receivedMessages = smtpServer.getReceivedMessages();
+        assertEquals(1, receivedMessages.length);
+        assertEquals(title, receivedMessages[0].getSubject());
+        assertEquals(email, receivedMessages[0].getAllRecipients()[0].toString());
+        assertEquals(text, receivedMessages[0].getContent());
+    }
 }
+}
+

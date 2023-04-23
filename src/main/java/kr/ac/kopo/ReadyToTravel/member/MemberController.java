@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -48,10 +49,18 @@ public class MemberController {
 
     }
 
-    @GetMapping("/checkId/findPassword")
+    @GetMapping("/findPassword")
     public String findPassword() {
 
-        return "member/findPass";
+        return "member/findPassword";
+    }
+
+    @PostMapping("/findPassword")
+    public String findPassword(String email) throws MessagingException {
+
+        service.initPassword(email);
+
+        return "redirect:../";
     }
 
     @PostMapping("/login")
