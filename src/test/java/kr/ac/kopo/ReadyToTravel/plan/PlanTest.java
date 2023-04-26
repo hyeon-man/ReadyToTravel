@@ -28,7 +28,7 @@ public class PlanTest {
         planDTO.setNum(1L);
         planDTO.setPlanType(TravelType.FAMILY);
         planDTO.setName("Test name");
-        planDTO.setMemberNum(1L);
+        planDTO.setMemberNum(2L);
         planDTO.setContents("Test contents");
 
         Date date = new Date(123);

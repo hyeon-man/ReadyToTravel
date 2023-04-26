@@ -20,7 +20,6 @@ public class PlanServiceImpl implements PlanService {
     private final LonLatRepository lonLatRepository;
     private final MemberRepository memberRepository;
 
-    // TODO
     @Override
     public void makePlan(PlanDTO plan) {
         PlanEntity planConvertToEntity = plan.convertToEntity(plan, plan.getMemberNum());

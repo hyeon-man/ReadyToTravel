@@ -1,10 +1,10 @@
-let map, marker;
+// TODO 1 취소가 2번 초과 할 경우 MapLayer 오류 발생함
+// TODO 2 보도로 변경 할 것도 고려해야함
 
 let markers = []; // 경유지 마커들
 let marker_s; // 시작
 let marker_e; // 끝
 
-var prevPolyline_;
 // 페이지가 로딩이 된 후 호출하는 함수입니다.
 window.onload = function initTmap() {
     // map 생성
@@ -15,7 +15,6 @@ window.onload = function initTmap() {
         height: "80%", // 지도의 높이
         zoom: 17
     });
-
     map.addListener("click", onClick); //map 클릭 이벤트를 등록합니다.
 }
 
@@ -41,6 +40,13 @@ function onClick(e) {
             title: title
         });
 
+        $('#removeOPT').on("click", function () {
+            marker.setMap(null);
+            marker_s = null;
+            marker_e = null;
+            markers = [];
+        });
+
         // reverseGeo(marker.getPosition().lng(), marker.getPosition().lat());
 
         if (title === 'Start') {
@@ -57,32 +63,32 @@ function onClick(e) {
             console.log("end lng : " + marker_e.getPosition().lng());
         } else {
             markers.push(marker);
-            ajaxParams(markers, marker_s, marker_e);
+            $('#createOPT').on("click", function () {
+                ajaxParams(markers, marker_s, marker_e);
+            });
         }
     }
 }
 
-// TODO 1 경유지 최적화하고 여러 경유지 마커 생성시 기존의 polyline 삭제 하는 작업 해야함
-// TODO 2 보도로 변경 할 것도 고려해야함
 function ajaxParams(markers, marker_s, marker_e) {
     if (marker_s != null && marker_e != null) {
         var viaPoints = makeViaPoints(markers);
-        const data1 = marker_s.getPosition();
-        const data2 = marker_e.getPosition();
+        const data_s = marker_s.getPosition();
+        const data_e = marker_e.getPosition();
 
         const params = {
             reqCoordType: "WGS84GEO",
             resCoordType: "EPSG3857",
             startName: "출발",
-            startX: data1.lng().toString(),
-            startY: data1.lat().toString(),
+            startX: data_s.lng().toString(),
+            startY: data_s.lat().toString(),
             startTime: "202304120800",
             endName: "도착",
-            endX: data2.lng().toString(),
-            endY: data2.lat().toString(),
+            endX: data_e.lng().toString(),
+            endY: data_e.lat().toString(),
             viaPoints
         };
-        ajaxReq(params);
+            ajaxReq(params);
     }
 }
 
@@ -93,9 +99,9 @@ function makeViaPoints(markers) {
         var viaPoint = {};
         viaPoint.viaPointId = "Id" + i;
         viaPoint.viaPointName = "경유지" + i;
-        data3 = markers[i].getPosition()
-        viaPoint.viaX = data3.lng().toString();
-        viaPoint.viaY = data3.lat().toString();
+        data_via = markers[i].getPosition()
+        viaPoint.viaX = data_via.lng().toString();
+        viaPoint.viaY = data_via.lat().toString();
         viaPoints.push(viaPoint);
     }
     return viaPoints;
@@ -105,7 +111,7 @@ function ajaxReq(req) {
 
     console.log(req);
     var headers = {};
-    headers["appKey"] = "yIMaVf12xnauu7aRo40iL6EWEJXjwVhnbBr6Lc3d";
+    headers["appKey"] = "mQ4HvTM9bt4MjOIrpaXtx8fceh2MLugd3bjz0NlG";
 
     $.ajax({
         type: "POST",
@@ -116,10 +122,6 @@ function ajaxReq(req) {
         data: JSON.stringify(req),
         success: function (response) {
 
-            if (prevPolyline_) {
-                console.log("들어왔다")
-                prevPolyline_.setMap(null);
-            }
 
             var resultData = response.properties;
             var resultFeatures = response.features;
@@ -135,8 +137,8 @@ function ajaxReq(req) {
                 var geometry = resultFeatures[i].geometry;
                 var properties = resultFeatures[i].properties;
 
-                drawInfoArr = [];
-
+                const drawInfoArr = [];
+                console.log("1");
                 if (geometry.type == "LineString") {
                     for (var j in geometry.coordinates) {
                         // 경로들의 결과값(구간)들을 포인트 객체로 변환
@@ -149,12 +151,18 @@ function ajaxReq(req) {
                         drawInfoArr.push(convertChange);
                     }
 
-                    prevPolyline_ = new Tmapv2.Polyline({
+                    let prevPolyline_ = new Tmapv2.Polyline({
                         path: drawInfoArr,
                         strokeColor: "#FF0000",
                         strokeWeight: 6,
                         map: map,
                     });
+
+                    $('#removeOPT').on("click", function () {
+                        prevPolyline_.setMap(null);
+                    });
+
+
                 }
             }
         },

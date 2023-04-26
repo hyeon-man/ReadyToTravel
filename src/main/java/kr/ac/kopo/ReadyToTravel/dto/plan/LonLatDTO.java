@@ -4,7 +4,6 @@ import kr.ac.kopo.ReadyToTravel.entity.plan.LonLatEntity;
 import kr.ac.kopo.ReadyToTravel.entity.plan.PlanEntity;
 import lombok.*;
 
-import javax.persistence.EntityManager;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
