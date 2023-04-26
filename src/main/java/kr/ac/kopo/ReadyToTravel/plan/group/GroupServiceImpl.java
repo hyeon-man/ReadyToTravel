@@ -19,7 +19,6 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public void createGroup(GroupDTO groupDTO) {
         GroupEntity entity = groupDTO.convertToEntity(groupDTO);
-
         groupRepository.save(entity);
     }
 
@@ -32,6 +31,4 @@ public class GroupServiceImpl implements GroupService {
     public void groupAddMember(Long GroupNum, Long memberNum) {
 
     }
-
-
 }

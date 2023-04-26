@@ -32,6 +32,7 @@ public class BoardServiceImpl implements BoardService {
         // entity 저장하고 boardNum 가져옴
         Long boardNum = repository.save(entity).getBoardNum();
 
+
         for (int i = 0; i < boardDTO.getMultipartFile().size(); i++) {
             MultipartFile attach = boardDTO.getMultipartFile().get(i);
             String filename = FileUpload.fileUpload(attach);

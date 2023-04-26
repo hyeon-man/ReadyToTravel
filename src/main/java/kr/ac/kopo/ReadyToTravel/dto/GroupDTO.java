@@ -15,24 +15,21 @@ import java.util.List;
 @AllArgsConstructor
 public class GroupDTO {
 
+    //PK
     private Long num;
 
     //member num 외래키
-    @NotNull
     private Long groupLeader;
 
-
-    @NotNull
+    // 계획 이름
     private String planName;
 
-
-    // 그룹 포함된 멤버
+    // 그룹에 포함된 멤버
     private List<MemberDTO> memberDTO;
 
 
-
     //TODO 메소드 내용 수정
-    public GroupEntity convertToEntity(GroupDTO groupDTO){
+    public GroupEntity convertToEntity(GroupDTO groupDTO) {
 
         return GroupEntity.builder().build();
     }

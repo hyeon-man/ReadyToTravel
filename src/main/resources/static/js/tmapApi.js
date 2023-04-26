@@ -1,5 +1,5 @@
-let map, marker;
-let lonlat;
+// TODO 1 취소가 2번 초과 할 경우 MapLayer 오류 발생함
+// TODO 2 보도로 변경 할 것도 고려해야함
 
 let markers = []; // 경유지 마커들
 let marker_s; // 시작
@@ -15,7 +15,6 @@ window.onload = function initTmap() {
         height: "80%", // 지도의 높이
         zoom: 17
     });
-
     map.addListener("click", onClick); //map 클릭 이벤트를 등록합니다.
 }
 
@@ -41,6 +40,13 @@ function onClick(e) {
             title: title
         });
 
+        $('#removeOPT').on("click", function () {
+            marker.setMap(null);
+            marker_s = null;
+            marker_e = null;
+            markers = [];
+        });
+
         // reverseGeo(marker.getPosition().lng(), marker.getPosition().lat());
 
         if (title === 'Start') {
@@ -53,57 +59,70 @@ function onClick(e) {
             marker_e = marker;
             marker_e.setIcon("http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_e.png");
 
-            if (marker_s != null && marker_e != null) {
-                createReq(marker_s, marker_e);
-            }
-
             console.log("end lat : " + marker_e.getPosition().lat());
             console.log("end lng : " + marker_e.getPosition().lng());
         } else {
             markers.push(marker);
+            $('#createOPT').on("click", function () {
+                ajaxParams(markers, marker_s, marker_e);
+            });
         }
-
-        markers = []; // 경유지 마커 배열 초기화
     }
 }
 
-function createReq(marker_s, marker_e) {
-    const req = {
-        reqCoordType: "WGS84GEO",
-        resCoordType: "WGS84GEO",
-        startName: start,
-        startX: marker_s.getPosition().lng(),
-        startY: marker_s.getPosition().lat(),
-        startTime: "202304120800",
-        endName: end,
-        endX: marker_e.getPosition().lng(),
-        endY: marker_e.getPosition().lat(),
-        searchOption: "0",
-        viaPoints: [
-            {
-                viaPointId: "0",
-                viaPointName: "경유지",
-                viaX: "127.45422567640077",
-                viaY: "37.56626352138058"
-            }
-        ]
+function ajaxParams(markers, marker_s, marker_e) {
+    if (marker_s != null && marker_e != null) {
+        var viaPoints = makeViaPoints(markers);
+        const data_s = marker_s.getPosition();
+        const data_e = marker_e.getPosition();
+
+        const params = {
+            reqCoordType: "WGS84GEO",
+            resCoordType: "EPSG3857",
+            startName: "출발",
+            startX: data_s.lng().toString(),
+            startY: data_s.lat().toString(),
+            startTime: "202304120800",
+            endName: "도착",
+            endX: data_e.lng().toString(),
+            endY: data_e.lat().toString(),
+            viaPoints
+        };
+        ajaxReq(params);
     }
 }
 
+function makeViaPoints(markers) {
+    var viaPoints = [];
 
-var headers = {};
-headers["appKey"] = "6Q3ySMpue88CUObnAszWH6dpde24rGCPRqHtUYC8";
+    for (let i = 0; i < markers.length; i++) {
+        var viaPoint = {};
+        viaPoint.viaPointId = "Id" + i;
+        viaPoint.viaPointName = "경유지" + i;
+        data_via = markers[i].getPosition()
+        viaPoint.viaX = data_via.lng().toString();
+        viaPoint.viaY = data_via.lat().toString();
+        viaPoints.push(viaPoint);
+    }
+    return viaPoints;
+}
 
-function markerAjax(reqJson) {
-    console.log(reqJson);
+function ajaxReq(req) {
+
+    console.log(req);
+    var headers = {};
+    headers["appKey"] = "mQ4HvTM9bt4MjOIrpaXtx8fceh2MLugd3bjz0NlG";
+
     $.ajax({
         type: "POST",
         headers: headers,
         url: "https://apis.openapi.sk.com/tmap/routes/routeOptimization10?version=1&format=json",//
         async: false,
         contentType: "application/json",
-        data: reqJson,
+        data: JSON.stringify(req),
         success: function (response) {
+
+
             var resultData = response.properties;
             var resultFeatures = response.features;
 
@@ -117,10 +136,9 @@ function markerAjax(reqJson) {
             for (var i in resultFeatures) {
                 var geometry = resultFeatures[i].geometry;
                 var properties = resultFeatures[i].properties;
-                var polyline_;
 
-                drawInfoArr = [];
-
+                const drawInfoArr = [];
+                console.log("1");
                 if (geometry.type == "LineString") {
                     for (var j in geometry.coordinates) {
                         // 경로들의 결과값(구간)들을 포인트 객체로 변환
@@ -133,12 +151,18 @@ function markerAjax(reqJson) {
                         drawInfoArr.push(convertChange);
                     }
 
-                    polyline_ = new Tmapv2.Polyline({
+                    let prevPolyline_ = new Tmapv2.Polyline({
                         path: drawInfoArr,
                         strokeColor: "#FF0000",
                         strokeWeight: 6,
-                        map: map
+                        map: map,
                     });
+
+                    $('#removeOPT').on("click", function () {
+                        prevPolyline_.setMap(null);
+                    });
+
+
                 }
             }
         },
