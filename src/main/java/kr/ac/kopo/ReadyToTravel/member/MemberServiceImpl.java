@@ -3,24 +3,18 @@ package kr.ac.kopo.ReadyToTravel.member;
 import kr.ac.kopo.ReadyToTravel.dto.MemberDTO;
 import kr.ac.kopo.ReadyToTravel.entity.MemberEntity;
 import kr.ac.kopo.ReadyToTravel.util.PassEncode;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
+import kr.ac.kopo.ReadyToTravel.util.UpdatePasswordUtil;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-import java.lang.reflect.Member;
 import java.util.Optional;
 import java.util.Random;
 
 @Service
 public class MemberServiceImpl implements MemberService {
     final MemberRepository repository;
-    final JavaMailSender javaMailSender;
-    public MemberServiceImpl(MemberRepository repository, JavaMailSender javaMailSender) {
+    public MemberServiceImpl(MemberRepository repository) {
         this.repository = repository;
-        this.javaMailSender = javaMailSender;
     }
 
 
@@ -70,18 +64,6 @@ public class MemberServiceImpl implements MemberService {
 
     }
 
-    // 10자리 랜덤 초기화 비밀번호 생성
-    private String generateTemporaryPassword() {
-        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+[{]}\\|;:\'\",<.>/?";
-        StringBuilder sb = new StringBuilder();
-        Random random = new Random();
-        int length = 10;
-        for (int i = 0; i < length; i++) {
-            int index = random.nextInt(characters.length());
-            sb.append(characters.charAt(index));
-        }
-        return sb.toString();
-    }
 
     @Override
     public void initPassword(String email) throws MessagingException {
@@ -89,24 +71,10 @@ public class MemberServiceImpl implements MemberService {
 
         if (optionalMember.isPresent()) {
             MemberEntity member = optionalMember.get();
-            String newPassword = generateTemporaryPassword();
+            String newPassword = UpdatePasswordUtil.generateTemporaryPassword();
             member.setPassword(newPassword);
             repository.save(member);
-            sendMail(email, "ReadyToTravel 비밀번호 초기화 안내", "새로운 비밀번호는 " + newPassword + " 입니다.");
-        }
-    }
-
-    //메일 보내기
-    public void sendMail(String email, String title, String text) throws MessagingException {
-        try {
-            MimeMessage message = javaMailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-            helper.setTo(email);
-            helper.setSubject(title);
-            helper.setText(text, true);
-            javaMailSender.send(message);
-        } catch (MessagingException e) {
-            throw new MessagingException("Failed to send email.", e);
+            UpdatePasswordUtil.sendMail(email, "ReadyToTravel 비밀번호 초기화 안내", "새로운 비밀번호는 " + newPassword + " 입니다.");
         }
     }
 

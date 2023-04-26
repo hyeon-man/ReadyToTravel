@@ -1,14 +1,19 @@
 package kr.ac.kopo.ReadyToTravel.member;
 
+import com.icegreen.greenmail.util.GreenMail;
+import com.icegreen.greenmail.util.ServerSetup;
 import kr.ac.kopo.ReadyToTravel.dto.MemberDTO;
 import kr.ac.kopo.ReadyToTravel.entity.MemberEntity;
 import kr.ac.kopo.ReadyToTravel.util.PassEncode;
+import kr.ac.kopo.ReadyToTravel.util.UpdatePasswordUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockMultipartFile;
 
@@ -33,6 +38,8 @@ public class MemberTest {
     @Autowired
     MemberRepository repository;
 
+    @Autowired
+    JavaMailSenderImpl javaMailSender;
     @Test
     @DisplayName("아이디 중복 체크")
     public void checkId() {
@@ -120,14 +127,14 @@ public class MemberTest {
     public void setUp() {
         smtpServer = new GreenMail(ServerSetup.SMTP);
         smtpServer.start();
-        javaMailSender.setPort(smtpServer.getSmtpPort());
+        javaMailSender.setPort(smtpServer.getSmtp().getPort());
         javaMailSender.setHost("localhost");
     }
 
     @Test
     public void testInitPassword() throws MessagingException {
         String email = "test@example.com";
-        passwordInitService.initPassword(email);
+        service.initPassword(email);
 
         // 이메일 수신 확인
         MimeMessage[] receivedMessages = smtpServer.getReceivedMessages();
@@ -141,7 +148,7 @@ public class MemberTest {
         String email = "test@example.com";
         String title = "test title";
         String text = "test text";
-        passwordInitService.sendMail(email, title, text);
+        UpdatePasswordUtil.sendMail(email, title, text);
 
         // 이메일 수신 확인
         MimeMessage[] receivedMessages = smtpServer.getReceivedMessages();
@@ -150,6 +157,5 @@ public class MemberTest {
         assertEquals(email, receivedMessages[0].getAllRecipients()[0].toString());
         assertEquals(text, receivedMessages[0].getContent());
     }
-}
 }
 
