@@ -13,11 +13,13 @@ import java.io.Serializable;
 @AllArgsConstructor
 @ToString
 @Entity
+@Builder
 @Table(name = "group_membership")
 public class GroupMembership {
 
     @Id
     @Column(name = "group_membership_num")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long num;
 
     @ManyToOne(fetch = FetchType.LAZY)

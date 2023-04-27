@@ -36,7 +36,8 @@ public class PlanController {
     public String makePlan(@Valid PlanDTO plan){
         service.makePlan(plan);
 
-        // TODO: 2023-03-29 로직이 완성되면 그룹 페이지로 이동한다
+
+        //todo 솔로 여행이면 그룹생성 x , 이외의 조건이면 그룹생성 컨트롤러로 연결
         return "";
     }
 }

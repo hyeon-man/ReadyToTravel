@@ -2,6 +2,7 @@ package kr.ac.kopo.ReadyToTravel.plan.group;
 
 
 import kr.ac.kopo.ReadyToTravel.dto.GroupDTO;
+import kr.ac.kopo.ReadyToTravel.dto.PlanDTO;
 import kr.ac.kopo.ReadyToTravel.entity.group.GroupEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,7 @@ public interface GroupService {
      ** @param groupDTO
      * 그룹생성
      */
-    void createGroup(GroupDTO groupDTO);
+    void createGroup(Long planNum, Long leaderNum, String planName);
 
     /**
      ** @param groupNum
