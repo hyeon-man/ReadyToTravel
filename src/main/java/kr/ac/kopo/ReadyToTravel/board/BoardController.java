@@ -2,25 +2,30 @@ package kr.ac.kopo.ReadyToTravel.board;
 
 import kr.ac.kopo.ReadyToTravel.dto.BoardDTO;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
 
 @RestController
 public class BoardController {
-    final BoardService service;
+    private final BoardService service;
 
     public BoardController(BoardService service) {
         this.service = service;
     }
 
     @GetMapping("/board/create")
-    public void boardCreate() {
+    public String boardCreate() {
+        return "boardAdd";
         //todo 이거 작성 페이지로 보냄
     }
 
     @PostMapping("/board/create")
-    public void boardCreate(BoardDTO boardDTO) {
+    public void boardCreate(@RequestPart(name = "file1") MultipartFile file1,
+                            @RequestPart(name = "file2") MultipartFile file2,
+                            @RequestPart(name = "board") BoardDTO boardDTO) {
 
-        service.create(boardDTO);
+        service.create(file1, file2, boardDTO);
     }
 
 

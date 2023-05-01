@@ -24,17 +24,21 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public void create(BoardDTO boardDTO) {
+    public void create(final MultipartFile file1, final MultipartFile file2,
+                       final BoardDTO boardDTO) {
         List<BoardAttachEntity> attachEntities = new ArrayList<>();
         BoardEntity entity = BoardDTO.convertToEntity(boardDTO);
         // 어태치를 db에 저장 할 때에는 boardNum이 필요하니깐
 
         Long boardNum = repository.save(entity).getBoardNum();
 
+        List<MultipartFile> fileList = new ArrayList<>();
+        fileList.add(file1);
+        fileList.add(file2);
 
         //첨부파일의 갯수만큼 반복한다
-        for (int i = 0; i < boardDTO.getMultipartFile().size(); i++) {
-            MultipartFile attach = boardDTO.getMultipartFile().get(i);
+        for (int i = 0; i < fileList.size(); i++) {
+            MultipartFile attach = fileList.get(i);
 
             String filename = FileUpload.fileUpload(attach);
 
