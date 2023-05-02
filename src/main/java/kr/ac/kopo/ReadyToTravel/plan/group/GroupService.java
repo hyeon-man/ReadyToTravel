@@ -11,21 +11,8 @@ import java.util.List;
 
 public interface GroupService {
 
-    /**
-     ** @param groupDTO
-     * 그룹생성
-     */
     void createGroup(Long planNum, Long leaderNum, String planName);
 
-    /**
-     ** @param groupNum
-     * 그룹 삭제 스케줄링으로 할듯
-     */
-    void removeGroup(Long groupNum);
-
-
-    // TODO: 2023-04-12 이거 구현해야됨
-    void groupAddMember(Long GroupNum, Long memberNum);
-
+    void groupAddMember(Long memberNum, String inviteURL);
 }
 

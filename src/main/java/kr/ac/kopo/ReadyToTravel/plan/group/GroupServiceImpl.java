@@ -1,6 +1,5 @@
 package kr.ac.kopo.ReadyToTravel.plan.group;
 
-import kr.ac.kopo.ReadyToTravel.dto.PlanDTO;
 import kr.ac.kopo.ReadyToTravel.entity.MemberEntity;
 import kr.ac.kopo.ReadyToTravel.entity.PlanEntity;
 import kr.ac.kopo.ReadyToTravel.entity.group.GroupEntity;
@@ -15,9 +14,12 @@ public class GroupServiceImpl implements GroupService {
     final GroupRepository groupRepository;
     final GroupMembershipRepository groupMembershipRepository;
 
-    public GroupServiceImpl(GroupRepository groupRepository, GroupMembershipRepository groupMembershipRepository) {
+    final InviteUrlRepository inviteUrlRepository;
+
+    public GroupServiceImpl(GroupRepository groupRepository, GroupMembershipRepository groupMembershipRepository, InviteUrlRepository inviteUrlRepository) {
         this.groupRepository = groupRepository;
         this.groupMembershipRepository = groupMembershipRepository;
+        this.inviteUrlRepository = inviteUrlRepository;
     }
 
     @Override
@@ -41,12 +43,18 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public void removeGroup(Long groupNum) {
-        groupRepository.deleteById(groupNum);
-    }
+    public void groupAddMember(Long memberNum, String inviteURL) {
 
-    @Override
-    public void groupAddMember(Long GroupNum, Long memberNum) {
+        // 초대 URL로 그룹 번호 조회
+        long groupNum = inviteUrlRepository.findByInviteURL(inviteURL).getNum();
 
+        // 그룹 멤버십 엔티티 생성
+        GroupMembership membership = GroupMembership.builder()
+                .group(GroupEntity.builder().groupNum(groupNum).build())
+                .member(MemberEntity.builder().num(memberNum).build())
+                .build();
+
+        // 그룹 멤버십 저장
+        groupMembershipRepository.save(membership);
     }
 }
