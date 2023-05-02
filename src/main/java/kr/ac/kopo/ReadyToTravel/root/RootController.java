@@ -32,4 +32,13 @@ public class RootController {
         return "index";
     }
 
+    @GetMapping("/signing")
+    public String signing(){
+        return "signing";
+    }
+
+    @GetMapping("/signup")
+    public String signup(){
+        return "signup";
+    }
 }
