@@ -1,56 +1,72 @@
 <!DOCTYPE html>
-<html>
+<html style="width: 100%" xmlns:th="http://www.thymeleaf.org" lang="en">
+
 <head>
-    <title>My Website</title>
-<link rel="stylesheet" href="/css/index.css" type="text/css">
+    <title>Ready To Travel</title>
+    <link rel="stylesheet" href="/css/index.css">
 </head>
+
 <body>
 <header>
+    <!--LOGO-->
     <div class="logo">
         <a href="/">
             <b>RTT</b>
             <h7>&nbsp;READY TO TRAVEL</h7>
         </a>
     </div>
+
+    <!--NAV-->
     <nav>
         <ul>
+            <li><a href="#">소개</a></li>
             <li><a href="#">여행지</a></li>
-            <li><a href="#">카테고리1</a></li>
-            <li><a href="#">카테고리2</a></li>
+            <li><a href="#">이용방법</a></li>
             <li><a href="#">로그인</a></li>
         </ul>
     </nav>
 </header>
-<main>
-    <div class="search">
-        <input type="text" placeholder="Search" />
-        <button>검색</button>
-    </div>
-    <div class="cards">
-        <div class="card">
-            <img src="https://via.placeholder.com/300x200" />
-            <h3>Card 1</h3>
-            <p>Description of Card 1</p>
+
+<div id="main2">
+    <div class="container">
+        <div class="left-side">
+            <h4>떠나고 싶은 당신을 위한 여행 플래너</h4>
+            <h1 style="font-size: 56px" id="mainH1">READY <br>TO<br> TRAVEL</h1>
+            <div id="startA"><a href="#" style="text-decoration-line: none; color: white">시작하기</a></div>
         </div>
-        <div class="card">
-            <img src="https://via.placeholder.com/300x200" />
-            <h3>Card 2</h3>
-            <p>Description of Card 2</p>
-        </div>
-        <div class="card">
-            <img src="https://via.placeholder.com/300x200" />
-            <h3>Card 3</h3>
-            <p>Description of Card 3</p>
-        </div>
-        <div class="card">
-            <img src="https://via.placeholder.com/300x200" />
-            <h3>Card 4</h3>
-            <p>Description of Card 4</p>
+        <div class="right-side">
+            <video id="video" autoplay muted loop></video>
         </div>
     </div>
-</main>
+</div>
+
+<div id="parallax1">
+    <div class="parallax-inner">
+        <h2>Discover New Places</h2>
+        <p>우리는 새로운 장소를 탐험하고 경험하는 것을 좋아합니다. <br>새로운 장소에서 우리는 자신을 발견하고 더 많은 것을 배울 수 있습니다. 준비되셨나요?</p>
+    </div>
+</div>
+
+<div id="parallax2">
+    <div class="parallax-inner">
+        <h2>Meet New People</h2>
+        <p>새로운 사람들을 만나는 것은 늘 즐거운 경험이죠.<br> 새로운 사람들과 대화하며 자신의 삶에 대한 새로운 시각을 얻어보세요.</p>
+    </div>
+</div>
+
+<div id="parallax3">
+    <div class="parallax-inner">
+        <h2>Create New Memories</h2>
+        <p>여행은 새로운 경험과 추억을 만드는 것입니다. <br>지금 Ready To Travel과 함께 당신만의 여행 추억을 만들어보세요.</p>
+    </div>
+</div>
+
 <footer>
-    <p>Copyright &copy; 2023</p>
+    <p>Copyright &copy; 2023
+    </p>
 </footer>
 </body>
+
+<script src="/js/index.js"></script>
+
 </html>

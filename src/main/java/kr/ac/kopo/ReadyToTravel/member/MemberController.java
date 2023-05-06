@@ -2,12 +2,10 @@ package kr.ac.kopo.ReadyToTravel.member;
 
 import kr.ac.kopo.ReadyToTravel.dto.MemberDTO;
 import kr.ac.kopo.ReadyToTravel.util.FileUpload;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
@@ -27,7 +25,7 @@ public class MemberController {
 
         service.singUp(memberDTO);
 
-        return "index";
+        return "list";
     }
 
     @RequestMapping("/checkId/{id}")
