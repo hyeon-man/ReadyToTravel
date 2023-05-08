@@ -26,15 +26,22 @@ public class RootController {
 
         return "weather";
     }
-
-    @GetMapping("/")
+    @RequestMapping("/list")
+    public String list(){
+        return"list";
+    }
+    @RequestMapping("/boardList")
+    public String boardList(){
+        return "boardList";
+    }
+    @GetMapping("/index")
     public String index() {
         return "index";
     }
 
-    @GetMapping("/signing")
-    public String signing(){
-        return "signing";
+    @GetMapping("/login")
+    public String login(){
+        return "login";
     }
 
     @GetMapping("/signup")

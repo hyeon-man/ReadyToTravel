@@ -1,10 +1,73 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>게시판</title>
+    <link rel="stylesheet" href="/css/boardList.css">
 </head>
 <body>
+<header>
+    <!--LOGO-->
+    <div class="logo">
+        <a href="/">
+            <b>RTT</b>
+            <h7>&nbsp;READY TO TRAVEL</h7>
+        </a>
+    </div>
 
+    <!--NAV-->
+    <nav>
+        <ul>
+            <li><a href="/">소개</a></li>
+            <li><a href="/list">여행지</a></li>
+            <li><a href="#">이용방법</a></li>
+            <li><a href="/boardList">후기게시판</a></li>
+            <li><a href="/login">로그인</a></li>
+        </ul>
+    </nav>
+</header>
+<div class="container">
+    <h1>게시판</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>번호</th>
+            <th>제목</th>
+            <th>작성자</th>
+            <th>작성일</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>1</td>
+            <td>첫 번째 게시글입니다.</td>
+            <td>작성자</td>
+            <td>2023-05-08</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>두 번째 게시글입니다.</td>
+            <td>작성자</td>
+            <td>2023-05-07</td>
+        </tr>
+        </tbody>
+    </table>
+    <a href="#" class="btn-create">새 글 작성</a>
+    <nav>
+        <ul class="pagination">
+            <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">이전</a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#">다음</a>
+            </li>
+        </ul>
+    </nav>
+</div>
 </body>
 </html>
