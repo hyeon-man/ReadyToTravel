@@ -17,6 +17,8 @@ public class BoardController {
 
     @RequestMapping("/create")
     public void boardCreate(BoardDTO boardDTO) {
+
+        System.out.println(boardDTO);
         service.save(boardDTO);
     }
 

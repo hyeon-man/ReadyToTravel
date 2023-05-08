@@ -29,6 +29,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
+
     // QueryDsl
     implementation group: 'com.querydsl', name: 'querydsl-jpa', version: '5.0.0'
     implementation group: 'com.querydsl', name: 'querydsl-apt', version: '5.0.0'
@@ -38,3 +39,4 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
