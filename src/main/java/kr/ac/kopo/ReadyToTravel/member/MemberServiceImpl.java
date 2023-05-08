@@ -2,19 +2,19 @@ package kr.ac.kopo.ReadyToTravel.member;
 
 import kr.ac.kopo.ReadyToTravel.dto.MemberDTO;
 import kr.ac.kopo.ReadyToTravel.entity.MemberEntity;
+import kr.ac.kopo.ReadyToTravel.util.GenerateTemporaryPassword;
 import kr.ac.kopo.ReadyToTravel.util.PassEncode;
-import kr.ac.kopo.ReadyToTravel.util.UpdatePasswordUtil;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
 import java.util.Optional;
-import java.util.Random;
 
 @Service
 public class MemberServiceImpl implements MemberService {
     final MemberRepository repository;
-    public MemberServiceImpl(MemberRepository repository) {
+    private final GenerateTemporaryPassword generateTemporaryPassword;
+    public MemberServiceImpl(MemberRepository repository, GenerateTemporaryPassword generateTemporaryPassword) {
         this.repository = repository;
+        this.generateTemporaryPassword = generateTemporaryPassword;
     }
 
 
@@ -66,16 +66,15 @@ public class MemberServiceImpl implements MemberService {
 
 
     @Override
-    public void initPassword(String email) throws MessagingException {
+    public void initPass(String email) {
         Optional<MemberEntity> optionalMember = repository.findByEmail(email);
 
         if (optionalMember.isPresent()) {
             MemberEntity member = optionalMember.get();
-            String newPassword = UpdatePasswordUtil.generateTemporaryPassword();
+            String newPassword = GenerateTemporaryPassword.generateTemporaryPassword();
             member.setPassword(newPassword);
             repository.save(member);
-            UpdatePasswordUtil.sendMail(email, "ReadyToTravel 비밀번호 초기화 안내", "새로운 비밀번호는 " + newPassword + " 입니다.");
-        }
+        }//else는 뭐라 해야하지.... 고민 해봐야함 optinal 말고 throw를 해야하나...?
     }
 
 }

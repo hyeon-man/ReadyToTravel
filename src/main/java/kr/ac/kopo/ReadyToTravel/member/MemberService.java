@@ -13,6 +13,6 @@ public interface MemberService {
 
     boolean login(MemberDTO memberDTO);
 
-    void initPassword(String email) throws MessagingException;
+    void initPass(String email) throws MessagingException;
 
 }

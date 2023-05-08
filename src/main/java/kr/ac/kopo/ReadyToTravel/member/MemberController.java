@@ -2,23 +2,27 @@ package kr.ac.kopo.ReadyToTravel.member;
 
 import kr.ac.kopo.ReadyToTravel.dto.MemberDTO;
 import kr.ac.kopo.ReadyToTravel.util.FileUpload;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/member")
 public class MemberController {
+
+    final JavaMailSender javaMailSender;
+    final MailService mailService;
     final MemberService service;
 
-    public MemberController(MemberService service) {
+    public MemberController(MemberService service, JavaMailSender javaMailSender, MailService mailService) {
         this.service = service;
+        this.javaMailSender = javaMailSender;
+        this.mailService = mailService;
     }
 
     @RequestMapping("/signup")
@@ -58,7 +62,10 @@ public class MemberController {
     @PostMapping("/findPassword")
     public String findPassword(String email) throws MessagingException {
 
-        service.initPassword(email);
+        service.initPass(email);
+
+        MailService mailService = new MailService(javaMailSender);
+        mailService.sendMail(email); //여기 파라메터에 service.initPass에서 entity에 저장한 member어케 가져감?
 
         return "redirect:../";
     }

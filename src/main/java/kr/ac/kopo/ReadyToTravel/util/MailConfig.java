@@ -1,6 +1,5 @@
 package kr.ac.kopo.ReadyToTravel.util;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -11,30 +10,27 @@ import java.util.Properties;
 @Configuration
 public class MailConfig {
 
-    @Value("${spring.mail.host}")
-    private String host;
-
-    @Value("${spring.mail.port}")
-    private int port;
-
-    @Value("${spring.mail.username}")
-    private String username;
-
-    @Value("${spring.mail.password}")
-    private String password;
-
     @Bean
     public JavaMailSender javaMailSender(){
-        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        mailSender.setHost(host);
-        mailSender.setPort(port);
-        mailSender.setUsername(username);
-        mailSender.setPassword(password);
+        JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
+        javaMailSender.setHost("smtp.naver.com");
+        javaMailSender.setPort(465);
+        javaMailSender.setUsername("readytotravel2304");
+        javaMailSender.setPassword("1q2w!Q@W");
+        javaMailSender.setJavaMailProperties(getMailProperties());
 
-        Properties props = mailSender.getJavaMailProperties();
-        props.put("mail.stmp.auth", "true");
-        props.put("mail.stmp.starttls.enable", "true");
+        return javaMailSender;
+    }
 
-        return mailSender;
+    private Properties getMailProperties() {
+        Properties properties = new Properties();
+        properties.setProperty("mail.transport.protocol", "smtp");
+        properties.setProperty("mail.smtp.auth", "true");
+        properties.setProperty("mail.smtp.starttls.enable", "true");
+        properties.setProperty("mail.debug", "true");
+        properties.setProperty("mail.smtp.ssl.trust", "smtp.naver.com");
+        properties.setProperty("mail.smtp.ssl.enable", "true");
+
+        return properties;
     }
 }
