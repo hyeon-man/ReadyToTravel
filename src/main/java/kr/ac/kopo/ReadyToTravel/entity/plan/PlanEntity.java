@@ -36,36 +36,17 @@ public class PlanEntity {
     @JoinColumn(name = "member_num")
     private MemberEntity memberEntity;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "member_num")
-//    @Nullable
-//    private PlanEntity planEntity;
 
-    // JSON 문자열로 변환해서 저장
-//    @Column(columnDefinition = "TEXT")
-//    private String lonLatListByDate;
 
-    // PlanEntity를 PlanDTO 객체로 변환하는 메소드
     public PlanDTO convertToDTO(PlanEntity entity, Long num) {
 
         PlanDTO dto = PlanDTO.builder()
                 .num(entity.getNum())
                 .planType(entity.getType())
                 .name(entity.getName())
-                .memberNum(num)
+                .leaderNum(num)
                 .contents(entity.getContents())
                 .build();
-
-//        // JSON 문자열을 Map<Date, List<LonLatDTO>>로 변환해서 저장
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        try {
-//            TypeReference<Map<Date, List<LonLatDTO>>> typeRef = new TypeReference<Map<Date, List<LonLatDTO>>>() {};
-//            Map<Date, List<LonLatDTO>> lonLatListByDate = objectMapper.readValue(entity.getLonLatListByDate(), typeRef);
-//            dto.setLonLatListByDate(lonLatListByDate);
-//        } catch (JsonProcessingException e) {
-//            e.printStackTrace();
-//        }
-
         return dto;
     }
 }

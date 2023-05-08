@@ -39,7 +39,7 @@ public class PlanDTO {
     @NotNull
     @NotBlank
     // 계획 주최자
-    private Long memberNum;
+    private Long leaderNum;
 
     private String contents;
 

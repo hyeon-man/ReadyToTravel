@@ -1,22 +1,22 @@
+
 package kr.ac.kopo.ReadyToTravel.plan;
 
 import kr.ac.kopo.ReadyToTravel.dto.MemberDTO;
-import kr.ac.kopo.ReadyToTravel.dto.plan.LonLatDTO;
 import kr.ac.kopo.ReadyToTravel.dto.plan.PlanDTO;
 import kr.ac.kopo.ReadyToTravel.entity.plan.PlanEntity;
 import kr.ac.kopo.ReadyToTravel.member.MemberService;
+import kr.ac.kopo.ReadyToTravel.plan.travelType.TravelType;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.Session;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
 
 @RequestMapping("/plan")
 @Controller
@@ -27,23 +27,28 @@ public class PlanController {
 
     private final MemberService memberService;
 
-    /**
+    private final GroupController groupController;
+
+
+/**
      * @return plan/makePlan 페이지를 반환합니다.
-     */
+     *
+ */
+
     @GetMapping("/createPlan")
     public String createPlan() {
         return "plan/createPlan";
     }
 
-    /**
+/**
      *
      * @param plan (plan / List<lonlatdto> / memberNum)
      * @param request (member session)
      * @return (ResponseBody OK : planPage / FAIL : Login Modal
      */
+
     // TODO front Ajax
     @PostMapping("/createPlan")
-    @ResponseBody
     public String createPlan(@Valid PlanDTO plan, HttpServletRequest request) {
 
         HttpSession session = request.getSession();
@@ -51,13 +56,17 @@ public class PlanController {
         MemberDTO memberDTO = (MemberDTO) session.getAttribute("member");
 
         if (memberDTO != null) {
-            plan.setMemberNum(memberDTO.getNum());
+            plan.setLeaderNum(memberDTO.getNum());
 
-            planService.makePlan(plan);
-            return "OK";
+            Long planNum = planService.makePlan(plan);
+            if (plan.getPlanType() != TravelType.SOLO) {
+                groupController.creatGroup(planNum, plan.getLeaderNum(), plan.getName());
+            }
+            else
+                return "redirect:/plan/detail/" + planNum;
         }
-        else
-            return "FAIL";
+        //TODO 멤버 세션이 없을 경우 return
+        return "member/login";
     }
 
     @GetMapping("/updatePlan/{num}")
@@ -84,3 +93,4 @@ public class PlanController {
         return "";
     }
 }
+
