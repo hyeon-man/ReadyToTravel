@@ -1,6 +1,7 @@
 package kr.ac.kopo.ReadyToTravel.entity.plan;
 
 import kr.ac.kopo.ReadyToTravel.entity.PlanEntity;
+import kr.ac.kopo.ReadyToTravel.dto.plan.LonLatDTO;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.lang.Nullable;

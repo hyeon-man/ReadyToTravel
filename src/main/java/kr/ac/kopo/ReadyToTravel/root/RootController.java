@@ -9,8 +9,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 public class RootController {
     @RequestMapping("/")
-    public String index() {
+    public String tmap() {
 
+        return "tmapTest2";
+    }
+
+    @GetMapping("/root")
+    public String index() {
         return "index";
     }
 

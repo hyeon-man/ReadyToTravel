@@ -34,13 +34,16 @@ public class BoardServiceImpl implements BoardService {
 
 
         for (int i = 0; i < boardDTO.getMultipartFile().size(); i++) {
+
             MultipartFile attach = boardDTO.getMultipartFile().get(i);
             String filename = FileUpload.fileUpload(attach);
 
             if (filename != null) {
                 BoardAttachEntity attachEntity = new BoardAttachEntity();
                 attachEntity.setFileName(filename);
-                attachEntity.setBoardEntity(BoardEntity.builder().boardNum(boardNum).build());
+                attachEntity.setBoardEntity(BoardEntity.builder()
+                        .boardNum(boardNum)
+                        .build());
                 attachEntities.add(attachEntity);
             }
         }

@@ -6,6 +6,9 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import lombok.*;
+
+import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
@@ -26,9 +29,9 @@ public class GroupEntity {
 
     private Date modifiedDate;
 
-    @OneToOne
-    @JoinColumn(name = "plan_num")
-    private PlanEntity plan;
 
+    @OneToMany
+    @JoinColumn(name = "member_num")
+    private List<MemberEntity> memberEntity;
 
 }

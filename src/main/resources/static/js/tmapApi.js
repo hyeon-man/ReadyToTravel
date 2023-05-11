@@ -89,6 +89,7 @@ function ajaxParams(markers, marker_s, marker_e) {
             viaPoints
         };
         ajaxReq(params);
+            ajaxReq(params);
     }
 }
 
