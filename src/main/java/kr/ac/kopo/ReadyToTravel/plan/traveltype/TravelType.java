@@ -1,4 +1,4 @@
-package kr.ac.kopo.ReadyToTravel.plan.traveltype;
+package kr.ac.kopo.ReadyToTravel.plan.travelType;
 
 public enum TravelType {
 
@@ -10,5 +10,5 @@ public enum TravelType {
     SOLO = 2
      */
 
-    FAMILY, COUPLE, SOLO
+FAMILY, COUPLE, SOLO
 }
