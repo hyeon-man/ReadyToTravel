@@ -1,11 +1,13 @@
 package kr.ac.kopo.ReadyToTravel.entity;
 
+import kr.ac.kopo.ReadyToTravel.entity.group.GroupEntity;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.util.Date;
+import java.util.List;
 
 @Getter @Setter
 @Entity
@@ -21,7 +23,7 @@ public class MemberEntity {
     private Long num;
     // 아이디
 
-    @Column(name = "member_Id")
+    @Column(name = "member_id")
     private String memberId;
 
     //비밀번호
@@ -45,6 +47,9 @@ public class MemberEntity {
 
     @Column
     private String phoneNum;
+
+    @OneToMany
+    private List<GroupEntity> groupEntity;
 }
 
 

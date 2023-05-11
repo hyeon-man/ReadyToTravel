@@ -29,10 +29,4 @@ public class BoardAttachEntity extends Attach {
     @NotNull
     private BoardEntity boardEntity;
 
-
-    public static void attachLog(List<BoardAttachEntity> entity) {
-        for (BoardAttachEntity attach : entity) {
-            System.out.println(attach.getFileName());
-        }
-    }
 }

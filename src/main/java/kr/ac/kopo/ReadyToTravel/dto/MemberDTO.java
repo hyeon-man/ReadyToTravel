@@ -3,7 +3,6 @@ package kr.ac.kopo.ReadyToTravel.dto;
 
 import kr.ac.kopo.ReadyToTravel.entity.MemberEntity;
 import lombok.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.Email;
 import java.util.Date;
@@ -39,8 +38,9 @@ public class MemberDTO {
     private String phoneNum;
 
 
-    public static MemberEntity convertToEntity(MemberDTO dto) {
-        MemberEntity memberEntity = MemberEntity.builder()
+    public  MemberEntity convertToEntity(MemberDTO dto) {
+
+        return MemberEntity.builder()
                 .memberId(dto.getMemberId())
                 .password(dto.getPassword())
                 .profileIMG(dto.getProfileIMG())
@@ -48,7 +48,5 @@ public class MemberDTO {
                 .email(dto.getEmail())
                 .phoneNum(dto.getPhoneNum())
                 .build();
-
-        return memberEntity;
     }
 }

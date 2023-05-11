@@ -2,16 +2,20 @@ package kr.ac.kopo.ReadyToTravel.member;
 
 import kr.ac.kopo.ReadyToTravel.dto.MemberDTO;
 import kr.ac.kopo.ReadyToTravel.util.FileUpload;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/member")
 public class MemberController {
-    final MemberService service;
+
+    private final MemberService service;
 
     public MemberController(MemberService service) {
         this.service = service;
@@ -25,7 +29,7 @@ public class MemberController {
 
         service.singUp(memberDTO);
 
-        return "list";
+        return "index";
     }
 
     @RequestMapping("/checkId/{id}")
@@ -37,7 +41,7 @@ public class MemberController {
 
     @RequestMapping("/removerMember")
     @ResponseBody
-    public void delete(HttpServletRequest request){
+    public void delete(HttpServletRequest request) {
         MemberDTO dto = (MemberDTO) request.getSession().getAttribute("memberDTO");
         Long num = dto.getNum();
 
@@ -45,12 +49,32 @@ public class MemberController {
 
     }
 
-    @GetMapping("/checkId/findPassword")
+    @GetMapping("/findPassword")
     public String findPassword() {
 
         return "member/findPassword";
     }
 
+    @PostMapping("/findPassword")
+    public String findPassword(String email) throws MessagingException {
 
+        if (service.initPass(email)) {
+            return "redirect:../";
+        } else {
+            throw new RuntimeException("메일 전송 실패함");
+        }
+    }
 
+    @PostMapping("/login")
+    public String login(MemberDTO memberDTO,HttpSession session) {
+
+        boolean isValid = service.login(memberDTO);
+
+        if (service.login(memberDTO)) {
+
+            return "index";
+        } else {
+            return "member/login";
+        }
+    }
 }
