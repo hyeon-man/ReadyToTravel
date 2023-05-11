@@ -89,7 +89,6 @@ function ajaxParams(markers, marker_s, marker_e) {
             viaPoints
         };
         ajaxReq(params);
-            ajaxReq(params);
     }
 }
 
@@ -112,7 +111,7 @@ function ajaxReq(req) {
 
     console.log(req);
     var headers = {};
-    headers["appKey"] = "mQ4HvTM9bt4MjOIrpaXtx8fceh2MLugd3bjz0NlG";
+    headers["appKey"] = "yIMaVf12xnauu7aRo40iL6EWEJXjwVhnbBr6Lc3d";
 
     $.ajax({
         type: "POST",
