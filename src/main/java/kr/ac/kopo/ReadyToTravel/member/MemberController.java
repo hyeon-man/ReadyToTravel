@@ -2,19 +2,20 @@ package kr.ac.kopo.ReadyToTravel.member;
 
 import kr.ac.kopo.ReadyToTravel.dto.MemberDTO;
 import kr.ac.kopo.ReadyToTravel.util.FileUpload;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServlet;
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/member")
 public class MemberController {
-    final MemberService service;
+
+    private final MemberService service;
 
     public MemberController(MemberService service) {
         this.service = service;
@@ -48,10 +49,20 @@ public class MemberController {
 
     }
 
-    @GetMapping("/checkId/findPassword")
+    @GetMapping("/findPassword")
     public String findPassword() {
 
-        return "member/findPass";
+        return "member/findPassword";
+    }
+
+    @PostMapping("/findPassword")
+    public String findPassword(String email) throws MessagingException {
+
+        if (service.initPass(email)) {
+            return "redirect:../";
+        } else {
+            throw new RuntimeException("메일 전송 실패함");
+        }
     }
 
     @PostMapping("/login")
