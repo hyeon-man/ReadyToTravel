@@ -4,6 +4,8 @@ package kr.ac.kopo.ReadyToTravel.plan;
 import kr.ac.kopo.ReadyToTravel.dto.MemberDTO;
 import kr.ac.kopo.ReadyToTravel.dto.plan.PlanDTO;
 import kr.ac.kopo.ReadyToTravel.entity.plan.PlanEntity;
+import kr.ac.kopo.ReadyToTravel.group.GroupController;
+import kr.ac.kopo.ReadyToTravel.group.GroupService;
 import kr.ac.kopo.ReadyToTravel.member.MemberService;
 import kr.ac.kopo.ReadyToTravel.plan.travelType.TravelType;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +29,7 @@ public class PlanController {
 
     private final MemberService memberService;
 
-    private final GroupController groupController;
+    private final GroupService groupService;
 
 
 /**
@@ -37,6 +39,7 @@ public class PlanController {
 
     @GetMapping("/createPlan")
     public String createPlan() {
+
         return "plan/createPlan";
     }
 
@@ -57,13 +60,14 @@ public class PlanController {
 
         if (memberDTO != null) {
             plan.setLeaderNum(memberDTO.getNum());
-
             Long planNum = planService.makePlan(plan);
+
             if (plan.getPlanType() != TravelType.SOLO) {
-                groupController.creatGroup(planNum, plan.getLeaderNum(), plan.getName());
+                groupService.createGroup(planNum, plan.getLeaderNum(), plan.getName());
+
             }
-            else
-                return "redirect:/plan/detail/" + planNum;
+
+            return "redirect:/plan/detail/" + planNum;
         }
         //TODO 멤버 세션이 없을 경우 return
         return "member/login";

@@ -1,14 +1,10 @@
 package kr.ac.kopo.ReadyToTravel.entity.group;
 
 import kr.ac.kopo.ReadyToTravel.entity.MemberEntity;
-import kr.ac.kopo.ReadyToTravel.entity.PlanEntity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import lombok.*;
 
-import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 

@@ -1,7 +1,7 @@
 package kr.ac.kopo.ReadyToTravel.dto;
 
-import kr.ac.kopo.ReadyToTravel.entity.PlanEntity;
 import kr.ac.kopo.ReadyToTravel.entity.plan.LonLatEntity;
+import kr.ac.kopo.ReadyToTravel.entity.plan.PlanEntity;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
