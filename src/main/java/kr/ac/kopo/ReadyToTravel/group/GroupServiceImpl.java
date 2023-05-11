@@ -1,7 +1,6 @@
 package kr.ac.kopo.ReadyToTravel.group;
 
 import kr.ac.kopo.ReadyToTravel.entity.MemberEntity;
-import kr.ac.kopo.ReadyToTravel.entity.PlanEntity;
 import kr.ac.kopo.ReadyToTravel.entity.group.GroupEntity;
 import kr.ac.kopo.ReadyToTravel.entity.group.GroupMembership;
 import org.springframework.stereotype.Service;
@@ -16,7 +15,7 @@ public class GroupServiceImpl implements GroupService {
 
     final InviteUrlRepository inviteUrlRepository;
 
-    public GroupServiceImpl(GroupRepository groupRepository, GroupMembershipRepository groupMembershipRepository, InviteUrlRepository inviteUrlRepository) {
+    public GroupServiceImpl(GroupRepository groupRepository,GroupMembershipRepository groupMembershipRepository, InviteUrlRepository inviteUrlRepository) {
         this.groupRepository = groupRepository;
         this.groupMembershipRepository = groupMembershipRepository;
         this.inviteUrlRepository = inviteUrlRepository;
@@ -28,7 +27,6 @@ public class GroupServiceImpl implements GroupService {
         GroupEntity groupEntity = GroupEntity.builder()
                 .createDate(new Date())
                 .modifiedDate(new Date())
-                .plan(PlanEntity.builder().num(planNum).build())
                 .name(planName)
                 .build();
 
@@ -56,5 +54,11 @@ public class GroupServiceImpl implements GroupService {
 
         // 그룹 멤버십 저장
         groupMembershipRepository.save(membership);
+    }
+
+    @Override
+    public void removeMember(long memberNum) {
+
+        groupMembershipRepository.deleteById(memberNum);
     }
 }

@@ -1,8 +1,9 @@
 package kr.ac.kopo.ReadyToTravel.dto;
 
 import kr.ac.kopo.ReadyToTravel.entity.MemberEntity;
-import kr.ac.kopo.ReadyToTravel.entity.PlanEntity;
-import kr.ac.kopo.ReadyToTravel.plan.traveltype.TravelType;
+
+import kr.ac.kopo.ReadyToTravel.entity.plan.PlanEntity;
+import kr.ac.kopo.ReadyToTravel.plan.travelType.TravelType;
 import lombok.*;
 
 import javax.persistence.EnumType;

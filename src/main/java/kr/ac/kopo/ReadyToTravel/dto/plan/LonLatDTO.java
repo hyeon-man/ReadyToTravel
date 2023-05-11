@@ -40,7 +40,7 @@ public class LonLatDTO {
                 .lon(dto.getLon())
                 .lat(dto.getLat())
                 .calendars(dto.getCalendars())
-                .planEntity(PlanEntity.builder().num(planNum).build())
+                .planEntity(PlanEntity.builder().build())
                 .build();
 
         return entity;
