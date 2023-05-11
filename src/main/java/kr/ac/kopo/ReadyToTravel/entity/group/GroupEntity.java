@@ -1,11 +1,12 @@
 package kr.ac.kopo.ReadyToTravel.entity.group;
 
+import kr.ac.kopo.ReadyToTravel.entity.MemberEntity;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+
+import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -17,5 +18,16 @@ public class GroupEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long groupNum;
+
+    private String name;
+
+    private Date createDate;
+
+    private Date modifiedDate;
+
+
+    @OneToMany
+    @JoinColumn(name = "member_num")
+    private List<MemberEntity> memberEntity;
 
 }

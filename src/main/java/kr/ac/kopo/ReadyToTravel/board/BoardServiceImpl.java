@@ -32,14 +32,18 @@ public class BoardServiceImpl implements BoardService {
         // entity 저장하고 boardNum 가져옴
         Long boardNum = repository.save(entity).getBoardNum();
 
+
         for (int i = 0; i < boardDTO.getMultipartFile().size(); i++) {
+
             MultipartFile attach = boardDTO.getMultipartFile().get(i);
             String filename = FileUpload.fileUpload(attach);
 
             if (filename != null) {
                 BoardAttachEntity attachEntity = new BoardAttachEntity();
                 attachEntity.setFileName(filename);
-                attachEntity.setBoardEntity(BoardEntity.builder().boardNum(boardNum).build());
+                attachEntity.setBoardEntity(BoardEntity.builder()
+                        .boardNum(boardNum)
+                        .build());
                 attachEntities.add(attachEntity);
             }
         }

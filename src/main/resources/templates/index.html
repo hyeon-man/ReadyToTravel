@@ -1,54 +1,113 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>tmapV2</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="/css/index.css">
+    <script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=mQ4HvTM9bt4MjOIrpaXtx8fceh2MLugd3bjz0NlG"></script>
+    <script type="text/javascript" src="/js/tmapApi.js"></script>
+
+</head>
+<body><!-- 맵 생성 실행 -->
+<nav>
+    <ul>
+        <li><a href="#">여행지</a></li>
+        <li><a href="#">이용방법</a></li>
+        <li><a href="#">그룹</a></li>
+        <li><a href="#">커뮤니티</a></li>
+        <li><a href="#">로그인</a></li>
+    </ul>
+
+</nav>
+<h1>Ready To Travel</h1>
+<div id="container">
+    <div id="sidebar1">
+        <div>
+
+
+            <img id="wf4AmInfo">
+            <p id="result"></p>
+
+
+        </div>
+
+        <div>
+            <input type="checkbox" id="checkbox2" onchange="myFunction2()">
+            <label for="checkbox2">체크박스2</label>
+        </div>
+    </div>
+
+    <div id="map_div"></div>
+
+    <div id="sidebar2">
+        <div class="button">
+            <button id="createOPT" type="button">submit</button>
+            <button id="removeOPT" type="button">cancel</button>
+        </div>
+    </div>
+</div>
+</body>
+<footer>
+    <div class="container2">
+        <div class="row">
+            <div class="col-md-6">
+                <h3>회사명</h3>
+                <p>회사 소개 내용</p>
+            </div>
+            <div class="col-md-6">
+                <h3>연락처</h3>
+                <p>주소: XX시 XX구 XX로</p>
+                <p>전화번호: 000-0000-0000</p>
+                <p>이메일: contact@company.com</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+</html>
+<html style="width: 100%" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Ready To Travel</title>
+    <link rel="stylesheet" href="/css/index.css">
 </head>
 <body>
-<div>
-    <a href="/tmapV2"> V2 </a>
-</div>
-<div>
-    <a href="/tmapV3"> V3 </a>
-</div>
-<div>
-    <a href="/weather"> V3 </a>
-</div>
+<header>
+<!--LOGO-->
+    <div class="logo">
+        <a href="/">
+            <b>RTT</b>
+            <h7>&nbsp;READY TO TRAVEL</h7>
+        </a>
+    </div>
 
+<!--NAV-->
+    <nav>
+        <ul>
+            <li><a href="#">소개</a></li>
+            <li><a href="#">여행지</a></li>
+            <li><a href="#">이용방법</a></li>
+            <li><a href="#">로그인</a></li>
+        </ul>
+    </nav>
+</header>
 
-<div>
-    <form type="post" action="plan/add">
-        <input type="date">
-        <button> 여행 계획 짜기</button>
-    </form>
-</div>
+<div id="main1">
+    <div class="container">
+        <div class="left-side">
+            <h4>떠나고 싶은 당신을 위한 여행 플래너</h4>
+            <h1 style="font-size: 56px" id="mainH1">READY TO TRAVEL</h1>
 
-<div>
-    <form method="post" enctype="multipart/form-data" action="/board/create">
-
-        <div>
-            <label>첨부 파일</label>
-            <input type="file" name="multipartFile"/>
+            <div id="startA"><a href="#" style="text-decoration-line: none; color: white">시작하기</a></div>
         </div>
-
-        <div>
-            <label>첨부 파일</label>
-            <input type="file" name="multipartFile"/>
+        <div class="right-side">
+            <video id="video" autoplay muted loop></video>
         </div>
-
-        <div>
-            <label>게시글 제목</label>
-            <input type="text" name="boardName"/>
-        </div>
-
-        <div>
-            <label>게시글 내용</label>
-            <input type="text" name="boardContent">
-        </div>
-
-        <button>테스트</button>
-    </form>
+    </div>
 </div>
-
+<footer>
+    <p>Copyright &copy; 2023</p>
+</footer>
 </body>
+<script src="/js/index.js"></script>
 </html>

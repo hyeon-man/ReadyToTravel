@@ -10,22 +10,10 @@ import javax.mail.MessagingException;
 /// TODO: 2023-04-02 전부 수정해야합니다.
 
 public class RootController {
-    @RequestMapping("/V3")
-    public String tmapV3() {
+    @RequestMapping("/")
+    public String tmap() {
 
-        return "tmapV3";
-    }
-
-    @RequestMapping("/V2")
-    public String tMapv2() {
-
-        return "tmapV2";
-    }
-
-    @RequestMapping("/weather")
-    public String weather() {
-
-        return "weather";
+        return "tmapTest2";
     }
 
     @GetMapping("/root")
@@ -33,4 +21,6 @@ public class RootController {
 
         return "index";
     }
+
+
 }
