@@ -15,14 +15,10 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/member")
 public class MemberController {
 
-    final JavaMailSender javaMailSender;
-    final MailService mailService;
-    final MemberService service;
+    private final MemberService service;
 
-    public MemberController(MemberService service, JavaMailSender javaMailSender, MailService mailService) {
+    public MemberController(MemberService service) {
         this.service = service;
-        this.javaMailSender = javaMailSender;
-        this.mailService = mailService;
     }
 
     @RequestMapping("/signup")
@@ -62,12 +58,11 @@ public class MemberController {
     @PostMapping("/findPassword")
     public String findPassword(String email) throws MessagingException {
 
-        service.initPass(email);
-
-        MailService mailService = new MailService(javaMailSender);
-        mailService.sendMail(email); //여기 파라메터에 service.initPass에서 entity에 저장한 member어케 가져감?
-
-        return "redirect:../";
+        if (service.initPass(email)) {
+            return "redirect:../";
+        } else {
+            throw new RuntimeException("메일 전송 실패함");
+        }
     }
 
     @PostMapping("/login")

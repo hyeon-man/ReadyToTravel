@@ -1,6 +1,7 @@
 package kr.ac.kopo.ReadyToTravel.member;
 
 import kr.ac.kopo.ReadyToTravel.dto.MemberDTO;
+import kr.ac.kopo.ReadyToTravel.entity.MemberEntity;
 
 import javax.mail.MessagingException;
 
@@ -13,6 +14,6 @@ public interface MemberService {
 
     boolean login(MemberDTO memberDTO);
 
-    void initPass(String email) throws MessagingException;
+    boolean initPass(String email) throws MessagingException;
 
 }

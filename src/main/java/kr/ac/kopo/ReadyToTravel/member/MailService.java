@@ -14,10 +14,10 @@ import javax.mail.internet.MimeMessage;
 public class MailService {
 
     private final JavaMailSender javaMailSender;
-
     public MailService(JavaMailSender javaMailSender) {
         this.javaMailSender = javaMailSender;
     }
+
 
     private MimeMessage createMessage(String email) throws MessagingException {
 
@@ -32,12 +32,32 @@ public class MailService {
         return mimeMessage;
     }
 
+    private MimeMessage regeneratedPasswordMessage(String email, String password) throws MessagingException {
+
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        mimeMessage.setFrom(new InternetAddress("readytotravel2304@naver.com"));
+        mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(email));
+        mimeMessage.setSubject("비밀번호 변경");
+/*
+        mimeMessage.setText(????); // service에서 member엔티티에 저장한 비밀번호를 넣어야함.
+*/
+
+        return mimeMessage;
+    }
+
     public void sendMail(String email) {
         try {
-            MimeMessage message = createMessage(email);
-            javaMailSender.send(message);
+            javaMailSender.send(createMessage(email));
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void sendMail(String email, String password) {
+        try {
+            javaMailSender.send(regeneratedPasswordMessage(email, password));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
+}
