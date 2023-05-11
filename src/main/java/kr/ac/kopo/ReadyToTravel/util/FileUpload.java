@@ -10,7 +10,7 @@ public class FileUpload {
 
 
     /**
-     * @param attach(MultipartFile)
+     * @param attach
      * @return
      * fileUpload 는 사용자에게 받은 Attach 첨부파일 (사진, 동영상 등) 을 로컬 환경에 저장하는 메소드입니다.
      *                     파일을 파라미터로 받아 저장 후 파일의 이름(String fileName)만 리턴 받습니다.

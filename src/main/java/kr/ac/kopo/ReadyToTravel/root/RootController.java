@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 /// TODO: 2023-04-02 전부 수정해야합니다.
 
 public class RootController {
-    @RequestMapping("/tmapTest")
+    @RequestMapping("/")
     public String tmap() {
 
         return "tmapTest2";
@@ -18,4 +18,6 @@ public class RootController {
     public String index() {
         return "index";
     }
+
+
 }

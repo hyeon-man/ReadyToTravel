@@ -107,6 +107,8 @@ footer {
     background-color: #f5f5f5;
     display: flex;
     justify-content: center;
+    /*align-items: center;*/
+    height: 100vh;
     align-items: center;
     font-size: 14px;
     color: #666;
@@ -121,6 +123,10 @@ h4 {
     max-width: 1903px;
     margin: 0 auto;
     padding: 20px;
+}
+.button{
+    margin-top:750px;
+    margin-left: 50px;
 }
 
 #mainH1 {
@@ -146,6 +152,74 @@ h4 {
     height: 100%;
 }
 
+nav {
+    background-color: #333;
+    height: 50px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+nav ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    overflow: hidden;
+}
+
+nav ul li {
+    float: left;
+}
+
+nav ul li a {
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+nav ul li a:hover {
+    background-color: #ddd;
+    color: black;
+}
+h1{
+    margin-left: 45%;
+}
+
+footer {
+    background-color: #333;
+    color: #fff;
+    padding: 50px 0;
+}
+
+.container2 {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.col-md-6 {
+    width: 50%;
+    padding: 0 20px;
+}
+
+h3 {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+p {
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 10px;
+
+}
 .left-side {
     width: 30%;
     height: 100%;
@@ -166,5 +240,4 @@ h4 {
 video {
     width: 100%;
     height: 100%;
-    object-fit: cover;
 }

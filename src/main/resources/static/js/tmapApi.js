@@ -88,6 +88,7 @@ function ajaxParams(markers, marker_s, marker_e) {
             endY: data_e.lat().toString(),
             viaPoints
         };
+        ajaxReq(params);
             ajaxReq(params);
     }
 }

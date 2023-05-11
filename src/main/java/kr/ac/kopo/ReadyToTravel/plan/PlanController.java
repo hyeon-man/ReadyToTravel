@@ -73,6 +73,7 @@ public class PlanController {
     public String updatePlan(@PathVariable Long num, Model model) {
         PlanEntity entity = planService.getItem(num);
 
+        //todo 솔로 여행이면 그룹생성 x , 이외의 조건이면 그룹생성 컨트롤러로 연결
         model.addAttribute("item", entity);
 
         return "";
