@@ -16,5 +16,7 @@ public interface GroupService {
     void groupAddMember(Long memberNum, String inviteURL);
 
     void removeMember(long memberNum);
+
+    String createInviteUrl(long groupNum);
 }
 

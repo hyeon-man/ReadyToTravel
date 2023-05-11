@@ -14,12 +14,10 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Builder
 public class InviteEntity {
-
     @Id
     @Column(name = "invite_url_num")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Num;
-
 
     private String inviteURL;
     @OneToOne(fetch = FetchType.LAZY)

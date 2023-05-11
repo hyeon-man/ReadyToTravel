@@ -18,6 +18,15 @@ public class GroupController {
         this.service = service;
     }
 
+
+    /**
+     *
+     * @param memberDTO
+     * @param inviteURL
+     * @return
+     * 초대 URL을 통해서 접근한 사용자를 그룹에 초대하는 로직입니다.
+     *
+     */
     @PostMapping("/group/joinGroup/{inviteURL}")
     public String addMember(@SessionAttribute(value = "memberDTO", required = false) MemberDTO memberDTO, @PathVariable String inviteURL) {
         if (memberDTO == null) {
@@ -35,4 +44,14 @@ public class GroupController {
         service.removeMember(memberNum);
 
     }
+
+    @GetMapping("/group/createInviteUrl/{groupNum}")
+    @ResponseBody
+    public String createInviteUrl(@PathVariable long groupNum){
+
+        String inviteUrl = service.createInviteUrl(groupNum);
+
+        return inviteUrl;
+    }
+
 }

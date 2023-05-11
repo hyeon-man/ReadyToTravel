@@ -26,8 +26,4 @@ public class GroupEntity {
     private Date modifiedDate;
 
 
-    @OneToMany
-    @JoinColumn(name = "member_num")
-    private List<MemberEntity> memberEntity;
-
 }

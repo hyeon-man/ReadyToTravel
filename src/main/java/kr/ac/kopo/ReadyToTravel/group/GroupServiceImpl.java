@@ -3,9 +3,11 @@ package kr.ac.kopo.ReadyToTravel.group;
 import kr.ac.kopo.ReadyToTravel.entity.MemberEntity;
 import kr.ac.kopo.ReadyToTravel.entity.group.GroupEntity;
 import kr.ac.kopo.ReadyToTravel.entity.group.GroupMembership;
+import kr.ac.kopo.ReadyToTravel.entity.group.InviteEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.UUID;
 
 
 @Service
@@ -15,7 +17,7 @@ public class GroupServiceImpl implements GroupService {
 
     final InviteUrlRepository inviteUrlRepository;
 
-    public GroupServiceImpl(GroupRepository groupRepository,GroupMembershipRepository groupMembershipRepository, InviteUrlRepository inviteUrlRepository) {
+    public GroupServiceImpl(GroupRepository groupRepository, GroupMembershipRepository groupMembershipRepository, InviteUrlRepository inviteUrlRepository) {
         this.groupRepository = groupRepository;
         this.groupMembershipRepository = groupMembershipRepository;
         this.inviteUrlRepository = inviteUrlRepository;
@@ -31,7 +33,6 @@ public class GroupServiceImpl implements GroupService {
                 .build();
 
         Long groupNum = groupRepository.save(groupEntity).getGroupNum();
-
 
         groupMembershipRepository.save(GroupMembership.builder()
                 .group(GroupEntity.builder().groupNum(groupNum).build())
@@ -60,5 +61,28 @@ public class GroupServiceImpl implements GroupService {
     public void removeMember(long memberNum) {
 
         groupMembershipRepository.deleteById(memberNum);
+    }
+
+    @Override
+    public String createInviteUrl(long groupNum) {
+        InviteEntity existingInvite = inviteUrlRepository.findByGroupEntity_GroupNum(groupNum);
+        if (existingInvite != null) {
+
+            return existingInvite.getInviteURL();
+
+        } else {
+            UUID uuid = UUID.randomUUID();
+            String uuidStr = uuid.toString().replace("-", "");
+            String randomURL = uuidStr.substring(0, 8);
+
+            InviteEntity inviteEntity = InviteEntity.builder()
+                    .inviteURL(randomURL)
+                    .groupEntity(GroupEntity.builder().groupNum(groupNum).build())
+                    .build();
+
+            String inviteURL = inviteUrlRepository.save(inviteEntity).getInviteURL();
+
+            return inviteURL;
+        }
     }
 }
