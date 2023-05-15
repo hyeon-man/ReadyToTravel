@@ -30,4 +30,9 @@ public class RootController {
         return "index";
     }
 
+    @GetMapping("/testList")
+    public String testList(){
+        return "testList";
+    }
+
 }

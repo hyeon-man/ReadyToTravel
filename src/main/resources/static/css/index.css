@@ -117,7 +117,7 @@ h4 {
 }
 
 .left-side {
-    width: 20%;
+    width: 30%;
     height: 100%;
     display: block;
     justify-content: center;
@@ -125,7 +125,7 @@ h4 {
 }
 
 .right-side {
-    width: 80%;
+    width: 70%;
     background-color: #000;
     display: flex;
     justify-content: center;
@@ -146,41 +146,82 @@ video {
     background-size: cover;
 }
 
-#parallax1 {
-    background-image: url(https://www.dropbox.com/s/gmiv2rgpnegui0k/image1.jpeg?dl=1);
-    height: 1200px;
-    background-attachment: fixed;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
 }
 
-#parallax2 {
-    background-image: url(https://www.dropbox.com/s/ujy6w3lyyqvwjel/image2.jpg?dl=1);
-    height: 1200px;
-    background-attachment: fixed;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+.search {
+    display: flex;
+    margin-bottom: 20px;
+    margin-top: 50px;
 }
 
-#parallax3 {
-    background-image: url(https://www.dropbox.com/s/lzitcucpo9hcw8x/image3.jpg?dl=1);
-    height: 1200px;
-    background-attachment: fixed;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+.search input {
+    flex-grow: 1;
+    margin-right: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
 }
 
-.parallax-inner {
+.search button {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -10px;
+    justify-content: space-between;
+}
+
+.card {
+    margin: 10px;
+    width: 250px;
+    height: 350px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
     position: relative;
-    top: 50%;
-    transform: translateY(-50%);
-    padding: 100px;
-    text-align: center;
-
+    transition: transform 0.3s ease;
 }
+
+.card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.card h3 {
+    margin-top: 10px;
+    font-size: 20px;
+}
+.card:hover {
+    transform: scale(1.1);
+    transition: all 0.3s ease;
+}
+
+/*.card h3 {*/
+/*    margin: 0;*/
+/*    font-size: 18px;*/
+/*    font-weight: normal;*/
+/*    margin-bottom: 5px;*/
+/*}*/
+
+.card p {
+    margin-top: 10px;
+    font-size: 16px;
+}
+
 
 @media only screen and (max-width: 950px) {
     .container {

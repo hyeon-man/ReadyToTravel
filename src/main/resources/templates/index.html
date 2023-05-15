@@ -17,9 +17,9 @@
     <!--NAV-->
     <nav>
         <ul>
-            <li><a href="#">소개</a></li>
-            <li><a href="/list">여행지</a></li>
-            <li><a href="#">이용방법</a></li>
+            <li><a href="#">여행지</a></li>
+            <li><a href="/list">소개+이용방법</a></li>
+            <li><a href="#">일단빈칸</a></li>
             <li><a href="/boardList">후기게시판</a></li>
             <!-- 로그인  123 -->
             <li><a th:if="${session.memberDTO != null}" href="/member/logout">로그아웃</a></li>
@@ -42,28 +42,34 @@
         </div>
     </div>
 </div>
-
-<div id="parallax1">
-    <div class="parallax-inner">
-        <h2>Discover New Places</h2>
-        <p>우리는 새로운 장소를 탐험하고 경험하는 것을 좋아합니다. <br>새로운 장소에서 우리는 자신을 발견하고 더 많은 것을 배울 수 있습니다. 준비되셨나요?</p>
+<main>
+    <div class="search">
+        <input type="text" placeholder="Search" />
+        <button>검색</button>
     </div>
-</div>
-
-<div id="parallax2">
-    <div class="parallax-inner">
-        <h2>Meet New People</h2>
-        <p>새로운 사람들을 만나는 것은 늘 즐거운 경험이죠.<br> 새로운 사람들과 대화하며 자신의 삶에 대한 새로운 시각을 얻어보세요.</p>
+    <div class="cards">
+        <div class="card">
+            <img src="https://via.placeholder.com/300x200" />
+            <h3>Card 1</h3>
+            <p>Description of Card 1</p>
+        </div>
+        <div class="card">
+            <img src="https://via.placeholder.com/300x200" />
+            <h3>Card 2</h3>
+            <p>Description of Card 2</p>
+        </div>
+        <div class="card">
+            <img src="https://via.placeholder.com/300x200" />
+            <h3>Card 3</h3>
+            <p>Description of Card 3</p>
+        </div>
+        <div class="card">
+            <img src="https://via.placeholder.com/300x200" />
+            <h3>Card 4</h3>
+            <p>Description of Card 4</p>
+        </div>
     </div>
-</div>
-
-<div id="parallax3">
-    <div class="parallax-inner">
-        <h2>Create New Memories</h2>
-        <p>여행은 새로운 경험과 추억을 만드는 것입니다. <br>지금 Ready To Travel과 함께 당신만의 여행 추억을 만들어보세요.</p>
-    </div>
-</div>
-
+</main>
 <footer>
     <p>Copyright &copy; 2023
     </p>
