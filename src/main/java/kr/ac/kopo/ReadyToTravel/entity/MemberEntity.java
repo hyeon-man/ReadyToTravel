@@ -1,6 +1,9 @@
 package kr.ac.kopo.ReadyToTravel.entity;
 
+import kr.ac.kopo.ReadyToTravel.dto.MemberDTO;
+import kr.ac.kopo.ReadyToTravel.dto.plan.PlanDTO;
 import kr.ac.kopo.ReadyToTravel.entity.group.GroupEntity;
+import kr.ac.kopo.ReadyToTravel.entity.plan.PlanEntity;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -47,6 +50,7 @@ public class MemberEntity {
 
     @Column
     private String phoneNum;
+
 
 }
 

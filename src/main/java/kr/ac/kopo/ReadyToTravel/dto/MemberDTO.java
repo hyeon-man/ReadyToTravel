@@ -49,4 +49,17 @@ public class MemberDTO {
                 .phoneNum(dto.getPhoneNum())
                 .build();
     }
+
+    public MemberDTO convertToMemberDto(MemberEntity entity) {
+        MemberDTO dto = MemberDTO.builder()
+                .num(entity.getNum())
+                .memberId(entity.getMemberId())
+                .password(null)
+                .profileIMG(entity.getProfileIMG())
+                .signupDate(entity.getSignupDate())
+                .email(entity.getEmail())
+                .phoneNum(entity.getPhoneNum())
+                .build();
+        return dto;
+    }
 }

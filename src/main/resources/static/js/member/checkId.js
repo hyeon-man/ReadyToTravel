@@ -9,7 +9,7 @@ $("#checkId").click(function() {
                 alert("사용가능한 아이디 입니다");
 
             }else{
-                alert("이미 사용중입니다");
+                alert("이미 사용중인입니다");
             }
         }
     })
