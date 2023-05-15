@@ -23,7 +23,6 @@ import java.util.List;
 @ToString
 @Builder
 public class PlanDTO {
-
     private Long num;
 
     // 0 가족 여행 , 1 커플 여행 , 2 혼자 여행
@@ -31,13 +30,9 @@ public class PlanDTO {
     @Enumerated(EnumType.ORDINAL)
     private TravelType planType;
 
-    @NotNull
-    @NotBlank
     // 계획 이름
     private String name;
 
-    @NotNull
-    @NotBlank
     // 계획 주최자
     private Long leaderNum;
 
@@ -50,7 +45,7 @@ public class PlanDTO {
         PlanEntity entity = PlanEntity.builder()
                 .type(dto.getPlanType())
                 .name(dto.getName())
-                .memberEntity(MemberEntity.builder().num(memberNum).build())
+                .leaderNum(MemberEntity.builder().num(memberNum).build())
                 .contents(dto.getContents())
                 .build();
 

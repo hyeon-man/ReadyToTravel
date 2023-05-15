@@ -33,13 +33,10 @@ public class PlanEntity {
     private String contents;
 
     @OneToOne
-    @JoinColumn(name = "member_num")
-    private MemberEntity memberEntity;
-
-
+    @JoinColumn(name = "leader_num")
+    private MemberEntity leaderNum;
 
     public PlanDTO convertToDTO(PlanEntity entity, Long num) {
-
         PlanDTO dto = PlanDTO.builder()
                 .num(entity.getNum())
                 .planType(entity.getType())

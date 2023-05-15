@@ -4,7 +4,7 @@ import kr.ac.kopo.ReadyToTravel.dto.plan.PlanDTO;
 import kr.ac.kopo.ReadyToTravel.entity.plan.PlanEntity;
 
 public interface PlanService {
-    Long makePlan(PlanDTO plan);
+    Long createPlan(PlanDTO plan);
 
     PlanEntity getItem(Long num);
 
