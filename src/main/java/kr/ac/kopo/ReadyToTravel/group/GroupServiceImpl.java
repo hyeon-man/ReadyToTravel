@@ -12,7 +12,6 @@ import java.util.Date;
 public class GroupServiceImpl implements GroupService {
     final GroupRepository groupRepository;
     final GroupMembershipRepository groupMembershipRepository;
-
     final InviteUrlRepository inviteUrlRepository;
 
     public GroupServiceImpl(GroupRepository groupRepository,GroupMembershipRepository groupMembershipRepository, InviteUrlRepository inviteUrlRepository) {

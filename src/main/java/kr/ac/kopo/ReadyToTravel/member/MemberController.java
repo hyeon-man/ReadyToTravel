@@ -24,8 +24,14 @@ public class MemberController {
     @RequestMapping("/checkId/{id}")
     @ResponseBody
     public String checkId(@PathVariable String id) {
+        if(service.checkId(id)){
+            return "OK";
 
-        return service.checkId(id);
+        } else {
+
+            return "FAIL";
+        }
+
     }
 
     @RequestMapping("/removerMember")
@@ -56,15 +62,21 @@ public class MemberController {
     }
     @GetMapping("/login")
     public String login() {
+
         return path + "login";
     }
     @PostMapping("/login")
     public String login(MemberDTO memberDTO, HttpSession session) {
 
-        if (service.login(memberDTO)) {
-            memberDTO.setPassword(null);
+        System.out.println("memberDTO = " + memberDTO.getMemberId());
+        System.out.println("memberDTO = " + memberDTO.getPassword());
 
-            session.setAttribute("memberDTO", memberDTO);
+        MemberDTO login = service.login(memberDTO);
+
+        if (login != null) {
+            System.out.println("loginInfo == " + login);
+
+            session.setAttribute("memberDTO", login);
 
             return "index";
         } else {

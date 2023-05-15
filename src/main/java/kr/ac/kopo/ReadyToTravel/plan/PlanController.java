@@ -46,19 +46,18 @@ public class PlanController {
         return "plan/createPlan";
     }
 
-/**
-     *
-     * @param plan (plan / List<lonlatdto> / memberNum)
+    /**
+     * @param plan    (plan / List<lonlatdto> / memberNum)
      * @param request (member session)
      * @return
- */
+     */
 
     @PostMapping("/createPlan")
-    public String createPlan(@Valid PlanDTO plan, HttpServletRequest request) {
+    public String createPlan(PlanDTO plan, HttpServletRequest request) {
 
         HttpSession session = request.getSession();
-
-        MemberDTO memberDTO = (MemberDTO) session.getAttribute("member");
+        MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
+        System.out.println(memberDTO);
 
         if (memberDTO != null) {
             plan.setLeaderNum(memberDTO.getNum());
