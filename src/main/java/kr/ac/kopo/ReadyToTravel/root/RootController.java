@@ -4,18 +4,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.mail.MessagingException;
-
 @Controller
 /// TODO: 2023-04-02 전부 수정해야합니다.
 
 public class RootController {
-
-    @RequestMapping("/test")
-    public String tMapv2() {
-
-        return "tmapTest2";
-    }
 
     @RequestMapping("/weather")
     public String weather() {

@@ -27,8 +27,7 @@ public class LonLatEntity {
     private String lat;
 
     @Column(name = "lonlat_calendar")
-    @DateTimeFormat(pattern = "yyyy/MM/dd")
-    private Date calendars;
+    private String calendars;
 
     // FetchType.LAZY = 실제 해당 데이터에 접근 할 때만 로딩하는 방식.. 성능 저하를 최소화 할 수 있다.
     @ManyToOne(fetch = FetchType.LAZY)
