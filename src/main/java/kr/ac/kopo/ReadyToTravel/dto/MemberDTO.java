@@ -12,7 +12,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-
+@ToString
 //todo validate 작성 !
 public class MemberDTO {
 
