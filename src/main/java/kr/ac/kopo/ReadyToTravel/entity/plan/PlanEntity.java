@@ -32,6 +32,7 @@ public class PlanEntity {
     @Column
     private String contents;
 
+
     @OneToOne
     @JoinColumn(name = "leader_num")
     private MemberEntity leaderNum;

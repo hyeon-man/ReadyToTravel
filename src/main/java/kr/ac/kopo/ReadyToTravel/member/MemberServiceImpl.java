@@ -7,6 +7,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpSession;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -76,11 +77,12 @@ public class MemberServiceImpl implements MemberService {
         if(!findMember.isPresent()) {
             return false;
         }
+
         MemberEntity originMember = findMember.get();
-        originMember.setPassword(uuid);
+        originMember.setPassword(PassEncode.encode(uuid));
 
         MailService mailService = new MailService(javaMailSender);
-        mailService.sendMail(originMember.getEmail(), originMember.getPassword());
+        mailService.sendMail(originMember.getEmail(), uuid);
 
         return true;
         //else는 뭐라 해야하지.... 고민 해봐야함 optional 말고 throw를 해야하나...?

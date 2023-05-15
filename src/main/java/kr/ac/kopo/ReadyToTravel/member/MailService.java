@@ -25,9 +25,7 @@ public class MailService {
         mimeMessage.setFrom(new InternetAddress("readytotravel2304@naver.com"));
         mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(email));
         mimeMessage.setSubject("비밀번호 변경");
-/*
-        mimeMessage.setText(????); // service에서 member엔티티에 저장한 비밀번호를 넣어야함.
-*/
+        mimeMessage.setText("????"); // service에서 member엔티티에 저장한 비밀번호를 넣어야함.
 
         return mimeMessage;
     }
@@ -38,9 +36,7 @@ public class MailService {
         mimeMessage.setFrom(new InternetAddress("readytotravel2304@naver.com"));
         mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(email));
         mimeMessage.setSubject("비밀번호 변경");
-/*
-        mimeMessage.setText(????); // service에서 member엔티티에 저장한 비밀번호를 넣어야함.
-*/
+        mimeMessage.setText("임시 비밀번호는 " + password + "입니다 ");
 
         return mimeMessage;
     }

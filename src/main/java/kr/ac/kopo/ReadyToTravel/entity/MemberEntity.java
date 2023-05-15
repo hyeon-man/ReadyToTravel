@@ -48,8 +48,6 @@ public class MemberEntity {
     @Column
     private String phoneNum;
 
-    @OneToMany
-    private List<GroupEntity> groupEntity;
 }
 
 

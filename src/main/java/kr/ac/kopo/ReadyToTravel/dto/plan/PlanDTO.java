@@ -40,7 +40,7 @@ public class PlanDTO {
 
     private List<LonLatDTO> lonLatDTOList;
 
-    // PlanDTO 객체를 PlanEntity로 변환하는 메소드
+ //* PlanDTO 객체를 PlanEntity로 변환하는 메소드
     public PlanEntity convertToEntity(PlanDTO dto, Long memberNum) {
         PlanEntity entity = PlanEntity.builder()
                 .type(dto.getPlanType())
