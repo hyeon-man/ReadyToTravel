@@ -27,7 +27,7 @@ public class LonLatDTO {
     private Long planNum;
 
     // 등록된 날짜
-    private Date calendars;
+    private String calendars;
 
     /**
      * @param dto

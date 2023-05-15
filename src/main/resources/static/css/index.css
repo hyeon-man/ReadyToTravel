@@ -117,7 +117,7 @@ h4 {
 }
 
 .left-side {
-    width: 30%;
+    width: 20%;
     height: 100%;
     display: block;
     justify-content: center;
@@ -125,7 +125,7 @@ h4 {
 }
 
 .right-side {
-    width: 70%;
+    width: 80%;
     background-color: #000;
     display: flex;
     justify-content: center;
@@ -192,6 +192,7 @@ video {
     }
     .right-side {
         display: none;
+        background-size: cover;
     }
     #startA{
         margin-top: 15%;

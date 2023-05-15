@@ -9,12 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 public class RootController {
 
-    @RequestMapping("/test")
-    public String tMapv2() {
-
-        return "tmapTest2";
-    }
-
     @RequestMapping("/weather")
     public String weather() {
 

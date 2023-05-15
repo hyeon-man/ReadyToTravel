@@ -25,7 +25,4 @@ public class GroupEntity {
 
     private Date modifiedDate;
 
-
-
-
 }
