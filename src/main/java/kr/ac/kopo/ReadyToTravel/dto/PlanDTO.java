@@ -27,13 +27,9 @@ public class PlanDTO {
     @Enumerated(EnumType.ORDINAL)
     private TravelType planType;
 
-    @NotNull
-    @NotBlank
     // 계획 이름
     private String name;
 
-    @NotNull
-    @NotBlank
     // 계획 주최자
     private Long leaderNum;
 

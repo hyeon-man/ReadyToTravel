@@ -5,7 +5,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>
     <link rel="stylesheet" href="/css/createPlan.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=yIMaVf12xnauu7aRo40iL6EWEJXjwVhnbBr6Lc3d"></script>
+    <script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=6MTwtT0OK18O1A8FGiL349WFB2UyKhI11K5MsjXN"></script>
     <script type="text/javascript" src="/js/tmapApi.js"></script>
     <script type="text/javascript" src="/js/createPlan.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
@@ -56,8 +56,11 @@
             <h3 id="calendarsDate"></h3>
 
             <!-- DropDown Menu -->
-            <form method="post" action="plan/createPlan">
+            <form method="post" action="/plan/createPlan">
             <div class="dropdown">
+                <input type="text" name="name">
+                <input type="text" name="contents">
+
                 <button onclick="dp_menu()" class="button" type="button">여행 상세 설정</button>
                 <div style="display: none;" id="drop-content">
                     <!-- 선택한 날짜 수 만큼 li 추가 -->
@@ -65,6 +68,7 @@
                     </ul>
                 </div>
             </div>
+                <button>만들기</button>
             </form>
         </div>
         <div class="right-side" style="border: black 1px solid;">

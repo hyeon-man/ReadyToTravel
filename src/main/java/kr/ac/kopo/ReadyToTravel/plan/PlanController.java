@@ -11,10 +11,9 @@ import kr.ac.kopo.ReadyToTravel.plan.travelType.TravelType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -53,12 +52,14 @@ public class PlanController {
      * @return
  */
 
+// TODO lonlatDTO도 controller에서 받기 PlanDTO에 있는 LonlatList 지우기
+    @ResponseBody
     @PostMapping("/createPlan")
-    public String createPlan(@Valid PlanDTO plan, HttpServletRequest request) {
+    public String createPlan(PlanDTO plan, HttpServletRequest request) {
 
         HttpSession session = request.getSession();
 
-        MemberDTO memberDTO = (MemberDTO) session.getAttribute("member");
+        MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
 
         if (memberDTO != null) {
             plan.setLeaderNum(memberDTO.getNum());
@@ -67,10 +68,12 @@ public class PlanController {
             if (plan.getPlanType() != TravelType.SOLO) {
                 groupService.createGroup(planNum, plan.getLeaderNum(), plan.getName());
             }
-            return "redirect:/plan/detail/" + planNum;
+//            return "redirect:/plan/detail/" + planNum;
+            return "OK";
         }
         //TODO 멤버 세션이 없을 경우 return
-        return "member/login";
+//        return "member/login";
+        return "FAIL";
     }
 
     @GetMapping("/updatePlan/{num}")
