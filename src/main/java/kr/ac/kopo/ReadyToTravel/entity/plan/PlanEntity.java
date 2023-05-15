@@ -32,10 +32,6 @@ public class PlanEntity {
     @Column
     private String contents;
 
-    @OneToOne
-    @JoinColumn(name = "member_num")
-    private MemberEntity memberEntity;
-
 
 
     public PlanDTO convertToDTO(PlanEntity entity, Long num) {

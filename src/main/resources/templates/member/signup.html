@@ -2,8 +2,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script src="https://code.jquery.com/jquery-3.6.1.js">
-    </script>
+    <script src="https://code.jquery.com/jquery-3.6.1.js"
+            integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>    </script>
     <meta charset="UTF-8">
     <title>회원가입 페이지</title>
     <script>
@@ -91,7 +91,7 @@
 </head>
 <body>
 <section class="login-form">
-    <a href=".."><h1>RTT</h1></a>
+    <a href="../.."><h1>RTT</h1></a>
     <form name="signup_form" method="post">
         <div class="int-area">
             <button class="btn-area2" type="button" onclick="checkId(true)">중복확인</button>
@@ -115,10 +115,12 @@
 
         <div class="btn-area">
             <button id="btn" type="button" onclick="signup()">회원가입</button>
-            <a href="/login"><button type="button">취소</button></a>
+            <a href="/member/login"><button type="button">취소</button></a>
         </div>
     </form>
     </div>
 </section>
 </body>
+
+<script src="/js/member/checkId.js"></script>
 </html>

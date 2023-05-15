@@ -46,7 +46,7 @@ public class PlanDTO {
         PlanEntity entity = PlanEntity.builder()
                 .type(dto.getPlanType())
                 .name(dto.getName())
-                .memberEntity(MemberEntity.builder().num(memberNum).build())
+//                .memberEntity(MemberEntity.builder().num(memberNum).build())
                 .contents(dto.getContents())
                 .build();
 
