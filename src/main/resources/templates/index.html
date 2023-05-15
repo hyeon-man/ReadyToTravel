@@ -21,7 +21,11 @@
             <li><a href="/list">여행지</a></li>
             <li><a href="#">이용방법</a></li>
             <li><a href="/boardList">후기게시판</a></li>
-            <li><a href="/login">로그인</a></li>
+            <!-- 로그인  123 -->
+            <li><a th:if="${session.memberDTO != null}" href="/member/logout">로그아웃</a></li>
+            <!-- 이게 비로그인 456-->
+            <li><a th:if="${session.memberDTO == null}" href="/member/login">로그인</a></li>
+
         </ul>
     </nav>
 </header>
@@ -31,7 +35,7 @@
         <div class="left-side">
             <h4>떠나고 싶은 당신을 위한 여행 플래너</h4>
             <h1 style="font-size: 56px" id="mainH1">READY <br>TO<br> TRAVEL</h1>
-            <div id="startA"><a href="#" style="text-decoration-line: none; color: white">시작하기</a></div>
+            <div id="startA"><a href="/plan/createPlan" style="text-decoration-line: none; color: white">시작하기</a></div>
         </div>
         <div class="right-side">
             <video id="video" autoplay muted loop></video>
@@ -64,8 +68,8 @@
     <p>Copyright &copy; 2023
     </p>
 </footer>
+
 </body>
 
 <script src="/js/index.js"></script>
-
 </html>

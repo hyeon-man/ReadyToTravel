@@ -7,6 +7,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpSession;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -22,12 +23,12 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public String checkId(String id) {
+    public boolean checkId(String id) {
         MemberEntity entity = memberRepository.findAllByMemberId(id);
         if (entity == null) {
-            return "사용 가능";
+            return true;
         } else {
-            return "사용 불가";
+            return false;
         }
     }
 
@@ -57,13 +58,18 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public boolean login(MemberDTO memberDTO) {
+    public MemberDTO login(MemberDTO memberDTO) {
+
         MemberEntity memberEntity = memberDTO.convertToEntity(memberDTO);
 
         String id = memberEntity.getMemberId();
         String pass = PassEncode.encode(memberEntity.getPassword());
 
-        return memberRepository.existsByMemberIdAndPassword(id, pass);
+        MemberEntity memberInfo = memberRepository.findByMemberIdAndPassword(id, pass);
+
+        MemberDTO loginMember = memberDTO.convertToMemberDto(memberInfo);
+
+        return loginMember;
     }
 
 
@@ -73,14 +79,15 @@ public class MemberServiceImpl implements MemberService {
         uuid = uuid.substring(0, 8);
 
         Optional<MemberEntity> findMember = memberRepository.findByEmail(email);
-        if(!findMember.isPresent()) {
+        if (!findMember.isPresent()) {
             return false;
         }
+
         MemberEntity originMember = findMember.get();
-        originMember.setPassword(uuid);
+        originMember.setPassword(PassEncode.encode(uuid));
 
         MailService mailService = new MailService(javaMailSender);
-        mailService.sendMail(originMember.getEmail(), originMember.getPassword());
+        mailService.sendMail(originMember.getEmail(), uuid);
 
         return true;
         //else는 뭐라 해야하지.... 고민 해봐야함 optional 말고 throw를 해야하나...?

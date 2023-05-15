@@ -88,6 +88,7 @@ function ajaxParams(markers, marker_s, marker_e) {
             endY: data_e.lat().toString(),
             viaPoints
         };
+
         ajaxReq(params);
         serverFetch(params);
     }
@@ -99,9 +100,10 @@ function serverFetch(req) {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(req)
+
+        body: req
     }).then(response => {
-        return response.json();
+        return response.text();
     }).then(data => {
         console.log(data);
     }).catch(error => {
@@ -113,7 +115,7 @@ function ajaxReq(req) {
 
     console.log(req);
     var headers = {};
-    headers["appKey"] = "yIMaVf12xnauu7aRo40iL6EWEJXjwVhnbBr6Lc3d";
+    headers["appKey"] = "6MTwtT0OK18O1A8FGiL349WFB2UyKhI11K5MsjXN";
 
     $.ajax({
         type: "POST",
@@ -175,7 +177,7 @@ function ajaxReq(req) {
 // x, y 좌표를 가지고 주소를 반환해줌 + 주소의 특정 이름으로 그 지역의 날씨 알려주는 기상청 api도 포함
 function reverseGeo(lon, lat) {
     var headers = {};
-    headers["appKey"] = "6Q3ySMpue88CUObnAszWH6dpde24rGCPRqHtUYC8";
+    headers["appKey"] = "6MTwtT0OK18O1A8FGiL349WFB2UyKhI11K5MsjXN";
 
     $.ajax({
         method: "GET",

@@ -12,7 +12,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-
+@ToString
 //todo validate 작성 !
 public class MemberDTO {
 
@@ -48,5 +48,18 @@ public class MemberDTO {
                 .email(dto.getEmail())
                 .phoneNum(dto.getPhoneNum())
                 .build();
+    }
+
+    public MemberDTO convertToMemberDto(MemberEntity entity) {
+        MemberDTO dto = MemberDTO.builder()
+                .num(entity.getNum())
+                .memberId(entity.getMemberId())
+                .password(null)
+                .profileIMG(entity.getProfileIMG())
+                .signupDate(entity.getSignupDate())
+                .email(entity.getEmail())
+                .phoneNum(entity.getPhoneNum())
+                .build();
+        return dto;
     }
 }
