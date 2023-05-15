@@ -21,10 +21,11 @@ public class PlanServiceImpl implements PlanService {
     private final MemberRepository memberRepository;
 
     @Override
-    public Long makePlan(PlanDTO plan) {
+    public Long createPlan(PlanDTO plan) {
         PlanEntity planConvertToEntity = plan.convertToEntity(plan, plan.getLeaderNum());
 
         PlanEntity planEntity = planRepository.save(planConvertToEntity);
+        System.out.println("planEntity = " + planEntity);
 
         List<LonLatEntity> lonLatEntities = new ArrayList<>();
 
@@ -32,8 +33,8 @@ public class PlanServiceImpl implements PlanService {
             LonLatEntity entityList = LonLatDTO.convertToEntity(plan.getLonLatDTOList().get(i), planEntity.getNum());
             lonLatEntities.add(entityList);
         }
-
         lonLatRepository.saveAll(lonLatEntities);
+
         return planEntity.getNum();
     }
 

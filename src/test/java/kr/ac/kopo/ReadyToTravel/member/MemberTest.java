@@ -58,7 +58,7 @@
 //    @DisplayName("회원 가입 테스트")
 //    public void signUp() {
 //        MemberDTO memberDTO = new MemberDTO();
-//        memberDTO.setMemberId("test");
+//        memberDTO.setMemberId("member");
 //        memberDTO.setPassword(PassEncode.encode("test"));
 //        memberDTO.setEmail("test@test.com");
 //        memberDTO.setSignupDate(new Date());
@@ -154,12 +154,12 @@
 //        String text = "test text";
 //        mailSender.send(text);
 //
-//        // 이메일 수신 확인
-//        /*MimeMessage[] receivedMessages = smtpServer.getReceivedMessages();
-//        assertEquals(1, receivedMessages.length);
-//        assertEquals(title, receivedMessages[0].getSubject());
-//        assertEquals(email, receivedMessages[0].getAllRecipients()[0].toString());
-//        assertEquals(text, receivedMessages[0].getContent());*/
-//    }
+////        // 이메일 수신 확인
+////        /*MimeMessage[] receivedMessages = smtpServer.getReceivedMessages();
+////        assertEquals(1, receivedMessages.length);
+////        assertEquals(title, receivedMessages[0].getSubject());
+////        assertEquals(email, receivedMessages[0].getAllRecipients()[0].toString());
+////        assertEquals(text, receivedMessages[0].getContent());*/
+////    }
 //}
 //

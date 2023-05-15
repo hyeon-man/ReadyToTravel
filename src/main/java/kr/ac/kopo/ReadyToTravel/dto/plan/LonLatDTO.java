@@ -27,7 +27,7 @@ public class LonLatDTO {
     private Long planNum;
 
     // 등록된 날짜
-    private Date calendars;
+    private String calendars;
 
     /**
      * @param dto
@@ -40,7 +40,7 @@ public class LonLatDTO {
                 .lon(dto.getLon())
                 .lat(dto.getLat())
                 .calendars(dto.getCalendars())
-                .planEntity(PlanEntity.builder().build())
+                .planEntity(PlanEntity.builder().num(planNum).build())
                 .build();
 
         return entity;

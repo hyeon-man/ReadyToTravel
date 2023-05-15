@@ -32,10 +32,13 @@ public class PlanController {
     private final GroupService groupService;
 
 
-/**
+    /**
      * @return plan/makePlan 페이지를 반환합니다.
-     *
- */
+     */
+    @GetMapping("/calendars")
+    public String calendars() {
+        return "plan/calendars";
+    }
 
     @GetMapping("/createPlan")
     public String createPlan() {
@@ -47,10 +50,9 @@ public class PlanController {
      *
      * @param plan (plan / List<lonlatdto> / memberNum)
      * @param request (member session)
-     * @return (ResponseBody OK : planPage / FAIL : Login Modal
-     */
+     * @return
+ */
 
-    // TODO front Ajax
     @PostMapping("/createPlan")
     public String createPlan(@Valid PlanDTO plan, HttpServletRequest request) {
 
@@ -60,13 +62,11 @@ public class PlanController {
 
         if (memberDTO != null) {
             plan.setLeaderNum(memberDTO.getNum());
-            Long planNum = planService.makePlan(plan);
+            Long planNum = planService.createPlan(plan);
 
             if (plan.getPlanType() != TravelType.SOLO) {
                 groupService.createGroup(planNum, plan.getLeaderNum(), plan.getName());
-
             }
-
             return "redirect:/plan/detail/" + planNum;
         }
         //TODO 멤버 세션이 없을 경우 return
