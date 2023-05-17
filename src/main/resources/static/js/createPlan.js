@@ -21,25 +21,35 @@ $(function () {
 
         // 몇일 선택했는지 표시
         $('#calendarsDate').text(getDateRangeData(sDate, eDate).length + "Day")
-        console.log(getDateRangeData(sDate, eDate));
+        // console.log(getDateRangeData(sDate, eDate));
 
         const ul = document.getElementById("dateByPlan")
         ul.replaceChildren();
 
         // Drop Down Menu 날짜 표시
         for (let i = 0; i < getDateRangeData(sDate, eDate).length; i++) {
-            const input = document.createElement("input");
+            const div = document.createElement("div");
+            const button = document.createElement("button");
+            const input = document.createElement("input")
             var listDate = [];
 
             listDate = getDateRangeData(sDate, eDate);
 
-            input.value = listDate[i];
-            input.type = "text";
-            input.name = "calendars";
-            input.style = "border: none; outline: none; font-size: 15px";
-            input.setAttribute("readonly", true);
+            button.type = "button";
+            button.classList.add("calendar");
+            button.setAttribute("data-btn", i);
 
-            $('#dateByPlan').append(input);
+            input.value = listDate[i];
+            input.type = "hidden";
+            input.name = "calendar";
+            input.classList.add("calendar" + i);
+
+
+            div.append(input)
+            div.append(button)
+
+            $('#dateByPlan').append(div);
+
         }
     });
 });

@@ -50,25 +50,26 @@
             <h4 id="location"></h4>
 
             <!-- 달력 -->
-            <input type="text" id="daterangepicker" name="daterangepicker" style="border: none; font-size: 30px" readonly onfocus="this.blur()"/>
+            <input type="text" id="daterangepicker" name="daterangepicker" style="border: none; font-size: 30px"
+                   readonly onfocus="this.blur()"/>
 
             <!-- 달력에서 선택한 날짜 수 -->
             <h3 id="calendarsDate"></h3>
 
             <!-- DropDown Menu -->
             <form method="post" action="/plan/createPlan">
-            <div class="dropdown">
-                <input type="text" name="name">
-                <input type="text" name="contents">
+                <div class="dropdown">
+                    <input type="text" name="name" id="planName">
+                    <input type="text" name="contents" id="planContents">
 
-                <button onclick="dp_menu()" class="button" type="button">여행 상세 설정</button>
-                <div style="display: none;" id="drop-content">
-                    <!-- 선택한 날짜 수 만큼 li 추가 -->
-                    <ul id="dateByPlan">
-                    </ul>
+                    <button onclick="dp_menu()" class="button" type="button">여행 상세 설정</button>
+                    <div style="display: none;" id="drop-content">
+                        <!-- 선택한 날짜 수 만큼 input 추가 -->
+                        <ul id="dateByPlan">
+                        </ul>
+                    </div>
                 </div>
-            </div>
-                <button>만들기</button>
+                <button id="createPlanBtn" type="button">만들기</button>
             </form>
         </div>
         <div class="right-side" style="border: black 1px solid;">

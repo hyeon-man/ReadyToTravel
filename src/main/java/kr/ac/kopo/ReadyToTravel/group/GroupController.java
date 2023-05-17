@@ -2,13 +2,8 @@ package kr.ac.kopo.ReadyToTravel.group;
 
 
 import kr.ac.kopo.ReadyToTravel.dto.MemberDTO;
-import kr.ac.kopo.ReadyToTravel.dto.PlanDTO;
-import kr.ac.kopo.ReadyToTravel.group.GroupService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
 
 @Controller
 // TODO: 2023-05-11  1. 그룹에 속한 회원을 삭제하는 로직

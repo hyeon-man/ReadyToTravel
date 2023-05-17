@@ -18,6 +18,8 @@ window.onload = function initTmap() {
     map.addListener("click", onClick); //map 클릭 이벤트를 등록합니다.
 }
 
+
+
 function onClick(e) {
     // //
     if (!marker_s) {
@@ -53,7 +55,7 @@ function onClick(e) {
             marker_s = marker;
             marker_s.setIcon("http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png");
 
-            console.log("start lat : " + marker_s.getPosition().lat() +", start lng : " + marker_s.getPosition().lng());
+            console.log("start lat : " + marker_s.getPosition().lat() + ", start lng : " + marker_s.getPosition().lng());
             console.log();
         } else if (title === 'End') {
             marker_e = marker;
@@ -62,9 +64,14 @@ function onClick(e) {
             console.log("end lat : " + marker_e.getPosition().lat() + ", end lng : " + marker_e.getPosition().lng());
         } else {
             markers.push(marker);
-            $('#createBtn').on("click", function () {
-                ajaxParams(markers, marker_s, marker_e);
 
+            $('#createBtn').off().on("click", function () {
+                ajaxParams(markers, marker_s, marker_e);
+            });
+
+            $('#createPlanBtn').off("click").on("click", function () {
+
+                serverFetch(markers, marker_s, marker_e);
             });
         }
     }
@@ -72,6 +79,7 @@ function onClick(e) {
 
 function ajaxParams(markers, marker_s, marker_e) {
     if (marker_s != null && marker_e != null) {
+
         var viaPoints = makeViaPoints(markers);
         const data_s = marker_s.getPosition();
         const data_e = marker_e.getPosition();
@@ -88,32 +96,57 @@ function ajaxParams(markers, marker_s, marker_e) {
             endY: data_e.lat().toString(),
             viaPoints
         };
-
         ajaxReq(params);
-        serverFetch(params);
     }
 }
 
-function serverFetch(req) {
-    fetch('/plan/createPlan', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
+function serverFetch(markers, marker_s, marker_e, calendarVal) {
+    if (marker_s != null && marker_e != null) {
+        var markerPoint = (createPlanViaPoints(markers));
 
-        body: req
-    }).then(response => {
-        return response.text();
-    }).then(data => {
-        console.log(data);
-    }).catch(error => {
-        console.error(error);
-    });
+        const data_s = marker_s.getPosition();
+        const data_e = marker_e.getPosition();
+
+        const smarker = {
+            "lon": data_s.lng().toString(),
+            "lat": data_s.lat().toString(),
+            "calendar": calendarVal,
+            "markerType": 0
+        };
+        markerPoint.push(smarker);
+
+        const emarker = {
+            "lon": data_e.lng().toString(),
+            "lat": data_e.lat().toString(),
+            "calendar": calendarVal,
+            "markerType": 2
+        }
+        markerPoint.push(emarker);
+
+        var planDTO = {
+            "name": $('#planName').val(),
+            "contents": $('#planContents').val(),
+            "lonLatList": markerPoint
+        }
+
+        console.log(planDTO);
+        fetch('/plan/createPlan', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(planDTO)
+        }).then(response => {
+            return response.json();
+        }).then(data => {
+            console.log(data);
+        }).catch(error => {
+            console.error(error);
+        });
+    }
 }
 
 function ajaxReq(req) {
-
-    console.log(req);
     var headers = {};
     headers["appKey"] = "6MTwtT0OK18O1A8FGiL349WFB2UyKhI11K5MsjXN";
 
@@ -125,7 +158,6 @@ function ajaxReq(req) {
         contentType: "application/json",
         data: JSON.stringify(req),
         success: function (response) {
-
 
             var resultData = response.properties;
             var resultFeatures = response.features;
@@ -141,7 +173,6 @@ function ajaxReq(req) {
                 var properties = resultFeatures[i].properties;
 
                 const drawInfoArr = [];
-                console.log("1");
                 if (geometry.type == "LineString") {
                     for (var j in geometry.coordinates) {
                         // 경로들의 결과값(구간)들을 포인트 객체로 변환
@@ -323,7 +354,6 @@ $(function () {
 
 function makeViaPoints(markers) {
     var viaPoints = [];
-
     for (let i = 0; i < markers.length; i++) {
         var viaPoint = {};
         viaPoint.viaPointId = "Id" + i;
@@ -336,17 +366,19 @@ function makeViaPoints(markers) {
     return viaPoints;
 }
 
-// 날씨에 따른 이미지 반환하는 function
-// function getWeatherImg(weather) {
-//     if (weather == "맑음") {
-//         return "/weatherImg/sunny.png"
-//     } else if (weather == "구름많음") {
-//         return "/weatherImg/sunnycloudy.png"
-//     } else if (weather == "흐림") {
-//         return "/weatherImg/cloudy.png"
-//     } else if (weather == "비") {
-//         return "/weatherImg/rainy.png"
-//     } else if (weather == "눈") {
-//         return "/weatherImg/snow.png"
-//     } else return "/weatherImg/snow.png"
-// }
+function createPlanViaPoints(markers) {
+    var lonLatList = [];
+    for (var i = 0; i < markers.length; i++) {
+        data_via = markers[i].getPosition()
+        var markerInfo = {
+            "lon": data_via.lng().toString(),
+            "lat": data_via.lat().toString(),
+            "calendar": "2023-05-16",
+            "markerType": 1
+        };
+        lonLatList.push(markerInfo);
+    }
+    return lonLatList
+}
+
+
