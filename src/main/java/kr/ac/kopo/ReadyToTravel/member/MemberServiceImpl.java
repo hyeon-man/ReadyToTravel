@@ -25,6 +25,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public boolean checkId(String id) {
         MemberEntity entity = memberRepository.findAllByMemberId(id);
+        System.out.println(entity);
         if (entity == null) {
             return true;
         } else {
@@ -90,16 +91,6 @@ public class MemberServiceImpl implements MemberService {
         mailService.sendMail(originMember.getEmail(), uuid);
 
         return true;
-        //else는 뭐라 해야하지.... 고민 해봐야함 optional 말고 throw를 해야하나...?
-        /*try {
-            MemberEntity member = optionalMember.get(); // 여기서 nullpoint exception 발생하는가?
-            String newPassword = GenerateTemporaryPassword.generateTemporaryPassword();
-            member.setPassword(newPassword);
-            repository.save(member);
-            return member;
-        } catch (NullPointerException n){
 
-            return new MemberEntity();
-        }*/
     }
 }

@@ -21,7 +21,7 @@ public class MemberController {
         this.service = service;
     }
 
-    @RequestMapping("/checkId/{id}")
+    @GetMapping("/checkId/{id}")
     @ResponseBody
     public String checkId(@PathVariable String id) {
         if(service.checkId(id)){
@@ -94,13 +94,12 @@ public class MemberController {
     }
 
     @RequestMapping("/signup")
-    public String signUp(MemberDTO memberDTO, @RequestParam("file") MultipartFile file) {
-
-        String fileName = FileUpload.fileUpload(file);
-        memberDTO.setProfileIMG(fileName);
-
+    public String signUp(MemberDTO memberDTO) {
+        System.out.println(memberDTO);
         service.singUp(memberDTO);
 
         return "index";
     }
+
+
 }
