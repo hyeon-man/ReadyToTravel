@@ -1,32 +1,35 @@
-(function() {
-    'use strict';
 
-    // define variables
-    var items = document.querySelectorAll('.timeline li');
+    function Splitting() {
 
-    // check if an element is in viewport
-    function isElementInViewport(el, offset) {
-        var rect = el.getBoundingClientRect();
-        return (
-            rect.top + offset >= 0 &&
-            rect.left >= 0 &&
-            rect.bottom - offset <= (window.innerHeight || document.documentElement.clientHeight) &&
-            rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-        );
-    }
+}
 
-    function callbackFunc() {
-        for (var i = 0; i < items.length; i++) {
-            if (isElementInViewport(items[i], 3)) {
-                items[i].classList.add('in-view');
+    Splitting();
+
+    setTimeout(function() {
+    document.querySelector('.first').classList.add('active');
+}, 300);
+
+    const sections = document.querySelectorAll('.triggerOnScroll');
+
+    // Using Intersection Observer ↓
+
+    const observerConfig = {
+    root: null,
+    rootMargin: '600px 0px 0px',
+    threshold: 0.1
+};
+
+    const observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
             } else {
-                items[i].classList.remove('in-view');
+                entry.target.classList.remove('active');
             }
         }
-    }
+    );
+}, observerConfig);
 
-    // listen for events
-    window.addEventListener('load', callbackFunc);
-    window.addEventListener('resize', callbackFunc);
-    window.addEventListener('scroll', callbackFunc);
-})();
+    sections.forEach(section => {
+    observer.observe(section);
+});

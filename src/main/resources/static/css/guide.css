@@ -14,10 +14,10 @@
 }
 body {
     max-width: 1920px;
+    font-family: 'Noto Serif KR', serif;
     margin: 0;
     padding: 0;
     overflow-x: hidden;
-    font-family: 'Noto Serif KR', serif;
 }
 
 header {
@@ -51,6 +51,7 @@ nav li a::after {
     border-radius: 10px;
     width: 0;
 }
+
 nav li a:hover::after {
     width: 100%;
 }
@@ -72,6 +73,7 @@ nav a {
     color: black;
     text-decoration: none;
 }
+
 
 main {
     max-width: 1200px;
@@ -164,19 +166,19 @@ li {
     margin-bottom: 30px;
 }
 
-li:before {
-    content: counter(item) ".";
-    counter-increment: item;
-    position: absolute;
-    left: -20px;
-    top: 5px;
-    font-weight: bold;
-    font-size: 1.2em;
-}
+/*li:before {*/
+/*    content: counter(item) ".";*/
+/*    counter-increment: item;*/
+/*    position: absolute;*/
+/*    left: -20px;*/
+/*    top: 5px;*/
+/*    font-weight: bold;*/
+/*    font-size: 1.2em;*/
+/*}*/
 
-li:first-child:before {
-    content: "";
-}
+/*li:first-child:before {*/
+/*    content: "";*/
+/*}*/
 
 @media screen and (min-width: 600px) {
     .roadmap {

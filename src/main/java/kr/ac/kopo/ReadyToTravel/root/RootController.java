@@ -15,9 +15,9 @@ public class RootController {
         return "weather";
     }
 
-    @RequestMapping("/list")
-    public String list() {
-        return "list";
+    @RequestMapping("/guide")
+    public String guide() {
+        return "guide";
     }
 
     @RequestMapping("/boardList")
