@@ -5,6 +5,8 @@ import lombok.*;
 
 import javax.persistence.*;
 
+import java.lang.reflect.Member;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -24,6 +26,9 @@ public class GroupEntity {
     private Date createDate;
 
     private Date modifiedDate;
+
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
+    private List<GroupMembership> memberships = new ArrayList<>();
 
 
 }

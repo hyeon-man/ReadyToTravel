@@ -48,28 +48,28 @@ public class PlanTest {
         lonLatDTO1.setPlanNum(planDTO.getNum());
         lonLatDTO1.setLon("1");
         lonLatDTO1.setLat("1");
-        lonLatDTO1.setCalendars("2023-05-17");
+        lonLatDTO1.setCalendar("2023-05-17");
         lonLatDTO1.setMarkerType(MarkerType.START);
 
         LonLatDTO lonLatDTO2 = new LonLatDTO();
         lonLatDTO2.setPlanNum(planDTO.getNum());
         lonLatDTO2.setLon("2");
         lonLatDTO2.setLat("2");
-        lonLatDTO2.setCalendars("2023-05-18");
+        lonLatDTO2.setCalendar("2023-05-18");
         lonLatDTO2.setMarkerType(MarkerType.VIAPOINT);
 
         LonLatDTO lonLatDTO3 = new LonLatDTO();
         lonLatDTO3.setPlanNum(planDTO.getNum());
         lonLatDTO3.setLon("3");
         lonLatDTO3.setLat("3");
-        lonLatDTO3.setCalendars("2023-05-19");
+        lonLatDTO3.setCalendar("2023-05-19");
         lonLatDTO3.setMarkerType(MarkerType.VIAPOINT);
 
         LonLatDTO lonLatDTO4 = new LonLatDTO();
         lonLatDTO4.setPlanNum(planDTO.getNum());
         lonLatDTO4.setLon("4");
         lonLatDTO4.setLat("4");
-        lonLatDTO4.setCalendars("2023-05-20");
+        lonLatDTO4.setCalendar("2023-05-20");
         lonLatDTO4.setMarkerType(MarkerType.END);
 
         lonLatDTOList.add(lonLatDTO1);
@@ -114,7 +114,7 @@ public class PlanTest {
         lonLatDTO1.setPlanNum(planEntity.getNum());
         lonLatDTO1.setLon("1");
         lonLatDTO1.setLat("1");
-        lonLatDTO1.setCalendars("2023-05-17");
+        lonLatDTO1.setCalendar("2023-05-17");
         lonLatDTO1.setMarkerType(MarkerType.START);
         LonLatEntity lonLatEntity1 = lonLatDTO1.convertToEntity(lonLatDTO1, planEntity.getNum());
 
@@ -122,7 +122,7 @@ public class PlanTest {
         lonLatDTO2.setPlanNum(planEntity.getNum());
         lonLatDTO2.setLon("2");
         lonLatDTO2.setLat("2");
-        lonLatDTO2.setCalendars("2023-05-18");
+        lonLatDTO2.setCalendar("2023-05-18");
         lonLatDTO2.setMarkerType(MarkerType.VIAPOINT);
         LonLatEntity lonLatEntity2 = lonLatDTO2.convertToEntity(lonLatDTO2, planEntity.getNum());
 
@@ -130,7 +130,7 @@ public class PlanTest {
         lonLatDTO3.setPlanNum(planEntity.getNum());
         lonLatDTO3.setLon("3");
         lonLatDTO3.setLat("3");
-        lonLatDTO3.setCalendars("2023-05-19");
+        lonLatDTO3.setCalendar("2023-05-19");
         lonLatDTO3.setMarkerType(MarkerType.VIAPOINT);
         LonLatEntity lonLatEntity3 = lonLatDTO3.convertToEntity(lonLatDTO3, planEntity.getNum());
 
@@ -138,7 +138,7 @@ public class PlanTest {
         lonLatDTO4.setPlanNum(planEntity.getNum());
         lonLatDTO4.setLon("4");
         lonLatDTO4.setLat("4");
-        lonLatDTO4.setCalendars("2023-05-20");
+        lonLatDTO4.setCalendar("2023-05-20");
         lonLatDTO4.setMarkerType(MarkerType.END);
         LonLatEntity lonLatEntity4 = lonLatDTO4.convertToEntity(lonLatDTO4, planEntity.getNum());
 
