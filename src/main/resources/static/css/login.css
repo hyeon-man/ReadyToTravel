@@ -1,15 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Gothic+Coding&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Gothic+Coding&family=Noto+Serif+KR&display=swap');
 *{
     margin:0;
     padding: 0;
     box-sizing: border-box;
 }
 body{
-    font-family: 'Noto Sans KR', sans-serif;
+    font-family: "Noto Serif KR", serif;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 5%;
+}
+h4{
+    margin-bottom: 5%;
 }
 body::before{
     content: "";
@@ -18,20 +25,19 @@ body::before{
     right: 0;
     bottom: 0;
     left: 0;
-    background-color: rgba(0,0,0,0.9);
 
 }
 .login-form{
     position: relative;
     z-index: 2;
-    margin-top: -5%;
+    margin-top: -10%;
 }
 .login-form h1{
     margin-top: 15px;
     font-size: 32px;
     text-align: center;
     margin-bottom: 60px;
-    color: #fff;
+    color: #000;
 
 }
 .login-form a{
@@ -50,31 +56,32 @@ body::before{
     padding: 20px 10px 10px;
     background-color: transparent;
     border: none;
-    border-bottom: 1px solid #999;
-    font-size: 18px; color: #fff;
+    border-bottom: 1px solid #9999;
+    font-size: 18px; color: #000000;
     outline: none;
 }
 .int-area label{
     position: absolute; left: 10px; top: 15px;
-    font-size: 18px; color: #999;
+    font-size: 18px; color: #9999;
     transition: all 0.5s ease;
 }
-.int-area label.warning{
-    color : red;
-    animation: warning.3s ease;
+.int-area label.warning {
+    color: red;
+    animation: warning 3s ease;
     animation-iteration-count: 3;
 }
+
 @keyframes warning {
-    0%{transform: translateX(-8px);}
-    25%{transform: translateX(8px);}
-    50%{transform: translateX(-8px);}
-    75%{transform: translateX(8px);}
+    0% { transform: translateX(-8px); }
+    25% { transform: translateX(8px); }
+    50% { transform: translateX(-8px); }
+    75% { transform: translateX(8px); }
 }
 .int-area input:focus + label,
 .int-area input:valid + label{
     top:-2px;
     font-size: 13px;
-    color: #166cea;
+    color: deepskyblue;
 }
 .btn-area{
     margin-top: 30px;
@@ -82,12 +89,15 @@ body::before{
 .btn-area button{
     width: 100%;
     height: 50px;
-    background: #166cea;
+    background: #87ceeb;
     color: #fff;
     font-size: 20px;
     border: none;
     border-radius: 25px;
     cursor:pointer;
+}
+.btn-area button:hover {
+    color: yellow;
 }
 .caption{
     margin-top: 20px;
@@ -98,9 +108,16 @@ body::before{
 .caption a{
     font-size: 15px;
     text-decoration: none;
-    color: #166cea;
+    color: #87ceeb;
 
 }
 .caption div:nth-child(2) a {
-    color: #999;
+    color: skyblue;
+
+}
+.caption div:nth-child(2):hover a {
+    border-bottom: 1px solid skyblue;
+}
+.caption div:nth-child(1):hover a {
+    border-bottom: 1px solid skyblue;
 }

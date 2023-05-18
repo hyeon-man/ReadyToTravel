@@ -1,57 +1,76 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>My Website</title>
-<link rel="stylesheet" href="/css/guide.css" type="text/css">
+  <title>소개 및 이용방법</title>
+  <link rel="stylesheet" href="/css/guide.css">
+  <script src="https://unpkg.com/scroll-out/dist/scroll-out.min.js"></script>
 </head>
 <body>
 <header>
-    <!--LOGO-->
-    <div class="logo">
-        <a href="/">
-            <b>RTT</b>
-            <h7>&nbsp;READY TO TRAVEL</h7>
-        </a>
-    </div>
-
-    <!--NAV-->
-    <nav>
-        <ul>
-            <li><a href="/">여행지</a></li>
-            <li><a href="/guide">이용방법</a></li>
-            <li><a href="#">일단빈칸</a></li>
-            <li><a href="/boardList">후기게시판</a></li>
-            <!-- 로그인  123 -->
-            <li><a th:if="${session.memberDTO != null}" href="/member/logout">로그아웃</a></li>
-            <!-- 이게 비로그인 456-->
-            <li><a th:if="${session.memberDTO == null}" href="/member/login">로그인</a></li>
-        </ul>
-    </nav>
+  <!--LOGO-->
+  <div class="logo">
+    <a href="/">
+      <b>RTT</b>
+      <h7>&nbsp;READY TO TRAVEL</h7>
+    </a>
+  </div>
+  <!--NAV-->
+  <nav>
+    <ul>
+      <li><a href="/">여행지</a></li>
+      <li><a href="/guide">이용방법</a></li>
+      <li><a href="#">일단빈칸</a></li>
+      <li><a href="/boardList">후기게시판</a></li>
+      <!-- 로그인  123 -->
+      <li><a th:if="${session.memberDTO != null}" href="/member/logout">로그아웃</a></li>
+      <!-- 이게 비로그인 456-->
+      <li><a th:if="${session.memberDTO == null}" href="/member/login">로그인</a></li>
+    </ul>
+  </nav>
 </header>
-<div id="parallax1">
-    <div class="parallax-inner">
-        <h2>Discover New Places</h2>
-        <p>우리는 새로운 장소를 탐험하고 경험하는 것을 좋아합니다. <br>새로운 장소에서 우리는 자신을 발견하고 더 많은 것을 배울 수 있습니다. 준비되셨나요?</p>
-    </div>
+<div class="site-wrap">
+
+  <section class="first">
+    <h2>Discover New Places</h2>
+    <p>우리는 새로운 장소를 탐험하고 경험하는 것을 좋아합니다. <br>새로운 장소에서 우리는 자신을 발견하고 더 많은 것을 배울 수 있습니다. 준비되셨나요?</p>
+
+  </section>
+
+  <section class="triggerOnScroll">
+    <h2>Meet New People</h2>
+    <p>새로운 사람들을 만나는 것은 늘 즐거운 경험이죠.<br> 새로운 사람들과 대화하며 자신의 삶에 대한 새로운 시각을 얻어보세요.</p>
+  </section>
+
+  <section class="triggerOnScroll">
+    <h2>Create New Memories</h2>
+    <p>여행은 새로운 경험과 추억을 만드는 것입니다. <br>지금 Ready To Travel과 함께 당신만의 여행 추억을 만들어보세요.</p>
+  </section>
+
+  <section class="triggerOnScroll">
+
+  </section>
+
+  <section class="triggerOnScroll">
+
+  </section>
+  <section class="triggerOnScroll">
+
+  </section>
+  <section class="triggerOnScroll">
+
+  </section>
+  <section class="triggerOnScroll">
+
+  </section>
+  <section class="triggerOnScroll">
+
+</section>
 </div>
 
-<div id="parallax2">
-    <div class="parallax-inner">
-        <h2>Meet New People</h2>
-        <p>새로운 사람들을 만나는 것은 늘 즐거운 경험이죠.<br> 새로운 사람들과 대화하며 자신의 삶에 대한 새로운 시각을 얻어보세요.</p>
-    </div>
-</div>
-
-<div id="parallax3">
-    <div class="parallax-inner">
-        <h2>Create New Memories</h2>
-        <p>여행은 새로운 경험과 추억을 만드는 것입니다. <br>지금 Ready To Travel과 함께 당신만의 여행 추억을 만들어보세요.</p>
-    </div>
-</div>
+<script src="/js/guide.js"></script>
 <footer>
-    <p>Copyright &copy; 2023</p>
+  <p>Copyright &copy; 2023
+  </p>
 </footer>
 </body>
-
-
 </html>

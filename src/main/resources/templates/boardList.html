@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>게시판</title>
+    <title>후기 게시판</title>
     <link rel="stylesheet" href="/css/boardList.css">
 </head>
 <body>
@@ -15,15 +15,18 @@
             <h7>&nbsp;READY TO TRAVEL</h7>
         </a>
     </div>
-
     <!--NAV-->
     <nav>
         <ul>
-            <li><a href="/">소개</a></li>
-            <li><a href="/list">여행지</a></li>
-            <li><a href="#">이용방법</a></li>
+            <li><a href="/">여행지</a></li>
+            <li><a href="/guide">이용방법</a></li>
+            <li><a href="#">일단빈칸</a></li>
             <li><a href="/boardList">후기게시판</a></li>
-            <li><a href="/login">로그인</a></li>
+            <!-- 로그인  123 -->
+            <li><a th:if="${session.memberDTO != null}" href="/member/logout">로그아웃</a></li>
+            <!-- 이게 비로그인 456-->
+            <li><a th:if="${session.memberDTO == null}" href="/member/login">로그인</a></li>
+
         </ul>
     </nav>
 </header>
@@ -69,5 +72,9 @@
         </ul>
     </nav>
 </div>
+<footer>
+    <p>Copyright &copy; 2023
+    </p>
+</footer>
 </body>
 </html>
