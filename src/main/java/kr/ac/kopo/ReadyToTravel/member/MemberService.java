@@ -16,4 +16,5 @@ public interface MemberService {
 
     boolean initPass(String email) throws MessagingException;
 
+    boolean checkEmail(String email);
 }

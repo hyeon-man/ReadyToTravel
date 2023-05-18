@@ -25,7 +25,6 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public boolean checkId(String id) {
         MemberEntity entity = memberRepository.findAllByMemberId(id);
-        System.out.println(entity);
         if (entity == null) {
             return true;
         } else {
@@ -68,10 +67,14 @@ public class MemberServiceImpl implements MemberService {
 
         MemberEntity memberInfo = memberRepository.findByMemberIdAndPassword(id, pass);
 
-        MemberDTO loginMember = memberDTO.convertToMemberDto(memberInfo);
+        try{
+            MemberDTO loginMember = memberDTO.convertToMemberDto(memberInfo);
+            return loginMember;
+        } catch (NullPointerException ne){
+            return null;
+        }
 
-        return loginMember;
-    }
+        }
 
 
     @Override
@@ -79,7 +82,7 @@ public class MemberServiceImpl implements MemberService {
         String uuid = UUID.randomUUID().toString().replaceAll("-", "");
         uuid = uuid.substring(0, 8);
 
-        Optional<MemberEntity> findMember = memberRepository.findByEmail(email);
+        Optional<MemberEntity> findMember = memberRepository.findAllByEmail(email);
         if (!findMember.isPresent()) {
             return false;
         }
@@ -92,5 +95,15 @@ public class MemberServiceImpl implements MemberService {
 
         return true;
 
+    }
+
+    @Override
+    public boolean checkEmail(String email) {
+        MemberEntity entity = memberRepository.findByEmail(email);
+        if (entity == null) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

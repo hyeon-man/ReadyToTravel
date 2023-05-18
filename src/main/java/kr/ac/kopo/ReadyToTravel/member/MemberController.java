@@ -31,12 +31,21 @@ public class MemberController {
 
             return "FAIL";
         }
-
+    }
+    @GetMapping("/checkEmail/{email}")
+    @ResponseBody
+    public String checkEmail(@PathVariable String email){
+        if(service.checkEmail(email)){
+            return "OK";
+        }else{
+            return "alreadyExistEmail";
+        }
     }
 
     @RequestMapping("/removerMember")
     @ResponseBody
     public void delete(HttpServletRequest request) {
+
         MemberDTO dto = (MemberDTO) request.getSession().getAttribute("memberDTO");
         Long num = dto.getNum();
 
@@ -76,12 +85,11 @@ public class MemberController {
             System.out.println("login ! ===== " + login);
             session.setAttribute("memberDTO", login);
 
-            return "index";
+            return  "redirect:/";
         } else {
             return path + "login";
         }
     }
-
     @GetMapping("/logout")
     public String logout(HttpSession session){
         session.removeAttribute("memberDTO");
@@ -100,6 +108,5 @@ public class MemberController {
 
         return "index";
     }
-
 
 }

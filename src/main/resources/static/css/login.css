@@ -73,7 +73,7 @@ body::before{
 .int-area input:valid + label{
     top:-2px;
     font-size: 13px;
-    color: #9999;
+    color: #999;
 }
 .btn-area{
     margin-top: 30px;
