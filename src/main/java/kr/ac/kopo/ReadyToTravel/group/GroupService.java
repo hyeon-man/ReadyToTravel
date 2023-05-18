@@ -1,6 +1,5 @@
 package kr.ac.kopo.ReadyToTravel.group;
 
-
 import kr.ac.kopo.ReadyToTravel.dto.GroupDTO;
 
 public interface GroupService {

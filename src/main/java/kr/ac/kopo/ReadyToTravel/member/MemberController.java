@@ -72,7 +72,6 @@ public class MemberController {
         System.out.println("memberDTO = " + memberDTO.getPassword());
 
         MemberDTO login = service.login(memberDTO);
-
         if (login != null) {
             System.out.println("loginInfo == " + login);
 

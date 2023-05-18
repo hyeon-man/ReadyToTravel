@@ -4,6 +4,7 @@
 let markers = []; // 경유지 마커들
 let marker_s; // 시작
 let marker_e; // 끝
+let calVal = '';
 
 // 페이지가 로딩이 된 후 호출하는 함수입니다.
 window.onload = function initTmap() {
@@ -16,6 +17,8 @@ window.onload = function initTmap() {
         zoom: 15
     });
     map.addListener("click", onClick); //map 클릭 이벤트를 등록합니다.
+
+
 }
 
 function onClick(e) {
@@ -53,7 +56,7 @@ function onClick(e) {
             marker_s = marker;
             marker_s.setIcon("http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png");
 
-            console.log("start lat : " + marker_s.getPosition().lat() +", start lng : " + marker_s.getPosition().lng());
+            console.log("start lat : " + marker_s.getPosition().lat() + ", start lng : " + marker_s.getPosition().lng());
             console.log();
         } else if (title === 'End') {
             marker_e = marker;
@@ -62,9 +65,13 @@ function onClick(e) {
             console.log("end lat : " + marker_e.getPosition().lat() + ", end lng : " + marker_e.getPosition().lng());
         } else {
             markers.push(marker);
-            $('#createBtn').on("click", function () {
-                ajaxParams(markers, marker_s, marker_e);
 
+            $('#createBtn').off().on("click", function () {
+                ajaxParams(markers, marker_s, marker_e);
+            });
+
+            $('#createPlanBtn').off("click").on("click", function () {
+                serverFetch(markers, marker_s, marker_e);
             });
         }
     }
@@ -72,6 +79,7 @@ function onClick(e) {
 
 function ajaxParams(markers, marker_s, marker_e) {
     if (marker_s != null && marker_e != null) {
+
         var viaPoints = makeViaPoints(markers);
         const data_s = marker_s.getPosition();
         const data_e = marker_e.getPosition();
@@ -89,31 +97,59 @@ function ajaxParams(markers, marker_s, marker_e) {
             viaPoints
         };
         ajaxReq(params);
-        serverFetch(params);
     }
 }
 
-function serverFetch(req) {
-    fetch('/plan/createPlan', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(req)
-    }).then(response => {
-        return response.json();
-    }).then(data => {
-        console.log(data);
-    }).catch(error => {
-        console.error(error);
-    });
+function serverFetch(markers, marker_s, marker_e) {
+
+    if (marker_s != null && marker_e != null) {
+        var markerPoint = (createPlanViaPoints(markers));
+
+        const data_s = marker_s.getPosition();
+        const data_e = marker_e.getPosition();
+
+        const smarker = {
+            "lon": data_s.lng().toString(),
+            "lat": data_s.lat().toString(),
+            "calendar": calVal,
+            "markerType": 0
+        };
+        markerPoint.push(smarker);
+
+        const emarker = {
+            "lon": data_e.lng().toString(),
+            "lat": data_e.lat().toString(),
+            "calendar": calVal,
+            "markerType": 2
+        }
+        markerPoint.push(emarker);
+
+        var planDTO = {
+            "name": $('#planName').val(),
+            "contents": $('#planContents').val(),
+            "lonLatList": markerPoint
+        }
+
+        console.log(planDTO);
+        fetch('/plan/createPlan', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(planDTO)
+        }).then(response => {
+            return response.json();
+        }).then(data => {
+            console.log(data);
+        }).catch(error => {
+            console.error(error);
+        });
+    }
 }
 
 function ajaxReq(req) {
-
-    console.log(req);
     var headers = {};
-    headers["appKey"] = "yIMaVf12xnauu7aRo40iL6EWEJXjwVhnbBr6Lc3d";
+    headers["appKey"] = "6MTwtT0OK18O1A8FGiL349WFB2UyKhI11K5MsjXN";
 
     $.ajax({
         type: "POST",
@@ -123,7 +159,6 @@ function ajaxReq(req) {
         contentType: "application/json",
         data: JSON.stringify(req),
         success: function (response) {
-
 
             var resultData = response.properties;
             var resultFeatures = response.features;
@@ -139,7 +174,6 @@ function ajaxReq(req) {
                 var properties = resultFeatures[i].properties;
 
                 const drawInfoArr = [];
-                console.log("1");
                 if (geometry.type == "LineString") {
                     for (var j in geometry.coordinates) {
                         // 경로들의 결과값(구간)들을 포인트 객체로 변환
@@ -175,7 +209,7 @@ function ajaxReq(req) {
 // x, y 좌표를 가지고 주소를 반환해줌 + 주소의 특정 이름으로 그 지역의 날씨 알려주는 기상청 api도 포함
 function reverseGeo(lon, lat) {
     var headers = {};
-    headers["appKey"] = "6Q3ySMpue88CUObnAszWH6dpde24rGCPRqHtUYC8";
+    headers["appKey"] = "6MTwtT0OK18O1A8FGiL349WFB2UyKhI11K5MsjXN";
 
     $.ajax({
         method: "GET",
@@ -321,7 +355,6 @@ $(function () {
 
 function makeViaPoints(markers) {
     var viaPoints = [];
-
     for (let i = 0; i < markers.length; i++) {
         var viaPoint = {};
         viaPoint.viaPointId = "Id" + i;
@@ -334,17 +367,126 @@ function makeViaPoints(markers) {
     return viaPoints;
 }
 
-// 날씨에 따른 이미지 반환하는 function
-// function getWeatherImg(weather) {
-//     if (weather == "맑음") {
-//         return "/weatherImg/sunny.png"
-//     } else if (weather == "구름많음") {
-//         return "/weatherImg/sunnycloudy.png"
-//     } else if (weather == "흐림") {
-//         return "/weatherImg/cloudy.png"
-//     } else if (weather == "비") {
-//         return "/weatherImg/rainy.png"
-//     } else if (weather == "눈") {
-//         return "/weatherImg/snow.png"
-//     } else return "/weatherImg/snow.png"
-// }
+function createPlanViaPoints(markers) {
+    var lonLatList = [];
+    for (var i = 0; i < markers.length; i++) {
+        data_via = markers[i].getPosition()
+        var markerInfo = {
+            "lon": data_via.lng().toString(),
+            "lat": data_via.lat().toString(),
+            "calendar": calVal,
+            "markerType": 1
+        };
+        lonLatList.push(markerInfo);
+    }
+    return lonLatList
+}
+
+// date range picker 한글 설정 및 Calendar 불러오기
+$(function () {
+    $('input[name="daterangepicker"]').daterangepicker({
+        "locale": {
+            "format": "YYYY-MM-DD",
+            "separator": " ~ ",
+            "applyLabel": "확인",
+            "cancelLabel": "취소",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel": "W",
+            "daysOfWeek": ["월", "화", "수", "목", "금", "토", "일"],
+            "monthNames": ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+            "firstDay": 1
+        },
+        opens: 'left'
+    }, function (start, end, label) {
+        let sDate = new Date(start);
+        let eDate = new Date(end);
+
+        // 몇일 선택했는지 표시
+        $('#calendarsDate').text(getDateRangeData(sDate, eDate).length + "Day")
+        // console.log(getDateRangeData(sDate, eDate));
+
+        const ul = document.getElementById("dateByPlan")
+        ul.replaceChildren();
+
+        // Drop Down Menu 날짜 표시
+        for (let i = 0; i < getDateRangeData(sDate, eDate).length; i++) {
+            const div = document.createElement("div");
+            const button = document.createElement("button");
+            const input = document.createElement("input")
+            var listDate = [];
+
+            listDate = getDateRangeData(sDate, eDate);
+
+            div.classList.add("calendarParents")
+
+            button.type = "button";
+            button.classList.add("calendar");
+            button.setAttribute("data-btn", i);
+
+            input.value = listDate[i];
+            input.type = "hidden";
+            input.name = "calendar";
+            input.classList.add("calendar" + i);
+
+            div.append(input)
+            div.append(button)
+
+            $('#dateByPlan').append(div);
+
+            // 버튼에 클릭 이벤트 리스너 추가
+            const buttons = document.querySelectorAll(".calendar");
+            buttons.forEach((button) => {
+                button.addEventListener("click", handleClick);
+            });
+        }
+    });
+});
+
+// 날짜 형식 맞춰주는 function
+function getDateRangeData(param1, param2) {  //param1은 시작일, param2는 종료일이다.
+    var res_day = [];
+    var ss_day = new Date(param1);
+    var ee_day = new Date(param2);
+    while (ss_day.getTime() <= ee_day.getTime()) {
+        var _mon_ = (ss_day.getMonth() + 1);
+        _mon_ = _mon_ < 10 ? '0' + _mon_ : _mon_;
+        var _day_ = ss_day.getDate();
+        _day_ = _day_ < 10 ? '0' + _day_ : _day_;
+        res_day.push(ss_day.getFullYear() + '-' + _mon_ + '-' + _day_);
+        ss_day.setDate(ss_day.getDate() + 1);
+    }
+    return res_day;
+}
+
+// 드롭 다운 메뉴
+function dp_menu() {
+    let click = document.getElementById("drop-content");
+    if (click.style.display === "none") {
+        click.style.display = "block";
+
+    } else {
+        click.style.display = "none";
+    }
+}
+
+// 버튼 클릭 이벤트 핸들러 함수
+function handleClick(event) {
+    // 클릭된 버튼 요소 가져오기
+    const button = event.target;
+
+    // data-btn 속성을 통해 해당 버튼의 인덱스 가져오기
+    const index = button.getAttribute("data-btn");
+
+    // 해당 인덱스의 input 요소 가져오기
+    const input = document.querySelector(".calendar" + index);
+
+    // input 요소의 값 가져오기
+    const value = input.value;
+
+    calVal = value;
+
+    // 가져온 값 확인
+    console.log(calVal);
+}
