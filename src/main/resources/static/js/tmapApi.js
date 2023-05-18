@@ -4,6 +4,7 @@
 let markers = []; // 경유지 마커들
 let marker_s; // 시작
 let marker_e; // 끝
+let calVal = '';
 
 // 페이지가 로딩이 된 후 호출하는 함수입니다.
 window.onload = function initTmap() {
@@ -16,9 +17,9 @@ window.onload = function initTmap() {
         zoom: 15
     });
     map.addListener("click", onClick); //map 클릭 이벤트를 등록합니다.
+
+
 }
-
-
 
 function onClick(e) {
     // //
@@ -70,7 +71,6 @@ function onClick(e) {
             });
 
             $('#createPlanBtn').off("click").on("click", function () {
-
                 serverFetch(markers, marker_s, marker_e);
             });
         }
@@ -100,7 +100,8 @@ function ajaxParams(markers, marker_s, marker_e) {
     }
 }
 
-function serverFetch(markers, marker_s, marker_e, calendarVal) {
+function serverFetch(markers, marker_s, marker_e) {
+
     if (marker_s != null && marker_e != null) {
         var markerPoint = (createPlanViaPoints(markers));
 
@@ -110,7 +111,7 @@ function serverFetch(markers, marker_s, marker_e, calendarVal) {
         const smarker = {
             "lon": data_s.lng().toString(),
             "lat": data_s.lat().toString(),
-            "calendar": calendarVal,
+            "calendar": calVal,
             "markerType": 0
         };
         markerPoint.push(smarker);
@@ -118,7 +119,7 @@ function serverFetch(markers, marker_s, marker_e, calendarVal) {
         const emarker = {
             "lon": data_e.lng().toString(),
             "lat": data_e.lat().toString(),
-            "calendar": calendarVal,
+            "calendar": calVal,
             "markerType": 2
         }
         markerPoint.push(emarker);
@@ -373,7 +374,7 @@ function createPlanViaPoints(markers) {
         var markerInfo = {
             "lon": data_via.lng().toString(),
             "lat": data_via.lat().toString(),
-            "calendar": "2023-05-16",
+            "calendar": calVal,
             "markerType": 1
         };
         lonLatList.push(markerInfo);
@@ -381,4 +382,111 @@ function createPlanViaPoints(markers) {
     return lonLatList
 }
 
+// date range picker 한글 설정 및 Calendar 불러오기
+$(function () {
+    $('input[name="daterangepicker"]').daterangepicker({
+        "locale": {
+            "format": "YYYY-MM-DD",
+            "separator": " ~ ",
+            "applyLabel": "확인",
+            "cancelLabel": "취소",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel": "W",
+            "daysOfWeek": ["월", "화", "수", "목", "금", "토", "일"],
+            "monthNames": ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+            "firstDay": 1
+        },
+        opens: 'left'
+    }, function (start, end, label) {
+        let sDate = new Date(start);
+        let eDate = new Date(end);
 
+        // 몇일 선택했는지 표시
+        $('#calendarsDate').text(getDateRangeData(sDate, eDate).length + "Day")
+        // console.log(getDateRangeData(sDate, eDate));
+
+        const ul = document.getElementById("dateByPlan")
+        ul.replaceChildren();
+
+        // Drop Down Menu 날짜 표시
+        for (let i = 0; i < getDateRangeData(sDate, eDate).length; i++) {
+            const div = document.createElement("div");
+            const button = document.createElement("button");
+            const input = document.createElement("input")
+            var listDate = [];
+
+            listDate = getDateRangeData(sDate, eDate);
+
+            div.classList.add("calendarParents")
+
+            button.type = "button";
+            button.classList.add("calendar");
+            button.setAttribute("data-btn", i);
+
+            input.value = listDate[i];
+            input.type = "hidden";
+            input.name = "calendar";
+            input.classList.add("calendar" + i);
+
+            div.append(input)
+            div.append(button)
+
+            $('#dateByPlan').append(div);
+
+            // 버튼에 클릭 이벤트 리스너 추가
+            const buttons = document.querySelectorAll(".calendar");
+            buttons.forEach((button) => {
+                button.addEventListener("click", handleClick);
+            });
+        }
+    });
+});
+
+// 날짜 형식 맞춰주는 function
+function getDateRangeData(param1, param2) {  //param1은 시작일, param2는 종료일이다.
+    var res_day = [];
+    var ss_day = new Date(param1);
+    var ee_day = new Date(param2);
+    while (ss_day.getTime() <= ee_day.getTime()) {
+        var _mon_ = (ss_day.getMonth() + 1);
+        _mon_ = _mon_ < 10 ? '0' + _mon_ : _mon_;
+        var _day_ = ss_day.getDate();
+        _day_ = _day_ < 10 ? '0' + _day_ : _day_;
+        res_day.push(ss_day.getFullYear() + '-' + _mon_ + '-' + _day_);
+        ss_day.setDate(ss_day.getDate() + 1);
+    }
+    return res_day;
+}
+
+// 드롭 다운 메뉴
+function dp_menu() {
+    let click = document.getElementById("drop-content");
+    if (click.style.display === "none") {
+        click.style.display = "block";
+
+    } else {
+        click.style.display = "none";
+    }
+}
+
+// 버튼 클릭 이벤트 핸들러 함수
+function handleClick(event) {
+    // 클릭된 버튼 요소 가져오기
+    const button = event.target;
+
+    // data-btn 속성을 통해 해당 버튼의 인덱스 가져오기
+    const index = button.getAttribute("data-btn");
+
+    // 해당 인덱스의 input 요소 가져오기
+    const input = document.querySelector(".calendar" + index);
+
+    // input 요소의 값 가져오기
+    const value = input.value;
+
+    calVal = value;
+
+    // 가져온 값 확인
+    console.log(calVal);
+}
