@@ -1,5 +1,6 @@
 package kr.ac.kopo.ReadyToTravel.group;
 
+import kr.ac.kopo.ReadyToTravel.dto.GroupDTO;
 
 public interface GroupService {
 
@@ -8,5 +9,9 @@ public interface GroupService {
     void groupAddMember(Long memberNum, String inviteURL);
 
     void removeMember(long memberNum);
+
+    void updateGroup(GroupDTO group);
+
+    GroupDTO item(long groupNum);
 }
 

@@ -38,6 +38,7 @@ public class BoardController {
 
     @GetMapping("/board/inform/{boardNum}")
     public BoardDTO boardInform(@PathVariable Long boardNum) {
+
         return service.findById(boardNum);
     }
 
@@ -56,6 +57,7 @@ public class BoardController {
 
     @DeleteMapping("/board/{boardNum}")
     public void boardDelete(@PathVariable Long boardNum) {
+
         service.delete(boardNum);
     }
 }

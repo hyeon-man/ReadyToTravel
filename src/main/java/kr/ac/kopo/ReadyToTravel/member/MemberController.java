@@ -62,6 +62,7 @@ public class MemberController {
     }
     @GetMapping("/login")
     public String login() {
+
         return path + "login";
     }
     @PostMapping("/login")
@@ -71,9 +72,9 @@ public class MemberController {
         System.out.println("memberDTO = " + memberDTO.getPassword());
 
         MemberDTO login = service.login(memberDTO);
-
         if (login != null) {
-            System.out.println("login ! ===== " + login);
+            System.out.println("loginInfo == " + login);
+
             session.setAttribute("memberDTO", login);
 
             return "index";

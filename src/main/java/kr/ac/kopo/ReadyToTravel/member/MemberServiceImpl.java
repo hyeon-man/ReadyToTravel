@@ -66,10 +66,12 @@ public class MemberServiceImpl implements MemberService {
         String pass = PassEncode.encode(memberEntity.getPassword());
 
         MemberEntity memberInfo = memberRepository.findByMemberIdAndPassword(id, pass);
-
         MemberDTO loginMember = memberDTO.convertToMemberDto(memberInfo);
 
         return loginMember;
+        System.out.println(memberInfo);
+      
+        return memberDTO.convertToMemberDto(memberInfo);
     }
 
 
