@@ -5,6 +5,8 @@ let markers = []; // 경유지 마커들
 let marker_s; // 시작
 let marker_e; // 끝
 let calVal = '';
+let viaPointName = '';
+let mapDiv = "";
 
 // 페이지가 로딩이 된 후 호출하는 함수입니다.
 window.onload = function initTmap() {
@@ -17,8 +19,6 @@ window.onload = function initTmap() {
         zoom: 15
     });
     map.addListener("click", onClick); //map 클릭 이벤트를 등록합니다.
-
-
 }
 
 function onClick(e) {
@@ -31,7 +31,7 @@ function onClick(e) {
         createMarker('End');
     } else {
         // 경유지 마커를 찍을 때
-        createMarker('경유지');
+        createMarker(viaPointName);
     }
 
     function createMarker(title) {
@@ -186,15 +186,15 @@ function ajaxReq(req) {
                         drawInfoArr.push(convertChange);
                     }
 
-                    let prevPolyline_ = new Tmapv2.Polyline({
+                    let polyline = new Tmapv2.Polyline({
                         path: drawInfoArr,
-                        strokeColor: "#FF0000",
-                        strokeWeight: 6,
+                        strokeColor: "#3399FF",
+                        strokeWeight: 3,
                         map: map,
                     });
 
                     $('#removeBtn').on("click", function () {
-                        prevPolyline_.setMap(null);
+                        polyline.setPath(0);
                     });
 
                 }
@@ -274,6 +274,7 @@ function reverseGeo(lon, lat) {
             var resultDiv = document.getElementById("result");
             // 받아온 주소값
             result = newRoadAddr;
+            viaPointName = result;
 
             // 주소 값 스페이스바 기준으로 배열로 나눔
             const split = result;

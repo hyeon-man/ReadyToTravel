@@ -231,3 +231,8 @@ function getWeatherImg(weather) {
         return "/weatherImg/snow.png"
     } else return "/weatherImg/snow.png"
 }
+
+
+$('#removeBtn').on("click", function () {
+                        prevPolyline_.setMap(null);
+                    });
