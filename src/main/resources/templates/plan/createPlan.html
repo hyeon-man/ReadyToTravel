@@ -33,18 +33,25 @@
     </nav>
 </header>
 
-<div>
-    <!-- 경로에 따른 요금 등 -->
-    <span id="result"></span>
-
-    <!-- 날씨 및 강수량 -->
-    <span id="weather"></span>
-    <span id="rain"></span>
-</div>
 
 <div id="main2">
     <div class="container">
+
         <div class="left-side">
+
+            <div>
+                <label><input type="checkbox" class="text_custom" id="searchKeyword" name="searchKeyword" value="주유소">주유소</label>
+                <button id="btn_select">적용하기</button>
+                <button id="btn_cancel">취소</button>
+            </div>
+
+            <!-- 경로에 따른 요금 등 -->
+            <span id="result"></span>
+
+            <!-- 날씨 및 강수량 -->
+            <span id="weather"></span>
+            <span id="rain"></span>
+
             <!-- 지역이름 -->
             <h4 id="location"></h4>
 
@@ -71,10 +78,14 @@
                 <button id="createPlanBtn" type="button">만들기</button>
             </form>
         </div>
-        <div class="right-side" style="border: black 1px solid;">
+        <div class="right-side map_wrap" id="map_wrap" style="border: black 1px solid;">
             <!-- T MAP -->
             <div id="map_div"></div>
         </div>
+
+        <div class="map_act_btn_wrap clear_box"></div>
+        <p id="result2"></p>
+        <br />
 
         <button id="createBtn" type="button">submit</button>
         <button id="removeBtn" type="button">cancel</button>

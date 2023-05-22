@@ -1,12 +1,11 @@
-// TODO 1 취소가 2번 초과 할 경우 MapLayer 오류 발생함
-// TODO 2 보도로 변경 할 것도 고려해야함
-
 let markers = []; // 경유지 마커들
 let marker_s; // 시작
 let marker_e; // 끝
+let markerArr = [];
 let calVal = '';
 let viaPointName = '';
 let mapDiv = "";
+let markerData = {};
 
 // 페이지가 로딩이 된 후 호출하는 함수입니다.
 window.onload = function initTmap() {
@@ -35,7 +34,8 @@ function onClick(e) {
     }
 
     function createMarker(title) {
-        const lonlat = e.latLng;
+        lonlat = e.latLng;
+
         // Marker 객체 생성.
         const marker = new Tmapv2.Marker({
             position: new Tmapv2.LatLng(lonlat.lat(), lonlat.lng()), //Marker의 중심좌표 설정.
@@ -57,7 +57,6 @@ function onClick(e) {
             marker_s.setIcon("http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png");
 
             console.log("start lat : " + marker_s.getPosition().lat() + ", start lng : " + marker_s.getPosition().lng());
-            console.log();
         } else if (title === 'End') {
             marker_e = marker;
             marker_e.setIcon("http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_e.png");
@@ -66,8 +65,9 @@ function onClick(e) {
         } else {
             markers.push(marker);
 
-            $('#createBtn').off().on("click", function () {
+            $('#createBtn').off("click").on("click", function () {
                 ajaxParams(markers, marker_s, marker_e);
+                // buttonClick(markers, marker_s, marker_e);
             });
 
             $('#createPlanBtn').off("click").on("click", function () {
@@ -77,6 +77,7 @@ function onClick(e) {
     }
 }
 
+// tmap api 요청 보낼 json 정보
 function ajaxParams(markers, marker_s, marker_e) {
     if (marker_s != null && marker_e != null) {
 
@@ -100,6 +101,7 @@ function ajaxParams(markers, marker_s, marker_e) {
     }
 }
 
+// 서버에 저장 할 정보 fetch
 function serverFetch(markers, marker_s, marker_e) {
 
     if (marker_s != null && marker_e != null) {
@@ -147,6 +149,7 @@ function serverFetch(markers, marker_s, marker_e) {
     }
 }
 
+// 최적화된 경로 api
 function ajaxReq(req) {
     var headers = {};
     headers["appKey"] = "6MTwtT0OK18O1A8FGiL349WFB2UyKhI11K5MsjXN";
@@ -164,10 +167,10 @@ function ajaxReq(req) {
             var resultFeatures = response.features;
 
             // 결과 출력
-            var tDistance = "총 거리 : " + (resultData.totalDistance / 1000).toFixed(1) + "km,  ";
-            var tTime = "총 시간 : " + (resultData.totalTime / 60).toFixed(0) + "분";
+            var tDistance = "총 거리 : " + (resultData.totalDistance / 1000).toFixed(1) + "km";
+            // var tTime = "총 시간 : " + (resultData.totalTime / 60).toFixed(0) + "분";
 
-            $("#result").text(tDistance + tTime);
+            $("#result").text(tDistance);
 
             for (var i in resultFeatures) {
                 var geometry = resultFeatures[i].geometry;
@@ -325,13 +328,11 @@ function reverseGeo(lon, lat) {
                              */
                             const weather = jsonResponse.response.body.items.item[0];
 
-                            $('#weather').text("해당 지역의 날씨는 " + weather.wf10 + "이고, ");
-                            $('#rain').text("강수량은 " + weather.rnSt10 + "% 입니다.");
+                            $('#weather').text("날씨 : " + weather.wf10);
+                            $('#rain').text("강수량 : " + weather.rnSt10 + "%");
                         }
                     };
-
                     xhr.send('');
-
                 })
                 .catch((error) => {
                     console.error('Error:', error);
@@ -346,14 +347,16 @@ function reverseGeo(lon, lat) {
     });
 }
 
+// 날짜 선택하는 라이브러리
 $(function () {
     $('input[name="daterange"]').daterangepicker({
         opens: 'left'
-    }, function (start, end, label) {
+    }, function (start, end) {
         console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
     });
 });
 
+// api로 요청 보낼 경유지 정보
 function makeViaPoints(markers) {
     var viaPoints = [];
     for (let i = 0; i < markers.length; i++) {
@@ -368,6 +371,7 @@ function makeViaPoints(markers) {
     return viaPoints;
 }
 
+// 서버에 저장 할 경유지 lon, lat 정보
 function createPlanViaPoints(markers) {
     var lonLatList = [];
     for (var i = 0; i < markers.length; i++) {
@@ -400,7 +404,7 @@ $(function () {
             "firstDay": 1
         },
         opens: 'left'
-    }, function (start, end, label) {
+    }, function (start, end) {
         let sDate = new Date(start);
         let eDate = new Date(end);
 
@@ -414,7 +418,9 @@ $(function () {
         // Drop Down Menu 날짜 표시
         for (let i = 0; i < getDateRangeData(sDate, eDate).length; i++) {
             const div = document.createElement("div");
-            const button = document.createElement("button");
+            const saveBtn = document.createElement("button");
+            const viewBtn = document.createElement("button");
+            const deleteBtn = document.createElement("button");
             const input = document.createElement("input")
             var listDate = [];
 
@@ -422,26 +428,39 @@ $(function () {
 
             div.classList.add("calendarParents")
 
-            button.type = "button";
-            button.classList.add("calendar");
-            button.setAttribute("data-btn", i);
+            saveBtn.type = "button";
+            saveBtn.classList.add("calendar");
+            saveBtn.classList.add("calendarBtn");
+            saveBtn.setAttribute("data-btn", i);
+            saveBtn.textContent = (i + 1) + "일차";
+
+            viewBtn.type = "button";
+            viewBtn.classList.add("viewBtn");
+            viewBtn.setAttribute("data-btn", i);
+            viewBtn.textContent = (i + 1) + "일차 미리보기";
+
+            deleteBtn.type = "button";
+            deleteBtn.classList.add("deleteBtn");
+            deleteBtn.setAttribute("data-btn", i);
+            deleteBtn.textContent = (i + 1) + "일차 정보 삭제";
 
             input.value = listDate[i];
             input.type = "hidden";
             input.name = "calendar";
             input.classList.add("calendar" + i);
 
-            div.append(input)
-            div.append(button)
+            div.append(input);
+            div.append(saveBtn);
+            div.append(viewBtn);
+            div.append(deleteBtn);
 
             $('#dateByPlan').append(div);
-
-            // 버튼에 클릭 이벤트 리스너 추가
-            const buttons = document.querySelectorAll(".calendar");
-            buttons.forEach((button) => {
-                button.addEventListener("click", handleClick);
-            });
         }
+        // 버튼에 클릭 이벤트 리스너 추가
+        const buttons = document.querySelectorAll(".calendarBtn");
+        buttons.forEach((button) => {
+            button.addEventListener("click", buttonClick);
+        });
     });
 });
 
@@ -473,21 +492,74 @@ function dp_menu() {
 }
 
 // 버튼 클릭 이벤트 핸들러 함수
-function handleClick(event) {
+function buttonClick(event) {
     // 클릭된 버튼 요소 가져오기
     const button = event.target;
 
     // data-btn 속성을 통해 해당 버튼의 인덱스 가져오기
     const index = button.getAttribute("data-btn");
 
+    // string으로 저장된 정보를 정수형으로 변경 n일차 표시
+    const intIndex = parseInt(index, 10);
+
+    if (markerData[index] == null) {
+        markerData[index] = {
+            markers: markers,
+            marker_s: marker_s,
+            marker_e: marker_e
+        };
+    }
+
+    if (markerData[index] != null) {
+        const data = markerData[index];
+        markers = data.markers;
+        marker_s = data.marker_s;
+        marker_e = data.marker_e;
+    }
+
+    alert("선택하신 경로가 " + (intIndex + 1) + "일차에 저장 되었습니다");
+    $('#removeBtn').trigger("click");
+
+    // deleteBtn 버튼 클릭시 해당 저장 정보 초기화하기
+    const deleteBtn = $(button).siblings(".deleteBtn");
+
+    if (deleteBtn) {
+        deleteBtn.off("click").on("click", function () {
+            const deleteIndex = button.getAttribute("data-btn");
+
+            $('#removeBtn').trigger("click");
+            alert((intIndex+1) + "일차의 저장 정보가 삭제 되었습니다.")
+            delete markerData[deleteIndex];
+        });
+    }
+
+    // viewBtn 버튼 클릭시 해당 저장 정보 확인하기
+    const viewBtn = $(button).siblings(".viewBtn");
+    if (viewBtn) {
+        viewBtn.off("click").on("click", function () {
+            console.log("view push")
+
+            $('#removeBtn').trigger("click");
+
+            const marker_s = markerData[index].marker_s;
+            const marker_e = markerData[index].marker_e;
+            const markers = markerData[index].markers;
+
+            marker_s.setMap(map);
+            marker_e.setMap(map);
+            for (let i = 0; i < markers.length; i++) {
+                markers[i].setMap(map);
+            }
+        });
+    }
+
     // 해당 인덱스의 input 요소 가져오기
     const input = document.querySelector(".calendar" + index);
-
     // input 요소의 값 가져오기
     const value = input.value;
-
+    // input의 값을 전역변수 calVal에 할당
     calVal = value;
 
-    // 가져온 값 확인
-    console.log(calVal);
+    return markerData[index];
 }
+
