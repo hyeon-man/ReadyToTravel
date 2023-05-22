@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>후기 게시판</title>
-    <link rel="stylesheet" href="/css/boardList.css">
+    <link rel="stylesheet" href="/css/list.css">
 </head>
 <body>
 <header>
@@ -18,10 +18,10 @@
     <!--NAV-->
     <nav>
         <ul>
-            <li><a href="/">여행지</a></li>
+            <li><a href="/place">여행지</a></li>
             <li><a href="/guide">이용방법</a></li>
             <li><a href="#">일단빈칸</a></li>
-            <li><a href="/boardList">후기게시판</a></li>
+            <li><a href="/board/list">후기게시판</a></li>
             <!-- 로그인  123 -->
             <li><a th:if="${session.memberDTO != null}" href="/member/logout">로그아웃</a></li>
             <!-- 이게 비로그인 456-->
