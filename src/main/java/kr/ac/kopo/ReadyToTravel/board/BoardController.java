@@ -1,58 +1,81 @@
 package kr.ac.kopo.ReadyToTravel.board;
 
+import kr.ac.kopo.ReadyToTravel.board.reply.ReplyService;
 import kr.ac.kopo.ReadyToTravel.dto.BoardDTO;
+import kr.ac.kopo.ReadyToTravel.dto.ReplyDTO;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@RestController
+@Controller
 public class BoardController {
     private final BoardService service;
+    private final ReplyService replyService;
 
-    public BoardController(BoardService service) {
+    public BoardController(BoardService service, ReplyService replyService) {
         this.service = service;
+        this.replyService = replyService;
+    }
+
+    @GetMapping("/board/list")
+    public String boardList(Model model) {
+
+        List<BoardDTO> boardList = service.findAll();
+        model.addAttribute("List", boardList);
+
+        return "/board/list";
     }
 
     @GetMapping("/board/create")
     public String boardCreate() {
-        return "boardAdd";
-        //todo 이거 작성 페이지로 보냄
+
+        return "/board/create";
     }
 
     @PostMapping("/board/create")
-    public void boardCreate(@RequestPart(name = "file1") MultipartFile file1,
-                            @RequestPart(name = "file2") MultipartFile file2,
-                            @RequestPart(name = "board") BoardDTO boardDTO) {
+    public String boardCreate(BoardDTO boardDTO) {
+        long boardNum = service.create(boardDTO);
 
-        service.create(file1, file2, boardDTO);
+        return "redirect:/board/info/" + boardNum;
     }
 
 
-    @GetMapping("/board/list")
-    public List<BoardDTO> boardList() {
+    @GetMapping("/board/info/{boardNum}")
+    public String boardInform(@PathVariable Long boardNum, Model model) {
 
-        return service.findAll();
-    }
+        BoardDTO board = service.findOne(boardNum);
+        model.addAttribute("board", board);
+        System.out.println("게시글 정보 = " + board);
 
+        List<ReplyDTO> replyList= replyService.replyList(boardNum);
+        model.addAttribute("replyList", replyList);
+        System.out.println("댓글 리스트 = " + replyList);
 
-    @GetMapping("/board/inform/{boardNum}")
-    public BoardDTO boardInform(@PathVariable Long boardNum) {
-
-        return service.findById(boardNum);
+        return "/board/inform";
     }
 
     @GetMapping("/board/update/{boardNum}")
-    public void boardUpdate(@PathVariable Long boardNum) {
+    public String boardUpdate(@PathVariable Long boardNum, Model model) {
 
-        // TODO: 2023-04-22 페이지 리턴
+        BoardDTO board = service.findOne(boardNum);
+        model.addAttribute("board", board);
 
+
+
+
+        return "/board/update";
     }
 
-    @PutMapping("/board/{boardNum}")
-    public BoardDTO boardUpdate(@PathVariable Long boardNum, @RequestBody BoardDTO boardDTO) {
+    @PostMapping("/board/update/{boardNum}")
+    public String boardUpdate(@PathVariable Long boardNum, BoardDTO board) {
 
-        return service.update(boardDTO, boardNum);
+        board.setBoardNum(boardNum);
+        service.update(board);
+
+        return "redirect:/board/info/" + boardNum;
+
     }
 
     @DeleteMapping("/board/{boardNum}")

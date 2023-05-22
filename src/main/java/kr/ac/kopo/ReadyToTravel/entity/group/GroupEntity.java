@@ -1,6 +1,7 @@
 package kr.ac.kopo.ReadyToTravel.entity.group;
 
 import kr.ac.kopo.ReadyToTravel.entity.MemberEntity;
+import kr.ac.kopo.ReadyToTravel.entity.plan.PlanEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -27,8 +28,11 @@ public class GroupEntity {
 
     private Date modifiedDate;
 
-    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
-    private List<GroupMembership> memberships = new ArrayList<>();
+    @OneToOne
+    @JoinColumn(name = "plan_num")
+    private PlanEntity plan;
+
+
 
 
 }

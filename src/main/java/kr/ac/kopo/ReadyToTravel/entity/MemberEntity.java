@@ -1,5 +1,6 @@
 package kr.ac.kopo.ReadyToTravel.entity;
 
+import kr.ac.kopo.ReadyToTravel.dto.MemberDTO;
 import kr.ac.kopo.ReadyToTravel.entity.group.GroupEntity;
 import kr.ac.kopo.ReadyToTravel.entity.group.GroupMembership;
 import lombok.*;
@@ -17,6 +18,7 @@ import java.util.List;
 @Table(name = "Member")
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @Builder
 public class MemberEntity {
 
@@ -49,8 +51,9 @@ public class MemberEntity {
     //핸드폰 번호
     @Column
     private String phoneNum;
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private List<GroupMembership> memberships = new ArrayList<>();
+
+
+
 
 }
 

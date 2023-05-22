@@ -24,6 +24,7 @@ public class BoardDTO {
     private Date boardDateCreate;
     private String boardWriter;
 
+    private List<MultipartFile> multipartFiles;
 
 
     /**

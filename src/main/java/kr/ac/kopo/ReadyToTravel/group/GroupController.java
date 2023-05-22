@@ -3,9 +3,12 @@ package kr.ac.kopo.ReadyToTravel.group;
 
 import kr.ac.kopo.ReadyToTravel.dto.GroupDTO;
 import kr.ac.kopo.ReadyToTravel.dto.MemberDTO;
+import kr.ac.kopo.ReadyToTravel.entity.MemberEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 // TODO: 2023-05-11
@@ -48,6 +51,8 @@ public class GroupController {
         GroupDTO group = service.item(groupNum);
         model.addAttribute("group", group);
 
+        List<MemberDTO> memberList = service.groupInMember(groupNum);
+        model.addAttribute("memberList", memberList);
 
         return "/group/info";
     }
