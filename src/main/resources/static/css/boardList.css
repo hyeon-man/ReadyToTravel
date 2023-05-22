@@ -1,7 +1,5 @@
 /* 공통요소 헤더부분 css 및 */
-@import url('https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Gothic+Coding&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Gothic+Coding&family=Noto+Serif+KR&display=swap');
-
+@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);  body, talbe, th, td, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, textarea, blockquote, span, * {font-family: 'Noto Sans KR', sans-serif;}
 html{scroll-behavior: smooth;}
 .logo a {text-decoration-line: none;color: black;}
 .logo b {font-size: 30px;}

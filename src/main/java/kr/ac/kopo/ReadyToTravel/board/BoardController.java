@@ -1,22 +1,33 @@
 package kr.ac.kopo.ReadyToTravel.board;
 
 import kr.ac.kopo.ReadyToTravel.dto.BoardDTO;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@RestController
+@Controller
+@RequestMapping("/board")
 public class BoardController {
+    final String path ="board/";
     private final BoardService service;
+
 
     public BoardController(BoardService service) {
         this.service = service;
     }
 
+    @GetMapping("/list")
+    public String boardList(BoardDTO boardDTO) {
+        service.findAll();
+
+        return "/board/list";
+    }
+
     @GetMapping("/board/create")
     public String boardCreate() {
-        return "boardAdd";
+        return "/board/add";
         //todo 이거 작성 페이지로 보냄
     }
 
@@ -27,18 +38,10 @@ public class BoardController {
 
         service.create(file1, file2, boardDTO);
     }
-
-
-    @GetMapping("/board/list")
-    public List<BoardDTO> boardList() {
-
-        return service.findAll();
-    }
-
-
     @GetMapping("/board/inform/{boardNum}")
-    public BoardDTO boardInform(@PathVariable Long boardNum) {
-        return service.findById(boardNum);
+    public String boardInform(@PathVariable Long boardNum) {
+        service.findById(boardNum);
+        return "/borad/inform/{boardNum}";
     }
 
     @GetMapping("/board/update/{boardNum}")

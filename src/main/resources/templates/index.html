@@ -16,10 +16,10 @@
     <!--NAV-->
     <nav>
         <ul>
-            <li><a href="/">여행지</a></li>
+            <li><a href="/place">여행지</a></li>
             <li><a href="/guide">이용방법</a></li>
             <li><a href="#">일단빈칸</a></li>
-            <li><a href="/boardList">후기게시판</a></li>
+            <li><a href="/board/list">후기게시판</a></li>
             <!-- 로그인  123 -->
             <li><a th:if="${session.memberDTO != null}" href="/member/logout">로그아웃</a></li>
             <!-- 이게 비로그인 456-->
@@ -41,34 +41,6 @@
         </div>
     </div>
 </div>
-<main>
-    <div class="search">
-        <input type="text" placeholder="Search" />
-        <button>검색</button>
-    </div>
-    <div class="cards">
-        <div class="card">
-            <img src="https://via.placeholder.com/300x200" />
-            <h3>Card 1</h3>
-            <p>Description of Card 1</p>
-        </div>
-        <div class="card">
-            <img src="https://via.placeholder.com/300x200" />
-            <h3>Card 2</h3>
-            <p>Description of Card 2</p>
-        </div>
-        <div class="card">
-            <img src="https://via.placeholder.com/300x200" />
-            <h3>Card 3</h3>
-            <p>Description of Card 3</p>
-        </div>
-        <div class="card">
-            <img src="https://via.placeholder.com/300x200" />
-            <h3>Card 4</h3>
-            <p>Description of Card 4</p>
-        </div>
-    </div>
-</main>
 <footer>
     <p>Copyright &copy; 2023
     </p>

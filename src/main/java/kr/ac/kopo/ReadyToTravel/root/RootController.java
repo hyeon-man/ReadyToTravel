@@ -22,7 +22,7 @@ public class RootController {
 
     @RequestMapping("/boardList")
     public String boardList() {
-        return "boardList";
+        return "list";
     }
 
     @GetMapping("/index")
@@ -35,4 +35,8 @@ public class RootController {
         return "testList";
     }
 
+    @GetMapping("/place")
+    public String place(){
+        return "place";
+    }
 }
