@@ -11,12 +11,14 @@ public interface GroupService {
 
     void groupAddMember(Long memberNum, String inviteURL);
 
-    void removeMember(long memberNum);
+    void removeMember(long groupNum, long memberNum);
 
     void updateGroup(GroupDTO group);
 
     GroupDTO item(long groupNum);
 
     List<MemberDTO> groupInMember(long groupNum);
+
+    String generateInviteCode(long groupNum);
 }
 

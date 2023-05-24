@@ -4,6 +4,7 @@ package kr.ac.kopo.ReadyToTravel.entity.group;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "invite_url")
@@ -20,10 +21,13 @@ public class InviteEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Num;
 
-
     private String inviteURL;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_num")
     private GroupEntity groupEntity;
 
+
+    //만료일
+    private Date expirationDate;
 }

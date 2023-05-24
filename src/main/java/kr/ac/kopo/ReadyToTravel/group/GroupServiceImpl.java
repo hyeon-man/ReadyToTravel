@@ -5,13 +5,13 @@ import kr.ac.kopo.ReadyToTravel.dto.MemberDTO;
 import kr.ac.kopo.ReadyToTravel.entity.MemberEntity;
 import kr.ac.kopo.ReadyToTravel.entity.group.GroupEntity;
 import kr.ac.kopo.ReadyToTravel.entity.group.GroupMembership;
+import kr.ac.kopo.ReadyToTravel.entity.group.InviteEntity;
 import kr.ac.kopo.ReadyToTravel.entity.plan.PlanEntity;
 import kr.ac.kopo.ReadyToTravel.member.MemberRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import javax.transaction.Transactional;
+import java.util.*;
 
 
 @Service
@@ -20,7 +20,6 @@ public class GroupServiceImpl implements GroupService {
     final GroupMembershipRepository groupMembershipRepository;
     final InviteUrlRepository inviteUrlRepository;
     private final MemberRepository memberRepository;
-
     private final GroupCustomRepository groupCustomRepository;
 
     public GroupServiceImpl(GroupRepository groupRepository, GroupMembershipRepository groupMembershipRepository, InviteUrlRepository inviteUrlRepository, MemberRepository memberRepository, GroupCustomRepository groupCustomRepository) {
@@ -33,7 +32,6 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public void createGroup(Long planNum, Long leaderNum, String planName) {
-
         // 그룹 생성
         GroupEntity groupEntity = GroupEntity.builder()
                 .createDate(new Date())
@@ -41,7 +39,6 @@ public class GroupServiceImpl implements GroupService {
                 .plan(PlanEntity.builder().num(planNum).build())
                 .name(planName)
                 .build();
-
 
         // GROUP 엔티티 저장
         GroupEntity save = groupRepository.save(groupEntity);
@@ -52,33 +49,46 @@ public class GroupServiceImpl implements GroupService {
 
         groupMembershipRepository.save(GroupMembership.builder()
                 .group(save)
-                .members(entity)
+                .member(entity)
                 .build());
 
     }
 
     @Override
     public void groupAddMember(Long memberNum, String inviteURL) {
+        // 초대 URL로 Invite Entity 조회
+        InviteEntity invite = inviteUrlRepository.findByInviteURL(inviteURL);
 
-        // 초대 URL로 그룹 번호 조회
-        long groupNum = inviteUrlRepository.findByInviteURL(inviteURL).getNum();
+        if (invite == null || invite.getExpirationDate().before(new Date())) {
+            // 초대 코드가 만료되거나 존재하지 않으면 처리
+            System.out.println("존재하지 않거나 만료일이 지남");
 
-//        // 그룹 멤버십 엔티티 생성
-//        GroupMembership membership = GroupMembership.builder()
-//                .group(GroupEntity.builder().groupNum(groupNum).build())
-//                .members(MemberEntity.builder().num(memberNum).build())
-//                .build();
+            // 삭제 후, inviteCode 재생성
+            inviteUrlRepository.deleteById(invite.getNum());
+            generateInviteCode(invite.getGroupEntity().getGroupNum());
+        } else {
+            GroupMembership findMembership = groupMembershipRepository
+                    .findByGroup_GroupNumAndMember_Num(invite.getGroupEntity().getGroupNum(), memberNum);
 
-        GroupMembership membership = GroupMembership.builder().build();
-
-        // 그룹 멤버십 저장
-        groupMembershipRepository.save(membership);
+            if (findMembership == null) {
+                // GroupMembership이 존재하지 않으면 새로 생성하여 그룹에 멤버 추가
+                GroupMembership membership = GroupMembership.builder()
+                        .group(invite.getGroupEntity())
+                        .member(MemberEntity.builder().num(memberNum).build())
+                        .build();
+                groupMembershipRepository.save(membership);
+                System.out.println("멤버 초대 완료");
+            } else {
+                System.out.println("이미 존재하는 회원");
+            }
+        }
     }
 
     @Override
-    public void removeMember(long memberNum) {
+    @Transactional
+    public void removeMember(long groupNum, long memberNum) {
 
-        groupMembershipRepository.deleteById(memberNum);
+        groupMembershipRepository.deleteByGroup_GroupNumAndMember_Num(groupNum, memberNum);
     }
 
     @Override
@@ -102,8 +112,7 @@ public class GroupServiceImpl implements GroupService {
         GroupDTO groupDto = new GroupDTO();
         groupDto.convertToDto(groupEntity);
 
-        List<MemberEntity> memberEntities = groupMembershipRepository.findAllByNum(groupNum);
-        System.out.println(memberEntities.size());
+
         return groupDto;
     }
 
@@ -118,10 +127,36 @@ public class GroupServiceImpl implements GroupService {
                     .num(member.getNum())
                     .profileIMG(member.getProfileIMG())
                     .build());
-
         }
-
 
         return memberDTOList;
     }
+
+    @Override
+    public String generateInviteCode(long groupNum) {
+        InviteEntity invite = inviteUrlRepository.findByGroupEntity_GroupNum(groupNum);
+
+        if (invite == null) {
+
+            String randomUUID = UUID.randomUUID().toString().substring(0, 8);
+            System.out.println(randomUUID);
+
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(new Date());
+            cal.add(Calendar.DATE, 1);
+            Date expirationDate = cal.getTime();
+
+            InviteEntity createInvite = InviteEntity.builder()
+                    .inviteURL(randomUUID)
+                    .groupEntity(GroupEntity.builder().groupNum(groupNum).build())
+                    .expirationDate(expirationDate)
+                    .build();
+            inviteUrlRepository.save(createInvite);
+
+            return createInvite.getInviteURL();
+        }
+
+        return invite.getInviteURL();
+    }
+
 }

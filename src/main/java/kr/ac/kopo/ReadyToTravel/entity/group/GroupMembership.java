@@ -30,6 +30,6 @@ public class GroupMembership {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "member_num")
-    private MemberEntity members;
+    private MemberEntity member;
 
 }
