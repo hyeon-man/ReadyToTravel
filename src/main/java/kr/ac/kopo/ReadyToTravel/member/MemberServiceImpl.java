@@ -3,11 +3,11 @@ package kr.ac.kopo.ReadyToTravel.member;
 import kr.ac.kopo.ReadyToTravel.dto.MemberDTO;
 import kr.ac.kopo.ReadyToTravel.entity.MemberEntity;
 import kr.ac.kopo.ReadyToTravel.util.PassEncode;
+import kr.ac.kopo.ReadyToTravel.util.RedisUtil;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpSession;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -16,10 +16,15 @@ import java.util.UUID;
 public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
     private final JavaMailSender javaMailSender;
+    private final MailService mailService;
 
-    public MemberServiceImpl(MemberRepository memberRepository, JavaMailSender javaMailSender) {
+
+    private final RedisUtil redisUtil;
+    public MemberServiceImpl(MemberRepository memberRepository, JavaMailSender javaMailSender, MailService mailService, RedisUtil redisUtil) {
         this.memberRepository = memberRepository;
         this.javaMailSender = javaMailSender;
+        this.mailService = mailService;
+        this.redisUtil = redisUtil;
     }
 
     @Override
@@ -78,32 +83,54 @@ public class MemberServiceImpl implements MemberService {
 
 
     @Override
-    public boolean initPass(String email) {
-        String uuid = UUID.randomUUID().toString().replaceAll("-", "");
-        uuid = uuid.substring(0, 8);
+    public boolean initPass(String id, String email) {
 
-        Optional<MemberEntity> findMember = memberRepository.findAllByEmail(email);
+        Optional<MemberEntity> findMember = memberRepository.findByMemberIdAndEmail(id, email);
         if (!findMember.isPresent()) {
             return false;
         }
+
+        String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+        uuid = uuid.substring(0, 8);
 
         MemberEntity originMember = findMember.get();
         originMember.setPassword(PassEncode.encode(uuid));
 
         MailService mailService = new MailService(javaMailSender);
-        mailService.sendMail(originMember.getEmail(), uuid);
+        mailService.sendMailForPass(originMember.getEmail(), uuid);
 
         return true;
 
     }
+    @Override
+    public boolean sendEmailCode(String email){
+        Optional<MemberEntity> findEmail = memberRepository.findByEmail(email);
+        if(!findEmail.isPresent()) {
+            System.out.println("이메일이 존재하지 않습니다.");
+            String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+            uuid = uuid.substring(0, 8);
+            Long validationLifetime = 300000l; //30만ms = 5분
+
+            mailService.sendMailForEmail(email, uuid);
+
+            redisUtil.setDataExpire(uuid, email, validationLifetime);
+            return true;
+
+        }else{
+            System.out.println("존재하는 이메일 입니다");
+            return false;
+        }
+
+    }
 
     @Override
-    public boolean checkEmail(String email) {
-        MemberEntity entity = memberRepository.findByEmail(email);
-        if (entity == null) {
+    public boolean validateCode(String email, String mailValidateKey) {
+        if (email == redisUtil.getData(mailValidateKey)){
+            redisUtil.deleteData(mailValidateKey);
             return true;
         } else {
             return false;
         }
     }
+
 }

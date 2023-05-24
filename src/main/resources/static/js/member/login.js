@@ -5,10 +5,13 @@ function handleRedirect() {
 }
 
 // 페이지 리디렉션 이벤트를 감지하는 함수를 등록합니다.
-window.onload = function() {
-    // window.performance 객체를 사용하여 페이지 리디렉션 이벤트를 확인합니다.
-    if (window.performance && window.performance.navigation.type === window.performance.navigation.TYPE_REDIRECT) {
-        // 페이지가 리디렉션되었을 때 handleRedirect 함수를 호출합니다.
+window.addEventListener("load", function() {
+    // 네트워크 엔트리에서 리디렉션 이벤트를 검색합니다.
+    const entries = performance.getEntriesByType("navigation");
+    const navigationEntry = entries[0];
+
+    if (navigationEntry.type === "reload" || navigationEntry.type === "back_forward") {
+        // 페이지가 리로드되거나 뒤로/앞으로 이동되었을 때 handleRedirect 함수를 호출합니다.
         handleRedirect();
     }
-};
+});

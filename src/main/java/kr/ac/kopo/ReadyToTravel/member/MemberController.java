@@ -32,15 +32,6 @@ public class MemberController {
             return "FAIL";
         }
     }
-    @GetMapping("/checkEmail/{email}")
-    @ResponseBody
-    public String checkEmail(@PathVariable String email){
-        if(service.checkEmail(email)){
-            return "OK";
-        }else{
-            return "alreadyExistEmail";
-        }
-    }
 
     @RequestMapping("/removerMember")
     @ResponseBody
@@ -61,9 +52,9 @@ public class MemberController {
 
     @ResponseBody
     @PostMapping("/initPassword")
-    public String initPassword(String email) throws MessagingException {
+    public String initPassword(String id, String email) throws MessagingException {
 
-        if (service.initPass(email)) {
+        if (service.initPass(id, email)) {
             return "SUCCESS";
         } else {
             return "FAIL";
@@ -101,7 +92,7 @@ public class MemberController {
         return path + "signup";
     }
 
-    @RequestMapping("/signup")
+    @PostMapping("/signup")
     public String signUp(MemberDTO memberDTO) {
         System.out.println(memberDTO);
         service.singUp(memberDTO);
@@ -109,4 +100,22 @@ public class MemberController {
         return "index";
     }
 
+    @ResponseBody
+    @GetMapping("/checkEmail/{email}")
+    public String sendEmailCode(@PathVariable String email){
+        if(service.sendEmailCode(email)){
+
+            return "sendMailOK";
+        }else{
+            return "senMailFail" ;
+        }
+    }
+    @ResponseBody
+    @RequestMapping("/validateCode")
+    public String validateCode(String email, String mailValidateCode){
+        if(service.validateCode(email, mailValidateCode)){
+            return "emailValidOK";
+        }
+            return "emailValidFAIL";
+    }
 }

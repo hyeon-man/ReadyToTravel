@@ -19,13 +19,23 @@ public class MailService {
     }
 
 
-    private MimeMessage createMessage(String email) throws MessagingException {
+    private MimeMessage validMail(String email, String code) throws MessagingException {
 
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         mimeMessage.setFrom(new InternetAddress("readytotravel2304@naver.com"));
         mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(email));
-        mimeMessage.setSubject("비밀번호 변경");
-        mimeMessage.setText("????"); // service에서 member엔티티에 저장한 비밀번호를 넣어야함.
+        mimeMessage.setSubject("ReadyToTravel 메일 인증 안내");
+        String msgg="";
+        msgg+= "<div style='margin:20px;'>";
+        msgg+= "<h1> Ready To Travel </h1>";
+        msgg+= "<div align='center' style='border:1px solid black; font-family:verdana';>";
+        msgg+= "<h3 style='color:red;'>인증 만료 시간 (30분)</h3>";
+        msgg+= "<br>";
+        msgg+= "<p>아래는 초기화된 비밀번호 입니다</p>";
+        msgg+= "<p>" + code + "</p>";
+        msgg+= "<br>";
+        msgg+= "</div>";
+        mimeMessage.setText(msgg,"utf-8","html");
 
         return mimeMessage;
     }
@@ -35,21 +45,33 @@ public class MailService {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         mimeMessage.setFrom(new InternetAddress("readytotravel2304@naver.com"));
         mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(email));
-        mimeMessage.setSubject("비밀번호 변경");
-        mimeMessage.setText("임시 비밀번호는 " + password + "입니다 ");
+        mimeMessage.setSubject("ReadyToTravel 비밀번호 변경 안내");
+
+        String msgg = "";
+        msgg+= "<div style='margin:20px;'>";
+        msgg+= "<h1> Ready To Travel </h1>";
+        msgg+= "<div align='center' style='border:1px solid black; font-family:verdana';>";
+        msgg+= "<h3 style='color:red;'>인증 만료 시간 (30분)</h3>";
+        msgg+= "<br>";
+        msgg+= "<p>아래는 초기화된 비밀번호 입니다</p>";
+        msgg+= "<p>" + password + "</p>";
+        msgg+= "<br/>";
+        msgg+= "</div>";
+        msgg+= "</div>";
+        mimeMessage.setText(msgg,"utf-8","html");
 
         return mimeMessage;
     }
 
-    public void sendMail(String email) {
+    public void sendMailForEmail(String email,String code) {
         try {
-            javaMailSender.send(createMessage(email));
+            javaMailSender.send(validMail(email,code));
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void sendMail(String email, String password) {
+    public void sendMailForPass(String email, String password) {
         try {
             javaMailSender.send(regeneratedPasswordMessage(email, password));
         } catch (Exception e) {

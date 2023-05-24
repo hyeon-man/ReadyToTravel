@@ -119,3 +119,10 @@ body::before{
 .caption div:nth-child(2) a {
     color: #999;
 }
+
+#hiddenButton{
+    display: none;
+}
+#hiddenInput{
+    display: none;
+}
