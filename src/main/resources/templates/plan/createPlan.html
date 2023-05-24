@@ -24,11 +24,14 @@
     <!--NAV-->
     <nav>
         <ul>
-            <li><a href="/">소개</a></li>
+            <li><a href="#">소개</a></li>
             <li><a href="/list">여행지</a></li>
             <li><a href="#">이용방법</a></li>
             <li><a href="/boardList">후기게시판</a></li>
-            <li><a href="/login">로그인</a></li>
+            <!-- 로그인 -->
+            <li><a th:if="${session.memberDTO != null}" href="/member/logout">로그아웃</a></li>
+            <!-- 이게 비로그인 -->
+            <li><a th:if="${session.memberDTO == null}" href="/member/login">로그인</a></li>
         </ul>
     </nav>
 </header>
@@ -36,25 +39,19 @@
 
 <div id="main2">
     <div class="container">
-
         <div class="left-side">
+            <div id="distance">
+                <!-- 거리 -->
+                <span id="result">총 거리 : </span><br>
 
-            <div>
-                <label><input type="checkbox" class="text_custom" id="searchKeyword" name="searchKeyword" value="주유소">주유소</label>
-                <button id="btn_select">적용하기</button>
-                <button id="btn_cancel">취소</button>
+                <!-- 날씨 및 강수량 -->
+                <span id="weather">날씨 : </span><br>
+                <span id="rain">강수량 : </span>
             </div>
-
-            <!-- 경로에 따른 요금 등 -->
-            <span id="result"></span>
-
-            <!-- 날씨 및 강수량 -->
-            <span id="weather"></span>
-            <span id="rain"></span>
-
             <!-- 지역이름 -->
-            <h4 id="location"></h4>
-
+            <div>
+                <h4 id="location">지명</h4>
+            </div>
             <!-- 달력 -->
             <input type="text" id="daterangepicker" name="daterangepicker" style="border: none; font-size: 30px"
                    readonly onfocus="this.blur()"/>
@@ -63,32 +60,39 @@
             <h3 id="calendarsDate"></h3>
 
             <!-- DropDown Menu -->
-            <form method="post" action="/plan/createPlan">
-                <div class="dropdown">
-                    <input type="text" name="name" id="planName">
-                    <input type="text" name="contents" id="planContents">
+            <div class="dropdown">
+                <button onclick="dp_menu()" class="button" type="button">여행 상세 설정</button>
+            </div>
 
-                    <button onclick="dp_menu()" class="button" type="button">여행 상세 설정</button>
-                    <div style="display: none;" id="drop-content">
-                        <!-- 선택한 날짜 수 만큼 input 추가 -->
-                        <ul id="dateByPlan">
-                        </ul>
-                    </div>
-                </div>
-                <button id="createPlanBtn" type="button">만들기</button>
-            </form>
+            <div style="display: none;" id="drop-content">
+                <!-- 선택한 날짜 수 만큼 input 추가 -->
+                <ul id="dateByPlan">
+                </ul>
+            </div>
+
+            <div>
+                <input type="text" name="name" id="planName">
+                <input type="text" name="contents" id="planContents">
+            </div>
         </div>
-        <div class="right-side map_wrap" id="map_wrap" style="border: black 1px solid;">
+        <div class="right-side map_wrap" id="map_wrap">
             <!-- T MAP -->
             <div id="map_div"></div>
         </div>
 
-        <div class="map_act_btn_wrap clear_box"></div>
-        <p id="result2"></p>
-        <br />
+        <div class="button-container">
+            <div>
+                <button id="createBtn" type="button">경로 최적화</button>
+            </div>
 
-        <button id="createBtn" type="button">submit</button>
-        <button id="removeBtn" type="button">cancel</button>
+            <div>
+                <button id="createPlanBtn" type="button">계획 생성</button>
+            </div>
+
+            <div>
+                <button id="removeBtn" type="button">마커 삭제</button>
+            </div>
+        </div>
     </div>
 </div>
 </body>

@@ -5,7 +5,8 @@ let markerArr = [];
 let calVal = '';
 let viaPointName = '';
 let mapDiv = "";
-let markerData = {};
+let markerData = [];
+let calendar = "";
 
 // 페이지가 로딩이 된 후 호출하는 함수입니다.
 window.onload = function initTmap() {
@@ -48,6 +49,9 @@ function onClick(e) {
             marker_s = null;
             marker_e = null;
             markers = [];
+            $('#result').text('총 거리 : ');
+            $('#rain').text('강수량 : ');
+            $('#weather').text('날씨 : ');
         });
 
         reverseGeo(marker.getPosition().lng(), marker.getPosition().lat());
@@ -56,22 +60,18 @@ function onClick(e) {
             marker_s = marker;
             marker_s.setIcon("http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png");
 
-            console.log("start lat : " + marker_s.getPosition().lat() + ", start lng : " + marker_s.getPosition().lng());
+            // console.log("start lat : " + marker_s.getPosition().lat() + ", start lng : " + marker_s.getPosition().lng());
         } else if (title === 'End') {
             marker_e = marker;
             marker_e.setIcon("http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_e.png");
 
-            console.log("end lat : " + marker_e.getPosition().lat() + ", end lng : " + marker_e.getPosition().lng());
+            // console.log("end lat : " + marker_e.getPosition().lat() + ", end lng : " + marker_e.getPosition().lng());
         } else {
             markers.push(marker);
 
             $('#createBtn').off("click").on("click", function () {
                 ajaxParams(markers, marker_s, marker_e);
                 // buttonClick(markers, marker_s, marker_e);
-            });
-
-            $('#createPlanBtn').off("click").on("click", function () {
-                serverFetch(markers, marker_s, marker_e);
             });
         }
     }
@@ -102,51 +102,29 @@ function ajaxParams(markers, marker_s, marker_e) {
 }
 
 // 서버에 저장 할 정보 fetch
-function serverFetch(markers, marker_s, marker_e) {
+function serverFetch(markerData) {
 
-    if (marker_s != null && marker_e != null) {
-        var markerPoint = (createPlanViaPoints(markers));
+    var markerPoint = (createPoints(markerData));
 
-        const data_s = marker_s.getPosition();
-        const data_e = marker_e.getPosition();
-
-        const smarker = {
-            "lon": data_s.lng().toString(),
-            "lat": data_s.lat().toString(),
-            "calendar": calVal,
-            "markerType": 0
-        };
-        markerPoint.push(smarker);
-
-        const emarker = {
-            "lon": data_e.lng().toString(),
-            "lat": data_e.lat().toString(),
-            "calendar": calVal,
-            "markerType": 2
-        }
-        markerPoint.push(emarker);
-
-        var planDTO = {
-            "name": $('#planName').val(),
-            "contents": $('#planContents').val(),
-            "lonLatList": markerPoint
-        }
-
-        console.log(planDTO);
-        fetch('/plan/createPlan', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(planDTO)
-        }).then(response => {
-            return response.json();
-        }).then(data => {
-            console.log(data);
-        }).catch(error => {
-            console.error(error);
-        });
+    var planDTO = {
+        "name": $('#planName').val(),
+        "contents": $('#planContents').val(),
+        "lonLatList": markerPoint
     }
+
+    fetch('/plan/createPlan', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(planDTO)
+    }).then(response => {
+        return response.json();
+    }).then(data => {
+        console.log(data);
+    }).catch(error => {
+        console.error(error);
+    });
 }
 
 // 최적화된 경로 api
@@ -167,10 +145,11 @@ function ajaxReq(req) {
             var resultFeatures = response.features;
 
             // 결과 출력
-            var tDistance = "총 거리 : " + (resultData.totalDistance / 1000).toFixed(1) + "km";
+            var tDistance = (resultData.totalDistance / 1000).toFixed(1) + "km";
             // var tTime = "총 시간 : " + (resultData.totalTime / 60).toFixed(0) + "분";
 
-            $("#result").text(tDistance);
+            const resultDistance = document.getElementById('result');
+            resultDistance.textContent += tDistance;
 
             for (var i in resultFeatures) {
                 var geometry = resultFeatures[i].geometry;
@@ -372,19 +351,41 @@ function makeViaPoints(markers) {
 }
 
 // 서버에 저장 할 경유지 lon, lat 정보
-function createPlanViaPoints(markers) {
+function createPoints(markerData) {
+    console.log(markerData);
     var lonLatList = [];
-    for (var i = 0; i < markers.length; i++) {
-        data_via = markers[i].getPosition()
-        var markerInfo = {
-            "lon": data_via.lng().toString(),
-            "lat": data_via.lat().toString(),
-            "calendar": calVal,
-            "markerType": 1
+
+    for (let i = 0; i < markerData.length; i++) {
+        for (let j = 0; j < markerData[i].markers.length; j++) {
+            let data_via = markerData[i].markers[j].getPosition();
+            var viaMarkerInfo = {
+                "lon": data_via.lng().toString(),
+                "lat": data_via.lat().toString(),
+                "calendar": markerData[i].calendar,
+                "markerType": 1
+            };
+            lonLatList.push(viaMarkerInfo);
+        }
+
+        let data_start = markerData[i].marker_s.getPosition();
+        var startMarkerInfo = {
+            "lon": data_start.lng().toString(),
+            "lat": data_start.lat().toString(),
+            "calendar": markerData[i].calendar,
+            "markerType": 0
         };
-        lonLatList.push(markerInfo);
+        lonLatList.push(startMarkerInfo);
+
+        let data_end = markerData[i].marker_e.getPosition();
+        var endMarkerInfo = {
+            "lon": data_end.lng().toString(),
+            "lat": data_end.lat().toString(),
+            "calendar": markerData[i].calendar,
+            "markerType": 2
+        };
+        lonLatList.push(endMarkerInfo);
     }
-    return lonLatList
+    return lonLatList;
 }
 
 // date range picker 한글 설정 및 Calendar 불러오기
@@ -502,57 +503,6 @@ function buttonClick(event) {
     // string으로 저장된 정보를 정수형으로 변경 n일차 표시
     const intIndex = parseInt(index, 10);
 
-    if (markerData[index] == null) {
-        markerData[index] = {
-            markers: markers,
-            marker_s: marker_s,
-            marker_e: marker_e
-        };
-    }
-
-    if (markerData[index] != null) {
-        const data = markerData[index];
-        markers = data.markers;
-        marker_s = data.marker_s;
-        marker_e = data.marker_e;
-    }
-
-    alert("선택하신 경로가 " + (intIndex + 1) + "일차에 저장 되었습니다");
-    $('#removeBtn').trigger("click");
-
-    // deleteBtn 버튼 클릭시 해당 저장 정보 초기화하기
-    const deleteBtn = $(button).siblings(".deleteBtn");
-
-    if (deleteBtn) {
-        deleteBtn.off("click").on("click", function () {
-            const deleteIndex = button.getAttribute("data-btn");
-
-            $('#removeBtn').trigger("click");
-            alert((intIndex+1) + "일차의 저장 정보가 삭제 되었습니다.")
-            delete markerData[deleteIndex];
-        });
-    }
-
-    // viewBtn 버튼 클릭시 해당 저장 정보 확인하기
-    const viewBtn = $(button).siblings(".viewBtn");
-    if (viewBtn) {
-        viewBtn.off("click").on("click", function () {
-            console.log("view push")
-
-            $('#removeBtn').trigger("click");
-
-            const marker_s = markerData[index].marker_s;
-            const marker_e = markerData[index].marker_e;
-            const markers = markerData[index].markers;
-
-            marker_s.setMap(map);
-            marker_e.setMap(map);
-            for (let i = 0; i < markers.length; i++) {
-                markers[i].setMap(map);
-            }
-        });
-    }
-
     // 해당 인덱스의 input 요소 가져오기
     const input = document.querySelector(".calendar" + index);
     // input 요소의 값 가져오기
@@ -560,6 +510,66 @@ function buttonClick(event) {
     // input의 값을 전역변수 calVal에 할당
     calVal = value;
 
-    return markerData[index];
+    if (marker_s && marker_e && markers.length > 0) {
+
+        if (markerData[index] == null) {
+            markerData[index] = {
+                markers: markers,
+                marker_s: marker_s,
+                marker_e: marker_e,
+                calendar: calVal
+            };
+        }
+
+        if (markerData[index] != null) {
+            const data = markerData[index];
+            markers = data.markers;
+            marker_s = data.marker_s;
+            marker_e = data.marker_e;
+            calendar = calVal;
+        }
+
+        alert("선택하신 경로가 " + (intIndex + 1) + "일차에 저장 되었습니다");
+        $('#removeBtn').trigger("click");
+
+        // deleteBtn 버튼 클릭시 해당 저장 정보 초기화하기
+        const deleteBtn = $(button).siblings(".deleteBtn");
+
+
+        if (deleteBtn) {
+            deleteBtn.off("click").on("click", function () {
+                const deleteIndex = button.getAttribute("data-btn");
+
+                $('#removeBtn').trigger("click");
+
+                alert((intIndex + 1) + "일차의 저장 정보가 삭제 되었습니다.");
+                delete markerData[deleteIndex];
+            });
+        }
+
+        // viewBtn 버튼 클릭시 해당 저장 정보 확인하기
+        const viewBtn = $(button).siblings(".viewBtn");
+        if (viewBtn) {
+            viewBtn.off("click").on("click", function () {
+                $('#removeBtn').trigger("click");
+
+                const marker_s = markerData[index].marker_s;
+                const marker_e = markerData[index].marker_e;
+                const markers = markerData[index].markers;
+
+                marker_s.setMap(map);
+                marker_e.setMap(map);
+                for (let i = 0; i < markers.length; i++) {
+                    markers[i].setMap(map);
+                }
+                alert((intIndex + 1) + "일차의 미리보기입니다.");
+            });
+        }
+    } else {
+        alert(" 1. 출발 마커 \n 2. 도착 마커 \n 3. 1개 이상의 경유지 \n위 조건을 만족하지 못 할 경우 저장 할 수 없습니다.")
+    }
 }
 
+$('#createPlanBtn').off("click").on("click", function () {
+    serverFetch(markerData);
+});
