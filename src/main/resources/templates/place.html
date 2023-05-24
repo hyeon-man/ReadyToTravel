@@ -1,9 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>여행지</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/place.css">
+    <script
+            src="https://code.jquery.com/jquery-3.7.0.min.js"
+            integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g="
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+            crossorigin="anonymous"></script>
 </head>
 <body>
 <header>
@@ -29,123 +38,48 @@
         </ul>
     </nav>
 </header>
+
 <main class="container">
     <div class="cards">
-        <div class="card">
-            <img src="https://www.dropbox.com/s/xli91dh23u9xndf/seoul.jpg?dl=1" />
-            <h3>SEOUL</h3>
-            <p>대한민국 서울</p>
-        </div>
-        <div class="card">
-            <img src="https://www.dropbox.com/s/cf0xz9pwmfz2bv2/mokpo.jpg?dl=1" />
-            <h3>MOKPO</h3>
-            <p>대한민국 목포</p>
-        </div>
-        <div class="card">
-            <img src="https://www.dropbox.com/s/5yvo134a9bqgcks/daejeon.jpg?dl=1" />
-            <h3>DAEJEON</h3>
-            <p>대한민국 대전</p>
-        </div>
-        <div class="card">
-            <img src="https://www.dropbox.com/s/rwogorlkgxf3x1f/jeonju.jpg?dl=1" />
-            <h3>JEONJU</h3>
-            <p>대한민국 전주</p>
-        </div>
-        <div class="card">
-            <img src="https://www.dropbox.com/s/mfm4xqbh77wt19v/tongyeong.jpg?dl=1" />
-            <h3>TONGYEONG</h3>
-            <p>대한민국 통영</p>
-        </div>
-        <div class="card">
-            <img src="https://www.dropbox.com/s/mbwg409dcj2c9ji/jeju.jpg?dl=1" />
-            <h3>JEJU</h3>
-            <p>대한민국 제주도</p>
-        </div>
-        <div class="card">
-            <img src="https://www.dropbox.com/s/j6sq2xbwnb5c89p/pohang.jpg?dl=1" />
-            <h3>POHANG</h3>
-            <p>대한민국 포항</p>
-        </div>
-        <div class="card">
-            <img src="https://www.dropbox.com/s/stcz4lkwwmullc1/ulleung.jpg?dl=1" />
-            <h3>ULLEUNG</h3>
-            <p>대한민국 울릉도</p>
-        </div>
-        <div class="card">
-            <img src="https://www.dropbox.com/s/1lgqiyrhyazxb5u/jecheon.jpg?dl=1" />
-            <h3>JECHEON</h3>
-            <p>대한민국 제천</p>
-        </div>
-        <div class="card">
-            <img src="https://www.dropbox.com/s/rlgd2wfd6gjkmu3/chuncheon.jpg?dl=1" />
-            <h3>CHUNCHEON</h3>
-            <p>대한민국 춘천</p>
-        </div>
-        <div class="card">
-            <img src="https://www.dropbox.com/s/bbbhjj9828w184b/namwon.jpg?dl=1" />
-            <h3>NAMWON</h3>
-            <p>대한민국 남원</p>
-        </div>
-        <div class="card">
-            <img src="https://www.dropbox.com/s/cfncgt8n6k0if1y/yeosu.jpg?dl=1" />
-            <h3>YEOSU</h3>
-            <p>대한민국 여수</p>
-        </div>
-        <div class="card">
-            <img src="https://www.dropbox.com/s/u9h94s9jovlumkm/busan.jpg?dl=1" />
-            <h3>BUSAN</h3>
-            <p>대한민국 부산</p>
-        </div>
-        <div class="card">
-            <img src="https://www.dropbox.com/s/nq1wmwnlhk56bfd/gangneung.jpg?dl=1" />
-            <h3>GANGNEUNG</h3>
-            <p>대한민국 강릉</p>
-        </div>
+        <div class="card" th:each="item : ${list}">
+            <button type="button" class="card-box" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <img th:src="${item.fileName}" alt="도시 이미지"/>
+                <h3 th:text="${item.EName}"></h3>
+                <h4 th:text="${item.KName}"></h4>
+                <input hidden="hidden" th:value="${item.comment}">
+            </button>
 
-        <div class="card">
-            <img src="https://www.dropbox.com/s/cqdqbfgthcn3mpu/gyeongju.jpg?dl=1" />
-            <h3>GYEONGJU</h3>
-            <p>대한민국 경주</p>
-        </div>
-        <div class="card">
-            <img src="https://www.dropbox.com/s/okdx7spa2ki75i9/andong.jpg?dl=1" />
-            <h3>ANDONG</h3>
-            <p>대한민국 안동</p>
-        </div>
-        <div class="card">
-            <img src="https://www.dropbox.com/s/7e334mi999s5ly3/incheon.jpg?dl=1" />
-            <h3>INCHEON</h3>
-            <p>대한민국 인천</p>
-        </div>
-        <div class="card">
-            <img src="https://www.dropbox.com/s/wjtmm5ika6lpct1/gunsan.jpg?dl=1" />
-            <h3>GUNSAN</h3>
-            <p>대한민국 군산</p>
-        </div>
-        <div class="card">
-            <img src="https://www.dropbox.com/s/jodnrbrelvro332/suwon.jpg?dl=1" />
-            <h3>SUWON</h3>
-            <p>대한민국 수원</p>
-        </div>
-        <div class="card">
-            <img src="https://www.dropbox.com/s/8i349s7vj1ox7up/gapyeong.jpg?dl=1" />
-            <h3>GAPYEONG</h3>
-            <p>대한민국 가평</p>
-        </div>
-        <div class="card">
-            <img src="https://www.dropbox.com/s/n2yko0l560b06aq/yeongwol.jpg?dl=1" />
-            <h3>YEONGWOL</h3>
-            <p>대한민국 영월</p>
         </div>
     </div>
 </main>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel kName"></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="card_left">
+                    <img id="cardImg">
+                </div>
+                <div class="card_right">
+                    <h1 id="cardTitle"></h1>
+                    <p id="cardComment"></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">일정 만들기</button>
+            </div>
+        </div>
+    </div>
+</div>
 <footer>
     <p>Copyright &copy; 2023
     </p>
 </footer>
-
 </body>
-
 <script src="/js/place.js"></script>
-
 </html>

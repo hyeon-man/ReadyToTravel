@@ -32,7 +32,7 @@ body {
     text-align: center;
     margin-bottom: 5%;
     position: relative;
-    background-image: url("https://www.dropbox.com/s/dw3bnts2oe7ytq4/sky.jpg?dl=1");
+    background-image: url(https://www.dropbox.com/s/l9pvu6rdm8cvg5k/mainN7.jpg?dl=1);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -41,7 +41,7 @@ body {
 
 h4{
     margin-bottom: 5%;
-    color: antiquewhite;
+    color: white;
 }
 body::before{
     content: "";
@@ -62,7 +62,7 @@ body::before{
     font-size: 32px;
     text-align: center;
     margin-bottom: 60px;
-    color:antiquewhite;
+    color:white;
 }
 .login-form a{
     text-decoration: none;

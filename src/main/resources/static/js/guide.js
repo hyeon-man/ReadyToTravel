@@ -1,46 +1,46 @@
+ // 스크롤 픽시드 얘도 공통요소임 css에 주석 친거랑 같이
+ //    window.addEventListener('scroll', function() {
+ //        const header = document.querySelector('header');
+ //        if (window.pageYOffset > 0) {
+ //            header.classList.add('fixed-header');
+ //            header.style.webkitBoxShadow = '0 2px 5px 0 rgba(0, 0, 0, 0.2)';
+ //        } else {
+ //            header.classList.remove('fixed-header');
+ //            header.style.webkitBoxShadow = 'none';
+ //        }
+ //    });
 
-    function Splitting() {
+(function () {
+    "use strict";
 
-}
+    // define variables
+    var items = document.querySelectorAll(".timeline li");
 
-    Splitting();
+    // check if an element is in viewport
+    // http://stackoverflow.com/questions/123999/how-to-tell-if-a-dom-element-is-visible-in-the-current-viewport
+    function isElementInViewport(el) {
+        var rect = el.getBoundingClientRect();
+        return (
+            rect.top >= 0 &&
+            rect.left >= 0 &&
+            rect.bottom <=
+            (window.innerHeight || document.documentElement.clientHeight) &&
+            rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+        );
+    }
 
-    setTimeout(function() {
-    document.querySelector('.first').classList.add('active');
-}, 300);
-
-    const sections = document.querySelectorAll('.triggerOnScroll');
-
-    // Using Intersection Observer ↓
-
-    const observerConfig = {
-    root: null,
-    rootMargin: '600px 0px 0px',
-    threshold: 0.1
-};
-
-    const observer = new IntersectionObserver((entries, observer) => {
-    entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('active');
-            } else {
-                entry.target.classList.remove('active');
+    function callbackFunc() {
+        for (var i = 0; i < items.length; i++) {
+            if (isElementInViewport(items[i])) {
+                items[i].classList.add("in-view");
             }
         }
-    );
-}, observerConfig);
 
-    sections.forEach(section => {
-    observer.observe(section);
-});
-    // 스크롤 픽시드 얘도 공통요소임 css에 주석 친거랑 같이
-    window.addEventListener('scroll', function() {
-        const header = document.querySelector('header');
-        if (window.pageYOffset > 0) {
-            header.classList.add('fixed-header');
-            header.style.webkitBoxShadow = '0 2px 5px 0 rgba(0, 0, 0, 0.2)';
-        } else {
-            header.classList.remove('fixed-header');
-            header.style.webkitBoxShadow = 'none';
-        }
-    });
+    }
+
+
+    // listen for events
+    window.addEventListener("load", callbackFunc);
+    window.addEventListener("resize", callbackFunc);
+    window.addEventListener("scroll", callbackFunc);
+})();
