@@ -1,15 +1,11 @@
 package kr.ac.kopo.ReadyToTravel.member;
 
 import kr.ac.kopo.ReadyToTravel.dto.MemberDTO;
-import kr.ac.kopo.ReadyToTravel.util.FileUpload;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
 @Controller
 @RequestMapping("/member")
 public class MemberController {
@@ -21,7 +17,7 @@ public class MemberController {
         this.service = service;
     }
 
-    @RequestMapping("/checkId/{id}")
+    @GetMapping("/checkId/{id}")
     @ResponseBody
     public String checkId(@PathVariable String id) {
         if(service.checkId(id)){
@@ -31,12 +27,12 @@ public class MemberController {
 
             return "FAIL";
         }
-
     }
 
     @RequestMapping("/removerMember")
     @ResponseBody
     public void delete(HttpServletRequest request) {
+
         MemberDTO dto = (MemberDTO) request.getSession().getAttribute("memberDTO");
         Long num = dto.getNum();
 
@@ -52,9 +48,9 @@ public class MemberController {
 
     @ResponseBody
     @PostMapping("/initPassword")
-    public String initPassword(String email) throws MessagingException {
+    public String initPassword(String id, String email) throws MessagingException {
 
-        if (service.initPass(email)) {
+        if (service.initPass(id, email)) {
             return "SUCCESS";
         } else {
             return "FAIL";
@@ -62,7 +58,6 @@ public class MemberController {
     }
     @GetMapping("/login")
     public String login() {
-
         return path + "login";
     }
     @PostMapping("/login")
@@ -72,17 +67,16 @@ public class MemberController {
         System.out.println("memberDTO = " + memberDTO.getPassword());
 
         MemberDTO login = service.login(memberDTO);
-        if (login != null) {
-            System.out.println("loginInfo == " + login);
 
+        if (login != null) {
+            System.out.println("login ! ===== " + login);
             session.setAttribute("memberDTO", login);
 
-            return "index";
+            return  "redirect:/";
         } else {
             return path + "login";
         }
     }
-
     @GetMapping("/logout")
     public String logout(HttpSession session){
         session.removeAttribute("memberDTO");
@@ -94,14 +88,30 @@ public class MemberController {
         return path + "signup";
     }
 
-    @RequestMapping("/signup")
-    public String signUp(MemberDTO memberDTO, @RequestParam("file") MultipartFile file) {
-
-        String fileName = FileUpload.fileUpload(file);
-        memberDTO.setProfileIMG(fileName);
-
+    @PostMapping("/signup")
+    public String signUp(MemberDTO memberDTO) {
+        System.out.println(memberDTO);
         service.singUp(memberDTO);
 
         return "index";
+    }
+
+    @ResponseBody
+    @GetMapping("/checkEmail/{email}")
+    public String sendEmailCode(@PathVariable String email){
+        if(service.sendEmailCode(email)){
+
+            return "sendMailOK";
+        }else{
+            return "senMailFail" ;
+        }
+    }
+    @ResponseBody
+    @RequestMapping("/validateCode")
+    public String validateCode(String email, String mailValidateCode){
+        if(service.validateCode(email, mailValidateCode)){
+            return "emailValidOK";
+        }
+        return "emailValidFAIL";
     }
 }
