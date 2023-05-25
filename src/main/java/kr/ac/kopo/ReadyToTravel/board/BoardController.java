@@ -2,6 +2,7 @@ package kr.ac.kopo.ReadyToTravel.board;
 
 import kr.ac.kopo.ReadyToTravel.board.reply.ReplyService;
 import kr.ac.kopo.ReadyToTravel.dto.BoardDTO;
+import org.springframework.stereotype.Controller;
 import kr.ac.kopo.ReadyToTravel.dto.ReplyDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,7 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
+@RequestMapping("/board")
 public class BoardController {
+    final String path ="board/";
     private final BoardService service;
     private final ReplyService replyService;
 
@@ -28,6 +31,13 @@ public class BoardController {
         return "/board/list";
     }
 
+    @GetMapping("/list")
+    public String boardList(BoardDTO boardDTO) {
+        service.findAll();
+
+        return "/board/list";
+    }
+
     @GetMapping("/board/create")
     public String boardCreate() {
 
@@ -41,7 +51,6 @@ public class BoardController {
         return "redirect:/board/info/" + boardNum;
     }
 
-
     @GetMapping("/board/info/{boardNum}")
     public String boardInform(@PathVariable Long boardNum, Model model) {
 
@@ -54,6 +63,7 @@ public class BoardController {
         System.out.println("댓글 리스트 = " + replyList);
 
         return "/board/inform";
+
     }
 
     @GetMapping("/board/update/{boardNum}")
@@ -61,9 +71,6 @@ public class BoardController {
 
         BoardDTO board = service.findOne(boardNum);
         model.addAttribute("board", board);
-
-
-
 
         return "/board/update";
     }
