@@ -16,7 +16,6 @@ public class PassEncode {
             byte[] hash = digest.digest(password.getBytes());
 
             return Base64.getEncoder().encodeToString(hash);
-    //이거 한번 읽어보시고
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }

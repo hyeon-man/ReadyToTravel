@@ -6,6 +6,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.lang.reflect.Member;
+import java.util.List;
 
 @Getter
 @Setter
@@ -22,13 +24,12 @@ public class GroupMembership {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long num;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "group_num")
     private GroupEntity group;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "member_num")
     private MemberEntity member;
-
 
 }

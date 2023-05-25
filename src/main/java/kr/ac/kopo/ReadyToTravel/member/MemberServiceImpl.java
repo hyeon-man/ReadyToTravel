@@ -67,8 +67,9 @@ public class MemberServiceImpl implements MemberService {
 
         MemberEntity memberInfo = memberRepository.findByMemberIdAndPassword(id, pass);
         MemberDTO loginMember = memberDTO.convertToMemberDto(memberInfo);
-      
-        return memberDTO.convertToMemberDto(memberInfo);
+
+
+        return loginMember;
     }
 
 
