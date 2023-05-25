@@ -8,7 +8,8 @@ public enum TravelType {
     FAMILY = 0
     COUPLE = 1
     SOLO = 2
+    FRIEND = 3
      */
 
-FAMILY, COUPLE, SOLO
+FAMILY, COUPLE, SOLO, FRIEND
 }
