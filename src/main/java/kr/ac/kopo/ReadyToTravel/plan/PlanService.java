@@ -3,6 +3,8 @@ package kr.ac.kopo.ReadyToTravel.plan;
 import kr.ac.kopo.ReadyToTravel.dto.plan.PlanDTO;
 import kr.ac.kopo.ReadyToTravel.entity.plan.PlanEntity;
 
+import java.util.List;
+
 public interface PlanService {
     Long createPlan(PlanDTO plan);
 
@@ -11,4 +13,6 @@ public interface PlanService {
     void updatePlan(PlanDTO plan);
 
     void removePlan(Long num);
+
+    PlanDTO viewPlan(long planNum);
 }

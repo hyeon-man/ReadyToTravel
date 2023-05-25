@@ -24,43 +24,41 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public void create(final MultipartFile file1, final MultipartFile file2,
-                       final BoardDTO boardDTO) {
+    public long create(BoardDTO boardDTO) {
         List<BoardAttachEntity> attachEntities = new ArrayList<>();
         BoardEntity entity = BoardDTO.convertToEntity(boardDTO);
-        // 어태치를 db에 저장 할 때에는 boardNum이 필요하니깐
 
         Long boardNum = repository.save(entity).getBoardNum();
 
-        List<MultipartFile> fileList = new ArrayList<>();
-        fileList.add(file1);
-        fileList.add(file2);
 
         //첨부파일의 갯수만큼 반복한다
-        for (int i = 0; i < fileList.size(); i++) {
-            MultipartFile attach = fileList.get(i);
-
+        for (int i = 0; i < boardDTO.getMultipartFiles().size(); i++) {
+            MultipartFile attach = boardDTO.getMultipartFiles().get(i);
             String filename = FileUpload.fileUpload(attach);
-
             if (filename != null) {
                 BoardAttachEntity attachEntity = new BoardAttachEntity();
-
                 attachEntity.setFileName(filename);
                 attachEntity.setBoardEntity(BoardEntity.builder().boardNum(boardNum).build());
                 attachEntities.add(attachEntity);
             }
         }
-
         boardAttachRepository.saveAll(attachEntities);
+
+        return boardNum;
     }
 
     @Override
     public List<BoardDTO> findAll() {
 
         List<BoardEntity> entityList = repository.findAll();
-        //TODO entityList 이거 DTO로 convert 해서 리턴
+        List<BoardDTO> boardList = new ArrayList<>();
 
-        return null;
+        for (BoardEntity boardEntity : entityList) {
+            BoardDTO dto = BoardDTO.convertToDTO(boardEntity);
+            boardList.add(dto);
+        }
+
+        return boardList;
     }
 
     @Override
@@ -72,22 +70,34 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public BoardDTO update(BoardDTO boardDTO, Long boardNum) {
-        BoardEntity entity = repository.findById(boardNum)
-                .orElseThrow(() -> new IllegalArgumentException("잘못된 게시번호"));
+    public void update(BoardDTO boardDTO) {
+        BoardEntity entity = repository.findById(boardDTO.getBoardNum())
+                .orElseThrow(() -> new IllegalArgumentException("잘못된 게시글 번호"));
 
         entity.setBoardName(boardDTO.getBoardName());
         entity.setBoardContent(boardDTO.getBoardContent());
 
         repository.save(entity);
-
-        return BoardDTO.convertToDTO(entity);
     }
 
     @Override
     public void delete(Long boardNum) {
 
         repository.deleteById(boardNum);
+    }
+
+    @Override
+    public BoardDTO findOne(Long boardNum) {
+        BoardEntity boardEntity = repository.findById(boardNum).orElseThrow(() -> new NullPointerException("해당 게시글이 존재하지 않습니다"));
+
+        return BoardDTO.builder()
+                .boardContent(boardEntity.getBoardContent())
+                .boardName(boardEntity.getBoardName())
+                .boardWriter(boardEntity.getBoardWriter())
+                .boardDateCreate(boardEntity.getBoardDateCreate())
+                .boardNum(boardEntity.getBoardNum())
+                .build();
+
     }
 }
 

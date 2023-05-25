@@ -23,12 +23,12 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public String checkId(String id) {
+    public boolean checkId(String id) {
         MemberEntity entity = memberRepository.findAllByMemberId(id);
         if (entity == null) {
-            return "사용 가능";
+            return true;
         } else {
-            return "사용 불가";
+            return false;
         }
     }
 
@@ -58,13 +58,18 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public boolean login(MemberDTO memberDTO) {
+    public MemberDTO login(MemberDTO memberDTO) {
+
         MemberEntity memberEntity = memberDTO.convertToEntity(memberDTO);
 
         String id = memberEntity.getMemberId();
         String pass = PassEncode.encode(memberEntity.getPassword());
 
-        return memberRepository.existsByMemberIdAndPassword(id, pass);
+        MemberEntity memberInfo = memberRepository.findByMemberIdAndPassword(id, pass);
+        MemberDTO loginMember = memberDTO.convertToMemberDto(memberInfo);
+
+
+        return loginMember;
     }
 
 
@@ -74,7 +79,7 @@ public class MemberServiceImpl implements MemberService {
         uuid = uuid.substring(0, 8);
 
         Optional<MemberEntity> findMember = memberRepository.findByEmail(email);
-        if(!findMember.isPresent()) {
+        if (!findMember.isPresent()) {
             return false;
         }
 

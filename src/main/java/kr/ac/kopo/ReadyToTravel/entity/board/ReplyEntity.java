@@ -1,9 +1,11 @@
 package kr.ac.kopo.ReadyToTravel.entity.board;
 
 
+import kr.ac.kopo.ReadyToTravel.entity.MemberEntity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -21,7 +23,14 @@ public class ReplyEntity {
     @Column(nullable = false)
     private String content;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date writeDate;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_num", nullable = false)
     private BoardEntity boardEntity;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "writer")
+    private MemberEntity member;
 }
