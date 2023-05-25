@@ -11,6 +11,7 @@ import kr.ac.kopo.ReadyToTravel.member.MemberRepository;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.*;
 
 
@@ -59,13 +60,15 @@ public class GroupServiceImpl implements GroupService {
         // 초대 URL로 Invite Entity 조회
         InviteEntity invite = inviteUrlRepository.findByInviteURL(inviteURL);
 
-        if (invite == null || invite.getExpirationDate().before(new Date())) {
-            // 초대 코드가 만료되거나 존재하지 않으면 처리
-            System.out.println("존재하지 않거나 만료일이 지남");
+        if (invite.getExpirationDate().before(new Date())) {
+            // 초대 코드가 만료 되었으면 처리
+            System.out.println("만료일이 지남 초대 코드 재생성");
 
             // 삭제 후, inviteCode 재생성
             inviteUrlRepository.deleteById(invite.getNum());
             generateInviteCode(invite.getGroupEntity().getGroupNum());
+        } else if (invite == null) {
+            System.out.println("존재 하지 않는 초대 코드");
         } else {
             GroupMembership findMembership = groupMembershipRepository
                     .findByGroup_GroupNumAndMember_Num(invite.getGroupEntity().getGroupNum(), memberNum);
@@ -108,7 +111,6 @@ public class GroupServiceImpl implements GroupService {
     public GroupDTO item(long groupNum) {
         GroupEntity groupEntity = groupRepository.findById(groupNum)
                 .orElseThrow(() -> new NullPointerException("그룹 번호로 조회한 결과가 없습니다."));
-
         GroupDTO groupDto = new GroupDTO();
         groupDto.convertToDto(groupEntity);
 
