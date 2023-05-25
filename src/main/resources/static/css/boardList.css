@@ -1,0 +1,113 @@
+/* 공통요소 헤더부분 css 및 */
+@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);  body, talbe, th, td, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, textarea, blockquote, span, * {font-family: 'Noto Sans KR', sans-serif;}
+html{scroll-behavior: smooth;}
+*, *:before, *:after {box-sizing: inherit;}
+.logo a {text-decoration-line: none;color: black;}
+.logo b {font-size: 30px;}
+.logo h7 {font-size: 15px;}
+.logo:hover a{color: skyblue;}
+body {max-width: 1920px;font-family: 'Noto Serif KR', serif;margin: 0;padding: 0;overflow-x: hidden;}
+header {align-items: center; background-color:white; /* 원하는 색상으로 설정 */max-width: 1920px;color: #000;display: flex;justify-content: space-between;padding: 1%;}
+.fixed-header {align-items: center;position: fixed;top: 0;width: 100%;z-index: 9999;background-color: #fff !important;transition: background-color 500ms linear; box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.05), 0 2px 10px 0 rgba(0, 0, 0, 0.05) !important;-webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.05), 0 2px 10px 0 rgba(0, 0, 0, 0.05) !important;color: #000 !important;}
+nav {font-family: 'Noto Serif KR', serif;}
+nav li a::after {content: "";position: absolute;bottom: -1px;left: 50%;transform: translateX(-50%);height: 4px;background: #f1c40f;transition: all .2s ease-out;border-radius: 10px;width: 0;}
+nav li a:hover::after {width: 100%;}
+nav li a {color: black;padding: 10px 12px;position: relative;}
+nav ul {list-style: none;margin: 0;padding: 0;display: flex;}
+nav a {color: black;text-decoration: none;}
+footer {height: 50px;background-color: #f5f5f5;display: flex;justify-content: center;align-items: center;font-size: 14px;color: #666;}
+/* 공통요소*/
+
+/* 스타일 초기화 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+/* 컨테이너 스타일 */
+.container {
+    margin: 0 auto;
+    margin-top: 50px;
+    max-width: 1200px;
+    text-align: center;
+}
+
+/* 버튼 스타일 */
+.btn-create {
+    float: right;
+    margin-bottom: 10px;
+}
+
+/* 테이블 스타일 */
+.table {
+    font-size: 14px;
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin: 0 auto; /* 중앙 정렬 추가 */
+}
+
+
+/* 테이블 헤더 스타일 */
+.table thead th {
+    font-weight: bold;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    padding: 8px;
+}
+.table td {
+    border: 1px solid #dee2e6;
+    padding: 8px;
+    text-align: center;
+}
+
+/* 홀수 행 배경색 */
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f8f9fa;
+}
+
+/* 마우스 호버 시 배경색 */
+.table-hover tbody tr:hover {
+    background-color: #e2e6ea;
+}
+
+/* 페이지네이션 스타일 */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+/* 비활성화 된 페이지네이션 스타일 */
+.page-item.disabled .page-link {
+    background-color: #f8f9fa;
+    color: #6c757d;
+    border-color: #dee2e6;
+}
+
+/* 페이지네이션 이전/다음 버튼 스타일 */
+.page-item:first-child .page-link,
+.page-item:last-child .page-link {
+    border-radius: 0;
+}
+
+/* 페이지네이션 현재 페이지 스타일 */
+.page-item.active .page-link {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+/* 페이지네이션 이전/다음 버튼 마우스 호버 시 스타일 */
+.page-item:first-child .page-link:hover,
+.page-item:last-child .page-link:hover {
+    background-color: #e2e6ea;
+    border-color: #dde0e4;
+}
+
+/* 페이지네이션 페이지 버튼 마우스 호버 시 스타일 */
+.page-item:not(.active) .page-link:hover {
+    background-color: #dde0e4;
+    border-color: #dde0e4;
+}

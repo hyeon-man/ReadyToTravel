@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/board")
 public class BoardController {
     final String path ="board/";
     private final BoardService service;
@@ -26,17 +25,11 @@ public class BoardController {
     public String boardList(Model model) {
 
         List<BoardDTO> boardList = service.findAll();
-        model.addAttribute("List", boardList);
+        model.addAttribute("list", boardList);
 
         return "/board/list";
     }
 
-    @GetMapping("/list")
-    public String boardList(BoardDTO boardDTO) {
-        service.findAll();
-
-        return "/board/list";
-    }
 
     @GetMapping("/board/create")
     public String boardCreate() {

@@ -1,10 +1,9 @@
 
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html xmlns:th="http://www.thymeleaf.org"><head>
     <meta charset="UTF-8">
     <title>게시판</title>
-    <link rel="stylesheet" href="/css/boardList.css">
+    <link rel="stylesheet" href="/css/list.css">
 </head>
 <body>
 <header>
@@ -19,10 +18,10 @@
     <!--NAV-->
     <nav>
         <ul>
-            <li><a href="/">소개</a></li>
-            <li><a href="/list">여행지</a></li>
-            <li><a href="#">이용방법</a></li>
-            <li><a href="/boardList">후기게시판</a></li>
+            <li><a href="/place">여행지</a></li>
+            <li><a href="/guide">이용방법</a></li>
+            <li><a href="#">일단빈칸</a></li>
+            <li><a href="/board/list">후기게시판</a></li>
             <li><a href="/member/login">로그인</a></li>
         </ul>
     </nav>
@@ -40,18 +39,13 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <td>1</td>
-            <td>첫 번째 게시글입니다.</td>
-            <td>작성자</td>
-            <td>2023-05-08</td>
+        <tr th:each="item : ${list}">
+            <td th:text="${item.boardNum}">boardNum</td>
+            <td th:text="${item.boardContent}">boardContent</td>
+            <td th:text="${item.boardWriter}">boardWriter</td>
+            <td th:text="${#dates.format(item.boardDateCreate, 'yyyy-MM-dd')}">boardCreateDate</td>
         </tr>
-        <tr>
-            <td>2</td>
-            <td>두 번째 게시글입니다.</td>
-            <td>작성자</td>
-            <td>2023-05-07</td>
-        </tr>
+
         </tbody>
     </table>
     <a href="#" class="btn-create">새 글 작성</a>
