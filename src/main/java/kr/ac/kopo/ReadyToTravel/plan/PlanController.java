@@ -31,6 +31,15 @@ public class PlanController {
     private final GroupService groupService;
 
 
+    @GetMapping("/viewPlan/{planNum}")
+    public String viewPlan(@PathVariable long planNum, Model model) {
+        PlanDTO view = planService.viewPlan(planNum);
+
+        model.addAttribute("view", view);
+
+        return "plan/viewPlan";
+    }
+
     /**
      * @return plan/makePlan 페이지를 반환합니다.
      */
@@ -46,9 +55,6 @@ public class PlanController {
      * @param request (member session)
      * @return
  */
-
-// TODO ResponseBody 지우기 return 값 OK FAIL 지우기
-    @ResponseBody
     @PostMapping("/createPlan")
     public String createPlan(@RequestBody PlanDTO plan, HttpServletRequest request) {
 
@@ -65,12 +71,10 @@ public class PlanController {
             if (plan.getPlanType() != TravelType.SOLO) {
                 groupService.createGroup(planNum, plan.getLeaderNum(), plan.getName());
             }
-//            return "redirect:/plan/detail/" + planNum;
-            return "OK";
+            return "redirect:/plan/viewPlan/" + planNum;
         }
         //TODO 멤버 세션이 없을 경우 return
-//        return "member/login";
-        return "FAIL";
+        return "/member/login";
     }
 
     @GetMapping("/updatePlan/{num}")

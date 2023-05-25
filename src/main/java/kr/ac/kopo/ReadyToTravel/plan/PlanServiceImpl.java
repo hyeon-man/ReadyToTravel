@@ -2,14 +2,16 @@ package kr.ac.kopo.ReadyToTravel.plan;
 
 import kr.ac.kopo.ReadyToTravel.dto.plan.PlanDTO;
 import kr.ac.kopo.ReadyToTravel.dto.plan.LonLatDTO;
+import kr.ac.kopo.ReadyToTravel.entity.group.GroupMembership;
 import kr.ac.kopo.ReadyToTravel.entity.plan.LonLatEntity;
 import kr.ac.kopo.ReadyToTravel.entity.plan.PlanEntity;
+import kr.ac.kopo.ReadyToTravel.group.GroupMembershipRepository;
 import kr.ac.kopo.ReadyToTravel.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -19,6 +21,16 @@ public class PlanServiceImpl implements PlanService {
     private final PlanRepository planRepository;
     private final LonLatRepository lonLatRepository;
     private final MemberRepository memberRepository;
+
+    @Override
+    public PlanDTO viewPlan(long planNum) {
+        PlanEntity planEntity = planRepository.findByNum(planNum);
+        List<LonLatEntity> lonLatEntity = lonLatRepository.findAllByPlanEntityNum(planNum);
+
+        PlanDTO planDTO = planEntity.convertToDTO(planEntity, planNum, lonLatEntity);
+
+        return planDTO;
+    }
 
     @Override
     public Long createPlan(PlanDTO plan) {

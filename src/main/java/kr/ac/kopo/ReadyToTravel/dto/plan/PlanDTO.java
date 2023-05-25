@@ -24,7 +24,7 @@ public class PlanDTO {
 
     private Long num;
 
-    // 0 가족 여행 , 1 커플 여행 , 2 혼자 여행
+    // 0 가족 여행 , 1 커플 여행 , 2 혼자 여행, 3 친구 여행
     // EnumType.ORIDNAL = 값을 배열의 숫자로 반환해준다. ex) FAMILY = 0
     @Enumerated(EnumType.ORDINAL)
     private TravelType planType;
