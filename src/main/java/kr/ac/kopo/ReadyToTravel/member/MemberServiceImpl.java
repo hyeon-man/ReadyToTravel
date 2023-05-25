@@ -2,12 +2,12 @@ package kr.ac.kopo.ReadyToTravel.member;
 
 import kr.ac.kopo.ReadyToTravel.dto.MemberDTO;
 import kr.ac.kopo.ReadyToTravel.entity.MemberEntity;
+import kr.ac.kopo.ReadyToTravel.util.CacheConfig;
 import kr.ac.kopo.ReadyToTravel.util.PassEncode;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpSession;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -16,10 +16,17 @@ import java.util.UUID;
 public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
     private final JavaMailSender javaMailSender;
+    private final MailService mailService;
 
-    public MemberServiceImpl(MemberRepository memberRepository, JavaMailSender javaMailSender) {
+    private final CacheConfig cacheConfig;
+
+
+
+    public MemberServiceImpl(MemberRepository memberRepository, JavaMailSender javaMailSender, MailService mailService, CacheConfig cacheConfig) {
         this.memberRepository = memberRepository;
         this.javaMailSender = javaMailSender;
+        this.mailService = mailService;
+        this.cacheConfig = cacheConfig;
     }
 
     @Override
@@ -66,40 +73,62 @@ public class MemberServiceImpl implements MemberService {
         String pass = PassEncode.encode(memberEntity.getPassword());
 
         MemberEntity memberInfo = memberRepository.findByMemberIdAndPassword(id, pass);
-        MemberDTO loginMember = memberDTO.convertToMemberDto(memberInfo);
 
+        try{
+            MemberDTO loginMember = memberDTO.convertToMemberDto(memberInfo);
+            return loginMember;
+        } catch (NullPointerException ne){
 
-        return loginMember;
-    }
+            return null;
+        }
+
+        }
 
 
     @Override
-    public boolean initPass(String email) {
-        String uuid = UUID.randomUUID().toString().replaceAll("-", "");
-        uuid = uuid.substring(0, 8);
+    public boolean initPass(String id, String email) {
 
-        Optional<MemberEntity> findMember = memberRepository.findByEmail(email);
+        Optional<MemberEntity> findMember = memberRepository.findByMemberIdAndEmail(id, email);
         if (!findMember.isPresent()) {
             return false;
         }
+
+        String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+        uuid = uuid.substring(0, 8);
 
         MemberEntity originMember = findMember.get();
         originMember.setPassword(PassEncode.encode(uuid));
 
         MailService mailService = new MailService(javaMailSender);
-        mailService.sendMail(originMember.getEmail(), uuid);
+        mailService.sendMailForPass(originMember.getEmail(), uuid);
 
         return true;
-        //else는 뭐라 해야하지.... 고민 해봐야함 optional 말고 throw를 해야하나...?
-        /*try {
-            MemberEntity member = optionalMember.get(); // 여기서 nullpoint exception 발생하는가?
-            String newPassword = GenerateTemporaryPassword.generateTemporaryPassword();
-            member.setPassword(newPassword);
-            repository.save(member);
-            return member;
-        } catch (NullPointerException n){
 
-            return new MemberEntity();
-        }*/
     }
+    @Override
+    public boolean sendEmailCode(String email){
+        Optional<MemberEntity> findEmail = memberRepository.findByEmail(email);
+        if(!findEmail.isPresent()) {
+            System.out.println("이메일이 존재하지 않습니다.");
+            String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+            uuid = uuid.substring(0, 8);
+            mailService.sendMailForEmail(email, uuid);
+            cacheConfig.putValue(email, uuid);
+            return true;
+
+        }else{
+            System.out.println("존재하는 이메일 입니다");
+            return false;
+        }
+
+    }
+    @Override
+    public boolean validateCode(String email, String mailValidateKey) {
+        if (cacheConfig.getValue(email) == mailValidateKey){
+            return true;
+            } else {
+            return false;
+        }
+    }
+
 }

@@ -14,6 +14,9 @@ public interface MemberService {
 
     MemberDTO login(MemberDTO memberDTO);
 
-    boolean initPass(String email) throws MessagingException;
+    boolean initPass(String id, String email) throws MessagingException;
 
+    boolean sendEmailCode(String email);
+
+    boolean validateCode(String email, String mailValidateKey);
 }

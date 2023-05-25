@@ -62,7 +62,8 @@ body::before{
     font-size: 32px;
     text-align: center;
     margin-bottom: 60px;
-    color:white;
+    color: #000;
+
 }
 .login-form a{
     text-decoration: none;
@@ -108,7 +109,7 @@ body::before{
 .int-area input:valid + label{
     top:-2px;
     font-size: 13px;
-    color: deepskyblue;
+    color: #999;
 }
 .btn-area{
     margin-top: 30px;
