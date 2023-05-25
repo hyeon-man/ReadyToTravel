@@ -1,0 +1,113 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Ready To Travel</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>
+    <link rel="stylesheet" href="/css/createPlan.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=6MTwtT0OK18O1A8FGiL349WFB2UyKhI11K5MsjXN"></script>
+    <!--tmap API js 자리-->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+</head>
+<body>
+<header>
+    <!--LOGO-->
+    <div class="logo">
+        <a href="/">
+            <b>RTT</b>
+            <h7>&nbsp;READY TO TRAVEL</h7>
+        </a>
+    </div>
+
+    <!--NAV-->
+    <nav>
+        <ul>
+            <li><a href="#">소개</a></li>
+            <li><a href="/list">여행지</a></li>
+            <li><a href="#">이용방법</a></li>
+            <li><a href="/boardList">후기게시판</a></li>
+            <!-- 로그인 -->
+            <li><a th:if="${session.memberDTO != null}" href="/member/logout">로그아웃</a></li>
+            <!-- 이게 비로그인 -->
+            <li><a th:if="${session.memberDTO == null}" href="/member/login">로그인</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div id="main2">
+    <div class="container">
+        <div class="left-side">
+            <!-- 지역이름 -->
+            <div>
+                <h4 id="location">지명</h4>
+            </div>
+
+            <!-- DropDown Menu -->
+            <div class="dropdown">
+                <button onclick="dp_menu()" class="button" type="button">여행 상세 설정</button>
+            </div>
+
+            <ul>
+                <li th:each="lonLatDTO, iterStat : ${view.lonLatList}">
+                    <span th:if="${iterStat.isFirst() or lonLatDTO.calendar != view.lonLatList[iterStat.index - 1].calendar}" th:text="${lonLatDTO.calendar}"></span>
+                    <input id="calendarVal" hidden="hidden" th:value="${lonLatDTO.calendar}" th:if="${iterStat.isFirst() or lonLatDTO.calendar != view.lonLatList[iterStat.index - 1].calendar}">
+
+                    <span id="viaLat" th:if="${lonLatDTO.markerType == T(kr.ac.kopo.ReadyToTravel.plan.travelType.MarkerType).VIAPOINT}" th:text="${lonLatDTO.lon}"></span>
+                    <span id="viaLon" th:if="${lonLatDTO.markerType == T(kr.ac.kopo.ReadyToTravel.plan.travelType.MarkerType).VIAPOINT}" th:text="${lonLatDTO.lat}"></span>
+
+                    <span id="startLat" th:if="${lonLatDTO.markerType == T(kr.ac.kopo.ReadyToTravel.plan.travelType.MarkerType).START}" th:text="${lonLatDTO.lat}"></span>
+                    <span id="startLon" th:if="${lonLatDTO.markerType == T(kr.ac.kopo.ReadyToTravel.plan.travelType.MarkerType).START}" th:text="${lonLatDTO.lon}"></span>
+
+                    <span id="endLat" th:if="${lonLatDTO.markerType == T(kr.ac.kopo.ReadyToTravel.plan.travelType.MarkerType).END}" th:text="${lonLatDTO.lat}"></span>
+                    <span id="endLon" th:if="${lonLatDTO.markerType == T(kr.ac.kopo.ReadyToTravel.plan.travelType.MarkerType).END}" th:text="${lonLatDTO.lon}"></span>
+                </li>
+            </ul>
+
+
+<!--            <ul>-->
+<!--                <li th:each="lonLatDTO, iterStat : ${view.lonLatList}">-->
+<!--                    <span th:if="${iterStat.isFirst() or lonLatDTO.calendar != view.lonLatList[iterStat.index - 1].calendar}" th:text="${lonLatDTO.calendar}"></span>-->
+<!--                    <input id="calendarVal" hidden="hidden" value="${lonLatDTO.calendar" th:if="${iterStat.isFirst() or lonLatDTO.calendar != view.lonLatList[iterStat.index - 1].calendar}">-->
+<!--                </li>-->
+<!--            </ul>-->
+
+<!--            <ul>-->
+<!--                <li th:each="lonLatDTO, i : ${view.lonLatList}">-->
+<!--                    <span th:if="${lonLatDTO.markerType == T(kr.ac.kopo.ReadyToTravel.plan.travelType.MarkerType).VIAPOINT && lonLatDTO.calendar == }">Via</span>-->
+<!--                    <span th:if="${lonLatDTO.markerType == T(kr.ac.kopo.ReadyToTravel.plan.travelType.MarkerType).VIAPOINT}" th:text="${lonLatDTO.lon}"></span>-->
+<!--                    <span th:if="${lonLatDTO.markerType == T(kr.ac.kopo.ReadyToTravel.plan.travelType.MarkerType).VIAPOINT}" th:text="${lonLatDTO.lat}"></span>-->
+
+<!--                    <span th:if="${lonLatDTO.markerType == T(kr.ac.kopo.ReadyToTravel.plan.travelType.MarkerType).START}">START</span>-->
+<!--                    <span th:if="${lonLatDTO.markerType == T(kr.ac.kopo.ReadyToTravel.plan.travelType.MarkerType).START}" th:text="${lonLatDTO.lat}"></span>-->
+<!--                    <span th:if="${lonLatDTO.markerType == T(kr.ac.kopo.ReadyToTravel.plan.travelType.MarkerType).START}" th:text="${lonLatDTO.lon}"></span>-->
+
+<!--                    <span th:if="${lonLatDTO.markerType == T(kr.ac.kopo.ReadyToTravel.plan.travelType.MarkerType).END}">END</span>-->
+<!--                    <span th:if="${lonLatDTO.markerType == T(kr.ac.kopo.ReadyToTravel.plan.travelType.MarkerType).END}" th:text="${lonLatDTO.lat}"></span>-->
+<!--                    <span th:if="${lonLatDTO.markerType == T(kr.ac.kopo.ReadyToTravel.plan.travelType.MarkerType).END}" th:text="${lonLatDTO.lon}"></span>-->
+<!--                    &lt;!&ndash;                <span th:text="${lonLatDTO.markerType}"></span>&ndash;&gt;-->
+<!--                </li>-->
+<!--            </ul>-->
+
+            <div>
+                <input type="text" name="name" id="planName">
+                <input type="text" name="contents" id="planContents">
+            </div>
+        </div>
+        <div class="right-side map_wrap" id="map_wrap">
+            <!-- T MAP -->
+            <div id="map_div"></div>
+        </div>
+
+        <div class="button-container">
+            <div>
+                <button id="createBtn" type="button">경로 최적화</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="/js/tmapApi.js"></script>
+</html>

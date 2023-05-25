@@ -103,15 +103,17 @@ function ajaxParams(markers, marker_s, marker_e) {
 
 // 서버에 저장 할 정보 fetch
 function serverFetch(markerData) {
-
+    var radioVal = $('input[name="planType"]:checked').val();
+    console.log(radioVal);
     var markerPoint = (createPoints(markerData));
 
     var planDTO = {
         "name": $('#planName').val(),
         "contents": $('#planContents').val(),
-        "lonLatList": markerPoint
+        "lonLatList": markerPoint,
+        "planType": radioVal
     }
-
+    console.log(planDTO);
     fetch('/plan/createPlan', {
         method: 'POST',
         headers: {
@@ -352,7 +354,6 @@ function makeViaPoints(markers) {
 
 // 서버에 저장 할 경유지 lon, lat 정보
 function createPoints(markerData) {
-    console.log(markerData);
     var lonLatList = [];
 
     for (let i = 0; i < markerData.length; i++) {
