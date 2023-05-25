@@ -2,8 +2,8 @@ package kr.ac.kopo.ReadyToTravel.member;
 
 import kr.ac.kopo.ReadyToTravel.dto.MemberDTO;
 import kr.ac.kopo.ReadyToTravel.entity.MemberEntity;
+import kr.ac.kopo.ReadyToTravel.util.CacheConfig;
 import kr.ac.kopo.ReadyToTravel.util.PassEncode;
-import kr.ac.kopo.ReadyToTravel.util.RedisUtil;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,13 +18,15 @@ public class MemberServiceImpl implements MemberService {
     private final JavaMailSender javaMailSender;
     private final MailService mailService;
 
+    private final CacheConfig cacheConfig;
 
-    private final RedisUtil redisUtil;
-    public MemberServiceImpl(MemberRepository memberRepository, JavaMailSender javaMailSender, MailService mailService, RedisUtil redisUtil) {
+
+
+    public MemberServiceImpl(MemberRepository memberRepository, JavaMailSender javaMailSender, MailService mailService, CacheConfig cacheConfig) {
         this.memberRepository = memberRepository;
         this.javaMailSender = javaMailSender;
         this.mailService = mailService;
-        this.redisUtil = redisUtil;
+        this.cacheConfig = cacheConfig;
     }
 
     @Override
@@ -76,6 +78,7 @@ public class MemberServiceImpl implements MemberService {
             MemberDTO loginMember = memberDTO.convertToMemberDto(memberInfo);
             return loginMember;
         } catch (NullPointerException ne){
+
             return null;
         }
 
@@ -109,11 +112,8 @@ public class MemberServiceImpl implements MemberService {
             System.out.println("이메일이 존재하지 않습니다.");
             String uuid = UUID.randomUUID().toString().replaceAll("-", "");
             uuid = uuid.substring(0, 8);
-            Long validationLifetime = 300000l; //30만ms = 5분
-
             mailService.sendMailForEmail(email, uuid);
-
-            redisUtil.setDataExpire(uuid, email, validationLifetime);
+            cacheConfig.putValue(email, uuid);
             return true;
 
         }else{
@@ -122,13 +122,11 @@ public class MemberServiceImpl implements MemberService {
         }
 
     }
-
     @Override
     public boolean validateCode(String email, String mailValidateKey) {
-        if (email == redisUtil.getData(mailValidateKey)){
-            redisUtil.deleteData(mailValidateKey);
+        if (cacheConfig.getValue(email) == mailValidateKey){
             return true;
-        } else {
+            } else {
             return false;
         }
     }

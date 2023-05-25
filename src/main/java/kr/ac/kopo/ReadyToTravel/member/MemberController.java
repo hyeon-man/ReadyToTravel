@@ -1,15 +1,11 @@
 package kr.ac.kopo.ReadyToTravel.member;
 
 import kr.ac.kopo.ReadyToTravel.dto.MemberDTO;
-import kr.ac.kopo.ReadyToTravel.util.FileUpload;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
 @Controller
 @RequestMapping("/member")
 public class MemberController {
@@ -113,7 +109,7 @@ public class MemberController {
     @ResponseBody
     @RequestMapping("/validateCode")
     public String validateCode(String email, String mailValidateCode){
-        if(service.validateCode(email, mailValidateCode)){
+       if(service.validateCode(email, mailValidateCode)){
             return "emailValidOK";
         }
             return "emailValidFAIL";
