@@ -10,7 +10,6 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
     id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 
-
     // 배포 설정
 //    id 'war'
 }

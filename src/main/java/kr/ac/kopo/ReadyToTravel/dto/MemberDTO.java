@@ -21,6 +21,9 @@ public class MemberDTO {
     // 아이디
     private String memberId;
 
+    //이름
+    private String name;
+
     //비밀번호
     private String password;
 
@@ -43,6 +46,7 @@ public class MemberDTO {
         return MemberEntity.builder()
                 .memberId(dto.getMemberId())
                 .password(dto.getPassword())
+                .name(dto.getName())
                 .profileIMG(dto.getProfileIMG())
                 .signupDate(dto.getSignupDate())
                 .email(dto.getEmail())
@@ -55,6 +59,7 @@ public class MemberDTO {
                 .num(entity.getNum())
                 .memberId(entity.getMemberId())
                 .password(null)
+                .name(entity.getName())
                 .profileIMG(entity.getProfileIMG())
                 .signupDate(entity.getSignupDate())
                 .email(entity.getEmail())

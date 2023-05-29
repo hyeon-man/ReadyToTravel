@@ -31,15 +31,19 @@ public class MemberEntity {
     @Column(name = "member_id")
     private String memberId;
 
-    //비밀번호
+    // 이름
+    @Column
+    private String name;
+
+    // 비밀번호
     @Column
     private String password;
 
-    //프로필 사진
+    // 프로필 사진
     @Column(name = "profile_img")
     private String profileIMG;
 
-    //가입 일자
+    // 가입 일자
     @Column
     private Date signupDate;
 

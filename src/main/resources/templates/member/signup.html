@@ -2,8 +2,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script src="https://code.jquery.com/jquery-3.6.1.js"
-            integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <title>회원가입 페이지</title>
     <script src="/js/member/signup.js"></script>
@@ -12,23 +10,34 @@
 <body>
 <section class="login-form">
     <a href="../.."><h1>RTT</h1></a>
+
     <form name="signup_form" method="post">
         <div class="int-area">
             <button class="btn-area2" type="button" onclick="checkId(true)">중복확인</button>
             <input type="text" name="memberId" id="id" autocomplete="off" required>
             <label for="id">아이디</label>
-
         </div>
+
         <div class="int-area">
-            <button class="btn-area2" type="button" onclick="checkEmail(true)">메일인증</button>
-            <input type="text" name="email" autocomplete="off" required>
+            <button class="btn-area2" type="button" onclick="checkEmailButton(true)">메일인증</button>
+            <input type="email" id="email" name="email" autocomplete="off" required>
             <label for="id">이메일</label>
-            <button class="btn-area2" type="button" id="hiddenButton" onclick="validationCode(true)">보안코드 확인</button>
-            <input type="text" id="hiddenInput" name="mailValidateCode" autocomplete="off" required>
+            <button class="btn-area2" type="button" id="mailValidationButton" onclick="validationCodeButton(true)">인증확인</button>
+            <input type="text" id="mailValidationCode" name="mailValidateCode" autocomplete="off" required>
         </div>
 
         <div class="int-area">
-            <input type="password" name="password" id="pw" autocomplete="off" required>
+            <input type="text" name="name" autocomplete="off" required>
+            <label for="id">이름</label>
+        </div>
+
+        <div class="int-area">
+            <input type="tel" name="phoneNum" autocomplete="off" required>
+            <label for="id">휴대폰 전화번호</label>
+        </div>
+
+        <div class="int-area">
+            <input type="password" name="password" autocomplete="off" required>
             <label for="id">비밀번호</label>
         </div>
         <div class="int-area">

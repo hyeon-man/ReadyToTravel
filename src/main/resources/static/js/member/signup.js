@@ -1,5 +1,8 @@
 let isCheck;
 let emailValidate;
+let ValidateCodeCheck;
+const form = document.signup_form;
+
 function checkId(mode) {
     if (document.signup_form.memberId.value == "") {
         alert("중복검사 전에 아이디를 입력해 주세요");
@@ -11,9 +14,10 @@ function checkId(mode) {
     }
 }
 
-function checkEmail(emailCheckButton) {
+function checkEmailButton(emailCheckButton) {
     if (document.signup_form.email.value == "") {
         alert("메일 인증을 진행 하려면 메일을 입력해주세요");
+        form.email.focus();
         return;
     }
 
@@ -21,9 +25,20 @@ function checkEmail(emailCheckButton) {
         checkEmailAsync();
     }
 }
+function validationCodeButton(validationCodeButton){
+    if (document.signup_form.mailValidateCode.value == "") {
+        alert("인증 코드 확인을 위해 인증코드를 입력해주세요")
+        form.mailValidateCode.focus();
+        return;
+    }
+    if (validationCodeButton){
+        validationCodeAsync();
+    }
+
+}
 function checkIdAsync() {
-    const form = document.signup_form;
-    const url = "checkId/" + form.memberId.value;
+    const checkIdForm = document.signup_form;
+    const url = "checkId/" + checkIdForm.memberId.value;
 
     fetch(url)
         .then(response => {
@@ -35,7 +50,7 @@ function checkIdAsync() {
         })
         .then(result => {
             if (result === "OK") {
-                isCheck = form.memberId.value;
+                isCheck = checkIdForm.memberId.value;
                 alert("사용 가능한 아이디입니다");
                 if (confirm("'" + isCheck + "' 이 아이디를 사용하시겠습니까?")) {
                     const inputElement = document.getElementById("id");
@@ -53,8 +68,8 @@ function checkIdAsync() {
 }
 
 function checkEmailAsync() {
-    const form = document.signup_form;
-    const urlEmail = "checkEmail/" + form.email.value;
+    const checkEmailForm = document.signup_form;
+    const urlEmail = "checkEmail/" + checkEmailForm.email.value;
 
     fetch(urlEmail)
         .then(response => {
@@ -66,13 +81,13 @@ function checkEmailAsync() {
         })
         .then(result => {
             if (result === "sendMailOK") {
-                emailValidate = form.email.value;
+                emailValidate = checkEmailForm.email.value;
                 alert("이메일로 보안코드를 전송하였습니다.");
-                const elementButton = document.getElementById("hiddenButton");
-                elementButton.removeAttribute("id");
+                const elementButton = document.getElementById("mailValidationButton");
+                elementButton.style.display = "block";
 
-                const elementInput = document.getElementById("hiddenInput");
-                elementInput.removeAttribute("id");
+                const elementInput = document.getElementById("mailValidationCode");
+                elementInput.style.display = "block";
 
             }else
             {
@@ -83,11 +98,52 @@ function checkEmailAsync() {
             console.error("Error:", error);
         });
 }
+
+function validationCodeAsync() {
+    const validateForm = document.signup_form;
+    const url = 'validateCode';
+
+    const formData = new FormData();
+    formData.append('email', validateForm.email.value);
+    formData.append('mailValidateCode', validateForm.mailValidateCode.value);
+
+    fetch(url, {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.text())
+        .then(data => {
+            if (data === 'emailValidOK') {
+                alert("이메일 인증 성공!")
+                const inputElementEmail = document.getElementById("email");
+                inputElementEmail.readOnly = true;
+
+                const elementButton = document.getElementById("mailValidationButton");
+                elementButton.style.display = "none";
+
+                const elementInput = document.getElementById("mailValidationCode");
+                elementInput.style.display = "none";
+            } else if (data === 'emailValidFAIL') {
+                console.log('이메일 유효성 검사 실패');
+
+            }
+        })
+        .catch(error => {
+            console.error('에러:', error);
+        });
+}
+
+
 function signup() {
     const form = document.signup_form;
 
     if (isCheck != form.memberId.value) {
         alert("아이디 중복 검사를 하셔야 합니다");
+        return;
+    }
+
+    if (emailValidate != form.email.value){
+        alert("이메일 인증을 진행하십시오");
         return;
     }
 
@@ -99,6 +155,12 @@ function signup() {
     if (form.email.value == "") {
         alert("이메일을 입력해 주세요");
         form.email.focus();
+        return;
+    }
+
+    if (form.name.value == "") {
+        alert("이름을 입력해 주세요");
+        form.name.focus();
         return;
     }
 

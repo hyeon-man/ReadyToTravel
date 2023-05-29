@@ -111,7 +111,9 @@ public class MemberController {
     public String validateCode(String email, String mailValidateCode){
         if(service.validateCode(email, mailValidateCode)){
             return "emailValidOK";
+        }else {
+            return "emailValidFAIL";
+
         }
-        return "emailValidFAIL";
     }
 }

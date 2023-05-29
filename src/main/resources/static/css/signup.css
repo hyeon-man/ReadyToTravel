@@ -90,6 +90,7 @@ body::before{
     75%{transform: translateX(8px);}
 }
 .int-area input:focus + label,
+.int-area input:read-only + label,
 .int-area input:valid + label{
     top:-2px;
     font-size: 13px;
@@ -137,9 +138,9 @@ body::before{
     color: #999;
 }
 
-#hiddenButton{
+#mailValidationButton{
     display: none;
 }
-#hiddenInput{
+#mailValidationCode{
     display: none;
 }
