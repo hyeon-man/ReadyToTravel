@@ -86,9 +86,11 @@ function checkEmailAsync() {
                 const elementButton = document.getElementById("mailValidationButton");
                 elementButton.style.display = "block";
 
-                const elementInput = document.getElementById("mailValidationCode");
+                const elementInput = document.getElementById("mailValidationCodeInput");
                 elementInput.style.display = "block";
 
+                const elementLabel = document.getElementById("mailValidationCodeLabel");
+                elementLabel.style.display = "block";
             }else
             {
                 alert("이미 존재하는 이메일 입니다.");
@@ -121,11 +123,13 @@ function validationCodeAsync() {
                 const elementButton = document.getElementById("mailValidationButton");
                 elementButton.style.display = "none";
 
-                const elementInput = document.getElementById("mailValidationCode");
+                const elementInput = document.getElementById("mailValidationCodeInput");
                 elementInput.style.display = "none";
-            } else if (data === 'emailValidFAIL') {
-                console.log('이메일 유효성 검사 실패');
 
+                const elementLabel = document.getElementById("mailValidationCodeLabel");
+                elementLabel.style.display = "none";
+            } else if (data === 'emailValidFAIL') {
+                alert("유효하지 않은 보안코드 입니다. 보안코드가 오지 않았다면 다시 시도하거나 이메일을 확인해주세요");
             }
         })
         .catch(error => {
@@ -183,4 +187,5 @@ function signup() {
     }
 
     form.submit();
+    alert("회원가입 완료! 로그인 페이지로 이동합니다.")
 }

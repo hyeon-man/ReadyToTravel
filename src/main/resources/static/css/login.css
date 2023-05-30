@@ -32,7 +32,7 @@ body {
     text-align: center;
     margin-bottom: 5%;
     position: relative;
-    background-image: url(https://www.dropbox.com/s/l9pvu6rdm8cvg5k/mainN7.jpg?dl=1);
+    background-image: url(https://www.dropbox.com/s/18j1sotyp0ds18e/1.jpg?dl=1);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -62,7 +62,7 @@ body::before{
     font-size: 32px;
     text-align: center;
     margin-bottom: 60px;
-    color: #000;
+    color: #ffffff;
 
 }
 .login-form a{
@@ -79,18 +79,20 @@ body::before{
     position: relative;
     margin-top: 20px;
 }
+/*인풋창 조지기1*/
 .int-area input{
     width: 100%;
-    padding: 20px 10px 10px;
-    background-color: transparent;
+    padding: 20px 22px 13px;
+    /*background-color: transparent;*/
     border: none;
-    border-bottom: 1px solid #9999;
-    font-size: 18px; color: #000000;
+    font-size: 15px; color: #ffffff;
     outline: none;
+    background: rgba(255,255,255,0.1);
+    border-radius: 25px;
 }
 .int-area label{
     position: absolute; left: 10px; top: 15px;
-    font-size: 18px; color: #9999;
+    font-size: 18px; color: #ffffff;
     transition: all 0.5s ease;
 }
 .int-area label.warning {
@@ -105,10 +107,11 @@ body::before{
     50% { transform: translateX(-8px); }
     75% { transform: translateX(8px); }
 }
+/*인풋창 조지기 2*/
 .int-area input:focus + label,
 .int-area input:valid + label{
     top:-2px;
-    font-size: 13px;
+    font-size: 0px;
     color: #999;
 }
 .btn-area{
@@ -136,16 +139,18 @@ body::before{
 .caption a{
     font-size: 15px;
     text-decoration: none;
-    color: #87ceeb;
+    color: white;
 
 }
 .caption div:nth-child(2) a {
-    color: skyblue;
+    color: white;
 
 }
 .caption div:nth-child(2):hover a {
+    color: skyblue;
     border-bottom: 1px solid skyblue;
 }
 .caption div:nth-child(1):hover a {
+    color: skyblue;
     border-bottom: 1px solid skyblue;
 }

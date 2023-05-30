@@ -12,18 +12,22 @@
     <a href="../.."><h1>RTT</h1></a>
 
     <form name="signup_form" method="post">
+        <button class="btn-area2" type="button" onclick="checkId(true)">중복확인</button>
         <div class="int-area">
-            <button class="btn-area2" type="button" onclick="checkId(true)">중복확인</button>
             <input type="text" name="memberId" id="id" autocomplete="off" required>
             <label for="id">아이디</label>
         </div>
 
+        <button class="btn-area2" type="button" onclick="checkEmailButton(true)">메일인증</button>
         <div class="int-area">
-            <button class="btn-area2" type="button" onclick="checkEmailButton(true)">메일인증</button>
             <input type="email" id="email" name="email" autocomplete="off" required>
             <label for="id">이메일</label>
-            <button class="btn-area2" type="button" id="mailValidationButton" onclick="validationCodeButton(true)">인증확인</button>
-            <input type="text" id="mailValidationCode" name="mailValidateCode" autocomplete="off" required>
+        </div>
+
+        <button class="btn-area2" type="button" id="mailValidationButton" onclick="validationCodeButton(true)">인증확인</button>
+        <div class="int-area">
+            <input type="text" id="mailValidationCodeInput" name="mailValidateCode" autocomplete="off" required>
+            <label for="id" id="mailValidationCodeLabel">보안코드 확인</label>
         </div>
 
         <div class="int-area">

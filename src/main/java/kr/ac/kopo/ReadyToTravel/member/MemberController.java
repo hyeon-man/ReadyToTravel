@@ -71,7 +71,6 @@ public class MemberController {
         if (login != null) {
             System.out.println("login ! ===== " + login);
             session.setAttribute("memberDTO", login);
-
             return  "redirect:/";
         } else {
             return path + "login";
@@ -93,7 +92,7 @@ public class MemberController {
         System.out.println(memberDTO);
         service.singUp(memberDTO);
 
-        return "index";
+        return "/login";
     }
 
     @ResponseBody
