@@ -1,6 +1,6 @@
-
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"><head>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
     <meta charset="UTF-8">
     <title>게시판</title>
     <link rel="stylesheet" href="/css/list.css">
@@ -22,7 +22,8 @@
             <li><a href="/guide">이용방법</a></li>
             <li><a href="#">일단빈칸</a></li>
             <li><a href="/board/list">후기게시판</a></li>
-            <li><a href="/member/login">로그인</a></li>
+            <li><a th:if="${session.memberDTO != null}" href="/member/logout">로그아웃</a></li>
+            <li><a th:if="${session.memberDTO == null}" href="/member/login">로그인</a></li>
         </ul>
     </nav>
 </header>

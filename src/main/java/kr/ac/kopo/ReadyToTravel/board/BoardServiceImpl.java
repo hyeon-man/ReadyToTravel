@@ -1,8 +1,10 @@
 package kr.ac.kopo.ReadyToTravel.board;
 
 import kr.ac.kopo.ReadyToTravel.dto.BoardDTO;
+import kr.ac.kopo.ReadyToTravel.dto.ReplyDTO;
 import kr.ac.kopo.ReadyToTravel.entity.attach.BoardAttachEntity;
 import kr.ac.kopo.ReadyToTravel.entity.board.BoardEntity;
+import kr.ac.kopo.ReadyToTravel.entity.board.ReplyEntity;
 import kr.ac.kopo.ReadyToTravel.util.FileUpload;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -90,12 +92,26 @@ public class BoardServiceImpl implements BoardService {
     public BoardDTO findOne(Long boardNum) {
         BoardEntity boardEntity = repository.findById(boardNum).orElseThrow(() -> new NullPointerException("해당 게시글이 존재하지 않습니다"));
 
+
+        List<ReplyDTO> replies = new ArrayList<>();
+        for (int i = 0; i < boardEntity.getReplies().size(); i++) {
+            ReplyDTO item = ReplyDTO.builder()
+                    .replyNum(boardEntity.getReplies().get(i).getReplyNum())
+                    .content(boardEntity.getReplies().get(i).getContent())
+                    .writer(boardEntity.getReplies().get(i).getMember().getNum())
+                    .writeDate(boardEntity.getReplies().get(i).getWriteDate())
+                    .build();
+            replies.add(item);
+        }
+
+
         return BoardDTO.builder()
                 .boardContent(boardEntity.getBoardContent())
                 .boardName(boardEntity.getBoardName())
                 .boardWriter(boardEntity.getBoardWriter())
                 .boardDateCreate(boardEntity.getBoardDateCreate())
                 .boardNum(boardEntity.getBoardNum())
+                .replies(replies)
                 .build();
 
     }

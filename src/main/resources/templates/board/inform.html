@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <head>
+        <meta charset="UTF-8">
+        <title>informTest</title>
+        <link rel="stylesheet" href="/css/index.css">
+
+    </head>
+<body>
+<header>
+    <!--LOGO-->
+    <div class="logo">
+        <a href="/">
+            <b>RTT</b>
+            <h7>&nbsp;READY TO TRAVEL</h7>
+        </a>
+    </div>
+    <!--NAV-->
+    <nav>
+        <ul>
+            <li><a href="/place">여행지</a></li>
+            <li><a href="/guide">이용방법</a></li>
+            <li><a href="#">일단빈칸</a></li>
+            <li><a href="/board/list">후기게시판</a></li>
+            <!-- 로그인  123 -->
+            <li><a th:if="${session.memberDTO != null}" href="/member/logout">로그아웃</a></li>
+            <!-- 이게 비로그인 456-->
+            <li><a th:if="${session.memberDTO == null}" href="/member/login">로그인</a></li>
+
+        </ul>
+    </nav>
+</header>
+
+<div>
+    <h2>Board Information</h2>
+    <p>Board Number: <span th:text="${board.boardNum}"></span></p>
+    <p>Board Name: <span th:text="${board.boardName}"></span></p>
+    <p>Board Content: <span th:text="${board.boardContent}"></span></p>
+    <p>Board Date: <span th:text="${board.boardDateCreate}"></span></p>
+    <p>Board Writer: <span th:text="${board.boardWriter}"></span></p>
+</div>
+
+<div>
+    <table>
+        <thead>
+        <tr>
+            <th>Reply Number</th>
+            <th>Content</th>
+            <th>Writer</th>
+            <th>Write Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="reply : ${board.replies}">
+            <td th:text="${reply.replyNum}"></td>
+            <td th:text="${reply.content}"></td>
+            <td th:text="${reply.writer}"></td>
+            <td th:text="${reply.writeDate}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</table>
+<footer>
+    <p>Copyright &copy; 2023
+    </p>
+</footer>
+</body>
+</html>

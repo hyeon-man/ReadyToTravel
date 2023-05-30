@@ -50,10 +50,8 @@ public class BoardController {
         BoardDTO board = service.findOne(boardNum);
         model.addAttribute("board", board);
         System.out.println("게시글 정보 = " + board);
+        System.out.println("게시글 정보 = " + board.getReplies());
 
-        List<ReplyDTO> replyList= replyService.replyList(boardNum);
-        model.addAttribute("replyList", replyList);
-        System.out.println("댓글 리스트 = " + replyList);
 
         return "/board/inform";
 

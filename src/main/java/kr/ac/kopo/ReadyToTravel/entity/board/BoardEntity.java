@@ -35,6 +35,10 @@ public class BoardEntity {
     @Column
     private String boardWriter;
 
+
+    @OneToMany(mappedBy = "boardEntity", cascade = CascadeType.ALL)
+    private List<ReplyEntity> replies;
+
     @OneToMany(mappedBy = "boardEntity", cascade = CascadeType.ALL)
     private List<BoardAttachEntity> attachEntities = new ArrayList<>();
 

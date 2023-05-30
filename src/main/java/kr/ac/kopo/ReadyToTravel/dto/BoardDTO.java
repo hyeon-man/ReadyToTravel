@@ -16,8 +16,6 @@ import java.util.List;
 @Builder
 public class BoardDTO {
 
-    private List<String> filename = new ArrayList<>();
-
     private Long boardNum;
     private String boardName;
     private String boardContent;
@@ -25,7 +23,9 @@ public class BoardDTO {
     private String boardWriter;
 
     private List<MultipartFile> multipartFiles;
+    private List<String> filename = new ArrayList<>();
 
+    private List<ReplyDTO> replies;
 
     /**
      * @param
@@ -42,6 +42,7 @@ public class BoardDTO {
                 .build();
         return entity;
     }
+
     public static BoardDTO convertToDTO(BoardEntity entity) {
         BoardDTO boardDTO = new BoardDTO();
         boardDTO.setBoardNum(entity.getBoardNum());
@@ -52,7 +53,6 @@ public class BoardDTO {
 
         return boardDTO;
     }
-
 
 
 }
