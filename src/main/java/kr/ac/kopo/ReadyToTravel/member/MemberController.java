@@ -1,20 +1,30 @@
 package kr.ac.kopo.ReadyToTravel.member;
 
+import kr.ac.kopo.ReadyToTravel.board.BoardService;
+import kr.ac.kopo.ReadyToTravel.dto.BoardDTO;
 import kr.ac.kopo.ReadyToTravel.dto.MemberDTO;
+import kr.ac.kopo.ReadyToTravel.plan.PlanService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
+
 @Controller
 @RequestMapping("/member")
 public class MemberController {
     final String path = "member/";
 
     private final MemberService service;
+    private final BoardService boardService;
+    private final PlanService planService;
 
-    public MemberController(MemberService service) {
+    public MemberController(MemberService service, BoardService boardService, PlanService planService) {
         this.service = service;
+        this.boardService = boardService;
+        this.planService = planService;
     }
 
     @GetMapping("/checkId/{id}")
@@ -48,14 +58,15 @@ public class MemberController {
 
     @ResponseBody
     @PostMapping("/initPassword")
-    public String initPassword(String id, String email) throws MessagingException {
+    public String initPassword(String memberId, String email) throws MessagingException {
 
-        if (service.initPass(id, email)) {
+        if (service.initPass(memberId, email)) {
             return "SUCCESS";
         } else {
             return "FAIL";
         }
     }
+
     @GetMapping("/login")
     public String login() {
         return path + "login";
@@ -71,9 +82,18 @@ public class MemberController {
         if (login != null) {
             System.out.println("login ! ===== " + login);
             session.setAttribute("memberDTO", login);
-            return  "redirect:/";
+
+            String targetUrl = (String) session.getAttribute("target_url");
+            System.out.println("MemberController: " + targetUrl);
+            session.removeAttribute("target_url");
+            if (targetUrl == null) {
+                return  "redirect:/";
+            } else {
+                return "redirect:" + targetUrl;
+            }
+
         } else {
-            return path + "login";
+            return "redirect: " + path + "login";
         }
     }
     @GetMapping("/logout")
@@ -92,7 +112,7 @@ public class MemberController {
         System.out.println(memberDTO);
         service.singUp(memberDTO);
 
-        return "/login";
+        return "redirect:/" + path + "login";
     }
 
     @ResponseBody
@@ -115,4 +135,15 @@ public class MemberController {
 
         }
     }
+    /*@RequestMapping("/myPage")
+    public String myPage(Model model, @SessionAttribute MemberDTO memberDTO){
+
+        List<BoardDTO> boardList = boardService.findAllByMemberId(memberDTO.getMemberId());
+        model.addAttribute("boardList", boardList);
+
+        List<PlanService> planList = planService.findAllByMemberId(memberDTO.getMemberId());
+        model.addAttribute("planList", planList);
+
+        return path + "myPage";
+    }*/
 }

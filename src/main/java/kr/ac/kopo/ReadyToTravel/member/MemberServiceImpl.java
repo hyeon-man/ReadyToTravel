@@ -18,7 +18,6 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
     private final JavaMailSender javaMailSender;
     private final MailService mailService;
-
     private final CacheConfig cacheConfig;
 
 
