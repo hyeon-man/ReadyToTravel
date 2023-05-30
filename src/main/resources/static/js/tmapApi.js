@@ -486,7 +486,7 @@ function getDateRangeData(param1, param2) {  //param1은 시작일, param2는 �
 function dp_menu() {
     let click = document.getElementById("drop-content");
     if (click.style.display === "none") {
-        click.style.display = "block";
+        click.style.display = "flex";
 
     } else {
         click.style.display = "none";
