@@ -135,15 +135,17 @@ public class MemberController {
 
         }
     }
-    /*@RequestMapping("/myPage")
-    public String myPage(Model model, @SessionAttribute MemberDTO memberDTO){
+    @GetMapping("/myPage")
+    public String myPage(/*Model model,*/@SessionAttribute MemberDTO memberDTO){
+        /*
 
         List<BoardDTO> boardList = boardService.findAllByMemberId(memberDTO.getMemberId());
         model.addAttribute("boardList", boardList);
 
         List<PlanService> planList = planService.findAllByMemberId(memberDTO.getMemberId());
         model.addAttribute("planList", planList);
+*/
 
         return path + "myPage";
-    }*/
+    }
 }
