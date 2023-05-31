@@ -20,13 +20,12 @@
             <h7>&nbsp;READY TO TRAVEL</h7>
         </a>
     </div>
-
     <!--NAV-->
     <nav>
         <ul>
-            <li><a href="#">소개</a></li>
-            <li><a href="/list">여행지</a></li>
-            <li><a href="#">이용방법</a></li>
+            <li><a href="/index">소개</a></li>
+            <li><a href="/board/list">여행지</a></li>
+            <li><a href="/guide">이용방법</a></li>
             <li><a href="/boardList">후기게시판</a></li>
             <!-- 로그인 -->
             <li><a th:if="${session.memberDTO != null}" href="/member/logout">로그아웃</a></li>
@@ -53,27 +52,16 @@
                 <h4 id="location">지명</h4>
             </div>
             <!-- 달력 -->
-            <input type="text" id="daterangepicker" name="daterangepicker" style="border: none; font-size: 30px"
-                   readonly onfocus="this.blur()"/>
+
+            <input type="text" id="daterangepicker" name="daterangepicker"
+                   style="border: none; margin-left:5%; font-size: 30px">
 
             <!-- 달력에서 선택한 날짜 수 -->
             <h3 id="calendarsDate"></h3>
 
-            <!-- DropDown Menu -->
-            <div class="dropdown">
-                <button onclick="dp_menu()" class="button" type="button">여행 상세 설정</button>
-            </div>
-
-            <div style="display: none;" id="drop-content">
-                <!-- 선택한 날짜 수 만큼 input 추가 -->
-                <ul id="dateByPlan">
-                </ul>
-            </div>
-
-            <div>
+            <div class="radio_button">
                 <input type="text" name="name" id="planName" placeholder="Plan Name">
-                <input type="text" name="contents" id="planContents"  placeholder="Plan Contents">
-
+                <input type="text" name="contents" id="planContents" placeholder="Plan Contents">
                 <ul>
                     <li>
                         <input type="radio" name="planType" value="0" checked>가족
@@ -89,6 +77,16 @@
                     </li>
                 </ul>
             </div>
+            <!-- DropDown Menu -->
+            <div class="dropdown">
+                <button onclick="dp_menu()" class="button" type="button">여행 상세 설정</button>
+            </div>
+
+            <div style="display: none;" id="drop-content">
+                <!-- 선택한 날짜 수 만큼 input 추가 -->
+                <ul id="dateByPlan">
+                </ul>
+            </div>
         </div>
         <div class="right-side map_wrap" id="map_wrap">
             <!-- T MAP -->
@@ -99,9 +97,8 @@
             <div>
                 <button id="createBtn" type="button">경로 최적화</button>
             </div>
-
             <div>
-                <button id="createPlanBtn" type="button">계획 생성</button>
+                <a href="/plan/createPlan/"><button id="createPlanBtn">계획 생성</button></a>
             </div>
 
             <div>

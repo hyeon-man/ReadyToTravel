@@ -8,6 +8,5 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface PlanRepository extends JpaRepository<PlanEntity, Long> {
-
     PlanEntity findByNum(long planNum);
 }

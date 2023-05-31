@@ -33,6 +33,7 @@ public class ReplyCustomRepositoryImpl implements ReplyCustomRepository {
                 .from(replyEntity)
                 .leftJoin(replyEntity.member, memberEntity)
                 .orderBy(replyEntity.writeDate.desc())
+                .where(replyEntity.boardEntity.boardNum.eq(boardNum))
                 .fetch();
 
     }

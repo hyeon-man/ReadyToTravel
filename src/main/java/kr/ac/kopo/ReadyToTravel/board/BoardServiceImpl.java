@@ -17,14 +17,16 @@ public class BoardServiceImpl implements BoardService {
     final BoardRepository repository;
     final BoardAttachRepository boardAttachRepository;
     final BoardCustomRepository boardCustomRepository;
-
     final ReplyCustomRepository replyCustomRepository;
+
+//    final BoardAttachCustomRepository boardAttachCustomRepository;
 
     public BoardServiceImpl(BoardRepository repository, BoardAttachRepository boardAttachRepository, BoardCustomRepository boardCustomRepository, ReplyCustomRepository replyCustomRepository) {
         this.repository = repository;
         this.boardAttachRepository = boardAttachRepository;
         this.boardCustomRepository = boardCustomRepository;
         this.replyCustomRepository = replyCustomRepository;
+//        this.boardAttachCustomRepository = boardAttachCustomRepository;
     }
 
     @Override
@@ -67,7 +69,10 @@ public class BoardServiceImpl implements BoardService {
         List<ReplyDTO> replies = replyCustomRepository.getReplies(boardNum);
         detail.setReplies(replies);
 
-        // TODO: 2023-05-31 게시글에 포함된 이미지 url 까지 조회 해와야함
+//        // TODO: 2023-05-31 게시글에 포함된 이미지 url 까지 조회 해와야함
+//        List<String> fileName =  boardAttachCustomRepository.findByFileNameByBoardNum(boardNum);
+//        detail.setFilename(fileName);
+//        System.out.println("filename = " + fileName);
 
         return detail;
     }

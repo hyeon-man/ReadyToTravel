@@ -1,3 +1,14 @@
+<!------------------------------------------------------------------------------------
+ ____                    _          _____          _____                            _
+| ___ \                 | |        |_   _|        |_   _|                          | |
+| |_/ /  ___   __ _   __| | _   _    | |    ___     | |   _ __   __ _ __   __  ___ | |
+|    /  / _ \ / _` | / _` || | | |   | |   / _ \    | |  | '__| / _` |\ \ / / / _ \| |
+| |\ \ |  __/| (_| || (_| || |_| |   | |  | (_) |   | |  | |   | (_| | \ V / |  __/| |
+\_| \_| \___| \__,_| \__,_| \__, |   \_/   \___/    \_/  |_|    \__,_|  \_/   \___||_|
+                             __/ |
+                            |___/
+------------------------------------------------------------------------------------->
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -8,7 +19,7 @@
 <div>
     <h3>게시물 작성</h3>
     <div>
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             <div>
                 <label>제목:</label>
                 <input type="text" name="boardName">
@@ -19,16 +30,13 @@
             </div>
 
             <div>
-                <label>작성일자:</label>
-                <input type="number" name="boardDateCreate">
-            </div>
-            <div>
-                <label>작성자:</label>
-                <input type="number" name="boardWriter">
+                <input type="file" name="multipartFiles">
             </div>
             <div>
                 <button>등록</button>
-                <a href="/boardList"><button type="button">취소</button></a>
+                <a href="../">
+                    <button type="button">취소</button>
+                </a>
             </div>
         </form>
     </div>

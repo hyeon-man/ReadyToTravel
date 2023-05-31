@@ -12,14 +12,17 @@ window.onload = function initTmap() {
         zoom: 15
     });
 
+// 현재 페이지의 URL에서 planNum 추출
+    const url = window.location.href;
+    const planNum = url.split("/").pop(); // URL에서 마지막 부분 추출
 
     $.ajax({
         type: "GET",
-        url: "/plan/getMarker/4",//
+        url: `/plan/getMarker/${planNum}`,//
         async: false,
         contentType: "application/json",
         success: function (response) {
-
+            console.log(response);
             const lonLatList = response.lonLatList;
 
             const li = document.getElementById('dateButton');
