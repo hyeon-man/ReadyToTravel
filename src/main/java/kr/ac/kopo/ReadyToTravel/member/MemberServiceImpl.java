@@ -8,6 +8,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -17,7 +18,6 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
     private final JavaMailSender javaMailSender;
     private final MailService mailService;
-
     private final CacheConfig cacheConfig;
 
 
@@ -41,6 +41,8 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void singUp(MemberDTO memberDTO) {
+        memberDTO.setSignupDate(new Date());
+
         // Convert DTO to Entity
         MemberEntity entity = memberDTO.convertToEntity(memberDTO);
 
@@ -124,10 +126,11 @@ public class MemberServiceImpl implements MemberService {
     }
     @Override
     public boolean validateCode(String email, String mailValidateKey) {
-        if (cacheConfig.getValue(email) == mailValidateKey){
-            return true;
-            } else {
+        if (cacheConfig.getValue(email) == null || !cacheConfig.getValue(email).equals(mailValidateKey)){
             return false;
+            } else {
+            System.out.println("good");
+            return true;
         }
     }
 
