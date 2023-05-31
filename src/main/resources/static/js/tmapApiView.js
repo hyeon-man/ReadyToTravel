@@ -1,52 +1,82 @@
-let markers = []; // 경유지 마커들
-let marker_s; // 시작
-let marker_e; // 끝
-let viaPointName = '';
-let lon;
-let lat;
-
+let map;
+let button;
+let markers = [];
+let lonLatRealList = [];
 window.onload = function initTmap() {
+    // map 생성
+    // Tmapv2.Map을 이용하여, 지도가 들어갈 div, 넓이, 높이를 설정합니다.
     map = new Tmapv2.Map("map_div", {
         center: new Tmapv2.LatLng(36.35086524077589, 127.45422567640077), // 지도 초기 좌표
         width: "100%", // 지도의 넓이
         height: "100%", // 지도의 높이
         zoom: 15
     });
-// //
-    if (marker_type == 0) {
-        // 시작 마커가 없으면
-        setMapMarker('Start');
-    } else if (marker_type == 2) {
-        // 끝 마커가 없으면
-        setMapMarker('End');
-    } else {
-        // 경유지 마커를 찍을 때
-        setMapMarker(viaPointName);
-    }
 
-    function setMapMarker(title) {
-        let markerLon = lon;
-        let markerLat = lat;
 
-        // Marker 객체 생성.
-        const marker = new Tmapv2.Marker({
-            position: new Tmapv2.LatLng(markerLat.lat(), markerLon.lng()), //Marker의 중심좌표 설정.
-            map: map, //Marker가 표시될 Map 설정.
-            title: title
+    $.ajax({
+        type: "GET",
+        url: "/plan/getMarker/4",//
+        async: false,
+        contentType: "application/json",
+        success: function (response) {
+
+            const lonLatList = response.lonLatList;
+
+            const li = document.getElementById('dateButton');
+
+            for (let i = 0; i < lonLatList.length; i++) {
+                button = document.createElement('button');
+
+                if (lonLatList[i].markerType == 'START') {
+                    button.textContent = lonLatList[i].calendar;
+                    button.classList = "planBtn";
+                    li.append(button);
+                }
+            }
+
+            $('.planBtn').off().on('click', function (evt) {
+                const clickBtn = evt.target;
+                const textContentBtn = clickBtn.textContent;
+
+                for (let i = 0; i < lonLatList.length; i++) {
+                    if (textContentBtn == lonLatList[i].calendar)
+                        lonLatRealList.push(lonLatList[i]);
+                }
+                clearMarker();
+                createMarker(lonLatRealList);
+            });
+        }
+    })
+}
+
+function createMarker(lonLatList) {
+
+    for (let i = 0; i < lonLatList.length; i++) {
+        const lon = lonLatList[i].lon;
+
+        const lat = lonLatList[i].lat;
+
+        //Marker 객체 생성.
+        marker = new Tmapv2.Marker({
+            position: new Tmapv2.LatLng(lat, lon), //Marker의 중심좌표 설정.
+            map: map, //Marker가 표시될 Map 설정..
+            title: lonLatList[i].markerType
         });
 
-        if (title === 'Start') {
-            marker_s = marker;
-            marker_s.setIcon("http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png");
+        markers.push(marker);
 
-            // console.log("start lat : " + marker_s.getPosition().lat() + ", start lng : " + marker_s.getPosition().lng());
-        } else if (title === 'End') {
-            marker_e = marker;
-            marker_e.setIcon("http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_e.png");
-
-            // console.log("end lat : " + marker_e.getPosition().lat() + ", end lng : " + marker_e.getPosition().lng());
-        } else {
-            markers.push(marker);
+        if (lonLatList[i].markerType == 'START') {
+            marker.setIcon("http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png");
         }
+        if (lonLatList[i].markerType == 'END') {
+            marker.setIcon("http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_e.png");
+        }
+    }
+}
+
+function clearMarker() {
+    for (let i = 0; i < markers.length; i++) {
+        markers[i].setMap(null);
+        console.log(markers[i]);
     }
 }

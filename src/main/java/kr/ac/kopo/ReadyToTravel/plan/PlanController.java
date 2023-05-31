@@ -32,21 +32,24 @@ public class PlanController {
 
 
     @GetMapping("/viewPlan/{planNum}")
-    public String viewPlan(@PathVariable long planNum, Model model) {
-        PlanDTO view = planService.viewPlan(planNum);
-
-        model.addAttribute("view", view);
-
-        return "plan/viewPlan";
+    public String viewPlan(@PathVariable long planNum) {
+        return "/plan/viewPlan";
     }
 
+    @GetMapping("/getMarker/{planNum}")
+    @ResponseBody
+    public PlanDTO getMarker(@PathVariable long planNum) {
+        PlanDTO view = planService.viewPlan(planNum);
+
+        return view;
+    }
     /**
      * @return plan/makePlan 페이지를 반환합니다.
      */
     @GetMapping("/createPlan")
     public String createPlan() {
 
-        return "plan/makePlan";
+        return "plan/createPlan";
     }
 
 /**
@@ -61,6 +64,7 @@ public class PlanController {
         HttpSession session = request.getSession();
 
         MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
+        System.out.println("memberDTO.getNum() = " + memberDTO.getNum());
 
         if (memberDTO != null) {
             plan.setCreateDate(new Date());
