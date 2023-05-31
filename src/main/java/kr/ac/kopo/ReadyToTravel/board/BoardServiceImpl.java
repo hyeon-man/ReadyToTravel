@@ -1,28 +1,30 @@
 package kr.ac.kopo.ReadyToTravel.board;
 
+import kr.ac.kopo.ReadyToTravel.board.reply.ReplyCustomRepository;
 import kr.ac.kopo.ReadyToTravel.dto.BoardDTO;
 import kr.ac.kopo.ReadyToTravel.dto.ReplyDTO;
 import kr.ac.kopo.ReadyToTravel.entity.attach.BoardAttachEntity;
 import kr.ac.kopo.ReadyToTravel.entity.board.BoardEntity;
-import kr.ac.kopo.ReadyToTravel.entity.board.ReplyEntity;
 import kr.ac.kopo.ReadyToTravel.util.FileUpload;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class BoardServiceImpl implements BoardService {
     final BoardRepository repository;
     final BoardAttachRepository boardAttachRepository;
+    final BoardCustomRepository boardCustomRepository;
 
-    public BoardServiceImpl(BoardRepository repository, BoardAttachRepository boardAttachRepository) {
+    final ReplyCustomRepository replyCustomRepository;
+
+    public BoardServiceImpl(BoardRepository repository, BoardAttachRepository boardAttachRepository, BoardCustomRepository boardCustomRepository, ReplyCustomRepository replyCustomRepository) {
         this.repository = repository;
         this.boardAttachRepository = boardAttachRepository;
+        this.boardCustomRepository = boardCustomRepository;
+        this.replyCustomRepository = replyCustomRepository;
     }
 
     @Override
@@ -31,7 +33,6 @@ public class BoardServiceImpl implements BoardService {
         BoardEntity entity = BoardDTO.convertToEntity(boardDTO);
 
         Long boardNum = repository.save(entity).getBoardNum();
-
 
         //첨부파일의 갯수만큼 반복한다
         for (int i = 0; i < boardDTO.getMultipartFiles().size(); i++) {
@@ -50,26 +51,27 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public List<BoardDTO> findAll() {
+    public List<BoardDTO> boardList() {
 
-        List<BoardEntity> entityList = repository.findAll();
-        List<BoardDTO> boardList = new ArrayList<>();
-
-        for (BoardEntity boardEntity : entityList) {
-            BoardDTO dto = BoardDTO.convertToDTO(boardEntity);
-            boardList.add(dto);
-        }
+        List<BoardDTO> boardList = boardCustomRepository.boardList();
 
         return boardList;
     }
 
     @Override
-    public BoardDTO findById(Long boardNum) {
-        BoardEntity entity = repository.findById(boardNum)
-                .orElseThrow(() -> new IllegalArgumentException("잘못된 게시번호"));
+    public BoardDTO detail(Long boardNum) {
+        // 게시글 상세 정보 조회
+        BoardDTO detail = boardCustomRepository.getBoardDetail(boardNum);
 
-        return BoardDTO.convertToDTO(entity);
+        //게시글에 포함된 댓글의 정보 조회
+        List<ReplyDTO> replies = replyCustomRepository.getReplies(boardNum);
+        detail.setReplies(replies);
+
+        // TODO: 2023-05-31 게시글에 포함된 이미지 url 까지 조회 해와야함
+
+        return detail;
     }
+
 
     @Override
     public void update(BoardDTO boardDTO) {
@@ -88,32 +90,6 @@ public class BoardServiceImpl implements BoardService {
         repository.deleteById(boardNum);
     }
 
-    @Override
-    public BoardDTO findOne(Long boardNum) {
-        BoardEntity boardEntity = repository.findById(boardNum).orElseThrow(() -> new NullPointerException("해당 게시글이 존재하지 않습니다"));
 
-
-        List<ReplyDTO> replies = new ArrayList<>();
-        for (int i = 0; i < boardEntity.getReplies().size(); i++) {
-            ReplyDTO item = ReplyDTO.builder()
-                    .replyNum(boardEntity.getReplies().get(i).getReplyNum())
-                    .content(boardEntity.getReplies().get(i).getContent())
-                    .writer(boardEntity.getReplies().get(i).getMember().getNum())
-                    .writeDate(boardEntity.getReplies().get(i).getWriteDate())
-                    .build();
-            replies.add(item);
-        }
-
-
-        return BoardDTO.builder()
-                .boardContent(boardEntity.getBoardContent())
-                .boardName(boardEntity.getBoardName())
-                .boardWriter(boardEntity.getBoardWriter())
-                .boardDateCreate(boardEntity.getBoardDateCreate())
-                .boardNum(boardEntity.getBoardNum())
-                .replies(replies)
-                .build();
-
-    }
 }
 

@@ -55,8 +55,8 @@
         <tr th:each="reply : ${board.replies}">
             <td th:text="${reply.replyNum}"></td>
             <td th:text="${reply.content}"></td>
-            <td th:text="${reply.writer}"></td>
-            <td th:text="${reply.writeDate}"></td>
+            <td th:text="${reply.writerName}"></td>
+            <td th:text="${#dates.format(reply.writeDate, 'MM-dd hh:mm:ss')}"></td>
         </tr>
         </tbody>
     </table>

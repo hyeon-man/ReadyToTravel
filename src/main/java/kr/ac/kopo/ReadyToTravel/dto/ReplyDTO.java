@@ -15,7 +15,9 @@ import java.util.Date;
 public class ReplyDTO {
     private Long replyNum;
     private String content;
-    private Long writer;
+    private long writer;
+
+    private String writerName;
     private Date writeDate;
     private Long boardNum;
 

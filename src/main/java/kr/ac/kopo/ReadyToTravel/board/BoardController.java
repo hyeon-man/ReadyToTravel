@@ -24,10 +24,21 @@ public class BoardController {
     @GetMapping("/board/list")
     public String boardList(Model model) {
 
-        List<BoardDTO> boardList = service.findAll();
+        List<BoardDTO> boardList = service.boardList();
         model.addAttribute("list", boardList);
 
         return "/board/list";
+    }
+
+
+    @GetMapping("/board/info/{boardNum}")
+    public String boardInform(@PathVariable Long boardNum, Model model) {
+
+        BoardDTO board = service.detail(boardNum);
+        model.addAttribute("board", board);
+
+        return "/board/inform";
+
     }
 
 
@@ -44,23 +55,11 @@ public class BoardController {
         return "redirect:/board/info/" + boardNum;
     }
 
-    @GetMapping("/board/info/{boardNum}")
-    public String boardInform(@PathVariable Long boardNum, Model model) {
-
-        BoardDTO board = service.findOne(boardNum);
-        model.addAttribute("board", board);
-        System.out.println("게시글 정보 = " + board);
-        System.out.println("게시글 정보 = " + board.getReplies());
-
-
-        return "/board/inform";
-
-    }
 
     @GetMapping("/board/update/{boardNum}")
     public String boardUpdate(@PathVariable Long boardNum, Model model) {
 
-        BoardDTO board = service.findOne(boardNum);
+        BoardDTO board = service.detail(boardNum);
         model.addAttribute("board", board);
 
         return "/board/update";

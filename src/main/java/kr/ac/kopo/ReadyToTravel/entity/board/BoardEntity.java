@@ -1,5 +1,6 @@
 package kr.ac.kopo.ReadyToTravel.entity.board;
 
+import kr.ac.kopo.ReadyToTravel.entity.MemberEntity;
 import kr.ac.kopo.ReadyToTravel.entity.attach.Attach;
 import kr.ac.kopo.ReadyToTravel.entity.attach.BoardAttachEntity;
 import lombok.*;
@@ -32,9 +33,10 @@ public class BoardEntity {
     @Column
     private Date boardDateCreate;
 
-    @Column
-    private String boardWriter;
 
+    @OneToOne
+    @JoinColumn(name = "board_Writer")
+    private MemberEntity boardWriter;
 
     @OneToMany(mappedBy = "boardEntity", cascade = CascadeType.ALL)
     private List<ReplyEntity> replies;

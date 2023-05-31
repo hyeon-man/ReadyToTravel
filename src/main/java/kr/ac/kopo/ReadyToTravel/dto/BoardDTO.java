@@ -4,6 +4,7 @@ import kr.ac.kopo.ReadyToTravel.entity.board.BoardEntity;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.lang.reflect.Member;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,7 +26,7 @@ public class BoardDTO {
     private List<MultipartFile> multipartFiles;
     private List<String> filename = new ArrayList<>();
 
-    private List<ReplyDTO> replies;
+    private List<ReplyDTO> replies = new ArrayList<>();
 
     /**
      * @param
@@ -38,7 +39,6 @@ public class BoardDTO {
                 .boardName(dto.getBoardName())
                 .boardContent(dto.getBoardContent())
                 .boardDateCreate(new Date())
-                .boardWriter(dto.getBoardWriter())
                 .build();
         return entity;
     }
@@ -49,7 +49,6 @@ public class BoardDTO {
         boardDTO.setBoardName(entity.getBoardName());
         boardDTO.setBoardContent(entity.getBoardContent());
         boardDTO.setBoardDateCreate(entity.getBoardDateCreate());
-        boardDTO.setBoardWriter(entity.getBoardWriter());
 
         return boardDTO;
     }
