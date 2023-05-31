@@ -6,7 +6,6 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import kr.ac.kopo.ReadyToTravel.dto.BoardDTO;
 import kr.ac.kopo.ReadyToTravel.dto.MemberDTO;
 import kr.ac.kopo.ReadyToTravel.entity.QMemberEntity;
-import kr.ac.kopo.ReadyToTravel.entity.QMemberEntity.*;
 import kr.ac.kopo.ReadyToTravel.entity.board.BoardEntity;
 import org.springframework.stereotype.Repository;
 
@@ -16,6 +15,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 import static kr.ac.kopo.ReadyToTravel.entity.board.QBoardEntity.boardEntity;
+
 
 @Repository
 public class BoardCustomRepositoryImpl implements BoardCustomRepository {

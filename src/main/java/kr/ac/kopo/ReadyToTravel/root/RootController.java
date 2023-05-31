@@ -30,21 +30,6 @@ public class RootController {
         return "guide";
     }
 
-    @RequestMapping("/boardList")
-    public String boardList() {
-        return "list";
-    }
-
-    @GetMapping("/index")
-    public String index() {
-        return "index";
-    }
-
-    @GetMapping("/testList")
-    public String testList(){
-        return "testList";
-    }
-
     @GetMapping("/place")
     public String place(Model model){
         List<PlaceEntity> placeList = placeService.plaecList();

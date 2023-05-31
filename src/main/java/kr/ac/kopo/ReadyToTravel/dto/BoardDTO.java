@@ -29,6 +29,7 @@ public class BoardDTO {
     private long boardWriterNum;
 
     private List<MultipartFile> multipartFiles;
+
     private List<String> filename = new ArrayList<>();
 
     private List<ReplyDTO> replies = new ArrayList<>();

@@ -1,6 +1,7 @@
 package kr.ac.kopo.ReadyToTravel.board;
 
 import kr.ac.kopo.ReadyToTravel.board.reply.ReplyCustomRepository;
+import kr.ac.kopo.ReadyToTravel.dto.AttachDTO;
 import kr.ac.kopo.ReadyToTravel.dto.BoardDTO;
 import kr.ac.kopo.ReadyToTravel.dto.ReplyDTO;
 import kr.ac.kopo.ReadyToTravel.entity.attach.BoardAttachEntity;
@@ -19,14 +20,14 @@ public class BoardServiceImpl implements BoardService {
     final BoardCustomRepository boardCustomRepository;
     final ReplyCustomRepository replyCustomRepository;
 
-//    final BoardAttachCustomRepository boardAttachCustomRepository;
+    final BoardAttachCustomRepository boardAttachCustomRepository;
 
-    public BoardServiceImpl(BoardRepository repository, BoardAttachRepository boardAttachRepository, BoardCustomRepository boardCustomRepository, ReplyCustomRepository replyCustomRepository) {
+    public BoardServiceImpl(BoardRepository repository, BoardAttachRepository boardAttachRepository, BoardCustomRepository boardCustomRepository, ReplyCustomRepository replyCustomRepository, BoardAttachCustomRepository boardAttachCustomRepository) {
         this.repository = repository;
         this.boardAttachRepository = boardAttachRepository;
         this.boardCustomRepository = boardCustomRepository;
         this.replyCustomRepository = replyCustomRepository;
-//        this.boardAttachCustomRepository = boardAttachCustomRepository;
+        this.boardAttachCustomRepository = boardAttachCustomRepository;
     }
 
     @Override
@@ -70,9 +71,8 @@ public class BoardServiceImpl implements BoardService {
         detail.setReplies(replies);
 
 //        // TODO: 2023-05-31 게시글에 포함된 이미지 url 까지 조회 해와야함
-//        List<String> fileName =  boardAttachCustomRepository.findByFileNameByBoardNum(boardNum);
-//        detail.setFilename(fileName);
-//        System.out.println("filename = " + fileName);
+        List<AttachDTO> fileName =  boardAttachCustomRepository.findByFileNameByBoardNum(boardNum);
+        System.out.println("filename = " + fileName);
 
         return detail;
     }
