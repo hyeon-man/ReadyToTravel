@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/board")
 public class BoardController {
     final String path ="board/";
     private final BoardService service;
@@ -25,18 +24,23 @@ public class BoardController {
     @GetMapping("/board/list")
     public String boardList(Model model) {
 
-        List<BoardDTO> boardList = service.findAll();
-        model.addAttribute("List", boardList);
+        List<BoardDTO> boardList = service.boardList();
+        model.addAttribute("list", boardList);
 
         return "/board/list";
     }
 
-    @GetMapping("/list")
-    public String boardList(BoardDTO boardDTO) {
-        service.findAll();
 
-        return "/board/list";
+    @GetMapping("/board/info/{boardNum}")
+    public String boardInform(@PathVariable Long boardNum, Model model) {
+
+        BoardDTO board = service.detail(boardNum);
+        model.addAttribute("board", board);
+
+        return "/board/inform";
+
     }
+
 
     @GetMapping("/board/create")
     public String boardCreate() {
@@ -51,25 +55,11 @@ public class BoardController {
         return "redirect:/board/info/" + boardNum;
     }
 
-    @GetMapping("/board/info/{boardNum}")
-    public String boardInform(@PathVariable Long boardNum, Model model) {
-
-        BoardDTO board = service.findOne(boardNum);
-        model.addAttribute("board", board);
-        System.out.println("게시글 정보 = " + board);
-
-        List<ReplyDTO> replyList= replyService.replyList(boardNum);
-        model.addAttribute("replyList", replyList);
-        System.out.println("댓글 리스트 = " + replyList);
-
-        return "/board/inform";
-
-    }
 
     @GetMapping("/board/update/{boardNum}")
     public String boardUpdate(@PathVariable Long boardNum, Model model) {
 
-        BoardDTO board = service.findOne(boardNum);
+        BoardDTO board = service.detail(boardNum);
         model.addAttribute("board", board);
 
         return "/board/update";

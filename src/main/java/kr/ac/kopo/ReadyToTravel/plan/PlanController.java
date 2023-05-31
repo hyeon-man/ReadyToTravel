@@ -49,7 +49,7 @@ public class PlanController {
     @GetMapping("/createPlan")
     public String createPlan() {
 
-        return "plan/createPlan";
+        return "/plan/createPlan";
     }
 
 /**

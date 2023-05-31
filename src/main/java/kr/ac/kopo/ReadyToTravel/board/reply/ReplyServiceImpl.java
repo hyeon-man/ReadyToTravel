@@ -38,20 +38,7 @@ public class ReplyServiceImpl implements ReplyService {
         replyRepository.deleteByBoardEntityBoardNumAndReplyNum(boardNum, replyNum);
     }
 
-    @Override
-    public List<ReplyDTO> replyList(long boardNum) {
-        List<ReplyEntity> replyEntities = replyRepository.findAllByBoardEntity_BoardNumOrderByWriteDate(boardNum);
-        List<ReplyDTO> replyDTOS = new ArrayList<>();
-        for (ReplyEntity replyEntity : replyEntities) {
-            replyDTOS.add(ReplyDTO.builder()
-                    .replyNum(replyEntity.getReplyNum())
-                    .writeDate(replyEntity.getWriteDate())
-                    .content(replyEntity.getContent())
-                    .writer(replyEntity.getMember().getNum())
-                    .build());
-        }
-        return replyDTOS;
-    }
+
 
     @Override
     @Transactional

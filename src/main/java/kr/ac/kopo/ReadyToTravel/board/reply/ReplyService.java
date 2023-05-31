@@ -10,7 +10,5 @@ public interface ReplyService {
 
     void removeReply(long boardNum, long replyNum);
 
-    List<ReplyDTO> replyList(long boardNum);
-
     void updateReply(ReplyDTO replyDTO);
 }
