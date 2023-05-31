@@ -123,9 +123,9 @@ function serverFetch(markerData) {
     }).then(response => {
         return response.json();
     }).then(data => {
-        console.log(data);
+        // console.log(data);
     }).catch(error => {
-        console.error(error);
+        // console.error(error);
     });
 }
 

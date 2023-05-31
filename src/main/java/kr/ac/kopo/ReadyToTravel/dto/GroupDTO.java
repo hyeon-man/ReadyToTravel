@@ -45,7 +45,5 @@ public class GroupDTO {
                 .createDate(entity.getCreateDate())
                 .planName(entity.getName())
                 .build();
-
-
     }
 }
