@@ -1,19 +1,87 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <head>
-        <meta charset="UTF-8">
-        <title>informTest</title>
-        <link rel="stylesheet" href="/css/index.css">
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <head>-->
+<!--        <meta charset="UTF-8">-->
+<!--        <title>informTest</title>-->
+<!--        <link rel="stylesheet" href="/css/index.css">-->
 
-    </head>
+<!--    </head>-->
+<!--<body>-->
+<!--<header>-->
+<!--    &lt;!&ndash;LOGO&ndash;&gt;-->
+<!--    <div class="logo">-->
+<!--        <a href="/">-->
+<!--            <b>RTT</b>-->
+<!--            <h7>&nbsp;READY TO TRAVEL</h7>-->
+<!--        </a>-->
+<!--    </div>-->
+<!--    &lt;!&ndash;NAV&ndash;&gt;-->
+<!--    <nav>-->
+<!--        <ul>-->
+<!--            <li><a href="/place">여행지</a></li>-->
+<!--            <li><a href="/guide">이용방법</a></li>-->
+<!--            <li><a href="#">일단빈칸</a></li>-->
+<!--            <li><a href="/board/list">후기게시판</a></li>-->
+<!--            &lt;!&ndash; 로그인  123 &ndash;&gt;-->
+<!--            <li><a th:if="${session.memberDTO != null}" href="/member/logout">로그아웃</a></li>-->
+<!--            &lt;!&ndash; 이게 비로그인 456&ndash;&gt;-->
+<!--            <li><a th:if="${session.memberDTO == null}" href="/member/login">로그인</a></li>-->
+
+<!--        </ul>-->
+<!--    </nav>-->
+<!--</header>-->
+
+<!--<div>-->
+<!--    <h2>Board Information</h2>-->
+<!--    <p>Board Number: <span th:text="${board.boardNum}"></span></p>-->
+<!--    <p>Board Name: <span th:text="${board.boardName}"></span></p>-->
+<!--    <p>Board Content: <span th:text="${board.boardContent}"></span></p>-->
+<!--    <p>Board Date: <span th:text="${board.boardDateCreate}"></span></p>-->
+<!--    <p>Board Writer: <span th:text="${board.boardWriter}"></span></p>-->
+<!--</div>-->
+
+<!--<div>-->
+<!--    <table>-->
+<!--        <thead>-->
+<!--        <tr>-->
+<!--            <th>Reply Number</th>-->
+<!--            <th>Content</th>-->
+<!--            <th>Writer</th>-->
+<!--            <th>Write Date</th>-->
+<!--        </tr>-->
+<!--        </thead>-->
+<!--        <tbody>-->
+<!--        <tr th:each="reply : ${board.replies}">-->
+<!--            <td th:text="${reply.replyNum}"></td>-->
+<!--            <td th:text="${reply.content}"></td>-->
+<!--            <td th:text="${reply.writerName}"></td>-->
+<!--            <td th:text="${#dates.format(reply.writeDate, 'MM-dd hh:mm:ss')}"></td>-->
+<!--        </tr>-->
+<!--        </tbody>-->
+<!--    </table>-->
+<!--</div>-->
+<!--</table>-->
+<!--<footer>-->
+<!--    <p>Copyright &copy; 2023-->
+<!--    </p>-->
+<!--</footer>-->
+<!--</body>-->
+<!--</html>-->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Board Detail</title>
+    <link rel="stylesheet" type="text/css" href="/css/testList.css">
+</head>
 <body>
 <header>
     <!--LOGO-->
     <div class="logo">
         <a href="/">
             <b>RTT</b>
-            <h7>&nbsp;READY TO TRAVEL</h7>
+            <h7>READY TO TRAVEL</h7>
         </a>
     </div>
     <!--NAV-->
@@ -32,36 +100,82 @@
     </nav>
 </header>
 
-<div>
-    <h2>Board Information</h2>
-    <p>Board Number: <span th:text="${board.boardNum}"></span></p>
-    <p>Board Name: <span th:text="${board.boardName}"></span></p>
-    <p>Board Content: <span th:text="${board.boardContent}"></span></p>
-    <p>Board Date: <span th:text="${board.boardDateCreate}"></span></p>
-    <p>Board Writer: <span th:text="${board.boardWriter}"></span></p>
-</div>
-
-<div>
-    <table>
-        <thead>
-        <tr>
-            <th>Reply Number</th>
-            <th>Content</th>
-            <th>Writer</th>
-            <th>Write Date</th>
-        </tr>
-        </thead>
+<h1 class="con">게시글 상세</h1>
+<section class="article-detail table-common con row">
+    <div class="article-writer cell">
+        <div class="writer-icon">이미지<p>들어갈곳</p></div>
+        <span>작성자이름or아이디</span>
+    </div>
+    <table class="cell" border="1">
+        <colgroup>
+            <col width="100px">
+        </colgroup>
         <tbody>
-        <tr th:each="reply : ${board.replies}">
-            <td th:text="${reply.replyNum}"></td>
-            <td th:text="${reply.content}"></td>
-            <td th:text="${reply.writerName}"></td>
-            <td th:text="${#dates.format(reply.writeDate, 'MM-dd hh:mm:ss')}"></td>
+        <tr class="article-title">
+            <th>[글번호]</th>
+            <td colspan="3">제목이들어갈곳입니다</td>
+        </tr>
+        <tr class="article-info">
+            <th>날짜</th>
+            <td>날짜가들어갈곳입니다</td>
+        </tr>
+        <tr class="article-body">
+            <td colspan="4">대충 내용입니다 후기게시판 내용대충 내용입니다 후기게시판 내용대충 내용입니다 후기게시판 내용대충 내용입니다 후기게시판 내용대충 내용입니다 후기게시판 내용대충
+                내용입니다 후기게시판 내용대충 내용입니다 후기게시판 내용대충 내용입니다 후기게시판 내용대충 내용입니다 후기게시판 내용대충 내용입니다 후기게시판 내용대충 내용입니다 후기게시판 내용대충
+                내용입니다 후기게시판 내용대충 내용입니다 후기게시판 내용대충 내용입니다 후기게시판 내용대충 내용입니다후기게시판 내용대충 내용입니다 후기게시판 내용대충 내용입니다 후기게시판 내용대충
+                내용입니다 후기게시판 내용대충 내용입니다 후기게시판 내용대충 내용입니다 후기게시판 내용대충 내용입니다 후기게시판 내용대충 내용입니다후기게시판 내용대충 내용입니다 후기게시판 내용대충
+                내용입니다 후기게시판 내용대충 내용입니다 후기게시판 내용대충 내용입니다 후기게시판 내용대충 내용입니다 후기게시판 내용대충 내용입니다 후기게시판 내용대충 내용입니다후기게시판 내용대충
+                내용입니다 후기게시판 내용대충 내용입니다 후기게시판 내용대충 내용입니다 후기게시판 내용대충 내용입니다 후기게시판 내용대충 내용입니다 후기게시판 내용대충 내용입니다 후기게시판 내용대충
+                내용입니다후기게시판 내용대충 내용입니다 후기게시판 내용대충 내용입니다 후기게시판 내용대충 내용입니다 후기게시판 내용대충 내용입니다 후기게시판 내용대충 내용입니다 후기게시판 내용대충
+                내용입니다 후기게시판 내용대충 내용입니다후기게시판 내용대충 내용입니다 후기게시판 내용대충 내용입니다 후기게시판 내용대충 내용입니다 후기게시판 내용대충 내용입니다 후기게시판 내용대충
+                내용입니다 후기게시판 내용대충 내용입니다 후기게시판 내용대충 내용입니다후기게시판 내용대충 내용입니다 후기게시판 내용대충 내용입니다 후기게시판 내용대충 내용입니다 후기게시판 내용대충
+                내용입니다 후기게시판 내용대충 내용입니다 후기게시판 내용대충 내용입니다 후기게시판 내용대충 내용입니다후기게시판 내용대충 내용입니다 후기게시판 내용대충 내용입니다 후기게시판 내용대충
+                내용입니다 후기게시판 내용대충 내용입니다 후기게시판 내용대충 내용입니다 후기게시판 내용대충 내용입니다 후기게시판 내용대충 내용입니다후기게시판 내용
+            </td>
         </tr>
         </tbody>
     </table>
+</section>
+
+<div class="con reply">
+    <h1 style="margin-bottom: 20px">댓글 목록</h1>
+    <section class="reply-list table-common">
+        <table border="1">
+            <colgroup>
+                <col width="100px">
+            </colgroup>
+            <thead>
+            <tr>
+                <th>아이디</th>
+                <th>내용2</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>아이디</td>
+                <td>내용2</td>
+            </tr>
+            <tr>
+                <td>아이디</td>
+                <td>내용2</td>
+            </tr>
+            <tr>
+                <td>아이디</td>
+                <td>내용2</td>
+            </tr>
+            </tbody>
+        </table>
+        <h1 style="margin-top: 20px">댓글 입력</h1>
+        <section class="reply-form">
+            <textarea rows="4" cols="180" style="resize: none"></textarea>
+            <button>댓글 작성</button>
+        </section>
+    </section>
 </div>
-</table>
+<a href="../list">
+    <button type="button">이전</button>
+</a>
+<button></button>
 <footer>
     <p>Copyright &copy; 2023
     </p>
