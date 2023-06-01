@@ -104,7 +104,7 @@ function ajaxParams(markers, marker_s, marker_e) {
 // 서버에 저장 할 정보 fetch
 function serverFetch(markerData) {
     var radioVal = $('input[name="planType"]:checked').val();
-    console.log(radioVal);
+
     var markerPoint = (createPoints(markerData));
 
     var planDTO = {
@@ -113,8 +113,8 @@ function serverFetch(markerData) {
         "lonLatList": markerPoint,
         "planType": radioVal
     }
-    console.log(planDTO);
-    fetch('/plan/createPlan', {
+
+    fetch('../plan/createPlan', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -122,8 +122,8 @@ function serverFetch(markerData) {
         body: JSON.stringify(planDTO)
     }).then(response => {
         return response.json();
-    }).then(data => {
-        // console.log(data);
+    }).then(planNum => {
+        window.location.href = "/plan/viewPlan/" + planNum;
     }).catch(error => {
         // console.error(error);
     });
@@ -486,7 +486,7 @@ function getDateRangeData(param1, param2) {  //param1은 시작일, param2는 �
 function dp_menu() {
     let click = document.getElementById("drop-content");
     if (click.style.display === "none") {
-        click.style.display = "block";
+        click.style.display = "flex";
 
     } else {
         click.style.display = "none";

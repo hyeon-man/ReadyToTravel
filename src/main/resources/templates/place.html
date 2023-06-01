@@ -1,3 +1,14 @@
+<!------------------------------------------------------------------------------------
+ ____                    _          _____          _____                            _
+| ___ \                 | |        |_   _|        |_   _|                          | |
+| |_/ /  ___   __ _   __| | _   _    | |    ___     | |   _ __   __ _ __   __  ___ | |
+|    /  / _ \ / _` | / _` || | | |   | |   / _ \    | |  | '__| / _` |\ \ / / / _ \| |
+| |\ \ |  __/| (_| || (_| || |_| |   | |  | (_) |   | |  | |   | (_| | \ V / |  __/| |
+\_| \_| \___| \__,_| \__,_| \__, |   \_/   \___/    \_/  |_|    \__,_|  \_/   \___||_|
+                             __/ |
+                            |___/
+------------------------------------------------------------------------------------->
+
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -28,7 +39,6 @@
         <ul>
             <li><a href="/place">여행지</a></li>
             <li><a href="/guide">이용방법</a></li>
-            <li><a href="#">일단빈칸</a></li>
             <li><a href="/board/list">후기게시판</a></li>
             <!-- 로그인  123 -->
             <li><a th:if="${session.memberDTO != null}" href="/member/logout">로그아웃</a></li>
@@ -71,7 +81,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <a href="../plan/createPlan"><button type="button" class="btn btn-primary">일정 만들기</button></a>
+                <button type="button" class="btn btn-primary"><a href="/plan/createPlan">일정 만들기</a></button>
             </div>
         </div>
     </div>

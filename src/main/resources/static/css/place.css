@@ -96,3 +96,7 @@ main {
 .modal-footer{
     border-top: none;
 }
+.modal-footer a{
+    text-decoration: none;
+    color: white;
+}
