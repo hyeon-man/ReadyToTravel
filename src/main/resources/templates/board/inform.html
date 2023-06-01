@@ -1,19 +1,18 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <head>
-        <meta charset="UTF-8">
-        <title>informTest</title>
-        <link rel="stylesheet" href="/css/index.css">
+    <title>Board Detail</title>
+    <link rel="stylesheet" type="text/css" href="/css/testList.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    </head>
+</head>
 <body>
 <header>
     <!--LOGO-->
     <div class="logo">
         <a href="/">
             <b>RTT</b>
-            <h7>&nbsp;READY TO TRAVEL</h7>
+            <h7>READY TO TRAVEL</h7>
         </a>
     </div>
     <!--NAV-->
@@ -23,48 +22,149 @@
             <li><a href="/guide">이용방법</a></li>
             <li><a href="#">일단빈칸</a></li>
             <li><a href="/board/list">후기게시판</a></li>
-            <!-- 로그인  123 -->
             <li><a th:if="${session.memberDTO != null}" href="/member/logout">로그아웃</a></li>
-            <!-- 이게 비로그인 456-->
             <li><a th:if="${session.memberDTO == null}" href="/member/login">로그인</a></li>
 
         </ul>
     </nav>
 </header>
 
-<div>
-    <h2>Board Information</h2>
-    <p>Board Number: <span th:text="${board.boardNum}"></span></p>
-    <p>Board Name: <span th:text="${board.boardName}"></span></p>
-    <p>Board Content: <span th:text="${board.boardContent}"></span></p>
-    <p>Board Date: <span th:text="${board.boardDateCreate}"></span></p>
-    <p>Board Writer: <span th:text="${board.boardWriter}"></span></p>
-</div>
-
-<div>
-    <table>
-        <thead>
-        <tr>
-            <th>Reply Number</th>
-            <th>Content</th>
-            <th>Writer</th>
-            <th>Write Date</th>
-        </tr>
-        </thead>
+<h1 class="con">게시글 상세</h1>
+<section class="article-detail table-common con row">
+    <div class="article-writer cell">
+        <div class="circle">
+            <img class="img" th:src="${'/img/' + board.boardWriterProfile}"/>
+            <p th:text="${board.boardWriter}">작성자</p>
+        </div>
+    </div>
+    <table class="cell" border="1">
+        <colgroup>
+            <col width="100px">
+        </colgroup>
         <tbody>
-        <tr th:each="reply : ${board.replies}">
-            <td th:text="${reply.replyNum}"></td>
-            <td th:text="${reply.content}"></td>
-            <td th:text="${reply.writerName}"></td>
-            <td th:text="${#dates.format(reply.writeDate, 'MM-dd hh:mm:ss')}"></td>
+        <tr class="article-title">
+            <th id="boardNum" th:text="${board.boardNum}">글번호</th>
+            <td colspan="3" th:text="${board.boardName}">제목</td>
         </tr>
+        <tr class="article-info">
+            <th>날짜</th>
+            <td th:text="${#dates.format(board.boardDateCreate, 'MM-dd hh:mm:ss')}">날짜</td>
+        </tr>
+        <td colspan="4" th:text="${board.boardContent}">
+            내용
+        </td>
+
         </tbody>
     </table>
+    <div th:each=" img : ${board.filename}">
+        <img th:src="${'/img/' + img}"/>
+    </div>
+</section>
+
+<div class="con reply">
+    <h1 style="margin-bottom: 20px">댓글 목록</h1>
+    <section class="reply-list table-common">
+        <table border="1">
+            <colgroup>
+                <col width="100px">
+            </colgroup>
+            <tbody>
+            <tr th:each="reply : ${board.replies}" th:if="${board.replies.size() > 0}">
+                <td th:text="${reply.replyNum}" class="replyNum">댓글 번호</td>
+                <td th:text="${reply.writerName}" class="writerName">작성자 이름</td>
+                <td th:text="${reply.content}" class="content">댓글 내용</td>
+                <td th:text="${#dates.format(reply.writeDate, 'MM-dd hh:mm:ss')}"></td>
+                <div th:if="${session.memberDTO != null}">
+                    <td th:if="${session.memberDTO.num == reply.writer}">
+                        <button class="replyUpdate">수정</button>
+                        <button class="replyDelete">삭제</button>
+                    </td>
+                </div>
+            </tr>
+
+            <tr th:if="${board.replies.size() == 0}">
+                <td colspan="5">댓글이 없습니다.</td>
+            </tr>
+
+            </tbody>
+        </table>
+        <h1 style="margin-top: 20px">댓글 입력</h1>
+        <form method="post" th:action="@{'/board/reply/' + ${board.boardNum} + '/add'}">
+            <section class="reply-form">
+                <textarea name="content" rows="4" cols="180" style="resize: none"></textarea>
+                <button>댓글 작성</button>
+            </section>
+        </form>
+    </section>
 </div>
-</table>
+
+
+<a href="../list">
+    <button type="button">이전</button>
+</a>
+
+
 <footer>
-    <p>Copyright &copy; 2023
-    </p>
+    <p>Copyright &copy; 2023</p>
 </footer>
+
 </body>
+<script>
+    $(".replyUpdate").on('click', function (event) {
+
+        const textArea = $(event.currentTarget).closest("tr").find(".content");
+        const target = $(event.currentTarget).closest("td").find(".writerName");
+        textArea.remove()
+        //todo 이거 하다 말았는데 모달 말고 그냥 p태그 지우고 , input으로 바꾼다음 할거임
+        const input = document.createElement("input");
+        input.value = textArea;
+        input.name = "content";
+        console.log(input.value)
+        input.append(event)
+
+
+        const contentText = $(event.currentTarget).closest("tr").find(".content").text();
+
+        //여기다가 수정된 텍스트 갖고와야함
+        const replyNum = $(event.currentTarget).closest("tr").find(".replyNum").text();
+        const boardNum = $("#boardNum").text();
+        console.log("content 텍스트:", contentText);
+        console.log("댓글 번호:", replyNum);
+
+        $.ajax({
+            url: "/board/reply/" + boardNum + "/update/" + replyNum,
+            method: "POST",
+            data: {
+                content: "수정된 텍스트213"
+            },
+            success: function () {
+                // const prevUrl = window.location.href;
+                // window.location.href = prevUrl;
+            },
+            error: function (xhr, status, error) {
+                console.log("업데이트 실패:", error);
+
+            }
+        });
+    });
+
+    $(".replyDelete").on('click', function (event) {
+        if (confirm("댓글을 삭제 할까요 ?")) {
+            const replyNum = $(event.currentTarget).closest("tr").find(".replyNum").text();
+            const boardNum = $("#boardNum").text();
+            $.ajax({
+                url: "/board/reply/" + boardNum + "/remove/" + replyNum,
+                method: "GET",
+                success: function () {
+                    const prevUrl = window.location.href;
+                    window.location.href = prevUrl;
+                },
+                error: function (xhr, status, error) {
+                    console.log("업데이트 실패:", error);
+                }
+            });
+        }
+    })
+</script>
+
 </html>

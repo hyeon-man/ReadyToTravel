@@ -19,7 +19,7 @@
 <div>
     <h3>게시물 작성</h3>
     <div>
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             <div>
                 <label>제목:</label>
                 <input type="text" name="boardName">
@@ -30,16 +30,11 @@
             </div>
 
             <div>
-                <label>작성일자:</label>
-                <input type="number" name="boardDateCreate">
-            </div>
-            <div>
-                <label>작성자:</label>
-                <input type="number" name="boardWriter">
+                <input type="file" name="multipartFiles">
             </div>
             <div>
                 <button>등록</button>
-                <a href="/boardList">
+                <a href="../">
                     <button type="button">취소</button>
                 </a>
             </div>
