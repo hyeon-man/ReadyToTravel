@@ -134,4 +134,11 @@ public class MemberServiceImpl implements MemberService {
         }
     }
 
+    @Override
+    public void update(MemberDTO memberDTO) {
+        MemberEntity memberEntity = memberRepository.findById(memberDTO.getNum())
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 멤버"));
+
+        memberEntity.updateMember(memberDTO);
+    }
 }

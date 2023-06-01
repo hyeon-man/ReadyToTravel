@@ -3,6 +3,7 @@ package kr.ac.kopo.ReadyToTravel.member;
 import kr.ac.kopo.ReadyToTravel.board.BoardService;
 import kr.ac.kopo.ReadyToTravel.dto.BoardDTO;
 import kr.ac.kopo.ReadyToTravel.dto.MemberDTO;
+import kr.ac.kopo.ReadyToTravel.entity.MemberEntity;
 import kr.ac.kopo.ReadyToTravel.plan.PlanService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -93,7 +94,7 @@ public class MemberController {
             }
 
         } else {
-            return "redirect: " + path + "login";
+            return "redirect:" + path + "login";
         }
     }
     @GetMapping("/logout")
@@ -136,16 +137,23 @@ public class MemberController {
         }
     }
     @GetMapping("/myPage")
-    public String myPage(/*Model model,*/@SessionAttribute MemberDTO memberDTO){
-        /*
-
-        List<BoardDTO> boardList = boardService.findAllByMemberId(memberDTO.getMemberId());
-        model.addAttribute("boardList", boardList);
-
-        List<PlanService> planList = planService.findAllByMemberId(memberDTO.getMemberId());
-        model.addAttribute("planList", planList);
-*/
-
+    public String myPage(Model model, @SessionAttribute MemberDTO memberDTO){
+        model.addAttribute("memberDTO", memberDTO);
         return path + "myPage";
     }
+
+
+
+    @GetMapping("/myPage/profileEdit")
+    public String profileEdit(Model model, @SessionAttribute MemberDTO memberDTO){
+        model.addAttribute("memberDTO", memberDTO);
+        return path + "mypage/profileEdit";
+    }
+
+    @PostMapping("/myPage/profileEdit")
+    public String profileEdit(@SessionAttribute MemberDTO memberDTO){
+        service.update(memberDTO);
+        return null;
+    }
+
 }

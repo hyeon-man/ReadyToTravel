@@ -57,7 +57,13 @@ public class MemberEntity {
     private String phoneNum;
 
 
-
+    public void updateMember(final MemberDTO memberDTO) {
+        this.name = memberDTO.getName();
+        this.phoneNum = memberDTO.getPhoneNum();
+        this.password = memberDTO.getPassword();
+        this.email = memberDTO.getEmail();
+        this.profileIMG = memberDTO.getProfileIMG();
+    }
 
 }
 

@@ -23,23 +23,14 @@ public class MemberInterceptor implements HandlerInterceptor {
             return true;
         } else {
             // 로그인 페이지로 리다이렉트합니다.
-            String redirectUrl = UriComponentsBuilder.fromUriString("/member/login")
-                    .queryParam("redirect", getFullURL(request))
-                    .build().toUriString();
-            response.sendRedirect(redirectUrl);
+            String query = request.getQueryString();
+            session.setAttribute("target_url", request.getRequestURI() + (query != null ? "?" + query : "") );
+            System.out.println("INTERCEPTOR: " + session.getAttribute("target_url"));
+
+            response.sendRedirect("/member/login");
+
+            System.out.println("UserInterceptor: FALSE");
             return false;
-        }
-    }
-
-    // 현재 요청의 전체 URL을 반환하는 메서드
-    private String getFullURL(HttpServletRequest request) {
-        StringBuffer requestURL = request.getRequestURL();
-        String queryString = request.getQueryString();
-
-        if (queryString == null) {
-            return requestURL.toString();
-        } else {
-            return requestURL.append('?').append(queryString).toString();
         }
     }
 }

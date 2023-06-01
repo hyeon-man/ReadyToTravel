@@ -40,7 +40,7 @@ public class BoardServiceImpl implements BoardService {
         //첨부파일의 갯수만큼 반복한다
         for (int i = 0; i < boardDTO.getMultipartFiles().size(); i++) {
             MultipartFile attach = boardDTO.getMultipartFiles().get(i);
-            String filename = FileUpload.fileUpload(attach);
+            String filename = FileUpload.fileUpload(attach, 1);
             if (filename != null) {
                 BoardAttachEntity attachEntity = new BoardAttachEntity();
                 attachEntity.setFileName(filename);

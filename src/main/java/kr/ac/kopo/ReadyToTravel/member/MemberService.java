@@ -19,4 +19,6 @@ public interface MemberService {
     boolean sendEmailCode(String email);
 
     boolean validateCode(String email, String mailValidateKey);
+
+    void update(MemberDTO memberDTO);
 }

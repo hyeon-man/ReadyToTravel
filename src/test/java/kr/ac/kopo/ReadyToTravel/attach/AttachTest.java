@@ -31,7 +31,7 @@ public class AttachTest {
         );
 
         // 파일 업로드
-        String result = FileUpload.fileUpload(file);
+        String result = FileUpload.fileUpload(file, 1);
         System.out.println(result);
         // 파일이 정상적으로 업로드 되었는지 확인
         assertEquals("test.txt", result);
