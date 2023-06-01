@@ -43,7 +43,7 @@
         <tr th:each="item : ${list}">
             <td th:text="${item.boardNum}">boardNum</td>
             <td th:text="${item.boardName}">boardContent</td>
-            <td th:text="${item.boardWriter}">boardWriter</td>
+            <td th:text="${item.boardWriter}">boardWriterName</td>
             <td th:text="${#dates.format(item.boardDateCreate, 'yyyy-MM-dd')}">boardCreateDate</td>
         </tr>
 

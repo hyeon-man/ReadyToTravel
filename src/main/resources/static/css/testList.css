@@ -267,3 +267,16 @@ html, body {
     content:" : ";
     font-weight:bold;
 }
+
+.circle {
+    width: 200px; /* 원하는 크기로 조정 */
+    height: 200px;
+    border-radius: 50%; /* 반지름을 50%로 설정하여 동그란 모양으로 만듦 */
+    overflow: hidden; /* 이미지를 원 모양으로 자르기 위해 overflow 속성을 hidden으로 설정 */
+}
+
+.circle img {
+    width: 100%;
+    height: auto;
+    object-fit: cover; /* 이미지가 동그란 영역에 맞게 조정되도록 함 */
+}

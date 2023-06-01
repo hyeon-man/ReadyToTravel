@@ -10,9 +10,15 @@ public class WebConfig implements WebMvcConfigurer {
     private String connectPath = "/img/**";
     private String resourcePath = "file:///d:/upload/";
 
+    private String profilePath = "profile/";
+
+    private String boardPath = "board/";
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler(connectPath)
-                .addResourceLocations(resourcePath);
+                .addResourceLocations(resourcePath + profilePath)
+                .addResourceLocations(resourcePath + boardPath);
+
     }
 }

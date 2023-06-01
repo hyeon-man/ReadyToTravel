@@ -14,6 +14,7 @@ import javax.transaction.Transactional;
 
 import java.util.List;
 
+import static kr.ac.kopo.ReadyToTravel.entity.QMemberEntity.memberEntity;
 import static kr.ac.kopo.ReadyToTravel.entity.board.QBoardEntity.boardEntity;
 
 
@@ -31,9 +32,9 @@ public class BoardCustomRepositoryImpl implements BoardCustomRepository {
                         boardEntity.boardNum.as("boardNum"),
                         boardEntity.boardName.as("boardName"),
                         boardEntity.boardDateCreate.as("boardDateCreate"),
-                        boardEntity.boardWriter.memberId.as("boardWriter")))
+                        boardEntity.boardWriter.name.as("boardWriter")))
                 .from(boardEntity)
-                .leftJoin(boardEntity.boardWriter, QMemberEntity.memberEntity)
+                .leftJoin(boardEntity.boardWriter, memberEntity)
                 .fetch();
     }
 
@@ -44,9 +45,10 @@ public class BoardCustomRepositoryImpl implements BoardCustomRepository {
                         boardEntity.boardName.as("boardName"),
                         boardEntity.boardContent.as("boardContent"),
                         boardEntity.boardDateCreate.as("boardDateCreate"),
-                        boardEntity.boardWriter.memberId.as("boardWriter")))
+                        boardEntity.boardWriter.profileIMG.as("boardWriterProfile"),
+                        boardEntity.boardWriter.name.as("boardWriter")))
                 .from(boardEntity)
-                .leftJoin(boardEntity.boardWriter, QMemberEntity.memberEntity)
+                .leftJoin(boardEntity.boardWriter, memberEntity)
                 .where(boardEntity.boardNum.eq(boardNum))
                 .fetchOne();
     }

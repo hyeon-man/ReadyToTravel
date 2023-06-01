@@ -37,10 +37,11 @@ public class BoardController {
         BoardDTO board = service.detail(boardNum);
         model.addAttribute("board", board);
 
+        System.out.println("board.getBoardWriterProfile() = " + board.getBoardWriterProfile());
+
         return "/board/inform";
 
     }
-
 
     @GetMapping("/board/create")
     public String boardCreate() {
@@ -71,6 +72,7 @@ public class BoardController {
 
         board.setBoardNum(boardNum);
         service.update(board);
+
 
         return "redirect:/board/info/" + boardNum;
 
