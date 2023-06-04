@@ -3,11 +3,14 @@ package kr.ac.kopo.ReadyToTravel.member;
 import kr.ac.kopo.ReadyToTravel.dto.MemberDTO;
 import kr.ac.kopo.ReadyToTravel.entity.MemberEntity;
 import kr.ac.kopo.ReadyToTravel.util.CacheConfig;
+import kr.ac.kopo.ReadyToTravel.util.FileUpload;
 import kr.ac.kopo.ReadyToTravel.util.PassEncode;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.Null;
 import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
@@ -135,10 +138,17 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void update(MemberDTO memberDTO) {
+    public void update(MemberDTO memberDTO, MultipartFile attach) {
         MemberEntity memberEntity = memberRepository.findById(memberDTO.getNum())
                 .orElseThrow(() -> new RuntimeException("존재하지 않는 멤버"));
 
-        memberEntity.updateMember(memberDTO);
+        String filename = FileUpload.fileUpload(attach, 2);
+
+        if(filename != null){
+            memberDTO.setProfileIMG(filename);
+            memberEntity.updateMember(memberDTO);
+        }else {
+            memberEntity.updateMember(memberDTO);
+        }
     }
 }

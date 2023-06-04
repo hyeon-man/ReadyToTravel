@@ -9,7 +9,7 @@ import java.util.UUID;
 import static org.aspectj.asm.internal.CharOperation.lastIndexOf;
 
 public class FileUpload {
-    static String path = "D:\\upload\\";
+    static String path = "C:\\upload\\";
 
     static String boardPath = "board\\";
 

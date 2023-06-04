@@ -8,6 +8,8 @@ import kr.ac.kopo.ReadyToTravel.plan.PlanService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -17,7 +19,7 @@ import java.util.List;
 @RequestMapping("/member")
 public class MemberController {
     final String path = "member/";
-
+    final String myPath = path + "myPage/";
     private final MemberService service;
     private final BoardService boardService;
     private final PlanService planService;
@@ -126,6 +128,7 @@ public class MemberController {
             return "senMailFail" ;
         }
     }
+
     @ResponseBody
     @RequestMapping("/validateCode")
     public String validateCode(String email, String mailValidateCode){
@@ -136,24 +139,23 @@ public class MemberController {
 
         }
     }
-    @GetMapping("/myPage")
+
+    @GetMapping("/myPage/profile")
     public String myPage(Model model, @SessionAttribute MemberDTO memberDTO){
         model.addAttribute("memberDTO", memberDTO);
-        return path + "myPage";
+        return myPath + "profile";
     }
-
-
 
     @GetMapping("/myPage/profileEdit")
     public String profileEdit(Model model, @SessionAttribute MemberDTO memberDTO){
         model.addAttribute("memberDTO", memberDTO);
-        return path + "mypage/profileEdit";
+        return myPath + "profileEdit";
     }
 
     @PostMapping("/myPage/profileEdit")
-    public String profileEdit(@SessionAttribute MemberDTO memberDTO){
-        service.update(memberDTO);
-        return null;
+    public String profileEdit(@SessionAttribute MemberDTO memberDTO, MultipartFile attach){
+        service.update(memberDTO, attach);
+        return "redirect:/" + myPath + "profileEdit";
     }
 
 }

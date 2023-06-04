@@ -2,6 +2,7 @@ package kr.ac.kopo.ReadyToTravel.member;
 
 import kr.ac.kopo.ReadyToTravel.dto.MemberDTO;
 import kr.ac.kopo.ReadyToTravel.entity.MemberEntity;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
 
@@ -20,5 +21,5 @@ public interface MemberService {
 
     boolean validateCode(String email, String mailValidateKey);
 
-    void update(MemberDTO memberDTO);
+    void update(MemberDTO memberDTO, MultipartFile attach);
 }
