@@ -56,13 +56,16 @@ public class MemberEntity {
     @Column
     private String phoneNum;
 
+    public void updateName(String name) {
+        this.name = name;
+    }
 
-    public void updateMember(final MemberDTO memberDTO) {
-        this.name = memberDTO.getName();
-        this.phoneNum = memberDTO.getPhoneNum();
-        this.password = memberDTO.getPassword();
-        this.email = memberDTO.getEmail();
-        this.profileIMG = memberDTO.getProfileIMG();
+    public void updatePassword(String password){
+        this.password = password;
+    }
+
+    public void saveFile(final String filename) {
+        this.profileIMG = filename;
     }
 
 }

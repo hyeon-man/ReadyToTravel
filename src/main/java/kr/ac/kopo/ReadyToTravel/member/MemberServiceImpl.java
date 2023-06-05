@@ -138,17 +138,46 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void update(MemberDTO memberDTO, MultipartFile attach) {
+    public void updateName(MemberDTO memberDTO, String name) {
+
         MemberEntity memberEntity = memberRepository.findById(memberDTO.getNum())
                 .orElseThrow(() -> new RuntimeException("존재하지 않는 멤버"));
 
-        String filename = FileUpload.fileUpload(attach, 2);
+           memberEntity.updateName(name);
 
+    }
+
+    @Override
+    public boolean updatePassword(MemberDTO memberDTO, String password){
+
+        MemberEntity memberEntity = memberRepository.findById(memberDTO.getNum())
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 멤버"));
+
+        String pass = PassEncode.encode(password);
+
+        if (!pass.equals(memberEntity.getPassword()))
+        {
+            memberEntity.updatePassword(pass);
+            return true;
+        }else
+        {
+            return false;
+        }
+
+    }
+
+    @Override
+    public void addAttach(Long num, MultipartFile attach) {
+        MemberEntity memberEntity = memberRepository.findById(num)
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 멤버"));
+
+        String filename = FileUpload.fileUpload(attach, 2);
         if(filename != null){
-            memberDTO.setProfileIMG(filename);
-            memberEntity.updateMember(memberDTO);
+            memberEntity.saveFile(filename);
         }else {
-            memberEntity.updateMember(memberDTO);
+            memberEntity.saveFile("");
         }
     }
+
+
 }

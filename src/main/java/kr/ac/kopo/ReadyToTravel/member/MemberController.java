@@ -1,9 +1,7 @@
 package kr.ac.kopo.ReadyToTravel.member;
 
 import kr.ac.kopo.ReadyToTravel.board.BoardService;
-import kr.ac.kopo.ReadyToTravel.dto.BoardDTO;
 import kr.ac.kopo.ReadyToTravel.dto.MemberDTO;
-import kr.ac.kopo.ReadyToTravel.entity.MemberEntity;
 import kr.ac.kopo.ReadyToTravel.plan.PlanService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -96,7 +94,7 @@ public class MemberController {
             }
 
         } else {
-            return "redirect:" + path + "login";
+            return "redirect:/" + path + "login";
         }
     }
     @GetMapping("/logout")
@@ -146,16 +144,41 @@ public class MemberController {
         return myPath + "profile";
     }
 
-    @GetMapping("/myPage/profileEdit")
-    public String profileEdit(Model model, @SessionAttribute MemberDTO memberDTO){
+    @ResponseBody
+    @PostMapping("/myPage/nameUpdate")
+    public String nameUpdate(@SessionAttribute MemberDTO memberDTO, String name){
+        if(memberDTO.getName().equals(name)){
+            service.updateName(memberDTO, name);
+            return "nameUpdateSuccess";
+        }else {
+            return "nameUdpateFail";
+        }
+    }
+
+    @GetMapping("/myPage/passwordUpdate")
+    public String passwordUpdate() {
+        return myPath + "passwordUpdate";
+    }
+
+    @ResponseBody
+    @PostMapping("/myPage/passwordUpdate")
+    public String passwordUpdate(@SessionAttribute MemberDTO memberDTO, String password){
+        if (service.updatePassword(memberDTO, password)) {
+            return "passwordUpdateSuccess";
+        }else {
+            return "passwordUpdateFail";
+        }
+    }
+
+    @GetMapping("/myPage/attach")
+    public String addAttach(@SessionAttribute MemberDTO memberDTO, Model model){
         model.addAttribute("memberDTO", memberDTO);
-        return myPath + "profileEdit";
+        return myPath + "addAttach";
     }
 
-    @PostMapping("/myPage/profileEdit")
-    public String profileEdit(@SessionAttribute MemberDTO memberDTO, MultipartFile attach){
-        service.update(memberDTO, attach);
-        return "redirect:/" + myPath + "profileEdit";
+    @PostMapping("/myPage/attach")
+    public String addAttach(@SessionAttribute MemberDTO memberDTO, MultipartFile attach) {
+        service.addAttach(memberDTO.getNum(), attach);
+        return "redirect:/" + myPath + "profile";
     }
-
 }
