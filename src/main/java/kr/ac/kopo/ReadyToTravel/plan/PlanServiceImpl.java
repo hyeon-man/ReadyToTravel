@@ -45,20 +45,32 @@ public class PlanServiceImpl implements PlanService {
         return planEntity.getNum();
     }
 
-    @Override
-    public Long updatePlan(PlanDTO plan) {
-        // Client가 보낸 PlanDTO entity에 save
-        PlanEntity planConvertToEntity = plan.convertToEntity(plan, plan.getLeaderNum());
-        PlanEntity planEntity = planRepository.save(planConvertToEntity);
 
-        // Client가 보낸 LonLatDTO entity에 save
+    // TODO planType 수정 안됨 좌표값 업데이트 안됨
+    @Override
+    public void updatePlan(PlanDTO plan) {
+
+        // Client가 보낸 PlanDTO entity에 save
+        PlanEntity planEntity = planRepository.findByNum(plan.getNum());
+        planEntity.setName(plan.getName());
+        planEntity.setContents(plan.getContents());
+        planRepository.save(planEntity);
+
+        List<LonLatEntity> lonLatEntityList = lonLatRepository.findByCalendar(plan.getLonLatList().get(0).getCalendar());
+
         for (int i = 0; i < plan.getLonLatList().size(); i++) {
-            LonLatDTO lonLatDTO = new LonLatDTO();
-            LonLatEntity lonLatEntities = lonLatDTO.convertToEntity(plan.getLonLatList().get(i), planEntity.getNum());
-            lonLatRepository.save(lonLatEntities);
+            LonLatDTO lonLatDTO = plan.getLonLatList().get(i);
+            for (LonLatEntity lonLatEntity : lonLatEntityList) {
+                if (lonLatEntity.getCalendar().equals(lonLatDTO.getCalendar())) {
+                    // 업데이트할 필드 설정
+                    lonLatEntity.setLon(lonLatDTO.getLon());
+                    lonLatEntity.setLat(lonLatDTO.getLat());
+                    // 필요한 경우, 업데이트할 필드 추가 설정
+                }
+            }
         }
 
-        return planEntity.getNum();
+//        return plan.getNum();
     }
 
     @Override

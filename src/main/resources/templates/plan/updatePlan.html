@@ -46,9 +46,23 @@
                 <li id="dateLi"></li>
             </ul>
 
-            <div>
-                <input name="name" id="planName"></input>
-                <input name="contents" id="planContents"></input>
+            <div class="radio_button">
+                <input type="text" name="name" id="planName" placeholder="Plan Name">
+                <input type="text" name="contents" id="planContents" placeholder="Plan Contents">
+                <ul>
+                    <li>
+                        <input type="radio" name="planType" value="0" checked>가족
+                    </li>
+                    <li>
+                        <input type="radio" name="planType" value="1">커플
+                    </li>
+                    <li>
+                        <input type="radio" name="planType" value="2">혼자
+                    </li>
+                    <li>
+                        <input type="radio" name="planType" value="3">친구
+                    </li>
+                </ul>
             </div>
         </div>
         <div class="right-side map_wrap" id="map_wrap">
@@ -63,10 +77,7 @@
                 <button id="createBtn" type="button">경로 최적화</button>
             </div>
             <div>
-                <button id="updatePlanBtn">계획 수정</button>
-            </div>
-            <div>
-                <button id="removeBtn">마커삭제</button>
+                <button id="updatePlanBtn">마커 수정</button>
             </div>
         </div>
     </div>

@@ -5,7 +5,7 @@ import kr.ac.kopo.ReadyToTravel.dto.plan.PlanDTO;
 public interface PlanService {
     Long createPlan(PlanDTO plan);
 
-    Long updatePlan(PlanDTO plan);
+    void updatePlan(PlanDTO plan);
 
     void removePlan(Long num);
 

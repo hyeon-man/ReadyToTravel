@@ -41,6 +41,7 @@ public class PlanController {
 
         return view;
     }
+
     /**
      * @return plan/makePlan 페이지를 반환합니다.
      */
@@ -50,29 +51,26 @@ public class PlanController {
         return "/plan/createPlan";
     }
 
-/**
-     *
-     * @param plan (plan / List<lonlatdto> / memberNum)
+    /**
+     * @param plan    (plan / List<lonlatdto> / memberNum)
      * @param request (member session)
      * @return
- */
+     */
     @PostMapping("/createPlan")
     @ResponseBody
-    public Long createPlan(@RequestBody PlanDTO plan, HttpServletRequest request) {
+    public Long createPlan(@RequestBody PlanDTO plan, @SessionAttribute(name = "memberDTO", required = false) MemberDTO memberDTO) {
+        plan.setCreateDate(new Date());
+        plan.setLeaderNum(memberDTO.getNum());
+        System.out.println("plan = " + plan);
+        System.out.println("memberDTO = " + memberDTO);
+        System.out.println("memberDTO.getNum = " + memberDTO.getNum());
 
-        HttpSession session = request.getSession();
+        Long planNum = planService.createPlan(plan);
 
-        MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
-
-            plan.setCreateDate(new Date());
-            plan.setLeaderNum(memberDTO.getNum());
-
-            Long planNum = planService.createPlan(plan);
-
-            if (plan.getPlanType() != TravelType.SOLO) {
-                groupService.createGroup(planNum, plan.getLeaderNum(), plan.getName());
-            }
-            return planNum;
+        if (plan.getPlanType() != TravelType.SOLO) {
+            groupService.createGroup(planNum, plan.getLeaderNum(), plan.getName());
+        }
+        return planNum;
     }
 
     @GetMapping("/updatePlan/{planNum}")
@@ -81,12 +79,13 @@ public class PlanController {
     }
 
     @PostMapping("/updatePlan/{planNum}")
-    public Long updatePlan(@PathVariable Long planNum, @Valid PlanDTO plan) {
+    public void updatePlan(@PathVariable Long planNum, @RequestBody PlanDTO plan, @SessionAttribute(name = "memberDTO", required = false) MemberDTO memberDTO) {
         plan.setNum(planNum);
+        plan.setLeaderNum(memberDTO.getNum());
+        System.out.println("plan = " + plan);
 
         planService.updatePlan(plan);
-
-        return planNum;
+//        return planNum;
     }
 
     @RequestMapping("/removePlan/{planNum}")

@@ -354,6 +354,7 @@ function makeViaPoints(markers) {
 
 // 서버에 저장 할 경유지 lon, lat 정보
 function createPoints(markerData) {
+
     var lonLatList = [];
 
     for (let i = 0; i < markerData.length; i++) {
@@ -572,5 +573,6 @@ function buttonClick(event) {
 }
 
 $('#createPlanBtn').off("click").on("click", function () {
+    console.log(markerData);
     serverFetch(markerData);
 });

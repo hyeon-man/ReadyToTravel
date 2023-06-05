@@ -1,16 +1,17 @@
 // TODO 마커가 제대로 찍히긴하는데 newMarkers에 중첩되어 쌓이는 오류가 있음 해결해야함.
-
+let markerData = [];
+let manageNewMarker = [];
+let manageMarker = [];
 let map;
 let dateButton;
-let updateButton;
 let marker_s;
 let marker_e;
-let newMarker_s;
-let newMarker_e;
-let marker;
+let newMarker;
+let polyLine;
 let markers = [];
-let newMarkers = [];
 let lonLatRealList = [];
+let calVal;
+
 window.onload = function initTmap() {
     // map 생성
     // Tmapv2.Map을 이용하여, 지도가 들어갈 div, 넓이, 높이를 설정합니다.
@@ -20,6 +21,7 @@ window.onload = function initTmap() {
         height: "100%", // 지도의 높이
         zoom: 15
     });
+
 // 현재 페이지의 URL에서 planNum 추출
     const url = window.location.href;
     const planNum = url.split("/").pop(); // URL에서 마지막 부분 추출
@@ -39,21 +41,15 @@ window.onload = function initTmap() {
             const lonLatList = response.lonLatList;
 
             const li = document.getElementById('dateLi');
-            let dayCount = 1;
+
             for (let i = 0; i < lonLatList.length; i++) {
                 dateButton = document.createElement('button');
-                updateButton = document.createElement('button');
 
                 if (lonLatList[i].markerType == 'START') {
                     dateButton.textContent = lonLatList[i].calendar;
                     dateButton.classList = "planBtn";
 
-                    updateButton.textContent = dayCount + "일차 지도 정보 수정"
-                    updateButton.classList = "updateBtn";
-                    dayCount++;
-
                     li.append(dateButton);
-                    li.append(updateButton)
                 }
             }
 
@@ -62,52 +58,59 @@ window.onload = function initTmap() {
                 const clickBtn = evt.target;
                 const textContentBtn = clickBtn.textContent;
 
-                markerDisappear();
-
                 for (let i = 0; i < lonLatList.length; i++) {
-                    if (textContentBtn == lonLatList[i].calendar)
+                    if (textContentBtn == lonLatList[i].calendar) {
                         lonLatRealList.push(lonLatList[i]);
-                }
-                createMarker(lonLatRealList);
-
-                $('.updateBtn').off().on("click", function () {
-                    newMarkers = [];
-                    marker_s.setMap(null);
-                    marker_e.setMap(null);
-                    marker_s = null;
-                    marker_e = null;
-                    for (let i = 0; i < markers.length; i++) {
-                        markers[i].setMap(null);
                     }
-                    markers = [];
+                }
 
-                    // 클릭 이벤트 핸들러 등록
-                    map.addListener("click", function (evt) {
-                        var lonlat = new Tmapv2.LatLng(evt.latLng.lat(), evt.latLng.lng());
+                marker_s = null;
+                marker_e = null;
+                markers = [];
+                for (let i = 0; i < manageMarker.length; i++) {
+                    manageMarker[i].setMap(null);
+                }
+                for (let i = 0; i < manageNewMarker.length; i++) {
+                    manageNewMarker[i].setMap(null);
+                }
+                manageNewMarker = [];
+                manageMarker = [];
 
-                        if (newMarker_s == null) {
-                            // 시작 마커가 없으면
-                            createNewMarker('Start', lonlat);
-                        } else if (newMarker_e == null) {
-                            // 끝 마커가 없으면
-                            createNewMarker('End', lonlat);
-                        } else {
-                            // 경유지 마커를 찍을 때
-                            createNewMarker('경유지', lonlat);
-                        }
-                    });
+                createMarker(lonLatRealList);
+                lonLatRealList = [];
+
+                // 클릭 이벤트 핸들러 등록
+                map.addListener("click", function (evt) {
+
+                    var lonlat = new Tmapv2.LatLng(evt.latLng.lat(), evt.latLng.lng());
+                    // 경유지 마커를 찍을 때
+                    var lon = evt.latLng.lng();
+                    var lat = evt.latLng.lat();
+                    newMarker = createNewMarker('VIAPOINT', lon, lat);
+                    markers.push(newMarker);
+                    manageNewMarker.push(newMarker);
+                });
+
+                $('#updatePlanBtn').off().on('click', function () {
+                    markerData = {
+                        markers: markers,
+                        marker_s: marker_s,
+                        marker_e: marker_e,
+                        calendar: textContentBtn
+                    };
+
+                    console.log(markerData);
+                    serverFetch(markerData);
+
+                    markerData = [];
                 });
             });
         }
-    })
-
+    });
 }
 
-$('#createBtn').off().on('click', function () {
-    ajaxParams(markers, marker_s, marker_e);
-});
-
 function createMarker(lonLatList) {
+
     for (let i = 0; i < lonLatList.length; i++) {
         const lon = lonLatList[i].lon;
         const lat = lonLatList[i].lat;
@@ -115,28 +118,52 @@ function createMarker(lonLatList) {
 
         const marker = new Tmapv2.Marker({
             position: new Tmapv2.LatLng(lat, lon),
-            map: null,
-            title: markerType
+            map: map,
+            draggable: true,
         });
+
+        manageMarker.push(marker);
 
         if (markerType === 'START') {
             marker_s = marker;
-            marker_s.setMap(map);
-            marker.setIcon("http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png");
+            marker_s.setIcon("http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png");
+            marker_s.setTitle(markerType);
         } else if (markerType === 'END') {
             marker_e = marker;
-            marker_e.setMap(map);
-            marker.setIcon("http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_e.png");
+            marker_e.setIcon("http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_e.png");
+            marker_e.setTitle(markerType);
         } else if (markerType === 'VIAPOINT') {
+            marker.setTitle(markerType);
             markers.push(marker);
         }
+
+        // 드래그 완료 이벤트 리스너 등록
+        marker.addListener('dragend', function () {
+            console.log(markerType + " lat : " + marker.getPosition().lat() + ", lng : " + marker.getPosition().lng());
+        });
     }
 
-    for (let i = 0; i < markers.length; i++) {
-        markers[i].setMap(map);
-    }
+    $('#createBtn').off("click").on("click", function () {
+        ajaxParams(markers, marker_s, marker_e);
+    });
 }
 
+
+function createNewMarker(title, lon, lat) {
+    const newMarker = new Tmapv2.Marker({
+        position: new Tmapv2.LatLng(lat, lon),
+        map: map,
+        draggable: true,
+        title: title
+    })
+
+    // 새로운 'dragend' 이벤트 리스너 등록
+    newMarker.addListener('dragend', function () {
+        console.log(title + "의 위도: " + newMarker.getPosition().lat() + ", 경도: " + newMarker.getPosition().lng());
+    });
+
+    return newMarker;
+}
 
 function ajaxParams(markers, marker_s, marker_e) {
     if (marker_s != null && marker_e != null) {
@@ -204,14 +231,13 @@ function ajaxReq(req) {
                         drawInfoArr.push(convertChange);
                     }
 
-                    let polyLine = new Tmapv2.Polyline({
+                    polyLine = new Tmapv2.Polyline({
                         path: drawInfoArr,
                         strokeColor: "#3399FF",
                         strokeWeight: 3,
                         map: map,
                     });
-
-                    $('.planBtn').on("click", function () {
+                    $('#removeBtn').on("click", function () {
                         polyLine.setPath(0);
                     });
                 }
@@ -237,60 +263,73 @@ function makeViaPoints(markers) {
     return viaPoints;
 }
 
-function createNewMarker(title, lonlat) {
+function serverFetch(markerData) {
+    var radioVal = $('input[name="planType"]:checked').val();
 
-    // 클릭된 위치에 마커 생성
-    marker = new Tmapv2.Marker({
-        position: lonlat,
-        map: map,
-        title: title
-    });
+    console.log(markerData);
+    var markerPoint = (createPoints(markerData));
 
-    if (title === 'Start') {
-        newMarker_s = marker;
-        newMarker_s.setIcon("http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png");
-
-        console.log("start lat : " + newMarker_s.getPosition().lat() + ", start lng : " + newMarker_s.getPosition().lng());
-    } else if (title === 'End') {
-        newMarker_e = marker;
-        newMarker_e.setIcon("http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_e.png");
-
-        console.log("end lat : " + newMarker_e.getPosition().lat() + ", end lng : " + newMarker_e.getPosition().lng());
-    } else {
-        newMarkers.push(marker);
-        console.log(newMarkers)
-        $('#createBtn').off("click").on("click", function () {
-            ajaxParams(markers, marker_s, marker_e);
-            // buttonClick(markers, marker_s, marker_e);
-        });
+    var planDTO = {
+        "name": $('#planName').val(),
+        "contents": $('#planContents').val(),
+        "lonLatList": markerPoint,
+        "planType": radioVal
     }
+
+    console.log(planDTO);
+
+    const url = window.location.href;
+    const planNum = url.split("/").pop(); // URL에서 마지막 부분 추출
+
+    fetch(`/plan/updatePlan/${planNum}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(planDTO)
+    }).then(response => {
+        console.log(response);
+        return response.json();
+    }).then(planNum => {
+        console.log(planNum);
+        // window.location.href = "/plan/viewPlan/" + planNum;
+    }).catch(error => {
+        // console.error(error);
+    });
 }
 
-function markerDisappear() {
-    if (marker_s) {
-        marker_s.setMap(null);
-    }
-    if (marker_e) {
-        marker_e.setMap(null);
-    }
-    if (markers) {
-        for (let i = 0; i < markers.length; i++) {
-            markers[i].setMap(null);
-        }
-        markers = [];
-    }
-    if (newMarker_s) {
-        newMarker_s.setMap(null);
-    }
-    if (newMarker_e) {
-        newMarker_e.setMap(null);
-    }
-    if (newMarkers) {
-        for (let i = 0; i < newMarkers.length; i++) {
-            newMarkers[i].setMap(null);
-        }
-        newMarkers = [];
+function createPoints(markerData) {
+
+    var lonLatList = [];
+
+    for (let j = 0; j < markerData.markers.length; j++) {
+        let data_via = markerData.markers[j].getPosition();
+        var viaMarkerInfo = {
+            "lon": data_via.lng().toString(),
+            "lat": data_via.lat().toString(),
+            "calendar": markerData.calendar,
+            "markerType": 1
+        };
+        lonLatList.push(viaMarkerInfo);
     }
 
-    lonLatRealList = [];
+    let data_start = markerData.marker_s.getPosition();
+    var startMarkerInfo = {
+        "lon": data_start.lng().toString(),
+        "lat": data_start.lat().toString(),
+        "calendar": markerData.calendar,
+        "markerType": 0
+    };
+    lonLatList.push(startMarkerInfo);
+
+    let data_end = markerData.marker_e.getPosition();
+    var endMarkerInfo = {
+        "lon": data_end.lng().toString(),
+        "lat": data_end.lat().toString(),
+        "calendar": markerData.calendar,
+        "markerType": 2
+    };
+    lonLatList.push(endMarkerInfo);
+    console.log(lonLatList);
+    return lonLatList;
 }
