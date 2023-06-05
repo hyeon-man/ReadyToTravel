@@ -2,6 +2,7 @@ package kr.ac.kopo.ReadyToTravel.board;
 
 import kr.ac.kopo.ReadyToTravel.board.reply.ReplyService;
 import kr.ac.kopo.ReadyToTravel.dto.BoardDTO;
+import kr.ac.kopo.ReadyToTravel.dto.MemberDTO;
 import org.springframework.stereotype.Controller;
 import kr.ac.kopo.ReadyToTravel.dto.ReplyDTO;
 import org.springframework.stereotype.Controller;
@@ -37,10 +38,11 @@ public class BoardController {
         BoardDTO board = service.detail(boardNum);
         model.addAttribute("board", board);
 
+        System.out.println("board.getBoardWriterProfile() = " + board.getBoardWriterProfile());
+
         return "/board/inform";
 
     }
-
 
     @GetMapping("/board/create")
     public String boardCreate() {
@@ -49,7 +51,8 @@ public class BoardController {
     }
 
     @PostMapping("/board/create")
-    public String boardCreate(BoardDTO boardDTO) {
+    public String boardCreate(BoardDTO boardDTO, @SessionAttribute(value = "memberDTO", required = false) MemberDTO memberDTO) {
+        boardDTO.setBoardWriterNum(memberDTO.getNum());
         long boardNum = service.create(boardDTO);
 
         return "redirect:/board/info/" + boardNum;
@@ -70,6 +73,7 @@ public class BoardController {
 
         board.setBoardNum(boardNum);
         service.update(board);
+
 
         return "redirect:/board/info/" + boardNum;
 

@@ -28,11 +28,13 @@ public class ReplyCustomRepositoryImpl implements ReplyCustomRepository {
         return queryFactory.select(Projections.fields(ReplyDTO.class,
                         replyEntity.replyNum.as("replyNum"),
                         replyEntity.content.as("content"),
-                        replyEntity.member.memberId.as("writerName"),
+                        replyEntity.member.name.as("writerName"),
+                        replyEntity.member.num.as("writer"),
                         replyEntity.writeDate.as("writeDate")))
                 .from(replyEntity)
                 .leftJoin(replyEntity.member, memberEntity)
                 .orderBy(replyEntity.writeDate.desc())
+                .where(replyEntity.boardEntity.boardNum.eq(boardNum))
                 .fetch();
 
     }

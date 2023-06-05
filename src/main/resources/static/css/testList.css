@@ -1,281 +1,282 @@
-@import url('https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Gothic+Coding&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Gothic+Coding&family=Noto+Serif+KR&display=swap');
+/* 공통요소 헤더부분 css 및 */
+@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);  body, talbe, th, td, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, textarea, blockquote, span, * {font-family: 'Noto Sans KR', sans-serif;}
+html{scroll-behavior: smooth;}
+*, *:before, *:after {box-sizing: inherit;}
+.logo a {text-decoration-line: none;color: black;}
+.logo b {font-size: 30px;}
+.logo h7 {font-size: 15px;}
+.logo:hover a{color: skyblue;}
+body {max-width: 1920px;font-family: 'Noto Serif KR', serif;margin: 0;padding: 0;overflow-x: hidden;}
+header {align-items: center; background-color:white; /* 원하는 색상으로 설정 */max-width: 1920px;color: #000;display: flex;justify-content: space-between;padding: 1%;}
+.fixed-header {align-items: center;position: fixed;top: 0;width: 100%;z-index: 9999;background-color: #fff !important;transition: background-color 500ms linear; box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.05), 0 2px 10px 0 rgba(0, 0, 0, 0.05) !important;-webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.05), 0 2px 10px 0 rgba(0, 0, 0, 0.05) !important;color: #000 !important;}
+nav {font-family: 'Noto Serif KR', serif;}
+nav li a::after {content: "";position: absolute;bottom: -1px;left: 50%;transform: translateX(-50%);height: 4px;background: #f1c40f;transition: all .2s ease-out;border-radius: 10px;width: 0;}
+nav li a:hover::after {width: 100%;}
+nav li a {color: black;padding: 10px 12px;position: relative;}
+nav ul {list-style: none;margin: 0;padding: 0;display: flex;}
+nav a {color: black;text-decoration: none;}
+footer {height: 50px;background-color: #f5f5f5;display: flex;justify-content: center;align-items: center;font-size: 14px;color: #666;}
+/* 공통요소*/
 
-.logo a {
-    text-decoration-line: none;
-    color: black;
+html {
+    font-family: "Noto Sans KR", sans-serif;
+}
 
-}
-.logo b {
-    font-size: 30px;
-}
-.logo h7 {
-    font-size: 15px;
-}
-body {
-    max-width: 1920px;
-    font-family: 'Noto Serif KR', serif;
+/* 노말라이즈 */
+body, ul, li, h1, h2, h3, h4, h5, h6 {
     margin: 0;
     padding: 0;
-    overflow-x: hidden;
+    list-style: none;
 }
 
-header {
-    max-width: 1920px;
-    color: #000;
-    display: flex;
-    justify-content: space-between;
-    padding: 1%;
-    transition: background-color 500ms linear;
-    -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2);
-    /*position: fixed;*/
-    /*top: 0;*/
-    /*width: 96%;*/
-    /*z-index: 9999;*/
-
+a:link {
+    color: lightblue;
 }
 
-nav {
-    font-family: 'Noto Serif KR', serif;
+/* 라이브러리 */
+.con {
+    margin: 0 auto;
 }
 
-nav li a::after {
-    content: "";
-    position: absolute;
-    bottom: -1px;
-    left: 50%;
-    transform: translateX(-50%);
-    height: 4px;
-    background: #f1c40f;
-    transition: all .2s ease-out;
-    border-radius: 10px;
-    width: 0;
-}
 
-nav li a:hover::after {
+.img-box>img {
     width: 100%;
+    display: block;
 }
-nav li a {
-    color: black;
-    padding: 10px 12px;
+
+.row::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+.cell {
+    float: left;
+    box-sizing: border-box;
+}
+
+.cell-right {
+    float: right;
+    box-sizing: border-box;
+}
+
+.margin-0-auto {
+    margin: 0 auto;
+}
+
+.block {
+    display: block;
+}
+
+.inline-block {
+    display: inline-block;
+}
+
+.text-align-center {
+    text-align: center;
+}
+
+.line-height-0-ch-only {
+    line-height: 0;
+}
+
+.line-height-0-ch-only>* {
+    line-height: normal;
+}
+
+.relative {
     position: relative;
 }
 
-nav ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
+.absolute-left {
+    position: absolute;
+    left: 0;
 }
 
+.absolute-right {
+    position: absolute;
+    right: 0;
+}
 
-nav a {
-    color: black;
+.absolute-middle {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* 커스텀 */
+/* 반응형 레이아웃 */
+.con {
+    max-width: 1400px;
+}
+
+.con-min-width {
+    min-width: 320px;
+}
+
+.top-menu a {
     text-decoration: none;
-}
-
-
-@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
-
-svg {
-    z-index: 100;
-}
-
-:root {
-    --padding: 10vmin;
-    --color-background: #D0CBC7;
-    --font-size-large: 8vw;
-    --font-size-medium: 4vw;
-    --font-size-normal: 2vw;
-}
-
-@media only screen and (min-width: 800px) {
-    :root {
-        --font-size-large: 64px;
-        --font-size-medium: 32px;
-        --font-size-normal: 16px;
-    }
-}
-
-@media only screen and (max-width: 500px) {
-    :root {
-        --font-size-large: 40px;
-        --font-size-medium: 20px;
-        --font-size-normal: 14px;
-    }
-}
-
-a {
-    color: white;
-}
-
-ul {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
-
-li {
-    margin-top: 10px;
+    color: gray;
+    font-weight: bold;
+    font-size: 1.2rem;
 }
 
 html, body {
-    margin: 0;
-    min-height: 100%;
-    min-width: 100%;
-    font-family: 'Libre Baskerville', serif;
-    background-color: var(--color-background);
-    font-weight: 400;
-    font-size: var(--font-size-normal);
     overflow-x: hidden;
 }
 
-canvas {
-    position: fixed;
-    z-index: 10;
-    top: 0;
-    left: 0;
-    z-index: 2;
-    pointer-events: none;
-    visibility: hidden;
-    opacity: 0;
+.table-common>table {
+    width: 100%;
+    border-collapse: collapse;
 }
 
-.solid {
-    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+.table-common .btn-box {
+    text-align:center;
 }
 
-.wireframe {
-    clip-path: polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%);
+.table-common>table th, .table-common>table td {
+    border: 1px solid black;
+    padding: 10px;
 }
 
-.content {
-    position: relative;
-    z-index: 1;
+.article-list table {
+    border:none;
+    border-top:2px solid lightgray;
+    border-bottom:2px solid lightgray;
 }
 
-.content .trigger {
-    position: absolute;
-    top: 0;
-    height: 100%;
+.article-list > table th, .article-list > table td {
+    border:none;
 }
 
-.content .section {
-    position: relative;
-    padding: var(--padding);
-    --pad2: calc(var(--padding) * 2);
-    width: calc(100vw - var(--pad2));
-    height: calc(100vh - var(--pad2));
-    margin: 0 auto;
-    z-index: 2;
+.article-list > table td {
+    border-bottom:1px solid lightgray;
 }
 
-.content .section.dark {
-    color: white;
-    background-color: black;
+.article-list > table thead {
+    border-bottom:2px solid lightgray;
+    background-color:#F5F5F5;
 }
 
-.content .section.right {
-    text-align: right;
+.article-detail {
+    border:2px solid lightgray;
+    margin-top: 20px;
 }
 
-.content .blueprint {
-    position: relative;
-    background-color: #131C2A;
-    background-image: linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
-    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, .05) 1px, transparent 1px);
-    background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
-    background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px;
-    background-attachment: fixed;
+.article-detail > table {
+    border:none;
+    width:calc(100% - 200px);
 }
 
-.content .blueprint svg {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    stroke: white;
-    pointer-events: none;
-    visibility: hidden;
+.article-detail > table th, .article-detail > table td {
+    border:none;
 }
 
-.content .blueprint.dark {
-    background-color: transparent;
+.article-detail > table tr:not(:last-child) {
+    border-bottom:1px solid lightgray;
 }
 
-.content .ground-container {
-    position: relative;
-    overflow: hidden;
+.article-detail > table tr:not(.article-body), .article-detail > table tr:not(.article-body) > td{
+    height:20px;
+    font-size:0.8rem;
 }
 
-.content .ground-container .parallax {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: -100px;
-    background-repeat: no-repeat;
-    background-position: top center;
-    background-size: cover;
-    transform-origin: top center;
+.article-detail > table tr.article-title > td {
+    height:40px;
+    font-weight:bold;
+    font-size:1.2rem;
 }
 
-.content .ground-container .ground {
-    z-index: -1;
-    background-image: url("https://assets.codepen.io/557388/background-reduced.jpg");
+.article-detail > table td:last-child {
+    padding-right:100px;
 }
 
-.content .ground-container .clouds {
-    z-index: 2;
-    background-image: url("https://assets.codepen.io/557388/clouds.png");
+.article-detail > .article-writer {
+    width:200px;
+    height:200px;
+    background-color:lightgray;
+    border-bottom:1px solid lightgray;
+    text-align:center;
 }
 
-.content .scroll-cta,
-.content .credits {
-    position: absolute;
-    bottom: var(--padding);
+.article-detail > .article-writer .writer-icon {
+    margin:0 auto;
+    background-color:white;
+    width:150px;
+    height:150px;
+    border-radius:50%;
 }
 
-.content .scroll-cta {
-    font-size: var(--font-size-medium);
-    opacity: 0;
+.reply {
+    margin-top:20px;
+    border:2px solid lightgray;
+    padding:15px;
+    box-sizing:border-box;
 }
 
-.content .sunset {
-    background: url("https://assets.codepen.io/557388/sunset-reduced.jpg") no-repeat top center;
-    background-size: cover;
-    transform-origin: top center;
-}
-
-.content h1,
-.content h2 {
-    font-size: var(--font-size-large);
-    margin: 0vmin 0 2vmin 0;
-    font-weight: 700;
-    display: inline;
-}
-
-.content h3 {
-    font-size: var(--font-size-medium);
-    font-weight: 400;
-    margin: 0;
-}
-
-.content .end h2 {
-    margin-bottom: 50vh;
-}
-
-.content .loading {
-    position: fixed;
-    width: 100vw;
-    height: 100vh;
-    top: 0;
-    left: 0;
+.reply-form {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: var(--font-size-medium);
+    gap: 10px;
+}
+.reply-form button{
+
+}
+
+.reply-form > form input[type="text"] {
+    width:200px;
+}
+
+.reply-form > form textarea {
+    width:calc(100% - 100px);
+    min-height:110px;
+    resize: none;
+
+}
+
+.reply-form > form input[type="submit"] {
+    width:80px;
+    height:40px;
+    transform:translatey(-40%);
+}
+
+.reply-form > form > div:not(:last-child) {
+    margin-bottom:5px;
+}
+
+.reply-list > table {
+    border:none;
+}
+
+.reply-list > table th {
+    display:none;
+}
+
+.reply-list > table td {
+    border:none;
+}
+
+.reply-list > table tr:nth-child(2n+1) {
+    background-color:rgba(0,0,0,0.06);
+}
+
+.reply-list > table td:first-child {
+    font-weight:bold;
+}
+
+.reply-list > table td:first-child::after {
+    content:" : ";
+    font-weight:bold;
+}
+
+.circle {
+    width: 200px; /* 원하는 크기로 조정 */
+    height: 200px;
+    border-radius: 50%; /* 반지름을 50%로 설정하여 동그란 모양으로 만듦 */
+    overflow: hidden; /* 이미지를 원 모양으로 자르기 위해 overflow 속성을 hidden으로 설정 */
+}
+
+.circle img {
+    width: 100%;
+    height: auto;
+    object-fit: cover; /* 이미지가 동그란 영역에 맞게 조정되도록 함 */
 }

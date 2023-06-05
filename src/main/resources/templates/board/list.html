@@ -42,13 +42,13 @@
         <tr th:each="item : ${list}">
             <td th:text="${item.boardNum}">boardNum</td>
             <td th:text="${item.boardName}">boardContent</td>
-            <td th:text="${item.boardWriter}">boardWriter</td>
+            <td th:text="${item.boardWriter}">boardWriterName</td>
             <td th:text="${#dates.format(item.boardDateCreate, 'yyyy-MM-dd')}">boardCreateDate</td>
         </tr>
 
         </tbody>
     </table>
-    <a href="#" class="btn-create">새 글 작성</a>
+    <a href="/board/create" class="btn-create">새 글 작성</a>
     <nav>
         <ul class="pagination">
             <li class="page-item disabled">

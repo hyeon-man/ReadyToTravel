@@ -1,6 +1,9 @@
 package kr.ac.kopo.ReadyToTravel.board;
 
+import kr.ac.kopo.ReadyToTravel.board.attach.BoardAttachCustomRepository;
+import kr.ac.kopo.ReadyToTravel.board.attach.BoardAttachRepository;
 import kr.ac.kopo.ReadyToTravel.board.reply.ReplyCustomRepository;
+import kr.ac.kopo.ReadyToTravel.dto.AttachDTO;
 import kr.ac.kopo.ReadyToTravel.dto.BoardDTO;
 import kr.ac.kopo.ReadyToTravel.dto.ReplyDTO;
 import kr.ac.kopo.ReadyToTravel.entity.attach.BoardAttachEntity;
@@ -9,6 +12,7 @@ import kr.ac.kopo.ReadyToTravel.util.FileUpload;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,14 +21,16 @@ public class BoardServiceImpl implements BoardService {
     final BoardRepository repository;
     final BoardAttachRepository boardAttachRepository;
     final BoardCustomRepository boardCustomRepository;
-
     final ReplyCustomRepository replyCustomRepository;
 
-    public BoardServiceImpl(BoardRepository repository, BoardAttachRepository boardAttachRepository, BoardCustomRepository boardCustomRepository, ReplyCustomRepository replyCustomRepository) {
+    final BoardAttachCustomRepository boardAttachCustomRepository;
+
+    public BoardServiceImpl(BoardRepository repository, BoardAttachRepository boardAttachRepository, BoardCustomRepository boardCustomRepository, ReplyCustomRepository replyCustomRepository, BoardAttachCustomRepository boardAttachCustomRepository) {
         this.repository = repository;
         this.boardAttachRepository = boardAttachRepository;
         this.boardCustomRepository = boardCustomRepository;
         this.replyCustomRepository = replyCustomRepository;
+        this.boardAttachCustomRepository = boardAttachCustomRepository;
     }
 
     @Override
@@ -37,7 +43,7 @@ public class BoardServiceImpl implements BoardService {
         //첨부파일의 갯수만큼 반복한다
         for (int i = 0; i < boardDTO.getMultipartFiles().size(); i++) {
             MultipartFile attach = boardDTO.getMultipartFiles().get(i);
-            String filename = FileUpload.fileUpload(attach);
+            String filename = FileUpload.fileUpload(attach, 1);
             if (filename != null) {
                 BoardAttachEntity attachEntity = new BoardAttachEntity();
                 attachEntity.setFileName(filename);
@@ -59,15 +65,21 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
+    @Transactional
     public BoardDTO detail(Long boardNum) {
         // 게시글 상세 정보 조회
         BoardDTO detail = boardCustomRepository.getBoardDetail(boardNum);
+        detail.getBoardWriterProfile();
 
         //게시글에 포함된 댓글의 정보 조회
         List<ReplyDTO> replies = replyCustomRepository.getReplies(boardNum);
         detail.setReplies(replies);
 
-        // TODO: 2023-05-31 게시글에 포함된 이미지 url 까지 조회 해와야함
+        //게시글 첨부파일 조회
+        List<String> attaches = boardAttachCustomRepository.findByFileNameByBoardNum(boardNum);
+        detail.setFilename(attaches);
+
+        System.out.println(attaches);
 
         return detail;
     }

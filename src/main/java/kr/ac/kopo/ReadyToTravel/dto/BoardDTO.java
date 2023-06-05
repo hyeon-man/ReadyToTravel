@@ -1,5 +1,6 @@
 package kr.ac.kopo.ReadyToTravel.dto;
 
+import kr.ac.kopo.ReadyToTravel.entity.MemberEntity;
 import kr.ac.kopo.ReadyToTravel.entity.board.BoardEntity;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,11 +21,17 @@ public class BoardDTO {
     private Long boardNum;
     private String boardName;
     private String boardContent;
+
+
     private Date boardDateCreate;
     private String boardWriter;
+    private String boardWriterProfile;
+
+    private long boardWriterNum;
 
     private List<MultipartFile> multipartFiles;
-    private List<String> filename = new ArrayList<>();
+
+    private List<String> filename ;
 
     private List<ReplyDTO> replies = new ArrayList<>();
 
@@ -37,21 +44,10 @@ public class BoardDTO {
         BoardEntity entity = BoardEntity.builder()
                 .boardNum(dto.getBoardNum())
                 .boardName(dto.getBoardName())
+                .boardWriter(MemberEntity.builder().num(dto.getBoardWriterNum()).build())
                 .boardContent(dto.getBoardContent())
                 .boardDateCreate(new Date())
                 .build();
         return entity;
     }
-
-    public static BoardDTO convertToDTO(BoardEntity entity) {
-        BoardDTO boardDTO = new BoardDTO();
-        boardDTO.setBoardNum(entity.getBoardNum());
-        boardDTO.setBoardName(entity.getBoardName());
-        boardDTO.setBoardContent(entity.getBoardContent());
-        boardDTO.setBoardDateCreate(entity.getBoardDateCreate());
-
-        return boardDTO;
-    }
-
-
 }
