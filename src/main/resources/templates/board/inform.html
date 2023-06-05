@@ -115,7 +115,7 @@
         const textArea = $(event.currentTarget).closest("tr").find(".content");
         const target = $(event.currentTarget).closest("td").find(".writerName");
         textArea.remove()
-        //todo 이거 하다 말았는데 모달 말고 그냥 p태그 지우고 , input으로 바꾼다음 할거임
+        // todo 이거 하다 말았는데 모달 말고 그냥 p태그 지우고 , input으로 바꾼다음 할거임
         const input = document.createElement("input");
         input.value = textArea;
         input.name = "content";

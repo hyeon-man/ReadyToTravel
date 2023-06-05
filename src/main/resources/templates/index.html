@@ -29,7 +29,6 @@
         <ul>
             <li><a href="/place">여행지</a></li>
             <li><a href="/guide">이용방법</a></li>
-            <li><a href="#">일단빈칸</a></li>
             <li><a href="/board/list">후기게시판</a></li>
             <!-- 로그인  123 -->
             <li><a th:if="${session.memberDTO != null}" href="/member/logout">로그아웃</a></li>
@@ -45,7 +44,7 @@
         <div class="left-side">
             <h4>떠나고 싶은 당신을 위한 여행 플래너</h4>
             <h1 style="font-size: 56px" id="mainH1">READY <br>TO<br> TRAVEL</h1>
-            <div id="startA"><a href="/plan/createPlan" style="text-decoration-line: none; color: white">시작하기</a></div>
+            <div id="startA"><a href="plan/createPlan" style="text-decoration-line: none; color: white">시작하기</a></div>
         </div>
         <div class="right-side">
             <video id="video" autoplay muted loop></video>

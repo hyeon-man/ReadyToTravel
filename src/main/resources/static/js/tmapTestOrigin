@@ -99,3 +99,37 @@ function coordinates(markers) {
     }
     return coordinateArr;
 }
+
+function createMarker(lonLatList) {
+    for (let i = 0; i < lonLatList.length; i++) {
+        const lon = lonLatList[i].lon;
+
+        const lat = lonLatList[i].lat;
+
+        const markerType = lonLatList[i].markerType;
+
+        //Marker 객체 생성.
+        marker = new Tmapv2.Marker({
+            position: new Tmapv2.LatLng(lat, lon), //Marker의 중심좌표 설정.
+            map: null, //Marker가 표시될 Map 설정..
+            title: markerType
+        });
+
+        if (lonLatList[i].markerType == 'START') {
+            marker_s = marker;
+            marker_s.setMap(map);
+            marker.setIcon("http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png");
+        }
+        if (lonLatList[i].markerType == 'END') {
+            marker_e = marker;
+            marker_e.setMap(map);
+            marker.setIcon("http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_e.png");
+        }
+        if (lonLatList[i].markerType == 'VIAPOINT') {
+            markers.push(marker);
+        }
+    }
+    for (let i = 0; i < markers.length; i++) {
+        markers[i].setMap(map);
+    }
+}
