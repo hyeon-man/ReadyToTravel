@@ -74,22 +74,18 @@ public class MemberController {
     @PostMapping("/login")
     public String login(MemberDTO memberDTO, HttpSession session) {
 
-        System.out.println("memberDTO = " + memberDTO.getMemberId());
-        System.out.println("memberDTO = " + memberDTO.getPassword());
-
         MemberDTO login = service.login(memberDTO);
 
         if (login != null) {
-            System.out.println("login ! ===== " + login);
             session.setAttribute("memberDTO", login);
 
             String targetUrl = (String) session.getAttribute("target_url");
-            System.out.println("MemberController: " + targetUrl);
             session.removeAttribute("target_url");
+
             if (targetUrl == null) {
                 return  "redirect:/";
             } else {
-                return "redirect:" + targetUrl;
+                return "redirect:/" + targetUrl;
             }
 
         } else {

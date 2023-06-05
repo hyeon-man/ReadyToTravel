@@ -69,7 +69,7 @@ public class PlanController {
 
             Long planNum = planService.createPlan(plan);
 
-            if (plan.getPlanType() != TravelType.SOLO) {
+            if (plan.getType() != TravelType.SOLO) {
                 groupService.createGroup(planNum, plan.getLeaderNum(), plan.getName());
             }
             return planNum;

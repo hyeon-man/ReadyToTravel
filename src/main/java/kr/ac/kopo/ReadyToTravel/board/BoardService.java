@@ -11,4 +11,5 @@ public interface BoardService {
     void update(BoardDTO boardDTO);
     void delete(Long boardNum);
     BoardDTO detail(Long boardNum);
+    BoardDTO smallDetail(Long boardNum);
 }
