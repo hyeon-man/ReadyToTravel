@@ -32,8 +32,8 @@
 </header>
 
 <div>
-    <img th:src="@{/upload/default.jpg}" />
-
+    <img class="img" th:src="${'/img/' + memberDTO.profileIMG}"/>
+    <p th:text="memberDTO.profileIMG"></p>
     <li>아이디 = <span th:text="${memberDTO.memberId}"></span></li>
     <li>이름 = <span th:text="${memberDTO.name}"></span></li>
     <li>이메일 = <span th:text="${memberDTO.email}"></span></li>

@@ -141,6 +141,7 @@ public class MemberController {
     @GetMapping("/myPage/profile")
     public String myPage(Model model, @SessionAttribute MemberDTO memberDTO){
         model.addAttribute("memberDTO", memberDTO);
+        System.out.println(memberDTO.getProfileIMG());
         return myPath + "profile";
     }
 

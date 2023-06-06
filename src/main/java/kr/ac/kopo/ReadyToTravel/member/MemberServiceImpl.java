@@ -23,8 +23,6 @@ public class MemberServiceImpl implements MemberService {
     private final MailService mailService;
     private final CacheConfig cacheConfig;
 
-
-
     public MemberServiceImpl(MemberRepository memberRepository, JavaMailSender javaMailSender, MailService mailService, CacheConfig cacheConfig) {
         this.memberRepository = memberRepository;
         this.javaMailSender = javaMailSender;
@@ -178,6 +176,4 @@ public class MemberServiceImpl implements MemberService {
             memberEntity.saveFile("");
         }
     }
-
-
 }
