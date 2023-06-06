@@ -56,16 +56,13 @@ public class MemberEntity {
     @Column
     private String phoneNum;
 
-    public void updateName(String name) {
+    public void saveProfile(String password, String name){
+        this.password = password;
         this.name = name;
     }
 
-    public void updatePassword(String password){
-        this.password = password;
-    }
-
-    public void saveFile(final String filename) {
-        this.profileIMG = filename;
+    public void saveProfileIMG(String profileIMG){
+        this.profileIMG = profileIMG;
     }
 
 }

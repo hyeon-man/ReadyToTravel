@@ -21,10 +21,8 @@ public interface MemberService {
 
     boolean validateCode(String email, String mailValidateKey);
 
-    void updateName(MemberDTO memberDTO, String name);
-
-    boolean updatePassword(MemberDTO memberDTO, String password);
+    boolean profileUpdate(MemberDTO memberDTO, String password, String name);
 
     void addAttach(Long num, MultipartFile attach);
 
-}
+    }

@@ -8,8 +8,11 @@ import kr.ac.kopo.ReadyToTravel.util.PassEncode;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.Session;
+import javax.servlet.http.HttpSession;
 import javax.validation.constraints.Null;
 import java.util.Date;
 import java.util.Optional;
@@ -136,34 +139,18 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void updateName(MemberDTO memberDTO, String name) {
-
+    public boolean profileUpdate(MemberDTO memberDTO, String password, String name) {
         MemberEntity memberEntity = memberRepository.findById(memberDTO.getNum())
                 .orElseThrow(() -> new RuntimeException("존재하지 않는 멤버"));
 
-           memberEntity.updateName(name);
-
-    }
-
-    @Override
-    public boolean updatePassword(MemberDTO memberDTO, String password){
-
-        MemberEntity memberEntity = memberRepository.findById(memberDTO.getNum())
-                .orElseThrow(() -> new RuntimeException("존재하지 않는 멤버"));
-
-        String pass = PassEncode.encode(password);
-
-        if (!pass.equals(memberEntity.getPassword()))
-        {
-            memberEntity.updatePassword(pass);
-            return true;
-        }else
-        {
+        if(memberEntity.getPassword().equals(PassEncode.encode(password)) && memberEntity.getName().equals(name)) {
             return false;
+        }else {
+            memberEntity.saveProfile(PassEncode.encode(password), name);
+            return true;
         }
 
     }
-
     @Override
     public void addAttach(Long num, MultipartFile attach) {
         MemberEntity memberEntity = memberRepository.findById(num)
@@ -171,9 +158,10 @@ public class MemberServiceImpl implements MemberService {
 
         String filename = FileUpload.fileUpload(attach, 2);
         if(filename != null){
-            memberEntity.saveFile(filename);
+            FileUpload.fileDelete(memberEntity.getProfileIMG());
+            memberEntity.saveProfileIMG(filename);
         }else {
-            memberEntity.saveFile("");
+            memberEntity.saveProfileIMG("");
         }
     }
 }

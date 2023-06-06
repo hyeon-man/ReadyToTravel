@@ -3,6 +3,8 @@ package kr.ac.kopo.ReadyToTravel.member;
 import kr.ac.kopo.ReadyToTravel.board.BoardService;
 import kr.ac.kopo.ReadyToTravel.dto.MemberDTO;
 import kr.ac.kopo.ReadyToTravel.plan.PlanService;
+import kr.ac.kopo.ReadyToTravel.util.PassEncode;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -112,7 +114,6 @@ public class MemberController {
     public String signUp(MemberDTO memberDTO) {
         System.out.println(memberDTO);
         service.singUp(memberDTO);
-
         return "redirect:/" + path + "login";
     }
 
@@ -120,7 +121,6 @@ public class MemberController {
     @GetMapping("/checkEmail/{email}")
     public String sendEmailCode(@PathVariable String email){
         if(service.sendEmailCode(email)){
-
             return "sendMailOK";
         }else{
             return "senMailFail" ;
@@ -134,7 +134,6 @@ public class MemberController {
             return "emailValidOK";
         }else {
             return "emailValidFAIL";
-
         }
     }
 
@@ -145,41 +144,29 @@ public class MemberController {
         return myPath + "profile";
     }
 
-    @ResponseBody
-    @PostMapping("/myPage/nameUpdate")
-    public String nameUpdate(@SessionAttribute MemberDTO memberDTO, String name){
-        if(memberDTO.getName().equals(name)){
-            service.updateName(memberDTO, name);
-            return "nameUpdateSuccess";
-        }else {
-            return "nameUdpateFail";
-        }
-    }
-
-    @GetMapping("/myPage/passwordUpdate")
-    public String passwordUpdate() {
-        return myPath + "passwordUpdate";
-    }
-
-    @ResponseBody
-    @PostMapping("/myPage/passwordUpdate")
-    public String passwordUpdate(@SessionAttribute MemberDTO memberDTO, String password){
-        if (service.updatePassword(memberDTO, password)) {
-            return "passwordUpdateSuccess";
-        }else {
-            return "passwordUpdateFail";
-        }
-    }
-
-    @GetMapping("/myPage/attach")
-    public String addAttach(@SessionAttribute MemberDTO memberDTO, Model model){
+    @GetMapping("/myPage/profileUpdate")
+    public String profileUpdate(@SessionAttribute MemberDTO memberDTO, Model model){
         model.addAttribute("memberDTO", memberDTO);
-        return myPath + "addAttach";
+
+        return myPath + "profileUpdate";
     }
 
-    @PostMapping("/myPage/attach")
+    @ResponseBody
+    @PostMapping("/myPage/profileUpdate")
+    public String profileUpdate(@SessionAttribute MemberDTO memberDTO, String password, String name){
+        if(service.profileUpdate(memberDTO, PassEncode.encode(password), name))
+        {
+            return "profileUpdateSuccess";
+        }else
+        {
+            return "profileUpdateFail";
+        }
+    }
+
+    @ResponseBody
+    @PostMapping("/myPage/profileIMGUpdate")
     public String addAttach(@SessionAttribute MemberDTO memberDTO, MultipartFile attach) {
         service.addAttach(memberDTO.getNum(), attach);
-        return "redirect:/" + myPath + "profile";
+        return "profileIMGUpdateSuccess";
     }
 }
