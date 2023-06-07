@@ -9,7 +9,7 @@ import java.util.UUID;
 import static org.aspectj.asm.internal.CharOperation.lastIndexOf;
 
 public class FileUpload {
-    static String path = "D:\\upload\\";
+    static String path = "C:\\upload\\";
 
     static String boardPath = "board\\";
 
@@ -44,13 +44,15 @@ public class FileUpload {
     }
 
     public static void fileRemove(String filename, int type) {
+        String removePath = path;
+
         if (type == 1) {
-            path = path + boardPath + filename;
+            removePath += boardPath + filename;
         } else if (type == 2) {
-            path = path + profilePath + filename;
+            removePath += profilePath + filename;
         }
 
-        File file = new File(path);
+        File file = new File(removePath);
         if (file == null) {
             return;
         }

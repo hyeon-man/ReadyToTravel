@@ -19,7 +19,7 @@
     <div class="navigation">
         <ul>
             <li class="logo">
-                <a href="/">
+                <a href="/static">
                         <span class="mainicon">
                             <img src="/image/rttlogo.png" style="width: 45px; height: 45px;">
                         </span>
@@ -110,8 +110,8 @@
 
                         <h2>프로필 수정</h2>
                         <!-- 이미지 폼태그 -->
-                        <form method="post" action="/member/myPage/profileUpdate" enctype="multipart/form-data">
-                            <div class="modal_photo ">
+                        <form method="post" action="/member/profile/update" enctype="multipart/form-data">
+                            <div class="modal_photo">
                                 <label for="fileUpload">
                                     <img style="width: 150px; height: 150px; border-radius: 50%; cursor: pointer;"
                                          th:src="${'/img/' + memberDTO.profileIMG}">

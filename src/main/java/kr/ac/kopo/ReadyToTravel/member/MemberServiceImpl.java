@@ -157,7 +157,13 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public MemberEntity profileUpdate(Long num, MemberDTO updateInfo) {
         MemberEntity member = memberRepository.findByNum(num);
-        member.saveProfile(updateInfo);
+
+        if (!updateInfo.getPassword().isEmpty()){
+            member.saveProfile(updateInfo.getName(), PassEncode.encode(updateInfo.getPassword()));
+            System.out.println("저장된 memberEntity ======" + member);
+        } else {
+           member.saveProfile(updateInfo.getName(), member.getPassword());
+        }
 
         return member;
     }

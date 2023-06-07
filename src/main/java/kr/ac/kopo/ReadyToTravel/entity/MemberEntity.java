@@ -57,9 +57,9 @@ public class MemberEntity {
     @Column
     private String phoneNum;
 
-    public void saveProfile(MemberDTO dto){
-        this.password = PassEncode.encode(dto.getPassword());
-        this.name = dto.getName();
+    public void saveProfile(String name,String password){
+        this.password = password;
+        this.name = name;
 
     }
 

@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
@@ -121,34 +120,27 @@ public class MemberController {
         }
     }
 
-    @GetMapping("/myPage/profile")
+    @GetMapping("/profile")
     public String myPage(Model model, @SessionAttribute MemberDTO memberDTO) {
         MemberDTO member = service.memberInfoByNum(memberDTO.getNum());
         model.addAttribute("memberDTO", member);
 
 
-        return "member/myPage/profile";
+        return "member/profile";
     }
 
 
-    @PostMapping("/myPage/profileUpdate")
+    @PostMapping("/profile/update")
     public String profileUpdate(@SessionAttribute MemberDTO memberDTO, MemberDTO updateInfo) {
+        // TODO: 2023-06-08 Attach null 검증 안됨 해결해야함. 시도해본것: profileIMG검증(받지 않아서 파일 있든 없든 null), profileFile검증(있든 없든 null이 안됨)
 
-
-        if (updateInfo.getProfileFile() != null) {
+        if (updateInfo.getProfileIMG() != null) {
             service.profileUpdate(memberDTO.getNum(), updateInfo);
             service.saveAttach(memberDTO.getNum(), updateInfo.getProfileFile());
         } else
             service.profileUpdate(memberDTO.getNum(), updateInfo);
 
-        return "redirect:/member/myPage/profile";
+        return "redirect:/member/profile";
     }
 
-
-    @PostMapping("/myPage/profileIMGUpdate")
-    public String addAttach(@SessionAttribute MemberDTO memberDTO, MultipartFile attach) {
-
-        return "redirect:/member/myPage/profile";
-
-    }
 }
