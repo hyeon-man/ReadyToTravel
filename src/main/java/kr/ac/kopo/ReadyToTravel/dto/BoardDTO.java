@@ -25,8 +25,11 @@ public class BoardDTO {
 
     private Date boardDateCreate;
     private String boardWriter;
+    private String boardWriterProfile;
+
 
     private long boardWriterNum;
+
 
     private List<MultipartFile> multipartFiles;
 
@@ -49,16 +52,4 @@ public class BoardDTO {
                 .build();
         return entity;
     }
-
-    public static BoardDTO convertToDTO(BoardEntity entity) {
-        BoardDTO boardDTO = new BoardDTO();
-        boardDTO.setBoardNum(entity.getBoardNum());
-        boardDTO.setBoardName(entity.getBoardName());
-        boardDTO.setBoardContent(entity.getBoardContent());
-        boardDTO.setBoardDateCreate(entity.getBoardDateCreate());
-
-        return boardDTO;
-    }
-
-
 }

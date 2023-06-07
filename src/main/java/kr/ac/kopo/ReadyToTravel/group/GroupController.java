@@ -63,14 +63,18 @@ public class GroupController {
         service.updateGroup(group);
     }
 
+
+    /**
+     * 그룹 조회
+     * @param groupNum
+     * @return
+     */
     @GetMapping("/group/info/{groupNum}")
-    public String groupInfo(@PathVariable long groupNum, Model model) {
+    public String groupInfo(@PathVariable long groupNum) {
 
-        GroupDTO group = service.item(groupNum);
-        model.addAttribute("group", group);
 
-        List<MemberDTO> memberList = service.groupInMember(groupNum);
-        model.addAttribute("memberList", memberList);
+        GroupDTO groupDTO = service.groupInMember(groupNum);
+        System.out.println(groupDTO);
 
         return "/group/info";
     }

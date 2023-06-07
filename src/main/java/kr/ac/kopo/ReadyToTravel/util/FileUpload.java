@@ -43,16 +43,4 @@ public class FileUpload {
         return null;
     }
 
-    public static void fileDelete(String fullFileName){
-        if (fullFileName!=null) {
-            fullFileName += path + profilePath + fullFileName;
-        File fileDelete = new File(fullFileName);
-        fileDelete.delete();
-        } else{
-            System.out.println("NO exist File");
-        }
-
-
-    }
-
 }

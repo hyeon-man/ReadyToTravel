@@ -3,8 +3,6 @@ package kr.ac.kopo.ReadyToTravel.plan;
 
 import kr.ac.kopo.ReadyToTravel.dto.MemberDTO;
 import kr.ac.kopo.ReadyToTravel.dto.plan.PlanDTO;
-import kr.ac.kopo.ReadyToTravel.dto.plan.LonLatDTO;
-import kr.ac.kopo.ReadyToTravel.entity.plan.PlanEntity;
 import kr.ac.kopo.ReadyToTravel.group.GroupService;
 import kr.ac.kopo.ReadyToTravel.member.MemberService;
 import kr.ac.kopo.ReadyToTravel.plan.travelType.TravelType;
@@ -17,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.Date;
-import java.util.List;
 
 @RequestMapping("/plan")
 @Controller
@@ -32,6 +29,7 @@ public class PlanController {
 
 
     @GetMapping("/viewPlan/{planNum}")
+
     public String viewPlan(@PathVariable long planNum) {
         return "/plan/viewPlan";
     }
@@ -59,49 +57,41 @@ public class PlanController {
      * @return
  */
     @PostMapping("/createPlan")
-    public String createPlan(@RequestBody PlanDTO plan, HttpServletRequest request) {
+    @ResponseBody
+    public Long createPlan(@RequestBody PlanDTO plan, HttpServletRequest request) {
 
         HttpSession session = request.getSession();
 
         MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
-        System.out.println("memberDTO.getNum() = " + memberDTO.getNum());
 
-        if (memberDTO != null) {
             plan.setCreateDate(new Date());
             plan.setLeaderNum(memberDTO.getNum());
 
             Long planNum = planService.createPlan(plan);
 
-            if (plan.getPlanType() != TravelType.SOLO) {
+            if (plan.getType() != TravelType.SOLO) {
                 groupService.createGroup(planNum, plan.getLeaderNum(), plan.getName());
             }
-            return "redirect:/plan/viewPlan/" + planNum;
-        }
-        //TODO 멤버 세션이 없을 경우 return
-        return "/member/login";
+            return planNum;
     }
 
-    @GetMapping("/updatePlan/{num}")
-    public String updatePlan(@PathVariable Long num, Model model) {
-        PlanEntity entity = planService.getItem(num);
-
-        model.addAttribute("item", entity);
-
-        return "";
+    @GetMapping("/updatePlan/{planNum}")
+    public String updatePlan(@PathVariable Long planNum, Model model) {
+        return "/plan/updatePlan";
     }
 
-    @PostMapping("/updatePlan/{num}")
-    public String updatePlan(@PathVariable Long num, @Valid PlanDTO plan) {
-        plan.setNum(num);
+    @PostMapping("/updatePlan/{planNum}")
+    public Long updatePlan(@PathVariable Long planNum, @Valid PlanDTO plan) {
+        plan.setNum(planNum);
 
         planService.updatePlan(plan);
 
-        return "";
+        return planNum;
     }
 
-    @RequestMapping("/removePlan/{num}")
-    public String removePlan(@PathVariable Long num) {
-        planService.removePlan(num);
+    @RequestMapping("/removePlan/{planNum}")
+    public String removePlan(@PathVariable Long planNum) {
+        planService.removePlan(planNum);
         return "";
     }
 }

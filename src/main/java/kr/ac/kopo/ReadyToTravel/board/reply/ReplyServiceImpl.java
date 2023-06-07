@@ -23,10 +23,11 @@ public class ReplyServiceImpl implements ReplyService {
     @Override
     public void addReply(ReplyDTO reply) {
         ReplyEntity replyEntity = ReplyEntity.builder()
-                .replyNum(null)
+                .replyNum(reply.getReplyNum())
                 .member(MemberEntity.builder().num(reply.getWriter()).build())
                 .writeDate(new Date())
                 .content(reply.getContent())
+                .boardEntity(BoardEntity.builder().boardNum(reply.getBoardNum()).build())
                 .build();
 
         replyRepository.save(replyEntity);
@@ -47,7 +48,6 @@ public class ReplyServiceImpl implements ReplyService {
                 .orElseThrow(() -> new NullPointerException("존재 하지 않는 댓글"));
 
         entity.setContent(dto.getContent());
-        replyRepository.save(entity);
     }
 
 

@@ -1,0 +1,76 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Ready To Travel</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>
+    <link rel="stylesheet" href="/css/createPlan.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=6MTwtT0OK18O1A8FGiL349WFB2UyKhI11K5MsjXN"></script>
+    <!--tmap API js 자리-->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+</head>
+<body>
+<header>
+    <!--LOGO-->
+    <div class="logo">
+        <a href="/">
+            <b>RTT</b>
+            <h7>&nbsp;READY TO TRAVEL</h7>
+        </a>
+    </div>
+
+    <!--NAV-->
+    <nav>
+        <ul>
+            <li><a href="#">소개</a></li>
+            <li><a href="/list">여행지</a></li>
+            <li><a href="#">이용방법</a></li>
+            <li><a href="/boardList">후기게시판</a></li>
+            <!-- 로그인 -->
+            <li><a th:if="${session.memberDTO != null}" href="/member/logout">로그아웃</a></li>
+            <!-- 이게 비로그인 -->
+            <li><a th:if="${session.memberDTO == null}" href="/member/login">로그인</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div id="main2">
+    <div class="container">
+        <div class="left-side">
+            <!-- 거리 -->
+            <span id="result">총 거리 : </span><br>
+
+            <ul>
+                <li id="dateLi"></li>
+            </ul>
+
+            <div>
+                <input name="name" id="planName"></input>
+                <input name="contents" id="planContents"></input>
+            </div>
+        </div>
+        <div class="right-side map_wrap" id="map_wrap">
+            <!-- T MAP -->
+            <div id="map_div"></div>
+        </div>
+
+        <div>
+        </div>
+        <div class="button-container">
+            <div>
+                <button id="createBtn" type="button">경로 최적화</button>
+            </div>
+            <div>
+                <button id="updatePlanBtn">계획 수정</button>
+            </div>
+            <div>
+                <button id="removeBtn">마커삭제</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="/js/tmapApiUpdate.js"></script>
+</html>

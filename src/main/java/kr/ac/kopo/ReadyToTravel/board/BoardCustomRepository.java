@@ -10,4 +10,6 @@ public interface BoardCustomRepository {
     List<BoardDTO> boardList();
 
     BoardDTO getBoardDetail(Long boardNum);
+
+    BoardDTO smallDetail(Long boardNum);
 }

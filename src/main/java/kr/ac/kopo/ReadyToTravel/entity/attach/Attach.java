@@ -7,6 +7,7 @@ import lombok.Setter;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.MappedSuperclass;
+import java.util.List;
 
 @Getter
 @Setter
@@ -14,5 +15,5 @@ import javax.persistence.MappedSuperclass;
 public class Attach {
 
     @Column(name = "file_name")
-    String fileName;
+    private String fileName;
 }

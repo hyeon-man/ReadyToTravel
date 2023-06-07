@@ -2,16 +2,17 @@ package kr.ac.kopo.ReadyToTravel.group;
 
 import kr.ac.kopo.ReadyToTravel.dto.GroupDTO;
 import kr.ac.kopo.ReadyToTravel.dto.MemberDTO;
+import kr.ac.kopo.ReadyToTravel.dto.plan.PlanDTO;
 import kr.ac.kopo.ReadyToTravel.entity.MemberEntity;
 import kr.ac.kopo.ReadyToTravel.entity.group.GroupEntity;
 import kr.ac.kopo.ReadyToTravel.entity.group.GroupMembership;
 import kr.ac.kopo.ReadyToTravel.entity.group.InviteEntity;
 import kr.ac.kopo.ReadyToTravel.entity.plan.PlanEntity;
 import kr.ac.kopo.ReadyToTravel.member.MemberRepository;
+import kr.ac.kopo.ReadyToTravel.plan.PlanCustomRepository;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.io.IOException;
 import java.util.*;
 
 
@@ -23,12 +24,14 @@ public class GroupServiceImpl implements GroupService {
     private final MemberRepository memberRepository;
     private final GroupCustomRepository groupCustomRepository;
 
-    public GroupServiceImpl(GroupRepository groupRepository, GroupMembershipRepository groupMembershipRepository, InviteUrlRepository inviteUrlRepository, MemberRepository memberRepository, GroupCustomRepository groupCustomRepository) {
+    private final PlanCustomRepository planCustomRepository;
+    public GroupServiceImpl(GroupRepository groupRepository, GroupMembershipRepository groupMembershipRepository, InviteUrlRepository inviteUrlRepository, MemberRepository memberRepository, GroupCustomRepository groupCustomRepository, PlanCustomRepository planCustomRepository) {
         this.groupRepository = groupRepository;
         this.groupMembershipRepository = groupMembershipRepository;
         this.inviteUrlRepository = inviteUrlRepository;
         this.memberRepository = memberRepository;
         this.groupCustomRepository = groupCustomRepository;
+        this.planCustomRepository = planCustomRepository;
     }
 
     @Override
@@ -99,7 +102,6 @@ public class GroupServiceImpl implements GroupService {
 
         GroupEntity entity = GroupEntity
                 .builder()
-                .name(group.getPlanName())
                 .modifiedDate(group.getModifiedDate())
                 .build();
 
@@ -107,32 +109,6 @@ public class GroupServiceImpl implements GroupService {
         groupRepository.save(entity);
     }
 
-    @Override
-    public GroupDTO item(long groupNum) {
-        GroupEntity groupEntity = groupRepository.findById(groupNum)
-                .orElseThrow(() -> new NullPointerException("그룹 번호로 조회한 결과가 없습니다."));
-        GroupDTO groupDto = new GroupDTO();
-        groupDto.convertToDto(groupEntity);
-
-
-        return groupDto;
-    }
-
-    @Override
-    public List<MemberDTO> groupInMember(long groupNum) {
-        List<MemberEntity> memberList = groupCustomRepository.GroupInMember(groupNum);
-
-        List<MemberDTO> memberDTOList = new ArrayList<>();
-        for (MemberEntity member : memberList) {
-            memberDTOList.add(MemberDTO.builder()
-                    .memberId(member.getMemberId())
-                    .num(member.getNum())
-                    .profileIMG(member.getProfileIMG())
-                    .build());
-        }
-
-        return memberDTOList;
-    }
 
     @Override
     public String generateInviteCode(long groupNum) {
@@ -159,6 +135,21 @@ public class GroupServiceImpl implements GroupService {
         }
 
         return invite.getInviteURL();
+    }
+
+    @Override
+    @Transactional
+    public GroupDTO groupInMember(long groupNum) {
+        GroupDTO group = groupCustomRepository.groupInfo(groupNum);
+
+        List<MemberDTO> members = groupCustomRepository.groupInMember(groupNum);
+        group.addMember(members);
+
+        PlanDTO plan = planCustomRepository.findByNum(group.getPlanNum());
+        group.addPlan(plan);
+
+
+        return group;
     }
 
 }

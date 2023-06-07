@@ -27,7 +27,7 @@ public class PlanDTO {
     // 0 가족 여행 , 1 커플 여행 , 2 혼자 여행, 3 친구 여행
     // EnumType.ORIDNAL = 값을 배열의 숫자로 반환해준다. ex) FAMILY = 0
     @Enumerated(EnumType.ORDINAL)
-    private TravelType planType;
+    private TravelType type;
 
     @NotNull
     @NotBlank
@@ -49,7 +49,7 @@ public class PlanDTO {
     // PlanDTO 객체를 PlanEntity로 변환하는 메소드
     public PlanEntity convertToEntity(PlanDTO dto, Long memberNum) {
         PlanEntity entity = PlanEntity.builder()
-                .type(dto.getPlanType())
+                .type(dto.getType())
                 .name(dto.getName())
                 .leaderNum(MemberEntity.builder().num(memberNum).build())
                 .contents(dto.getContents())

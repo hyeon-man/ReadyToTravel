@@ -1,4 +1,4 @@
-package kr.ac.kopo.ReadyToTravel.board;
+package kr.ac.kopo.ReadyToTravel.board.attach;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -23,13 +23,10 @@ public class BoardAttachCustomRepositoryImpl implements BoardAttachCustomReposit
     }
 
     @Override
-    public List<AttachDTO> findByFileNameByBoardNum(Long boardNum) {
-
-
-        return queryFactory.select(Projections.fields(AttachDTO.class,
-                                boardAttachEntity.fileName.as("filename")))
-                        .from(boardAttachEntity)
-                        .where(boardAttachEntity.boardEntity.boardNum.eq(boardNum))
-                        .fetch();
+    public List<String> findByFileNameByBoardNum(Long boardNum) {
+        return queryFactory.select(boardAttachEntity.fileName)
+                .from(boardAttachEntity)
+                .where(boardAttachEntity.boardEntity.boardNum.eq(boardNum))
+                .fetch();
     }
 }

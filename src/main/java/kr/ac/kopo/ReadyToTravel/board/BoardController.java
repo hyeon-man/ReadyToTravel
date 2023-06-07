@@ -14,20 +14,17 @@ import java.util.List;
 @Controller
 public class BoardController {
     private final BoardService service;
-    private final ReplyService replyService;
 
-    public BoardController(BoardService service, ReplyService replyService) {
+    public BoardController(BoardService service) {
         this.service = service;
-        this.replyService = replyService;
     }
 
-    @GetMapping("/board/list")
+    @GetMapping("/list")
     public String boardList(Model model) {
-
         List<BoardDTO> boardList = service.boardList();
         model.addAttribute("list", boardList);
 
-        return "/board/list";
+        return "board/list";
     }
 
 
@@ -40,7 +37,6 @@ public class BoardController {
         return "/board/inform";
 
     }
-
 
     @GetMapping("/board/create")
     public String boardCreate() {
@@ -60,7 +56,7 @@ public class BoardController {
     @GetMapping("/board/update/{boardNum}")
     public String boardUpdate(@PathVariable Long boardNum, Model model) {
 
-        BoardDTO board = service.detail(boardNum);
+        BoardDTO board = service.smallDetail(boardNum);
         model.addAttribute("board", board);
 
         return "/board/update";

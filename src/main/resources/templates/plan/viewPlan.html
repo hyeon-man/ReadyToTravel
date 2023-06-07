@@ -39,14 +39,16 @@
 <div id="main2">
     <div class="container">
         <div class="left-side">
+            <!-- 거리 -->
+            <span id="result">총 거리 : </span><br>
 
             <ul>
                 <li id="dateButton"></li>
             </ul>
 
             <div>
-                <input type="text" name="name" id="planName">
-                <input type="text" name="contents" id="planContents">
+                <input name="name" id="planName"></input>
+                <input name="contents" id="planContents"></input>
             </div>
         </div>
         <div class="right-side map_wrap" id="map_wrap">
@@ -58,10 +60,9 @@
             <div>
                 <button id="createBtn" type="button">경로 최적화</button>
             </div>
-
         </div>
     </div>
 </div>
 </body>
-<script type="text/javascript" src="/js/tmapApiView.js"></script>
+<script type="text/javascript" src="/js/tmapApiUpdate.js"></script>
 </html>

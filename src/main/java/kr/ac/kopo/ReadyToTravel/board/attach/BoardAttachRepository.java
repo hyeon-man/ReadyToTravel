@@ -1,4 +1,4 @@
-package kr.ac.kopo.ReadyToTravel.board;
+package kr.ac.kopo.ReadyToTravel.board.attach;
 
 import kr.ac.kopo.ReadyToTravel.entity.attach.BoardAttachEntity;
 import kr.ac.kopo.ReadyToTravel.entity.board.BoardEntity;
