@@ -128,6 +128,9 @@ function validationCodeAsync() {
 
                 const elementLabel = document.getElementById("mailValidationCodeLabel");
                 elementLabel.style.display = "none";
+
+                const elementEmailButton = document.getElementById("emailButton");
+                elementEmailButton.style.display = "none";
             } else if (data === 'emailValidFAIL') {
                 alert("유효하지 않은 보안코드 입니다. 보안코드가 오지 않았다면 다시 시도하거나 이메일을 확인해주세요");
             }

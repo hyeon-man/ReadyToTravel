@@ -2,8 +2,10 @@ package kr.ac.kopo.ReadyToTravel.member;
 
 import kr.ac.kopo.ReadyToTravel.dto.MemberDTO;
 import kr.ac.kopo.ReadyToTravel.entity.MemberEntity;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
 
 public interface MemberService {
     boolean checkId(String id);
@@ -19,4 +21,11 @@ public interface MemberService {
     boolean sendEmailCode(String email);
 
     boolean validateCode(String email, String mailValidateKey);
-}
+/*
+
+    boolean profileUpdate(HttpServletRequest request, MemberDTO memberDTO, String password, String name);
+
+    void addAttach(Long num, MultipartFile attach);
+*/
+
+    }

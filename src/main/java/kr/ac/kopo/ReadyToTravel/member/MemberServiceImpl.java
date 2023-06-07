@@ -3,11 +3,15 @@ package kr.ac.kopo.ReadyToTravel.member;
 import kr.ac.kopo.ReadyToTravel.dto.MemberDTO;
 import kr.ac.kopo.ReadyToTravel.entity.MemberEntity;
 import kr.ac.kopo.ReadyToTravel.util.CacheConfig;
+import kr.ac.kopo.ReadyToTravel.util.FileUpload;
 import kr.ac.kopo.ReadyToTravel.util.PassEncode;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
@@ -19,7 +23,6 @@ public class MemberServiceImpl implements MemberService {
     private final JavaMailSender javaMailSender;
     private final MailService mailService;
     private final CacheConfig cacheConfig;
-
 
 
     public MemberServiceImpl(MemberRepository memberRepository, JavaMailSender javaMailSender, MailService mailService, CacheConfig cacheConfig) {
@@ -134,4 +137,33 @@ public class MemberServiceImpl implements MemberService {
         }
     }
 
+    /*@Override
+    public MemberDTO profileUpdate(HttpServletRequest request, MemberDTO memberDTO, String password, String name) {
+        MemberEntity memberEntity = memberRepository.findById(memberDTO.getNum())
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 멤버"));
+
+        if(memberEntity.getPassword().equals(PassEncode.encode(password)) && memberEntity.getName().equals(name)) {
+
+            return false;
+        }else {
+            memberEntity.saveProfile(PassEncode.encode(password), name);
+            HttpSession session = request.getSession();
+            session.removeAttribute("memberDTO");
+            return true;
+        }
+
+    }
+    @Override
+    public void addAttach(Long num, MultipartFile attach) {
+        MemberEntity memberEntity = memberRepository.findById(num)
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 멤버"));
+
+        String filename = FileUpload.fileUpload(attach, 2);
+        if(filename != null){
+            FileUpload.fileDelete(memberEntity.getProfileIMG());
+            memberEntity.saveProfileIMG(filename);
+        }else {
+            memberEntity.saveProfileIMG("");
+        }
+    }*/
 }

@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http:/www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="/css/myPage.css" type="text/css">
+    <link rel="stylesheet" href="/css/profile.css" type="text/css">
     <link rel="icon" href="/image/RTT-favicon.png" type="image/x-icon">
 </head>
 <body>
 <header>
     <!--LOGO-->
     <div class="logo">
-        <a href="/">
+        <a href="/static">
             <b>RTT</b>
             <h7>&nbsp;READY TO TRAVEL</h7>
         </a>
@@ -30,5 +30,14 @@
         </ul>
     </nav>
 </header>
+
+<div>
+    <img class="img" th:src="${'/img/' + memberDTO.profileIMG}"/>
+    <p th:text="memberDTO.profileIMG"></p>
+    <li>아이디 = <span th:text="${memberDTO.memberId}"></span></li>
+    <li>이름 = <span th:text="${memberDTO.name}"></span></li>
+    <li>이메일 = <span th:text="${memberDTO.email}"></span></li>
+        <a href="profileUpdate">profileUpdate</a>
+</div>
 </body>
 </html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http:/www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form method="post" action="/member/myPage/profileUpdate">
+    <div>
+        <label>Name</label>
+        <input type="text" name="name" th:value="${memberDTO.name}">
+        <label>password</label>
+        <input type="password" name="password" th:value="${memberDTO.password}">
+        <button type="submit">submit</button>
+    </div>
+</form>
+<form method="post" action="/member/myPage/profileIMGUpdate" enctype="multipart/form-data">
+    <input type="file" name="attach">
+    <button type="submit">전송</button>
+</form>
+</body>
+</html>

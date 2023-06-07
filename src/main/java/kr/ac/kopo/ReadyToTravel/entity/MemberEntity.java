@@ -56,8 +56,14 @@ public class MemberEntity {
     @Column
     private String phoneNum;
 
+    public void saveProfile(String password, String name){
+        this.password = password;
+        this.name = name;
+    }
 
-
+    public void saveProfileIMG(String profileIMG){
+        this.profileIMG = profileIMG;
+    }
 
 }
 
