@@ -9,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfig implements WebMvcConfigurer {
 
     private String connectPath = "/img/**";
-    private String resourcePath = "file:///c:/upload/";
+    private String resourcePath = "file:///d:/upload/";
     private String profilePath = "profile/";
     private String boardPath = "board/";
 

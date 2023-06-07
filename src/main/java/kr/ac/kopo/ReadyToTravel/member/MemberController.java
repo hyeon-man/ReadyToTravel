@@ -137,7 +137,7 @@ public class MemberController {
         }
     }
 
-    @GetMapping("/myPage/profile")
+    /*@GetMapping("/myPage/profile")
     public String myPage(Model model, @SessionAttribute MemberDTO memberDTO){
         model.addAttribute("memberDTO", memberDTO);
         System.out.println(memberDTO.getProfileIMG());
@@ -153,8 +153,8 @@ public class MemberController {
 
     @ResponseBody
     @PostMapping("/myPage/profileUpdate")
-    public String profileUpdate(@SessionAttribute MemberDTO memberDTO, String password, String name){
-        if(service.profileUpdate(memberDTO, PassEncode.encode(password), name))
+    public String profileUpdate(HttpServletRequest request ,@SessionAttribute MemberDTO memberDTO, String password, String name){
+        if(service.profileUpdate(request ,memberDTO, password, name))
         {
             return "profileUpdateSuccess";
         }else
@@ -169,4 +169,5 @@ public class MemberController {
         service.addAttach(memberDTO.getNum(), attach);
         return "profileIMGUpdateSuccess";
     }
+*/
 }

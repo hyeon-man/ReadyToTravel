@@ -8,12 +8,10 @@ import kr.ac.kopo.ReadyToTravel.util.PassEncode;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.mail.Session;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.validation.constraints.Null;
 import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
@@ -25,6 +23,7 @@ public class MemberServiceImpl implements MemberService {
     private final JavaMailSender javaMailSender;
     private final MailService mailService;
     private final CacheConfig cacheConfig;
+
 
     public MemberServiceImpl(MemberRepository memberRepository, JavaMailSender javaMailSender, MailService mailService, CacheConfig cacheConfig) {
         this.memberRepository = memberRepository;
@@ -138,15 +137,18 @@ public class MemberServiceImpl implements MemberService {
         }
     }
 
-    @Override
-    public boolean profileUpdate(MemberDTO memberDTO, String password, String name) {
+    /*@Override
+    public MemberDTO profileUpdate(HttpServletRequest request, MemberDTO memberDTO, String password, String name) {
         MemberEntity memberEntity = memberRepository.findById(memberDTO.getNum())
                 .orElseThrow(() -> new RuntimeException("존재하지 않는 멤버"));
 
         if(memberEntity.getPassword().equals(PassEncode.encode(password)) && memberEntity.getName().equals(name)) {
+
             return false;
         }else {
             memberEntity.saveProfile(PassEncode.encode(password), name);
+            HttpSession session = request.getSession();
+            session.removeAttribute("memberDTO");
             return true;
         }
 
@@ -163,5 +165,5 @@ public class MemberServiceImpl implements MemberService {
         }else {
             memberEntity.saveProfileIMG("");
         }
-    }
+    }*/
 }
