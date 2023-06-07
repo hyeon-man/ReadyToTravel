@@ -3,6 +3,7 @@ package kr.ac.kopo.ReadyToTravel.entity;
 import kr.ac.kopo.ReadyToTravel.dto.MemberDTO;
 import kr.ac.kopo.ReadyToTravel.entity.group.GroupEntity;
 import kr.ac.kopo.ReadyToTravel.entity.group.GroupMembership;
+import kr.ac.kopo.ReadyToTravel.util.PassEncode;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -56,9 +57,10 @@ public class MemberEntity {
     @Column
     private String phoneNum;
 
-    public void saveProfile(String password, String name){
-        this.password = password;
-        this.name = name;
+    public void saveProfile(MemberDTO dto){
+        this.password = PassEncode.encode(dto.getPassword());
+        this.name = dto.getName();
+
     }
 
     public void saveProfileIMG(String profileIMG){

@@ -14,10 +14,6 @@ public class WebConfig implements WebMvcConfigurer {
     private String boardPath = "board/";
 
 
-    private String profilePath = "profile/";
-
-    private String boardPath = "board/";
-
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler(connectPath)

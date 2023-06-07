@@ -30,7 +30,7 @@ public class ReplyEntity {
     @JoinColumn(name = "board_num", nullable = false)
     private BoardEntity boardEntity;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "writer")
     private MemberEntity member;
 }

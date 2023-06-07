@@ -28,7 +28,7 @@ public class GroupMembership {
     @JoinColumn(name = "group_num")
     private GroupEntity group;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "member_num")
     private MemberEntity member;
 

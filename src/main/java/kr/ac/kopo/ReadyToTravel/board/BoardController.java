@@ -19,7 +19,7 @@ public class BoardController {
         this.service = service;
     }
 
-    @GetMapping("/list")
+    @GetMapping("/board/list")
     public String boardList(Model model) {
         List<BoardDTO> boardList = service.boardList();
         model.addAttribute("list", boardList);

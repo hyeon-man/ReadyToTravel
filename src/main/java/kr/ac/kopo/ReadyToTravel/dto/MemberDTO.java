@@ -3,6 +3,7 @@ package kr.ac.kopo.ReadyToTravel.dto;
 
 import kr.ac.kopo.ReadyToTravel.entity.MemberEntity;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.Email;
 import java.util.Date;
@@ -40,6 +41,7 @@ public class MemberDTO {
     //핸드폰 번호
     private String phoneNum;
 
+    private MultipartFile profileFile;
 
     public  MemberEntity convertToEntity(MemberDTO dto) {
 

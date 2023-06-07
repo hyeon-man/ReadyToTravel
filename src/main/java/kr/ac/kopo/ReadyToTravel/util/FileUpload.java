@@ -43,4 +43,19 @@ public class FileUpload {
         return null;
     }
 
+    public static void fileRemove(String filename, int type) {
+        if (type == 1) {
+            path = path + boardPath + filename;
+        } else if (type == 2) {
+            path = path + profilePath + filename;
+        }
+
+        File file = new File(path);
+        if (file == null) {
+            return;
+        }
+
+        file.delete();
+
+    }
 }

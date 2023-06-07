@@ -1,43 +1,237 @@
 <!DOCTYPE html>
-<html xmlns:th="http:/www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" href="/css/profile.css" type="text/css">
-    <link rel="icon" href="/image/RTT-favicon.png" type="image/x-icon">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RTT 마이페이지</title>
+    <!-- ======= Styles ====== -->
+    <link rel="stylesheet" href="/css/profile.css">
+    <link rel="shortcut icon" href="rttlogo.png" type="image/x-icon">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
 </head>
+
 <body>
-<header>
-    <!--LOGO-->
-    <div class="logo">
-        <a href="/static">
-            <b>RTT</b>
-            <h7>&nbsp;READY TO TRAVEL</h7>
-        </a>
-    </div>
-    <!--NAV-->
-    <nav>
+<!-- =============== Navigation ================ -->
+<div class="container">
+    <div class="navigation">
         <ul>
-            <li><a href="/place">여행지</a></li>
-            <li><a href="/guide">이용방법</a></li>
-            <li><a href="#">일단빈칸</a></li>
-            <li><a href="/board/list">후기게시판</a></li>
-            <!-- 로그인  123 -->
-            <li><a th:if="${session.memberDTO != null}" href="/member/logout">로그아웃</a></li>
-            <!-- 이게 비로그인 456-->
-            <li><a th:if="${session.memberDTO == null}" href="/member/login">로그인</a></li>
+            <li class="logo">
+                <a href="/">
+                        <span class="mainicon">
+                            <img src="/image/rttlogo.png" style="width: 45px; height: 45px;">
+                        </span>
+                    <span class="title">Ready To Travel</span>
+                </a>
+            </li>
 
+            <li class="my_page hovered">
+                <a>
+                        <span class="icon">
+                            <ion-icon name="person-circle-outline"></ion-icon>
+                        </span>
+                    <span class="title">마이페이지</span>
+                </a>
+            </li>
+
+            <li class="group_page">
+                <a>
+                        <span class="icon">
+                            <ion-icon name="people-outline"></ion-icon>
+                        </span>
+                    <span class="title">그룹페이지</span>
+                </a>
+            </li>
+
+            <li class="plan_page">
+                <a>
+                        <span class="icon">
+                            <ion-icon name="calendar-number-outline"></ion-icon>
+                        </span>
+                    <span class="title">계획페이지</span>
+                </a>
+            </li>
+
+            <li class="help_page">
+                <a>
+                        <span class="icon">
+                            <ion-icon name="help-outline"></ion-icon>
+                        </span>
+                    <span class="title">Help</span>
+                </a>
+            </li>
         </ul>
-    </nav>
-</header>
+    </div>
 
-<div>
-    <img class="img" th:src="${'/img/' + memberDTO.profileIMG}"/>
-    <p th:text="memberDTO.profileIMG"></p>
-    <li>아이디 = <span th:text="${memberDTO.memberId}"></span></li>
-    <li>이름 = <span th:text="${memberDTO.name}"></span></li>
-    <li>이메일 = <span th:text="${memberDTO.email}"></span></li>
-        <a href="profileUpdate">profileUpdate</a>
+    <!-- ========================= 햄버거버튼 토글 ==================== -->
+    <div class="main">
+        <div class="topbar">
+            <div class="toggle">
+                <ion-icon name="menu-outline"></ion-icon>
+            </div>
+            <div class="user">
+                <img th:src="${'/img/' + memberDTO.profileIMG}"/>
+            </div><!--여기에 유저 이미지-->
+        </div>
+
+        <!-- ======================= 여행지/ID카드 ================== -->
+        <div class="cardBox">
+            <div id="my_page" class="place_card">
+                <div class="cardHeader">
+                    <h2>내 정보</h2>
+                </div>
+                <div class="my_card">
+                    <div class="id_card_tag_strip"></div>
+                    <div class="id_card_hook"></div>
+                    <div class="id_card_holder">
+                        <div class="id_card">
+                            <div class="header"><img src="/image/rttlogo.png">
+                            </div>
+                            <div class="photo">
+                                <img th:src="${'/img/' + memberDTO.profileIMG}"/>
+                            </div>
+                            <h2 th:text="${memberDTO.name}">회원 이름</h2>
+                            <hr>
+                            <h3 th:text="${#dates.format(memberDTO.signupDate, 'yyyy-MM-dd')}">회원 가입일</h3>
+                        </div>
+                    </div>
+                </div>
+                <!-- 여기부터 모달임 -->
+                <div id="modal" class="modal">
+                    <div class="modal-content">
+                        <div class="modal_header">
+                            <div class="close-button">
+                                <ion-icon name="close-outline"></ion-icon>
+                            </div>
+                        </div>
+
+
+                        <h2>프로필 수정</h2>
+                        <!-- 이미지 폼태그 -->
+                        <form method="post" action="/member/myPage/profileUpdate" enctype="multipart/form-data">
+                            <div class="modal_photo ">
+                                <label for="fileUpload">
+                                    <img style="width: 150px; height: 150px; border-radius: 50%; cursor: pointer;"
+                                         th:src="${'/img/' + memberDTO.profileIMG}">
+                                </label>
+                            </div>
+                            <div>
+                                <input type="file" id="fileUpload" name="profileFile">
+                            </div>
+
+                            <div class="modal_id ">
+                                <label for="text"><span>아이디</span></label>
+                                <input type="text" name="id" readonly th:value="${memberDTO.memberId}">
+                            </div>
+
+
+                            <!-- 이름 폼태그 -->
+                            <div class="modal_name ">
+                                <label for="text"><span>이름</span></label>
+                                <input type="text" name="name" th:value="${memberDTO.name}">
+                            </div>
+                            <!-- 비밀번호 폼태그 -->
+
+                            <div class="modal_password">
+                                <label for="password"><span>비밀번호</span></label>
+                                <input type="password" name="password" placeholder="password">
+                                <div class="eyes">
+                                    <ion-icon style="width: 25px; height: 25px;" name="eye-outline"></ion-icon>
+                                </div>
+                            </div>
+                            <div class="modal_password">
+                                <label for="password_confirm"><span>비밀번호 확인</span></label>
+                                <input type="password" name="password_confirm" placeholder="password">
+                            </div>
+
+
+                            <div class="modal_phonenum">
+                                <label for="text"><span>전화번호</span></label>
+                                <input type="text" name="phonNum" th:value="${memberDTO.phoneNum}" readonly>
+                            </div>
+
+                            <div class="modal_email">
+                                <label for="text"><span>이메일</span></label>
+                                <input type="email" name="email" readonly th:value="${memberDTO.email}">
+                            </div>
+
+                            <div class="modal_signupdate">
+                                <label for="date"><span>가입날짜</span></label>
+                                <input type="text" name="date"
+                                       th:value="${#dates.format(memberDTO.signupDate, 'yyyy-MM-dd')}" readonly>
+                            </div>
+                            <div class="submit-button">
+                                <button type="submit" class="button">저장하기</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="place_card">
+                <div class="cardHeader">
+                    <h2>나의 여행지</h2>
+                </div>
+                <table>
+                    <tr>
+                        <td width="600px">
+                            <div class="imgBx"><img src="" alt=""></div>
+                        </td>
+                        <td>
+                            <h1>목포</h1>
+                            <h4>목포여행 <br> <span>가고싶다</span></h4>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <!-- ================= 컨텐츠 ================ -->
+
+        <div id="group_card" class="place_card">
+            <div class="cardHeader">
+                <h2>나의 그룹</h2>
+            </div>
+
+            <table>
+                <tr>
+                    <td width="600px">
+                        <div class="imgBx"><img src="" alt=""></div>
+                    </td>
+                    <td>
+                        <h1>목포</h1>
+                        <h4>목포여행 <br> <span>가고싶다</span></h4>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="plan_card" class="place_card">
+            <div class="cardHeader">
+                <h2>나의 계획</h2>
+            </div>
+
+            <table>
+                <tr>
+                    <td width="600px">
+                        <div class="imgBx"><img src="" alt=""></div>
+                    </td>
+                    <td>
+                        <h1>목포</h1>
+                        <h4>목포여행 <br> <span>가고싶다</span></h4>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
 </div>
+</div>
+
+
+<!-- ====== ionicons ======= -->
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+<script src="/js/member/profile.js"></script>
+
 </body>
+
 </html>

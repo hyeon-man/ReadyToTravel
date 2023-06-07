@@ -17,11 +17,14 @@ import java.util.List;
 import static kr.ac.kopo.ReadyToTravel.entity.QMemberEntity.memberEntity;
 import static kr.ac.kopo.ReadyToTravel.entity.board.QBoardEntity.boardEntity;
 
+//import static kr.ac.kopo.ReadyToTravel.entity.QMemberEntity.memberEntity;
+//import static kr.ac.kopo.ReadyToTravel.entity.board.QBoardEntity.boardEntity;
 
 
 @Repository
 public class BoardCustomRepositoryImpl implements BoardCustomRepository {
     public final JPAQueryFactory queryFactory;
+
     public BoardCustomRepositoryImpl(EntityManager em) {
         this.queryFactory = new JPAQueryFactory(em);
     }
@@ -30,6 +33,7 @@ public class BoardCustomRepositoryImpl implements BoardCustomRepository {
     /**
      * 게시글 번호, 타이틀, 작성일, 작성자 이름 조회
      * //todo 페이지네이션
+     *
      * @return
      */
     @Override
@@ -47,6 +51,7 @@ public class BoardCustomRepositoryImpl implements BoardCustomRepository {
 
     /**
      * 게시글 상세 정보 조회
+     *
      * @param boardNum
      * @return
      */
@@ -71,14 +76,11 @@ public class BoardCustomRepositoryImpl implements BoardCustomRepository {
      */
     public BoardDTO smallDetail(Long boardNum) {
         return queryFactory.select(Projections.fields(BoardDTO.class,
-                boardEntity.boardName.as("boardName"),
-                boardEntity.boardContent.as("boardContent")))
+                        boardEntity.boardName.as("boardName"),
+                        boardEntity.boardContent.as("boardContent")))
                 .from(boardEntity)
                 .where(boardEntity.boardNum.eq(boardNum))
                 .fetchOne();
 
     }
-
-
-
 }

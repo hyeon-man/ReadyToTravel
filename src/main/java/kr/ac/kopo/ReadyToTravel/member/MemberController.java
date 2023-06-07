@@ -3,8 +3,6 @@ package kr.ac.kopo.ReadyToTravel.member;
 import kr.ac.kopo.ReadyToTravel.board.BoardService;
 import kr.ac.kopo.ReadyToTravel.dto.MemberDTO;
 import kr.ac.kopo.ReadyToTravel.plan.PlanService;
-import kr.ac.kopo.ReadyToTravel.util.PassEncode;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,13 +11,10 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.List;
 
 @Controller
 @RequestMapping("/member")
 public class MemberController {
-    final String path = "member/";
-    final String myPath = path + "myPage/";
     private final MemberService service;
     private final BoardService boardService;
     private final PlanService planService;
@@ -33,36 +28,28 @@ public class MemberController {
     @GetMapping("/checkId/{id}")
     @ResponseBody
     public String checkId(@PathVariable String id) {
-        if(service.checkId(id)){
+        if (service.checkId(id)) {
             return "OK";
-
         } else {
-
             return "FAIL";
         }
     }
 
-    @RequestMapping("/removerMember")
-    @ResponseBody
-    public void delete(HttpServletRequest request) {
+    @GetMapping("/removerMember/{memberNum}")
+    public void delete(@PathVariable long memberNum) {
 
-        MemberDTO dto = (MemberDTO) request.getSession().getAttribute("memberDTO");
-        Long num = dto.getNum();
-
-        service.removeMember(num);
-
+        service.removeMember(memberNum);
     }
 
     @GetMapping("/initPassword")
     public String initPassword() {
 
-        return path + "initPassword";
+        return "member/initPassword";
     }
 
     @ResponseBody
     @PostMapping("/initPassword")
     public String initPassword(String memberId, String email) throws MessagingException {
-
         if (service.initPass(memberId, email)) {
             return "SUCCESS";
         } else {
@@ -72,98 +59,96 @@ public class MemberController {
 
     @GetMapping("/login")
     public String login() {
-        return path + "login";
+        return "member/login";
     }
+
     @PostMapping("/login")
     public String login(MemberDTO memberDTO, HttpSession session) {
 
-        MemberDTO login = service.login(memberDTO);
+        MemberDTO member = service.login(memberDTO);
 
-        if (login != null) {
-            session.setAttribute("memberDTO", login);
-
+        if (member == null) {
+            System.out.println("회원 정보가 없습니다");
+            return "redirect:/member/login";
+        } else {
+            session.setAttribute("memberDTO", member);
             String targetUrl = (String) session.getAttribute("target_url");
             session.removeAttribute("target_url");
-
             if (targetUrl == null) {
-                return  "redirect:/";
+                return "redirect:/";
             } else {
-                return "redirect:/" + targetUrl;
+                return "redirect:" + targetUrl;
             }
-
-        } else {
-            return "redirect:/" + path + "login";
         }
     }
+
     @GetMapping("/logout")
-    public String logout(HttpSession session){
+    public String logout(HttpSession session) {
         session.removeAttribute("memberDTO");
 
         return "redirect:/";
     }
+
     @GetMapping("/signup")
     public String signup() {
-        return path + "signup";
+        return "member/signup";
     }
 
     @PostMapping("/signup")
     public String signUp(MemberDTO memberDTO) {
         System.out.println(memberDTO);
         service.singUp(memberDTO);
-        return "redirect:/" + path + "login";
+        return "redirect:/member/login";
     }
 
     @ResponseBody
     @GetMapping("/checkEmail/{email}")
-    public String sendEmailCode(@PathVariable String email){
-        if(service.sendEmailCode(email)){
+    public String sendEmailCode(@PathVariable String email) {
+        if (service.sendEmailCode(email)) {
             return "sendMailOK";
-        }else{
-            return "senMailFail" ;
+        } else {
+            return "senMailFail";
         }
     }
 
     @ResponseBody
     @RequestMapping("/validateCode")
-    public String validateCode(String email, String mailValidateCode){
-        if(service.validateCode(email, mailValidateCode)){
+    public String validateCode(String email, String mailValidateCode) {
+        if (service.validateCode(email, mailValidateCode)) {
             return "emailValidOK";
-        }else {
+        } else {
             return "emailValidFAIL";
         }
     }
 
-    /*@GetMapping("/myPage/profile")
-    public String myPage(Model model, @SessionAttribute MemberDTO memberDTO){
-        model.addAttribute("memberDTO", memberDTO);
-        System.out.println(memberDTO.getProfileIMG());
-        return myPath + "profile";
+    @GetMapping("/myPage/profile")
+    public String myPage(Model model, @SessionAttribute MemberDTO memberDTO) {
+        MemberDTO member = service.memberInfoByNum(memberDTO.getNum());
+        model.addAttribute("memberDTO", member);
+
+
+        return "member/myPage/profile";
     }
 
-    @GetMapping("/myPage/profileUpdate")
-    public String profileUpdate(@SessionAttribute MemberDTO memberDTO, Model model){
-        model.addAttribute("memberDTO", memberDTO);
 
-        return myPath + "profileUpdate";
-    }
-
-    @ResponseBody
     @PostMapping("/myPage/profileUpdate")
-    public String profileUpdate(HttpServletRequest request ,@SessionAttribute MemberDTO memberDTO, String password, String name){
-        if(service.profileUpdate(request ,memberDTO, password, name))
-        {
-            return "profileUpdateSuccess";
-        }else
-        {
-            return "profileUpdateFail";
-        }
+    public String profileUpdate(@SessionAttribute MemberDTO memberDTO, MemberDTO updateInfo) {
+
+
+        if (updateInfo.getProfileFile() != null) {
+            service.profileUpdate(memberDTO.getNum(), updateInfo);
+            service.saveAttach(memberDTO.getNum(), updateInfo.getProfileFile());
+        } else
+            service.profileUpdate(memberDTO.getNum(), updateInfo);
+
+        return "redirect:/member/myPage/profile";
     }
 
-    @ResponseBody
+
     @PostMapping("/myPage/profileIMGUpdate")
     public String addAttach(@SessionAttribute MemberDTO memberDTO, MultipartFile attach) {
-        service.addAttach(memberDTO.getNum(), attach);
-        return "profileIMGUpdateSuccess";
+
+        return "redirect:/member/myPage/profile";
+
     }
-*/
 }

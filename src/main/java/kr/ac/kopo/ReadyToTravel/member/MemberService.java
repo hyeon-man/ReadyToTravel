@@ -21,11 +21,11 @@ public interface MemberService {
     boolean sendEmailCode(String email);
 
     boolean validateCode(String email, String mailValidateKey);
-/*
 
-    boolean profileUpdate(HttpServletRequest request, MemberDTO memberDTO, String password, String name);
 
-    void addAttach(Long num, MultipartFile attach);
-*/
+    void saveAttach(Long num, MultipartFile attach);
 
-    }
+    MemberEntity profileUpdate(Long num, MemberDTO updateInfo);
+
+    MemberDTO memberInfoByNum(Long num);
+}
