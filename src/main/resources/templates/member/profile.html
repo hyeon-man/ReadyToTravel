@@ -7,7 +7,7 @@
     <title>RTT 마이페이지</title>
     <!-- ======= Styles ====== -->
     <link rel="stylesheet" href="/css/profile.css">
-    <link rel="shortcut icon" href="rttlogo.png" type="image/x-icon">
+    <link rel="shortcut icon" href="/image/RTT-favicon.png" type="image/x-icon">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
@@ -110,8 +110,8 @@
 
                         <h2>프로필 수정</h2>
                         <!-- 이미지 폼태그 -->
-                        <form method="post" action="/member/myPage/profileUpdate" enctype="multipart/form-data">
-                            <div class="modal_photo ">
+                        <form method="post" action="/member/profile/update" enctype="multipart/form-data">
+                            <div class="modal_photo">
                                 <label for="fileUpload">
                                     <img style="width: 150px; height: 150px; border-radius: 50%; cursor: pointer;"
                                          th:src="${'/img/' + memberDTO.profileIMG}">

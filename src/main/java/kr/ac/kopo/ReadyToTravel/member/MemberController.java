@@ -120,34 +120,26 @@ public class MemberController {
         }
     }
 
-    @GetMapping("/myPage/profile")
+    @GetMapping("/profile")
     public String myPage(Model model, @SessionAttribute MemberDTO memberDTO) {
         MemberDTO member = service.memberInfoByNum(memberDTO.getNum());
         model.addAttribute("memberDTO", member);
 
 
-        return "member/myPage/profile";
+        return "member/profile";
     }
 
 
-    @PostMapping("/myPage/profileUpdate")
+    @PostMapping("/profile/update")
     public String profileUpdate(@SessionAttribute MemberDTO memberDTO, MemberDTO updateInfo) {
 
-
-        if (updateInfo.getProfileFile() != null) {
+        if (updateInfo.getProfileFile().getSize() > 0) {
             service.profileUpdate(memberDTO.getNum(), updateInfo);
             service.saveAttach(memberDTO.getNum(), updateInfo.getProfileFile());
         } else
             service.profileUpdate(memberDTO.getNum(), updateInfo);
 
-        return "redirect:/member/myPage/profile";
+        return "redirect:/member/profile";
     }
 
-
-    @PostMapping("/myPage/profileIMGUpdate")
-    public String addAttach(@SessionAttribute MemberDTO memberDTO, MultipartFile attach) {
-
-        return "redirect:/member/myPage/profile";
-
-    }
 }
