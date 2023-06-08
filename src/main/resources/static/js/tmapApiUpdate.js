@@ -42,19 +42,24 @@ window.onload = function initTmap() {
 
             const li = document.getElementById('dateLi');
 
-            for (let i = 0; i < lonLatList.length; i++) {
-                dateButton = document.createElement('button');
+            // 버튼의 textContent 값을 추출하여 배열로 저장
+            const buttonTexts = lonLatList
+                .filter(item => item.markerType === 'START') // markerType이 'START'인 것만 필터링
+                .map(item => item.calendar); // calendar 값을 추출하여 배열로 변환
 
-                if (lonLatList[i].markerType == 'START') {
-                    dateButton.textContent = lonLatList[i].calendar;
-                    dateButton.classList = "planBtn";
+            // textContent 값을 정렬
+            buttonTexts.sort();
 
-                    li.append(dateButton);
-                }
+            // 정렬된 값들을 기반으로 버튼을 동적으로 생성하여 추가
+            for (const text of buttonTexts) {
+                const dateButton = document.createElement('button');
+                dateButton.textContent = text;
+                dateButton.classList.add('planBtn');
+                li.appendChild(dateButton);
             }
 
-            $('.planBtn').off().on('click', function (evt) {
 
+            $('.planBtn').off().on('click', function (evt) {
                 const clickBtn = evt.target;
                 const textContentBtn = clickBtn.textContent;
 
@@ -79,6 +84,21 @@ window.onload = function initTmap() {
                 createMarker(lonLatRealList);
                 lonLatRealList = [];
 
+                $('#removeMarker').off().on('click', function () {
+                    marker_s = null;
+                    marker_e = null;
+                    markers = [];
+                    for (let i = 0; i < manageMarker.length; i++) {
+                        manageMarker[i].setMap(null);
+                    }
+                    for (let i = 0; i < manageNewMarker.length; i++) {
+                        manageNewMarker[i].setMap(null);
+                    }
+                    manageNewMarker = [];
+                    manageMarker = [];
+                    lonLatRealList = [];
+                });
+
                 // 클릭 이벤트 핸들러 등록
                 map.addListener("click", function (evt) {
 
@@ -86,7 +106,13 @@ window.onload = function initTmap() {
                     // 경유지 마커를 찍을 때
                     var lon = evt.latLng.lng();
                     var lat = evt.latLng.lat();
-                    newMarker = createNewMarker('VIAPOINT', lon, lat);
+                    if (marker_s == null) {
+                        newMarker = createNewMarker('START', lon, lat);
+                    } else if (marker_e == null) {
+                        newMarker = createNewMarker('END', lon, lat);
+                    } else {
+                        newMarker = createNewMarker('VIAPOINT', lon, lat);
+                    }
                     markers.push(newMarker);
                     manageNewMarker.push(newMarker);
                 });
@@ -122,8 +148,6 @@ function createMarker(lonLatList) {
             draggable: true,
         });
 
-        manageMarker.push(marker);
-
         if (markerType === 'START') {
             marker_s = marker;
             marker_s.setIcon("http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png");
@@ -136,6 +160,8 @@ function createMarker(lonLatList) {
             marker.setTitle(markerType);
             markers.push(marker);
         }
+
+        manageMarker.push(marker);
 
         // 드래그 완료 이벤트 리스너 등록
         marker.addListener('dragend', function () {
@@ -156,6 +182,15 @@ function createNewMarker(title, lon, lat) {
         draggable: true,
         title: title
     })
+
+    if (title == 'START') {
+        marker_s = newMarker
+        marker_s.setIcon("http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png");
+    }
+    if (title == 'END') {
+        marker_e = newMarker
+        marker_e.setIcon("http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_e.png");
+    }
 
     // 새로운 'dragend' 이벤트 리스너 등록
     newMarker.addListener('dragend', function () {
@@ -288,13 +323,12 @@ function serverFetch(markerData) {
         },
         body: JSON.stringify(planDTO)
     }).then(response => {
-        console.log(response);
+        // console.log(response);
         return response.json();
-    }).then(planNum => {
-        console.log(planNum);
-        // window.location.href = "/plan/viewPlan/" + planNum;
+    }).then(data => {
+        window.location.href = "/plan/viewPlan/" + planNum;
     }).catch(error => {
-        // console.error(error);
+        // console.log(error);
     });
 }
 

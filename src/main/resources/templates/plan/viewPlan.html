@@ -42,19 +42,16 @@
             <!-- 거리 -->
             <span id="result">총 거리 : </span><br>
 
-            <ul>
-                <li id="dateButton"></li>
-            </ul>
-
             <div>
-                <input name="name" id="planName"></input>
-                <input name="contents" id="planContents"></input>
+                <input type="text" name="name" id="planName" placeholder="Plan Name">
+                <input type="text" name="contents" id="planContents" placeholder="Plan Contents">
             </div>
         </div>
-        <div class="right-side map_wrap" id="map_wrap">
-            <!-- T MAP -->
-            <div id="map_div"></div>
+
+        <div>
+            <li id="locationName"></li>
         </div>
+
 
         <div class="button-container">
             <div>
@@ -64,5 +61,5 @@
     </div>
 </div>
 </body>
-<script type="text/javascript" src="/js/tmapApiUpdate.js"></script>
+<script type="text/javascript" src="/js/tmapApiView.js"></script>
 </html>

@@ -30,13 +30,13 @@ public class PlanController {
 
     @GetMapping("/viewPlan/{planNum}")
 
-    public String viewPlan(@PathVariable long planNum) {
+    public String viewPlan(@PathVariable Long planNum) {
         return "/plan/viewPlan";
     }
 
     @GetMapping("/getMarker/{planNum}")
     @ResponseBody
-    public PlanDTO getMarker(@PathVariable long planNum) {
+    public PlanDTO getMarker(@PathVariable Long planNum) {
         PlanDTO view = planService.viewPlan(planNum);
 
         return view;
@@ -53,7 +53,7 @@ public class PlanController {
 
     /**
      * @param plan    (plan / List<lonlatdto> / memberNum)
-     * @param request (member session)
+     * @param memberDTO (member session)
      * @return
      */
     @PostMapping("/createPlan")
@@ -82,10 +82,8 @@ public class PlanController {
     public void updatePlan(@PathVariable Long planNum, @RequestBody PlanDTO plan, @SessionAttribute(name = "memberDTO", required = false) MemberDTO memberDTO) {
         plan.setNum(planNum);
         plan.setLeaderNum(memberDTO.getNum());
-        System.out.println("plan = " + plan);
 
         planService.updatePlan(plan);
-//        return planNum;
     }
 
     @RequestMapping("/removePlan/{planNum}")

@@ -9,5 +9,5 @@ public interface PlanService {
 
     void removePlan(Long num);
 
-    PlanDTO viewPlan(long planNum);
+    PlanDTO viewPlan(Long planNum);
 }

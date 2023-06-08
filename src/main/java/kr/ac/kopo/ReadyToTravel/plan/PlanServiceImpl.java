@@ -1,7 +1,7 @@
 package kr.ac.kopo.ReadyToTravel.plan;
 
-import kr.ac.kopo.ReadyToTravel.dto.plan.PlanDTO;
 import kr.ac.kopo.ReadyToTravel.dto.plan.LonLatDTO;
+import kr.ac.kopo.ReadyToTravel.dto.plan.PlanDTO;
 import kr.ac.kopo.ReadyToTravel.entity.plan.LonLatEntity;
 import kr.ac.kopo.ReadyToTravel.entity.plan.PlanEntity;
 import kr.ac.kopo.ReadyToTravel.member.MemberRepository;
@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Service
@@ -20,7 +21,7 @@ public class PlanServiceImpl implements PlanService {
     private final MemberRepository memberRepository;
 
     @Override
-    public PlanDTO viewPlan(long planNum) {
+    public PlanDTO viewPlan(Long planNum) {
         PlanEntity planEntity = planRepository.findByNum(planNum);
         List<LonLatEntity> lonLatEntity = lonLatRepository.findAllByPlanEntityNum(planNum);
 
@@ -58,19 +59,17 @@ public class PlanServiceImpl implements PlanService {
 
         List<LonLatEntity> lonLatEntityList = lonLatRepository.findByCalendar(plan.getLonLatList().get(0).getCalendar());
 
+
         for (int i = 0; i < plan.getLonLatList().size(); i++) {
             LonLatDTO lonLatDTO = plan.getLonLatList().get(i);
+            LonLatEntity lonLatConvert = lonLatDTO.convertToEntity(lonLatDTO, planEntity.getNum());
             for (LonLatEntity lonLatEntity : lonLatEntityList) {
                 if (lonLatEntity.getCalendar().equals(lonLatDTO.getCalendar())) {
-                    // 업데이트할 필드 설정
-                    lonLatEntity.setLon(lonLatDTO.getLon());
-                    lonLatEntity.setLat(lonLatDTO.getLat());
-                    // 필요한 경우, 업데이트할 필드 추가 설정
+                    lonLatRepository.delete(lonLatEntity);
                 }
             }
+            lonLatRepository.save(lonLatConvert);
         }
-
-//        return plan.getNum();
     }
 
     @Override
