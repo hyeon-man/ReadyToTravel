@@ -67,9 +67,9 @@ public class BoardServiceImpl implements BoardService {
     @Override
     @Transactional
     public BoardDTO detail(Long boardNum) {
+
         // 게시글 상세 정보 조회
         BoardDTO detail = boardCustomRepository.getBoardDetail(boardNum);
-        detail.getBoardWriterProfile();
 
         //게시글에 포함된 댓글의 정보 조회
         List<ReplyDTO> replies = replyCustomRepository.getReplies(boardNum);
@@ -82,6 +82,16 @@ public class BoardServiceImpl implements BoardService {
         System.out.println(attaches);
 
         return detail;
+    }
+
+    @Override
+    @Transactional
+    public BoardDTO smallDetail(Long boardNum) {
+        BoardDTO board = boardCustomRepository.smallDetail(boardNum);
+        board.setFilename(boardAttachCustomRepository.findByFileNameByBoardNum(boardNum));
+
+        System.out.println("board = " + board);
+        return board;
     }
 
 

@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 @Controller
-/// TODO: 2023-04-02 전부 수정해야합니다.
-
 public class RootController {
     private final PlaceService placeService;
 

@@ -15,10 +15,8 @@ public interface GroupService {
 
     void updateGroup(GroupDTO group);
 
-    GroupDTO item(long groupNum);
-
-    List<MemberDTO> groupInMember(long groupNum);
-
     String generateInviteCode(long groupNum);
+
+    GroupDTO groupInMember(long groupNum);
 }
 

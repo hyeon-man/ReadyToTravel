@@ -3,11 +3,14 @@ package kr.ac.kopo.ReadyToTravel.member;
 import kr.ac.kopo.ReadyToTravel.dto.MemberDTO;
 import kr.ac.kopo.ReadyToTravel.entity.MemberEntity;
 import kr.ac.kopo.ReadyToTravel.util.CacheConfig;
+import kr.ac.kopo.ReadyToTravel.util.FileUpload;
 import kr.ac.kopo.ReadyToTravel.util.PassEncode;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
@@ -21,18 +24,22 @@ public class MemberServiceImpl implements MemberService {
     private final CacheConfig cacheConfig;
 
 
+    private final MemberCustomRepository memberCustomRepository;
 
-    public MemberServiceImpl(MemberRepository memberRepository, JavaMailSender javaMailSender, MailService mailService, CacheConfig cacheConfig) {
+
+    public MemberServiceImpl(MemberRepository memberRepository, JavaMailSender javaMailSender, MailService mailService, CacheConfig cacheConfig, MemberCustomRepository memberCustomRepository) {
         this.memberRepository = memberRepository;
         this.javaMailSender = javaMailSender;
         this.mailService = mailService;
         this.cacheConfig = cacheConfig;
+        this.memberCustomRepository = memberCustomRepository;
     }
 
     @Override
     public boolean checkId(String id) {
-        MemberEntity entity = memberRepository.findAllByMemberId(id);
-        if (entity == null) {
+        MemberDTO member = memberCustomRepository.checkId(id);
+
+        if (member == null) {
             return true;
         } else {
             return false;
@@ -41,16 +48,11 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void singUp(MemberDTO memberDTO) {
+
         memberDTO.setSignupDate(new Date());
-
-        // Convert DTO to Entity
         MemberEntity entity = memberDTO.convertToEntity(memberDTO);
+        entity.setPassword(PassEncode.encode(entity.getPassword()));
 
-        // Encode password to SHA-512
-        String encodedPassword = PassEncode.encode(entity.getPassword());
-        entity.setPassword(encodedPassword);
-
-        // Save entity
         memberRepository.save(entity);
     }
 
@@ -60,7 +62,6 @@ public class MemberServiceImpl implements MemberService {
 
         if (optionalMemberEntity.isPresent()) {
             memberRepository.deleteById(num);
-            System.out.println("지움");
         } else {
             System.out.println(num + "에 해당하는 회원이 없습니다");
         }
@@ -68,70 +69,123 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public MemberDTO login(MemberDTO memberDTO) {
+        MemberDTO member = memberCustomRepository
+                .findIdAndPassword(memberDTO.getMemberId(), PassEncode.encode(memberDTO.getPassword()));
 
-        MemberEntity memberEntity = memberDTO.convertToEntity(memberDTO);
-
-        String id = memberEntity.getMemberId();
-        String pass = PassEncode.encode(memberEntity.getPassword());
-
-        MemberEntity memberInfo = memberRepository.findByMemberIdAndPassword(id, pass);
-
-        try{
-            MemberDTO loginMember = memberDTO.convertToMemberDto(memberInfo);
-            return loginMember;
-        } catch (NullPointerException ne){
-
+        if (member == null) {
             return null;
         }
-
-        }
+        return member;
+    }
 
 
     @Override
     public boolean initPass(String id, String email) {
 
-        Optional<MemberEntity> findMember = memberRepository.findByMemberIdAndEmail(id, email);
-        if (!findMember.isPresent()) {
+        MemberEntity findMember = memberCustomRepository.findByIdAndEmail(id, email);
+
+        // 사용자가 입력한 ID, Email 을 통한 조회 결과가 없을 때 false를 반환 합니다
+        if (findMember == null) {
+            System.out.println("아이디와 이메일을 통한 조회 결과 없음");
             return false;
         }
 
         String uuid = UUID.randomUUID().toString().replaceAll("-", "");
         uuid = uuid.substring(0, 8);
 
-        MemberEntity originMember = findMember.get();
-        originMember.setPassword(PassEncode.encode(uuid));
+        MemberEntity updatedMember = MemberEntity.builder()
+                .num(findMember.getNum())
+                .memberId(findMember.getMemberId())
+                .name(findMember.getName())
+                .profileIMG(findMember.getProfileIMG())
+                .signupDate(findMember.getSignupDate())
+                .email(findMember.getEmail())
+                .phoneNum(findMember.getPhoneNum())
+                .build();
+
+        updatedMember.setPassword(PassEncode.encode(uuid));
+
+
+        memberRepository.save(updatedMember);
 
         MailService mailService = new MailService(javaMailSender);
-        mailService.sendMailForPass(originMember.getEmail(), uuid);
+        mailService.sendMailForPass(findMember.getEmail(), uuid);
 
         return true;
-
     }
+
     @Override
-    public boolean sendEmailCode(String email){
-        Optional<MemberEntity> findEmail = memberRepository.findByEmail(email);
-        if(!findEmail.isPresent()) {
-            System.out.println("이메일이 존재하지 않습니다.");
+    public boolean sendEmailCode(String email) {
+        MemberDTO emailCheck = memberCustomRepository.findByEmail(email);
+
+        if (emailCheck == null) {
+            System.out.println("사용 가능한 이메일 입니다.");
+
             String uuid = UUID.randomUUID().toString().replaceAll("-", "");
             uuid = uuid.substring(0, 8);
+
             mailService.sendMailForEmail(email, uuid);
             cacheConfig.putValue(email, uuid);
             return true;
 
-        }else{
+        } else {
+
             System.out.println("존재하는 이메일 입니다");
             return false;
         }
 
     }
+
+
+    /**
+     * 캐시에 저장된 인증 코드와 이메일을 통한 인증
+     *
+     * @param email
+     * @param mailValidateKey
+     * @return
+     */
     @Override
     public boolean validateCode(String email, String mailValidateKey) {
-        if (cacheConfig.getValue(email) == null || !cacheConfig.getValue(email).equals(mailValidateKey)){
+        if (cacheConfig.getValue(email) == null || !cacheConfig.getValue(email).equals(mailValidateKey)) {
             return false;
-            } else {
+        } else {
             System.out.println("good");
             return true;
         }
     }
 
+    @Override
+    public MemberEntity profileUpdate(Long num, MemberDTO updateInfo) {
+        MemberEntity member = memberRepository.findByNum(num);
+
+        if (!updateInfo.getPassword().isEmpty()){
+            member.saveProfile(updateInfo.getName(), PassEncode.encode(updateInfo.getPassword()));
+            System.out.println("저장된 memberEntity ======" + member);
+        } else {
+           member.saveProfile(updateInfo.getName(), member.getPassword());
+        }
+
+        return member;
+    }
+
+    @Override
+    public MemberDTO memberInfoByNum(Long num) {
+        return memberCustomRepository.findByNum(num);
+    }
+
+    @Override
+    public void saveAttach(Long num, MultipartFile attach) {
+        MemberEntity member = memberRepository.findByNum(num);
+        String filename = FileUpload.fileUpload(attach, 2);
+
+
+        if (member.getProfileIMG()==null){
+            member.saveProfileIMG(filename);
+
+        }else {
+            FileUpload.fileRemove(member.getProfileIMG(), 2);
+            member.saveProfileIMG(filename);
+
+        }
+    }
 }

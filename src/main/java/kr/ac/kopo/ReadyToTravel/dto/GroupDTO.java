@@ -1,6 +1,7 @@
 package kr.ac.kopo.ReadyToTravel.dto;
 
 
+import kr.ac.kopo.ReadyToTravel.dto.plan.PlanDTO;
 import kr.ac.kopo.ReadyToTravel.entity.group.GroupEntity;
 import lombok.*;
 
@@ -23,7 +24,7 @@ public class GroupDTO {
     private Long groupLeader;
 
     // 계획 이름
-    private String planName;
+    private long planNum;
 
     // 그룹에 포함된 멤버
     private List<MemberDTO> memberDTO;
@@ -31,19 +32,17 @@ public class GroupDTO {
     private Date modifiedDate;
     private Date createDate;
 
-    //TODO 메소드 내용 수정
-    public GroupEntity convertToEntity(GroupDTO groupDTO) {
+    private String name;
 
-        return GroupEntity.builder().build();
+    private PlanDTO plan;
+
+    public void addMember(List<MemberDTO> memberList){
+
+        this.memberDTO = memberList;
+
     }
 
-    public GroupDTO convertToDto(GroupEntity entity){
-
-        return GroupDTO.builder()
-                .num(entity.getGroupNum())
-                .modifiedDate(entity.getModifiedDate())
-                .createDate(entity.getCreateDate())
-                .planName(entity.getName())
-                .build();
+    public void addPlan(PlanDTO plan) {
+        this.plan = plan;
     }
 }

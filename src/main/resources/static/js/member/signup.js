@@ -1,44 +1,20 @@
 let isCheck;
 let emailValidate;
-let ValidateCodeCheck;
+let emailValidationCheck;
 const form = document.signup_form;
 
-function checkId(mode) {
-    if (document.signup_form.memberId.value == "") {
-        alert("중복검사 전에 아이디를 입력해 주세요");
-        return;
-    }
-
-    if (mode) {
-        checkIdAsync();
-    }
-}
-
-function checkEmailButton(emailCheckButton) {
-    if (document.signup_form.email.value == "") {
-        alert("메일 인증을 진행 하려면 메일을 입력해주세요");
-        form.email.focus();
-        return;
-    }
-
-    if (emailCheckButton) {
-        checkEmailAsync();
-    }
-}
-function validationCodeButton(validationCodeButton){
-    if (document.signup_form.mailValidateCode.value == "") {
-        alert("인증 코드 확인을 위해 인증코드를 입력해주세요")
-        form.mailValidateCode.focus();
-        return;
-    }
-    if (validationCodeButton){
-        validationCodeAsync();
-    }
-
-}
-function checkIdAsync() {
+const checkIdButton = document.getElementById("idButton");
+checkIdButton.addEventListener("click", function() {
     const checkIdForm = document.signup_form;
-    const url = "checkId/" + checkIdForm.memberId.value;
+    const checkIdValue = checkIdForm.memberId.value;
+
+
+    if (checkIdValue.trim() === "") {
+        alert("아이디 중복 검사 전 아이디를 입력 해주세요");
+        checkIdForm.memberId.focus();
+        return;
+    }
+    const url = "checkId/" + checkIdValue;
 
     fetch(url)
         .then(response => {
@@ -55,7 +31,10 @@ function checkIdAsync() {
                 if (confirm("'" + isCheck + "' 이 아이디를 사용하시겠습니까?")) {
                     const inputElement = document.getElementById("id");
                     inputElement.readOnly = true;
+                    const elementIdButton = document.getElementById("idButton");
+                    elementIdButton.style.display = "none";
                 } else {
+                    isCheck = "";
                     console.log("No Use");
                 }
             } else {
@@ -65,11 +44,19 @@ function checkIdAsync() {
         .catch(error => {
             console.error("Error:", error);
         });
-}
+});
 
-function checkEmailAsync() {
+const emailCheck = document.getElementById("emailButton");
+
+emailCheck.addEventListener("click", function() {
     const checkEmailForm = document.signup_form;
-    const urlEmail = "checkEmail/" + checkEmailForm.email.value;
+    const checkEmailValue = checkEmailForm.email.value;
+    if (checkEmailValue.trim() === "") {
+        alert("이메일 중복 검사 전 아이디를 입력 해주세요");
+        checkEmailForm.email.focus();
+        return;
+    }
+    const urlEmail = "/member/checkEmail/" + checkEmailForm.email.value;
 
     fetch(urlEmail)
         .then(response => {
@@ -99,12 +86,19 @@ function checkEmailAsync() {
         .catch(error => {
             console.error("Error:", error);
         });
-}
+    });
 
-function validationCodeAsync() {
+const validationButton = document.getElementById("mailValidationButton");
+validationButton.addEventListener("click", function() {
     const validateForm = document.signup_form;
-    const url = 'validateCode';
+    const validateValue = validateForm.mailValidateCode.value;
 
+    if (validateValue.trim() === ""){
+        alert("보안코드 검사 전 보안코드를 입력해주세요");
+        validateForm.mailValidateCode.focus();
+    }
+
+    const url = '/member/validateCode';
     const formData = new FormData();
     formData.append('email', validateForm.email.value);
     formData.append('mailValidateCode', validateForm.mailValidateCode.value);
@@ -116,7 +110,7 @@ function validationCodeAsync() {
         .then(response => response.text())
         .then(data => {
             if (data === 'emailValidOK') {
-                alert("이메일 인증 성공!")
+                alert("이메일 인증이 완료 되었습니다!");
                 const inputElementEmail = document.getElementById("email");
                 inputElementEmail.readOnly = true;
 
@@ -128,14 +122,20 @@ function validationCodeAsync() {
 
                 const elementLabel = document.getElementById("mailValidationCodeLabel");
                 elementLabel.style.display = "none";
+
+                const elementEmailButton = document.getElementById("emailButton");
+                elementEmailButton.style.display = "none";
+
+                emailValidationCheck = 1;
             } else if (data === 'emailValidFAIL') {
-                alert("유효하지 않은 보안코드 입니다. 보안코드가 오지 않았다면 다시 시도하거나 이메일을 확인해주세요");
+                alert("유효하지 않은 보안 코드입니다. 보안 코드를 받지 못한 경우 다시 시도하거나 이메일을 확인해주세요.");
+                emailValidationCheck = 2;
             }
         })
         .catch(error => {
-            console.error('에러:', error);
+            console.error('Error:', error);
         });
-}
+});
 
 
 function signup() {
@@ -143,11 +143,18 @@ function signup() {
 
     if (isCheck != form.memberId.value) {
         alert("아이디 중복 검사를 하셔야 합니다");
+        form.memberId.focus();
         return;
     }
 
     if (emailValidate != form.email.value){
         alert("이메일 인증을 진행하십시오");
+        form.email.focus();
+        return;
+    }
+
+    if (emailValidationCheck != 1){
+        alert("이메일 인증이 완료되지 않았습니다!");
         return;
     }
 
@@ -167,6 +174,11 @@ function signup() {
         form.name.focus();
         return;
     }
+    if (form.phoneNum.value == "") {
+        alert("전화 번호를 입력해 주세요");
+        form.phoneNum.focus();
+        return;
+    }
 
     if (form.password.value == "") {
         alert("비밀번호를 입력해 주세요");
@@ -182,10 +194,10 @@ function signup() {
 
     if (form.password.value != form.passwd_valid.value) {
         alert("비밀번호가 일치하지 않습니다");
-        form.password.focus();
+        form.passwd_valid.focus();
         return;
     }
 
     form.submit();
-    alert("회원가입 완료! 로그인 페이지로 이동합니다.")
+    alert("회원가입 완료! 로그인 페이지로 이동합니다.");
 }

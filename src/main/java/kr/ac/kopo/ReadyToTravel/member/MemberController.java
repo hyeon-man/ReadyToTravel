@@ -1,22 +1,22 @@
 package kr.ac.kopo.ReadyToTravel.member;
 
 import kr.ac.kopo.ReadyToTravel.board.BoardService;
-import kr.ac.kopo.ReadyToTravel.dto.BoardDTO;
+import kr.ac.kopo.ReadyToTravel.dto.GroupDTO;
 import kr.ac.kopo.ReadyToTravel.dto.MemberDTO;
+import kr.ac.kopo.ReadyToTravel.dto.plan.PlanDTO;
 import kr.ac.kopo.ReadyToTravel.plan.PlanService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.mail.MessagingException;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
 @RequestMapping("/member")
 public class MemberController {
-    final String path = "member/";
-
     private final MemberService service;
     private final BoardService boardService;
     private final PlanService planService;
@@ -30,36 +30,28 @@ public class MemberController {
     @GetMapping("/checkId/{id}")
     @ResponseBody
     public String checkId(@PathVariable String id) {
-        if(service.checkId(id)){
+        if (service.checkId(id)) {
             return "OK";
-
         } else {
-
             return "FAIL";
         }
     }
 
-    @RequestMapping("/removerMember")
-    @ResponseBody
-    public void delete(HttpServletRequest request) {
+    @GetMapping("/removerMember/{memberNum}")
+    public void delete(@PathVariable long memberNum) {
 
-        MemberDTO dto = (MemberDTO) request.getSession().getAttribute("memberDTO");
-        Long num = dto.getNum();
-
-        service.removeMember(num);
-
+        service.removeMember(memberNum);
     }
 
     @GetMapping("/initPassword")
     public String initPassword() {
 
-        return path + "initPassword";
+        return "member/initPassword";
     }
 
     @ResponseBody
     @PostMapping("/initPassword")
     public String initPassword(String memberId, String email) throws MessagingException {
-
         if (service.initPass(memberId, email)) {
             return "SUCCESS";
         } else {
@@ -69,83 +61,91 @@ public class MemberController {
 
     @GetMapping("/login")
     public String login() {
-        return path + "login";
+        return "member/login";
     }
+
     @PostMapping("/login")
     public String login(MemberDTO memberDTO, HttpSession session) {
 
-        System.out.println("memberDTO = " + memberDTO.getMemberId());
-        System.out.println("memberDTO = " + memberDTO.getPassword());
+        MemberDTO member = service.login(memberDTO);
 
-        MemberDTO login = service.login(memberDTO);
-
-        if (login != null) {
-            System.out.println("login ! ===== " + login);
-            session.setAttribute("memberDTO", login);
-
+        if (member == null) {
+            System.out.println("회원 정보가 없습니다");
+            return "redirect:/member/login";
+        } else {
+            session.setAttribute("memberDTO", member);
             String targetUrl = (String) session.getAttribute("target_url");
-            System.out.println("MemberController: " + targetUrl);
             session.removeAttribute("target_url");
             if (targetUrl == null) {
-                return  "redirect:/";
+                return "redirect:/";
             } else {
                 return "redirect:" + targetUrl;
             }
-
-        } else {
-            return "redirect: " + path + "login";
         }
     }
+
     @GetMapping("/logout")
-    public String logout(HttpSession session){
+    public String logout(HttpSession session) {
         session.removeAttribute("memberDTO");
 
         return "redirect:/";
     }
+
     @GetMapping("/signup")
     public String signup() {
-        return path + "signup";
+        return "member/signup";
     }
 
     @PostMapping("/signup")
     public String signUp(MemberDTO memberDTO) {
         System.out.println(memberDTO);
         service.singUp(memberDTO);
-
-        return "redirect:/" + path + "login";
+        return "redirect:/member/login";
     }
 
     @ResponseBody
     @GetMapping("/checkEmail/{email}")
-    public String sendEmailCode(@PathVariable String email){
-        if(service.sendEmailCode(email)){
-
+    public String sendEmailCode(@PathVariable String email) {
+        if (service.sendEmailCode(email)) {
             return "sendMailOK";
-        }else{
-            return "senMailFail" ;
+        } else {
+            return "senMailFail";
         }
     }
+
     @ResponseBody
     @RequestMapping("/validateCode")
-    public String validateCode(String email, String mailValidateCode){
-        if(service.validateCode(email, mailValidateCode)){
+    public String validateCode(String email, String mailValidateCode) {
+        if (service.validateCode(email, mailValidateCode)) {
             return "emailValidOK";
-        }else {
+        } else {
             return "emailValidFAIL";
-
         }
     }
-    @GetMapping("/myPage")
-    public String myPage(/*Model model,*/@SessionAttribute MemberDTO memberDTO){
-        /*
 
-        List<BoardDTO> boardList = boardService.findAllByMemberId(memberDTO.getMemberId());
-        model.addAttribute("boardList", boardList);
+    @GetMapping("/profile")
+    public String myPage(Model model, @SessionAttribute MemberDTO memberDTO) {
+        long memberNum = memberDTO.getNum();
+        MemberDTO member = service.memberInfoByNum(memberNum);
+        model.addAttribute("memberDTO", member);
 
-        List<PlanService> planList = planService.findAllByMemberId(memberDTO.getMemberId());
-        model.addAttribute("planList", planList);
-*/
+//        List<PlanDTO> plans = planService.smallPlanInfo(memberNum);
 
-        return path + "myPage";
+
+        return "member/profile";
     }
+
+
+    @PostMapping("/profile/update")
+    public String profileUpdate(@SessionAttribute MemberDTO memberDTO, MemberDTO updateInfo) {
+
+        if (updateInfo.getProfileFile().getSize() > 0) {
+            service.profileUpdate(memberDTO.getNum(), updateInfo);
+            service.saveAttach(memberDTO.getNum(), updateInfo.getProfileFile());
+        } else
+            service.profileUpdate(memberDTO.getNum(), updateInfo);
+
+        return "redirect:/member/profile";
+    }
+
 }

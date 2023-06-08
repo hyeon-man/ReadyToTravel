@@ -27,11 +27,13 @@ public class BoardDTO {
     private String boardWriter;
     private String boardWriterProfile;
 
+
     private long boardWriterNum;
+
 
     private List<MultipartFile> multipartFiles;
 
-    private List<String> filename ;
+    private List<String> filename = new ArrayList<>();
 
     private List<ReplyDTO> replies = new ArrayList<>();
 

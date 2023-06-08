@@ -12,19 +12,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/board")
 public class BoardController {
     private final BoardService service;
-    private final ReplyService replyService;
 
-    public BoardController(BoardService service, ReplyService replyService) {
+    public BoardController(BoardService service) {
         this.service = service;
-        this.replyService = replyService;
     }
 
-    @GetMapping("/list")
+    @GetMapping("/board/list")
     public String boardList(Model model) {
-
         List<BoardDTO> boardList = service.boardList();
         model.addAttribute("list", boardList);
 
@@ -37,8 +33,6 @@ public class BoardController {
 
         BoardDTO board = service.detail(boardNum);
         model.addAttribute("board", board);
-
-        System.out.println("board.getBoardWriterProfile() = " + board.getBoardWriterProfile());
 
         return "/board/inform";
 
@@ -62,7 +56,7 @@ public class BoardController {
     @GetMapping("/board/update/{boardNum}")
     public String boardUpdate(@PathVariable Long boardNum, Model model) {
 
-        BoardDTO board = service.detail(boardNum);
+        BoardDTO board = service.smallDetail(boardNum);
         model.addAttribute("board", board);
 
         return "/board/update";
@@ -73,7 +67,6 @@ public class BoardController {
 
         board.setBoardNum(boardNum);
         service.update(board);
-
 
         return "redirect:/board/info/" + boardNum;
 

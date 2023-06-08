@@ -14,7 +14,6 @@
 <head>
     <meta charset="UTF-8">
     <title>회원가입 페이지</title>
-    <script src="/js/member/signup.js"></script>
     <link rel="stylesheet" href="/css/signup.css" type="text/css">
     <link rel="icon" href="/image/RTT-favicon.png" type="image/x-icon">
 </head>
@@ -23,19 +22,19 @@
     <a href="../.."><h1>RTT</h1></a>
 
     <form name="signup_form" method="post">
-        <button class="btn-area2" type="button" onclick="checkId(true)">중복확인</button>
+        <button class="btn-area2" id="idButton" type="button">중복확인</button>
         <div class="int-area">
             <input type="text" name="memberId" id="id" autocomplete="off" required>
             <label for="id">아이디</label>
         </div>
 
-        <button class="btn-area2" type="button" onclick="checkEmailButton(true)">메일인증</button>
+        <button class="btn-area2" id="emailButton" type="button">메일인증</button>
         <div class="int-area">
             <input type="email" id="email" name="email" autocomplete="off" required>
             <label for="id">이메일</label>
         </div>
 
-        <button class="btn-area2" type="button" id="mailValidationButton" onclick="validationCodeButton(true)">인증확인</button>
+        <button class="btn-area2" type="button" id="mailValidationButton">인증확인</button>
         <div class="int-area">
             <input type="text" id="mailValidationCodeInput" name="mailValidateCode" autocomplete="off" required>
             <label for="id" id="mailValidationCodeLabel">보안코드 확인</label>
@@ -67,4 +66,5 @@
     </form>
 </section>
 </body>
+<script src="/js/member/signup.js"></script>
 </html>

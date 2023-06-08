@@ -20,6 +20,7 @@ public class PlanServiceImpl implements PlanService {
     private final LonLatRepository lonLatRepository;
     private final MemberRepository memberRepository;
 
+    private final PlanCustomRepository planCustomRepository;
     @Override
     public PlanDTO viewPlan(Long planNum) {
         PlanEntity planEntity = planRepository.findByNum(planNum);
@@ -28,6 +29,17 @@ public class PlanServiceImpl implements PlanService {
         PlanDTO planDTO = planEntity.convertToDTO(planEntity, planNum, lonLatEntity);
 
         return planDTO;
+    }
+
+    @Override
+    public PlanDTO planInform(Long num) {
+
+        return planCustomRepository.memberAndPlanInfo(num);
+    }
+
+    @Override
+    public List<PlanDTO> smallPlanInfo(long memberNum) {
+        return planCustomRepository.smallPlanInfo(memberNum);
     }
 
     @Override

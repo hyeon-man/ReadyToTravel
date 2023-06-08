@@ -1,12 +1,16 @@
 package kr.ac.kopo.ReadyToTravel.group;
 
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import kr.ac.kopo.ReadyToTravel.dto.GroupDTO;
+import kr.ac.kopo.ReadyToTravel.dto.MemberDTO;
 import kr.ac.kopo.ReadyToTravel.entity.MemberEntity;
 import kr.ac.kopo.ReadyToTravel.entity.group.GroupEntity;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+import java.lang.reflect.Member;
 import java.util.List;
 
 import static kr.ac.kopo.ReadyToTravel.entity.QMemberEntity.*;
@@ -21,20 +25,33 @@ public class GroupCustomRepositoryImpl implements GroupCustomRepository {
         this.queryFactory = new JPAQueryFactory(em);
     }
 
-
     @Override
-    public List<GroupEntity> findAllGroup() {
-        return queryFactory.selectFrom(groupEntity).fetch();
-    }
-
-    @Override
-    @Transactional
-    public List<MemberEntity> GroupInMember(long groupNum) {
-        return queryFactory
-                .select(memberEntity)
+    public List<MemberDTO> groupInMember(long groupNum) {
+        return queryFactory.select(Projections.fields(MemberDTO.class,
+                memberEntity.name.as("name"),
+                memberEntity.profileIMG.as("profileIMG"),
+                memberEntity.memberId.as("memberId"),
+                memberEntity.email.as("email")))
                 .from(memberEntity)
                 .leftJoin(groupMembership)
-                .on(groupMembership.group.groupNum.eq(groupNum))
+                .on(memberEntity.num.eq(groupMembership.member.num))
+                .where(groupMembership.group.groupNum.eq(groupNum))
                 .fetch();
+    }
+
+
+
+    @Override
+    public GroupDTO groupInfo(long groupNum) {
+        return queryFactory.select(Projections.fields(GroupDTO.class,
+                groupEntity.groupNum.as("num"),
+                groupEntity.name.as("name"),
+                groupEntity.plan.num.as("planNum"),
+                groupEntity.plan.name.as("plan"),
+                groupEntity.createDate.as("createDate"),
+                groupEntity.modifiedDate.as("modifiedDate")))
+                .from(groupEntity)
+                .where(groupEntity.groupNum.eq(groupNum))
+                .fetchOne();
     }
 }
