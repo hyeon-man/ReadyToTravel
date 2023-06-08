@@ -2,6 +2,8 @@ package kr.ac.kopo.ReadyToTravel.plan;
 
 import kr.ac.kopo.ReadyToTravel.dto.plan.PlanDTO;
 
+import java.util.List;
+
 public interface PlanService {
     Long createPlan(PlanDTO plan);
 
@@ -10,4 +12,8 @@ public interface PlanService {
     void removePlan(Long num);
 
     PlanDTO viewPlan(long planNum);
+
+    PlanDTO planInform(Long num);
+
+    List<PlanDTO> smallPlanInfo(long memberNum);
 }

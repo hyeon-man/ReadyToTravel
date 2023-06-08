@@ -44,7 +44,6 @@ public class MemberDTO {
     private MultipartFile profileFile;
 
     public  MemberEntity convertToEntity(MemberDTO dto) {
-
         return MemberEntity.builder()
                 .memberId(dto.getMemberId())
                 .password(dto.getPassword())
@@ -56,17 +55,4 @@ public class MemberDTO {
                 .build();
     }
 
-    public MemberDTO convertToMemberDto(MemberEntity entity) {
-        MemberDTO dto = MemberDTO.builder()
-                .num(entity.getNum())
-                .memberId(entity.getMemberId())
-                .password(null)
-                .name(entity.getName())
-                .profileIMG(entity.getProfileIMG())
-                .signupDate(entity.getSignupDate())
-                .email(entity.getEmail())
-                .phoneNum(entity.getPhoneNum())
-                .build();
-        return dto;
-    }
 }

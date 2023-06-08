@@ -1,5 +1,6 @@
 package kr.ac.kopo.ReadyToTravel.dto.plan;
 
+import kr.ac.kopo.ReadyToTravel.dto.MemberDTO;
 import kr.ac.kopo.ReadyToTravel.dto.plan.LonLatDTO;
 import kr.ac.kopo.ReadyToTravel.entity.MemberEntity;
 import kr.ac.kopo.ReadyToTravel.entity.plan.PlanEntity;
@@ -45,6 +46,8 @@ public class PlanDTO {
     private Date createDate;
 
     private List<LonLatDTO> lonLatList;
+
+    private String placeIMG;
 
     // PlanDTO 객체를 PlanEntity로 변환하는 메소드
     public PlanEntity convertToEntity(PlanDTO dto, Long memberNum) {

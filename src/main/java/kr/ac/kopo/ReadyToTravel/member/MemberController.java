@@ -1,7 +1,9 @@
 package kr.ac.kopo.ReadyToTravel.member;
 
 import kr.ac.kopo.ReadyToTravel.board.BoardService;
+import kr.ac.kopo.ReadyToTravel.dto.GroupDTO;
 import kr.ac.kopo.ReadyToTravel.dto.MemberDTO;
+import kr.ac.kopo.ReadyToTravel.dto.plan.PlanDTO;
 import kr.ac.kopo.ReadyToTravel.plan.PlanService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 @RequestMapping("/member")
@@ -122,8 +125,11 @@ public class MemberController {
 
     @GetMapping("/profile")
     public String myPage(Model model, @SessionAttribute MemberDTO memberDTO) {
-        MemberDTO member = service.memberInfoByNum(memberDTO.getNum());
+        long memberNum = memberDTO.getNum();
+        MemberDTO member = service.memberInfoByNum(memberNum);
         model.addAttribute("memberDTO", member);
+
+        List<PlanDTO> plans = planService.smallPlanInfo(memberNum);
 
 
         return "member/profile";
