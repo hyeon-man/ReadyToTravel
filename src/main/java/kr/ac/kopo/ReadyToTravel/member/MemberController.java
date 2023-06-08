@@ -129,7 +129,7 @@ public class MemberController {
         MemberDTO member = service.memberInfoByNum(memberNum);
         model.addAttribute("memberDTO", member);
 
-        List<PlanDTO> plans = planService.smallPlanInfo(memberNum);
+//        List<PlanDTO> plans = planService.smallPlanInfo(memberNum);
 
 
         return "member/profile";
