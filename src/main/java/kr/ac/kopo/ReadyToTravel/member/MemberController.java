@@ -132,9 +132,8 @@ public class MemberController {
 
     @PostMapping("/profile/update")
     public String profileUpdate(@SessionAttribute MemberDTO memberDTO, MemberDTO updateInfo) {
-        // TODO: 2023-06-08 Attach null 검증 안됨 해결해야함. 시도해본것: profileIMG검증(받지 않아서 파일 있든 없든 null), profileFile검증(있든 없든 null이 안됨)
 
-        if (updateInfo.getProfileIMG() != null) {
+        if (updateInfo.getProfileFile().getSize() > 0) {
             service.profileUpdate(memberDTO.getNum(), updateInfo);
             service.saveAttach(memberDTO.getNum(), updateInfo.getProfileFile());
         } else
