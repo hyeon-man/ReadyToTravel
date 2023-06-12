@@ -1,0 +1,149 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+li {
+    list-style: none;
+}
+
+#wrap {
+    width: 100%;
+    height: 100%;
+    background: #F1F1F1;
+}
+
+#main {
+    width: 1260px;
+    margin: 0 auto;
+    display: flex;
+
+}
+
+.main-left-container {
+    width: 100%;
+    margin-top: 60px;
+    margin-bottom: 60px;
+    background: #fff;
+    padding: 30px;
+    border-radius: 5px;
+
+}
+
+.division-line {
+    width: 100%;
+    border-bottom: 1px solid #E8E8E8;
+    margin-bottom: 5px;
+}
+
+input {
+    width: 100%;
+    height: 34px;
+    border-radius: 5px;
+    padding: 0 10px;
+}
+
+
+.board-write-form li {
+    display: flex;
+    padding: 7px 0;
+}
+
+.write-form-left {
+    width: 15%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.write-form-right {
+    width: 85%;
+    display: flex;
+    align-items: center;
+}
+
+.write-form-right img:hover {
+    transform: scale(5);
+}
+
+.short {
+    width: 275px;
+}
+
+.ttb-editor {
+    width: 100%;
+    height: 500px;
+}
+
+.button-wrap {
+    display: flex;
+    justify-content: end;
+}
+
+.board-write-form {
+    border-bottom: 1px solid #E8E8E8;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.cancel {
+    background-color: #000000;
+    border: 1px solid #000000;
+    width: 100px;
+    color: #FFFFFF;
+    margin: 0 5px;
+    height: 36px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.submit {
+    width: 100px;
+    color: #FFFFFF;
+    margin: 0 5px;
+    background-color: #0B508C;
+    border: 1px solid #0B508C;
+    height: 36px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.warn {
+    margin-left: 10px;
+    font-size: 14px;
+    color: #C81B1B;
+}
+
+.notice {
+    margin-left: 10px;
+    font-size: 14px;
+    color: #9E9E9E;
+}
+
+.image-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    width: 150px;
+    height: auto;
+    margin-bottom: 3% ;
+}
+
+#preview-image {
+
+}
+
+.asd {
+margin-bottom: 5px;
+}
+
+.preview-image {
+
+    width: 20%;
+    height: auto;
+}
+

@@ -46,6 +46,7 @@ public class BoardController {
 
     @PostMapping("/board/create")
     public String boardCreate(BoardDTO boardDTO, @SessionAttribute(value = "memberDTO", required = false) MemberDTO memberDTO) {
+
         boardDTO.setBoardWriterNum(memberDTO.getNum());
         long boardNum = service.create(boardDTO);
 

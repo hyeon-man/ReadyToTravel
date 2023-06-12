@@ -35,24 +35,22 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public long create(BoardDTO boardDTO) {
-        List<BoardAttachEntity> attachEntities = new ArrayList<>();
         BoardEntity entity = BoardDTO.convertToEntity(boardDTO);
-
         Long boardNum = repository.save(entity).getBoardNum();
-
-        //첨부파일의 갯수만큼 반복한다
-        for (int i = 0; i < boardDTO.getMultipartFiles().size(); i++) {
-            MultipartFile attach = boardDTO.getMultipartFiles().get(i);
-            String filename = FileUpload.fileUpload(attach, 1);
-            if (filename != null) {
-                BoardAttachEntity attachEntity = new BoardAttachEntity();
-                attachEntity.setFileName(filename);
-                attachEntity.setBoardEntity(BoardEntity.builder().boardNum(boardNum).build());
-                attachEntities.add(attachEntity);
+        if (boardDTO.getMultipartFiles() != null && !boardDTO.getMultipartFiles().isEmpty()) {
+            List<BoardAttachEntity> attachEntities = new ArrayList<>();
+            for (int i = 0; i < boardDTO.getMultipartFiles().size(); i++) {
+                MultipartFile attach = boardDTO.getMultipartFiles().get(i);
+                String filename = FileUpload.fileUpload(attach, 1);
+                if (filename != null) {
+                    BoardAttachEntity attachEntity = new BoardAttachEntity();
+                    attachEntity.setFileName(filename);
+                    attachEntity.setBoardEntity(BoardEntity.builder().boardNum(boardNum).build());
+                    attachEntities.add(attachEntity);
+                }
             }
+            boardAttachRepository.saveAll(attachEntities);
         }
-        boardAttachRepository.saveAll(attachEntities);
-
         return boardNum;
     }
 

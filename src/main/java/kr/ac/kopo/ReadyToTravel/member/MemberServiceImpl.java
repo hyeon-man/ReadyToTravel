@@ -156,6 +156,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public MemberEntity profileUpdate(Long num, MemberDTO updateInfo) {
+
         MemberEntity member = memberRepository.findByNum(num);
 
         if (!updateInfo.getPassword().isEmpty()){
@@ -177,7 +178,6 @@ public class MemberServiceImpl implements MemberService {
     public void saveAttach(Long num, MultipartFile attach) {
         MemberEntity member = memberRepository.findByNum(num);
         String filename = FileUpload.fileUpload(attach, 2);
-
 
         if (member.getProfileIMG()==null){
             member.saveProfileIMG(filename);
