@@ -1,24 +1,14 @@
 package kr.ac.kopo.ReadyToTravel.plan;
 
-import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import kr.ac.kopo.ReadyToTravel.dto.plan.PlanDTO;
-import kr.ac.kopo.ReadyToTravel.entity.QPlaceEntity;
-import kr.ac.kopo.ReadyToTravel.entity.group.QGroupMembership;
-import kr.ac.kopo.ReadyToTravel.entity.plan.QLonLatEntity;
-import kr.ac.kopo.ReadyToTravel.entity.plan.QPlanEntity;
-import kr.ac.kopo.ReadyToTravel.entity.plan.QPlanEntity.*;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-
 import java.util.List;
 
-import static kr.ac.kopo.ReadyToTravel.entity.QMemberEntity.memberEntity;
 import static kr.ac.kopo.ReadyToTravel.entity.QPlaceEntity.placeEntity;
-import static kr.ac.kopo.ReadyToTravel.entity.group.QGroupMembership.groupMembership;
-import static kr.ac.kopo.ReadyToTravel.entity.plan.QLonLatEntity.lonLatEntity;
 import static kr.ac.kopo.ReadyToTravel.entity.plan.QPlanEntity.planEntity;
 
 @Repository

@@ -14,8 +14,8 @@ window.onload = function () {
             const planName = document.getElementById('planName');
             const planContents = document.getElementById('planContents');
 
-            planName.value = response.name;
-            planContents.value = response.contents
+            planName.textContent = response.name;
+            planContents.textContent = response.contents
 
             const lonLatList = response.lonLatList;
 
@@ -37,6 +37,19 @@ window.onload = function () {
                 li.appendChild(dateButton);
             }
             $('.viewBtn').off().on('click', function (evt) {
+
+                // 이전에 생성된 동적 요소들을 포함하는 부모 요소를 선택합니다.
+                const parentElement = document.querySelector('.c-md-2');
+
+// tl-item 클래스를 가진 요소들을 선택합니다.
+                const tlItems = parentElement.querySelectorAll('.tl-item-inner');
+
+// tl-item 클래스를 가진 요소들을 순회하며 제거합니다.
+                tlItems.forEach((tlItem) => {
+                    tlItem.remove();
+                });
+
+
                 const locationList = document.getElementsByClassName('locationList');
 
                 while (locationList.length > 0) {
@@ -132,12 +145,35 @@ function reverseGeo(lon, lat) {
             var resultDiv = document.getElementById("result");
             // 받아온 주소값
             result = newRoadAddr;
-            const li = document.getElementById('locationName');
-            const p = document.createElement('p');
-            p.classList = "locationList";
 
-            p.textContent = result;
-            li.append(p);
+
+// 부모 요소를 선택합니다.
+            const yearWrap = document.querySelector('.tl-year-wrap');
+            const tlEnd = document.querySelector('.tl-end-div');
+
+// tl-item 요소를 생성하고 추가합니다.
+            const tlItem = document.createElement('div');
+            tlItem.classList.add('tl-item');
+            tlItem.classList.add('tl-item-inner');
+
+// tl-date 요소를 생성합니다.
+            const tlDate = document.createElement('span');
+            tlDate.classList.add('tl-date');
+            tlItem.appendChild(tlDate);
+
+// tl-event 요소를 생성합니다.
+            const tlEvent = document.createElement('div');
+            tlEvent.classList.add('tl-event');
+            tlItem.appendChild(tlEvent);
+
+// h2 요소를 생성하고 내용을 설정합니다.
+            const h2 = document.createElement('h2');
+            h2.textContent = result;
+            tlEvent.appendChild(h2);
+
+// tl-year-wrap와 tl-end 사이에 tl-item을 추가합니다.
+            yearWrap.parentNode.insertBefore(tlItem, tlEnd);
+
         },
         error: function (request, status, error) {
             console.log("code:" + request.status + "\n"

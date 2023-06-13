@@ -11,9 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 import java.util.Date;
 
 @RequestMapping("/plan")
@@ -67,7 +64,7 @@ public class PlanController {
 
         Long planNum = planService.createPlan(plan);
 
-        if (plan.getPlanType() != TravelType.SOLO) {
+        if (plan.getType() != TravelType.SOLO) {
             groupService.createGroup(planNum, plan.getLeaderNum(), plan.getName());
         }
         return planNum;

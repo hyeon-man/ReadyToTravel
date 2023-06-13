@@ -1,10 +1,7 @@
 package kr.ac.kopo.ReadyToTravel.board;
 
-import kr.ac.kopo.ReadyToTravel.board.reply.ReplyService;
 import kr.ac.kopo.ReadyToTravel.dto.BoardDTO;
 import kr.ac.kopo.ReadyToTravel.dto.MemberDTO;
-import org.springframework.stereotype.Controller;
-import kr.ac.kopo.ReadyToTravel.dto.ReplyDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;

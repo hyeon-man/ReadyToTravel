@@ -3,7 +3,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Ready To Travel</title>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>
-    <link rel="stylesheet" href="/css/createPlan.css">
+    <link rel="stylesheet" href="/css/viewPlan.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=6MTwtT0OK18O1A8FGiL349WFB2UyKhI11K5MsjXN"></script>
     <!--tmap API js 자리-->
@@ -36,26 +36,38 @@
     </nav>
 </header>
 
+
 <div id="main2">
     <div class="container">
         <div class="left-side">
-            <!-- 거리 -->
-            <span id="result">총 거리 : </span><br>
+            <nav class="viewNav">
+                <a href="#" class="nav-item is-active">
+                    <li style="list-style: none" id="locationName"></li>
+                </a>
+                <span class="nav-indicator"></span>
+            </nav>
 
-            <div>
-                <input type="text" name="name" id="planName" placeholder="Plan Name">
-                <input type="text" name="contents" id="planContents" placeholder="Plan Contents">
+            <div class="timeline">
+                <div class="c-md-2">
+                    <div class="tl-item tl-year-wrap">
+                        <span class="tl-year-back">&nbsp;</span><span class="tl-year"></span>
+                    </div>
+
+                    <div class="tl-item tl-end-div">
+                        <div class="tl-end">&nbsp;</div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div>
-            <li id="locationName"></li>
-        </div>
+        <div class="right-side">
+            <div class="bg"></div>
+            <div class="bg bg2"></div>
+            <div class="bg bg3"></div>
 
-
-        <div class="button-container">
-            <div>
-                <button id="createBtn" type="button">경로 최적화</button>
+            <div class="content">
+                <h1 id="planName"></h1>
+                <h4 id="planContents"></h4>
             </div>
         </div>
     </div>

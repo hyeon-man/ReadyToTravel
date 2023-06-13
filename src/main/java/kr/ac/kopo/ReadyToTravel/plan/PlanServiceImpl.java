@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Service
@@ -21,6 +20,7 @@ public class PlanServiceImpl implements PlanService {
     private final MemberRepository memberRepository;
 
     private final PlanCustomRepository planCustomRepository;
+
     @Override
     public PlanDTO viewPlan(Long planNum) {
         PlanEntity planEntity = planRepository.findByNum(planNum);
@@ -58,8 +58,6 @@ public class PlanServiceImpl implements PlanService {
         return planEntity.getNum();
     }
 
-
-    // TODO planType 수정 안됨 좌표값 업데이트 안됨
     @Override
     public void updatePlan(PlanDTO plan) {
 
@@ -70,7 +68,6 @@ public class PlanServiceImpl implements PlanService {
         planRepository.save(planEntity);
 
         List<LonLatEntity> lonLatEntityList = lonLatRepository.findByCalendar(plan.getLonLatList().get(0).getCalendar());
-
 
         for (int i = 0; i < plan.getLonLatList().size(); i++) {
             LonLatDTO lonLatDTO = plan.getLonLatList().get(i);
@@ -86,7 +83,7 @@ public class PlanServiceImpl implements PlanService {
 
     @Override
     @Transactional
-    public void removePlan(Long num) {
-        planRepository.deleteById(num);
+    public void removePlan(Long planNum) {
+        planRepository.deleteById(planNum);
     }
 }
