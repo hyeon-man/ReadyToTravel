@@ -157,9 +157,12 @@ public class GroupServiceImpl implements GroupService {
 
         GroupDTO myGroupList = groupCustomRepository.myGroupNum(num);
 
-        myGroupList.addMember(groupCustomRepository.groupInMember(myGroupList.getNum()));
-
-        return myGroupList;
+        try{
+            myGroupList.addMember(groupCustomRepository.groupInMember(myGroupList.getNum()));
+            return myGroupList;
+        } catch (NullPointerException n){
+            return null;
+        }
     }
 
 }
