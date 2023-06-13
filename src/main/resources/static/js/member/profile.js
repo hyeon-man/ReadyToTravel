@@ -21,36 +21,36 @@ toggle.onclick = function () {
 
 
 
-document.addEventListener('DOMContentLoaded', function() {
-    // li class="my_page" 클릭 시 이벤트 핸들러
-    document.querySelector('.my_page').addEventListener('click', function() {
-        // id=my_page 요소로 스크롤 이동
-        document.getElementById('my_page').scrollIntoView({ behavior: 'smooth' });
-    });
-    // // li class="group_page" 클릭 시 이벤트 핸들러
-    document.querySelector('.group_page').addEventListener('click', function() {
-        // id=group_card 요소로 스크롤 이동
-        document.getElementById('group_card').scrollIntoView({ behavior: 'smooth' });
-    });
+// document.addEventListener('DOMContentLoaded', function() {
+//     // li class="my_page" 클릭 시 이벤트 핸들러
+//     document.querySelector('.my_page').addEventListener('click', function() {
+//         // id=my_page 요소로 스크롤 이동
+//         document.getElementById('my_page').scrollIntoView({ behavior: 'smooth' });
+//     });
+//     // // li class="group_page" 클릭 시 이벤트 핸들러
+//     document.querySelector('.group_page').addEventListener('click', function() {
+//         // id=group_card 요소로 스크롤 이동
+//         document.getElementById('group_card').scrollIntoView({ behavior: 'smooth' });
+//     });
 
-    // // li class="plan_page" 클릭 시 이벤트 핸들러
-    document.querySelector('.plan_page').addEventListener('click', function() {
-        // id=plan_card 요소로 스크롤 이동
-        document.getElementById('plan_card').scrollIntoView({ behavior: 'smooth' });
-    });
+//     // // li class="plan_page" 클릭 시 이벤트 핸들러
+//     document.querySelector('.plan_page').addEventListener('click', function() {
+//         // id=plan_card 요소로 스크롤 이동
+//         document.getElementById('plan_card').scrollIntoView({ behavior: 'smooth' });
+//     });
 
-    // // li class="help_page" 클릭 시 이벤트 핸들러
-    document.querySelector('.help_page').addEventListener('click', function() {
-        // id=help_card 요소로 스크롤 이동
-        document.getElementById('help_card').scrollIntoView({ behavior: 'smooth' });
-    });
-});
+//     // // li class="help_page" 클릭 시 이벤트 핸들러
+//     document.querySelector('.help_page').addEventListener('click', function() {
+//         // id=help_card 요소로 스크롤 이동
+//         document.getElementById('help_card').scrollIntoView({ behavior: 'smooth' });
+//     });
+// });
 
-//모달
+//모달 내정보
 document.addEventListener("DOMContentLoaded", function() {
     var card = document.querySelector(".my_card");
     var modal = document.getElementById("modal");
-    var closeButton = document.querySelector(".close-button");
+    var closeButton = document.querySelector(".close-button-my");
 
     card.addEventListener("click", function() {
         modal.style.display = "block";
@@ -63,22 +63,105 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
-// 드래그막기
-function disableTextSelection() {
-    return false;
-}
+//모달 여행지
+document.addEventListener("DOMContentLoaded", function() {
+    var card = document.querySelector(".my_card2");
+    var modal = document.getElementById("modal2");
+    var closeButton = document.querySelector(".close-button-place");
 
+    card.addEventListener("click", function() {
+        modal.style.display = "block";
+        document.body.style.overflow = "hidden"; // Disable scrolling on the body
+    });
+
+    closeButton.addEventListener("click", function() {
+        modal.style.display = "none";
+        document.body.style.overflow = "auto"; // Enable scrolling on the body
+    });
+});
+//모달 그룹페이지
+document.addEventListener("DOMContentLoaded", function() {
+    var liElement = document.querySelector(".group_page");
+    var modal = document.getElementById("modal3");
+    var closeButton = document.querySelector(".close-button-group");
+
+    liElement.addEventListener("click", function() {
+        modal.style.display = "block";
+        document.body.style.overflow = "hidden"; // Disable scrolling on the body
+    });
+
+    closeButton.addEventListener("click", function() {
+        modal.style.display = "none";
+        document.body.style.overflow = "auto"; // Enable scrolling on the body
+    });
+});
+//모달 그룹페이지 안에 more button
+const moreButton = document.querySelector('.more-button');
+const modal = document.getElementById('modal3-1');
+
+moreButton.addEventListener('click', function() {
+    modal.style.display = 'block';
+});
+
+modal.addEventListener('click', function(e) {
+    if (e.target === modal) {
+        modal.style.display = 'none';
+    }
+});
+//모달 계획페이지
+document.addEventListener("DOMContentLoaded", function() {
+    var liElement = document.querySelector(".plan_page");
+    var modal = document.getElementById("modal4");
+    var closeButton = document.querySelector(".close-button-plan");
+
+    liElement.addEventListener("click", function() {
+        modal.style.display = "block";
+        document.body.style.overflow = "hidden"; // Disable scrolling on the body
+    });
+
+    closeButton.addEventListener("click", function() {
+        modal.style.display = "none";
+        document.body.style.overflow = "auto"; // Enable scrolling on the body
+    });
+});
+//모달 나의 여행 후기 페이지
+document.addEventListener("DOMContentLoaded", function() {
+    var liElement = document.querySelector(".review_page");
+    var modal = document.getElementById("modal5");
+    var closeButton = document.querySelector(".close-button-review");
+
+    liElement.addEventListener("click", function() {
+        modal.style.display = "block";
+        document.body.style.overflow = "hidden"; // Disable scrolling on the body
+    });
+
+    closeButton.addEventListener("click", function() {
+        modal.style.display = "none";
+        document.body.style.overflow = "auto"; // Enable scrolling on the body
+    });
+});
 // 모달안에있는 비밀번호보이기 토글버튼
 const togglePassword = (event) => {
-    const passwordInput = event.target.parentNode.parentNode.querySelector('input[name="password"]');
-    const icon = event.target;
+    const passwordTop = event.target.closest('.password-box');
+    const passwordMiddle = passwordTop.querySelector('.modal_password');
+    const passwordBot = passwordMiddle.querySelector('input');
+    const passwordIcon = passwordMiddle.querySelector('.eyes');
+    const iconBox = passwordIcon.querySelector('ion-icon');
 
-    if (passwordInput.type === 'password') {
-        passwordInput.type = 'text';
-        icon.setAttribute('name', 'eye-off-outline');
-    } else {
-        passwordInput.type = 'password';
-        icon.setAttribute('name', 'eye-outline');
+    const confirmMiddle = passwordTop.querySelector('.modal_password_confirm');
+    const confirmBot = confirmMiddle.querySelector('input');
+
+    if(passwordBot.type == 'password') {
+        passwordBot.type = 'text';
+        iconBox.setAttribute('name', 'eye-off-outline');
+    } else if(passwordBot.type == 'text') {
+        passwordBot.type = 'password';
+        iconBox.setAttribute('name', 'eye-outline');
+    }
+    if(confirmBot.type == 'password') {
+        confirmBot.type = 'text';
+    } else if(confirmBot.type == 'text') {
+        confirmBot.type = 'password';
     }
 };
 
@@ -87,49 +170,32 @@ eyeIcons.forEach(icon => {
     icon.addEventListener('click', togglePassword);
 });
 
-// ------------------------------------이미지 비동기 변경 출처G쌤 매핑해서해보셈-----------------------
 
-// 파일 선택 이벤트 리스너 등록
-// const fileInput = document.getElementById('fileUpload');
-// fileInput.addEventListener('change', async (event) => {
-//     const file = event.target.files[0];
-//
-//     try {
-//         const imageURL = await uploadImage(file); // 이미지 비동기 업로드 함수 호출
-//
-//         // 페이지에 업로드된 이미지 표시
-//         const previewImage = document.getElementById('previewImage');
-//         previewImage.src = imageURL;
-//
-//         console.log('이미지가 성공적으로 변경되었습니다.');
-//     } catch (error) {
-//         console.error('이미지 변경에 실패했습니다:', error);
-//     }
-// });
+//초대코드 버튼
+const copyButton = document.getElementById('copyButton');
+const urlInput = document.getElementById('urlInput');
 
-// 이미지 비동기 업로드 함수
-// function uploadImage(file) {
-//     return new Promise((resolve, reject) => {
-//         const formData = new FormData();
-//         formData.append('image', file);
-//
-//         const xhr = new XMLHttpRequest();
-//         xhr.open('POST', '/member/myPage/profileIMGUpdate'); // 이미지 업로드를 처리하는 서버 URL로 변경해야 함
-//
-//         xhr.onload = function () {
-//             if (xhr.status === 200) {
-//                 const response = JSON.parse(xhr.responseText);
-//                 const imageURL = response.url; // 업로드된 이미지 URL
-//                 resolve(imageURL);
-//             } else {
-//                 reject(xhr.statusText);
-//             }
-//         };
-//
-//         xhr.onerror = function () {
-//             reject('Network error');
-//         };
-//
-//         xhr.send(formData);
-//     });
-// }
+copyButton.addEventListener('click', function() {
+    const url = 'https://fow.kr/find/%EC%82%AC%EC%A7%80%ED%84%B8'; // 복사할 URL을 여기에 입력하세요
+    copyToClipboard(url);
+});
+
+function copyToClipboard(text) {
+    const input = document.createElement('input');
+    input.style.position = 'fixed';
+    input.style.opacity = 0;
+    input.value = text;
+    document.body.appendChild(input);
+    input.select();
+    document.execCommand('copy');
+    document.body.removeChild(input);
+
+    urlInput.value = text;
+    urlInput.select();
+    urlInput.setSelectionRange(0, 99999);
+    document.execCommand('copy');
+
+    setTimeout(function(){
+        alert("복사되었습니다");
+    }, 300);
+}

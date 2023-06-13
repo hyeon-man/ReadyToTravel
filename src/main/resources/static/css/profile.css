@@ -69,6 +69,7 @@ body {
     text-decoration: none;
     color: white;
     align-items: center;
+    cursor: pointer;
 }
 
 
@@ -383,8 +384,10 @@ h3 {
     width: 50px;
 }
 p {
-    font-size: 5px;
-    margin: 2px;
+    font-size: 14px;
+    margin: 5px;
+    /* font-size: 5px;
+    margin: 2px; */
 }
 
 .id_card_hook {
@@ -487,17 +490,42 @@ p {
     display: flex;
     font-size: 30px;
     justify-content: center;
+    padding-bottom: 40px;
 }
 .modal_header{
     display: flex;
     justify-content: end;
     margin-right: 5px;
+    position: absolute;
+    right: 0px;
 }
 .modal_photo{
     border-radius: 30%;
     display: flex;
     justify-content: center;
-
+}
+.modal_place_left{
+    width: 383px;
+    height: 411px;
+    display: flex;
+    margin-left: 20px;
+    margin-top: 65px;
+}
+.modal_review{
+    width: 1000px;
+    height: 411px;
+    margin: 75px auto;
+}
+.modal_plan{
+    width: 1000px;
+    height: 411px;
+    margin: 75px auto;
+}
+.modal_place_right{
+    display: flex;
+    flex-direction: column;
+    margin-top: 100px;
+    margin-left: 20px;
 }
 .modal-content {
     position: absolute;
@@ -505,8 +533,51 @@ p {
     top: 50%;
     transform: translate(-50%, -50%);
     width: 600px;
-    height: 800px;
+    height: 850px;
     background-color: #fff;
+}
+.modal-content2 {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 1200px;
+    height: 563px;
+    background-color: #fff;
+    display: flex;
+    border-radius: 0.5rem;
+}
+.modal-content3 {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 1200px;
+    height: 563px;
+    background-color: #fff;
+    display: flex;
+    border-radius: 0.5rem;
+    flex-direction: column;
+}
+.modal-content4 {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 1200px;
+    height: 563px;
+    background-color: #fff;
+    border-radius: 0.5rem;
+}
+.modal-content5 {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 1200px;
+    height: 563px;
+    background-color: #fff;
+    border-radius: 0.5rem;
 }
 .modal_name label {
     display: block;
@@ -569,14 +640,33 @@ p {
     margin-left: 15%;
 }
 
-.modal_password input[type="password"] {
+.modal_password input {
+    border: none;
+    border-bottom: 1px solid #ccc;
+    outline: none;
+    margin-left: 12.5%;
+}
+
+.modal_password_confirm{
+    display: flex;
+    justify-content:start;
+    margin-bottom: 30px;
+}
+.modal_password_confirm label {
+    display: block;
+    margin-bottom: 5px;
+    margin-left: 15%;
+}
+
+.modal_password_confirm input {
     border: none;
     border-bottom: 1px solid #ccc;
     outline: none;
     margin-left: 7%;
 }
-.modal_password:nth-of-type(2) input[type="password"] {
-    margin-left: 12.5%;!important;
+
+.modal_password:nth-of-type(2) input {
+    margin-left: 12.5%!important;
 }
 .modal_password input[type="text"] {
     border: none;
@@ -627,7 +717,7 @@ p {
 }
 .eyes {
     position: absolute;
-    top: 400px;
+    top: 380px;
     bottom: 0px;
     right: 190px;
     margin: 0 auto;
@@ -664,6 +754,111 @@ p {
     justify-content: center;
     padding-top: 25px;
 }
+/* 그룹모달 페이지 css */
+.right-content {
+    padding: 10px 40px;
+    overflow-y: auto;
+    flex: 1;
+}
+.task-box {
+    position: relative;
+    border-radius: 12px;
+    width: 100%;
+    margin: 20px 0;
+    padding: 16px;
+    box-shadow: 2px 2px 4px 0px rgba(235,235,235,1);
+}
+
+
+
+.time {
+    margin-bottom: 6px;
+    opacity: 0.4;
+    font-size: 10px;
+}
+
+.task-name {
+    font-size: 14px;
+    font-weight: 500;
+    opacity: 0.6;
+}
+
+.more-button {
+    position: absolute;
+    border-radius: 50%;
+    right: 20px;
+    top: 30px;
+    cursor: pointer;
+    z-index: 9999;
+}
+.modal3-1{
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal3-1-content {
+    display: flex;
+    flex-direction: column;
+    width: 550px;
+    height: 600px;
+    margin: 0 auto;
+    background-color: #fff;
+    border-radius: 4px;
+    padding: 20px;
+}
+
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    text-align: left;
+    border: 1px solid #ccc;
+    padding: 8px;
+}
+
+thead th {
+    font-weight: bold;
+}
+
+button {
+    cursor: pointer;
+}
+
+.members {
+    display: flex;
+    margin-top: 14px;
+    flex-wrap: wrap;
+    flex-direction: row;
+    max-height: 250px;
+}
+
+.members img {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    margin-right: 4px;
+    object-fit: cover;
+}
+.members img:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+}
+.url-area{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 25px;
+}
+
 
 /* ====================== Responsive Design ========================== */
 @media (max-width: 991px) {
