@@ -1,14 +1,15 @@
 package kr.ac.kopo.ReadyToTravel.member;
 
 import kr.ac.kopo.ReadyToTravel.board.BoardService;
+import kr.ac.kopo.ReadyToTravel.dto.BoardDTO;
 import kr.ac.kopo.ReadyToTravel.dto.GroupDTO;
 import kr.ac.kopo.ReadyToTravel.dto.MemberDTO;
 import kr.ac.kopo.ReadyToTravel.dto.plan.PlanDTO;
+import kr.ac.kopo.ReadyToTravel.group.GroupService;
 import kr.ac.kopo.ReadyToTravel.plan.PlanService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpSession;
@@ -21,10 +22,13 @@ public class MemberController {
     private final BoardService boardService;
     private final PlanService planService;
 
-    public MemberController(MemberService service, BoardService boardService, PlanService planService) {
+    private final GroupService groupService;
+
+    public MemberController(MemberService service, BoardService boardService, PlanService planService, GroupService groupService) {
         this.service = service;
         this.boardService = boardService;
         this.planService = planService;
+        this.groupService = groupService;
     }
 
     @GetMapping("/checkId/{id}")
@@ -148,4 +152,21 @@ public class MemberController {
         return "redirect:/member/profile";
     }
 
+    @ResponseBody
+    @GetMapping("/profile/boardList")
+    public List<BoardDTO> boardList(@SessionAttribute MemberDTO memberDTO){
+        return boardService.myBoardList(memberDTO.getNum());
+    }
+
+    @ResponseBody
+    @GetMapping("profile/planList")
+    public List<PlanDTO> planList(@SessionAttribute MemberDTO memberDTO){
+        return planService.myPlanList(memberDTO.getNum());
+    }
+
+    @ResponseBody
+    @GetMapping("profile/groupList")
+    public GroupDTO groupList(@SessionAttribute MemberDTO memberDTO) {
+        return groupService.myGroupList(memberDTO.getNum());
+    }
 }

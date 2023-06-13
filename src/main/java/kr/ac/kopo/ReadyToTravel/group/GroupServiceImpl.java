@@ -152,4 +152,14 @@ public class GroupServiceImpl implements GroupService {
         return group;
     }
 
+    @Override
+    public GroupDTO myGroupList(Long num) {
+
+        GroupDTO myGroupList = groupCustomRepository.myGroupNum(num);
+
+        myGroupList.addMember(groupCustomRepository.groupInMember(myGroupList.getNum()));
+
+        return myGroupList;
+    }
+
 }

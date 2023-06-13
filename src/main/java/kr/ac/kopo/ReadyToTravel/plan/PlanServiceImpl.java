@@ -78,4 +78,9 @@ public class PlanServiceImpl implements PlanService {
     public void removePlan(Long num) {
         planRepository.deleteById(num);
     }
+
+    @Override
+    public List<PlanDTO> myPlanList(Long num) {
+        return planCustomRepository.myPlanList(num);
+    }
 }

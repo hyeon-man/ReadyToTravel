@@ -16,4 +16,6 @@ public interface PlanService {
     PlanDTO planInform(Long num);
 
     List<PlanDTO> smallPlanInfo(long memberNum);
+
+    List<PlanDTO> myPlanList(Long num);
 }

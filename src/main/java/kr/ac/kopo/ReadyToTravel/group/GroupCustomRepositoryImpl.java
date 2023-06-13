@@ -54,4 +54,16 @@ public class GroupCustomRepositoryImpl implements GroupCustomRepository {
                 .where(groupEntity.groupNum.eq(groupNum))
                 .fetchOne();
     }
+
+    @Override
+    public GroupDTO myGroupNum(Long num) {
+        return queryFactory.select(Projections.fields(GroupDTO.class,
+                groupEntity.groupNum.as("groupNum"),
+                groupEntity.name.as("name")))
+                .from(groupEntity, groupMembership)
+                .where(groupMembership.member.num.eq(num))
+                .fetchOne();
+    }
+
+
 }

@@ -17,6 +17,7 @@ import java.util.List;
 
 import static kr.ac.kopo.ReadyToTravel.entity.QMemberEntity.memberEntity;
 import static kr.ac.kopo.ReadyToTravel.entity.QPlaceEntity.placeEntity;
+import static kr.ac.kopo.ReadyToTravel.entity.board.QBoardEntity.boardEntity;
 import static kr.ac.kopo.ReadyToTravel.entity.group.QGroupMembership.groupMembership;
 import static kr.ac.kopo.ReadyToTravel.entity.plan.QLonLatEntity.lonLatEntity;
 import static kr.ac.kopo.ReadyToTravel.entity.plan.QPlanEntity.planEntity;
@@ -53,6 +54,17 @@ public class PlanCustomRepositoryImpl implements PlanCustomRepository {
                         planEntity.contents.as("contents"),
                         placeEntity.fileName.as("placeIMG")
                 )).from()
+                .fetch();
+    }
+
+    @Override
+    public List<PlanDTO> myPlanList(Long num) {
+        return queryFactory.select(Projections.fields(PlanDTO.class,
+            planEntity.num.as("num"),
+            planEntity.name.as("name")))
+                .from(planEntity)
+                .leftJoin(planEntity.leaderNum, memberEntity)
+                .where(planEntity.leaderNum.num.eq(num))
                 .fetch();
     }
 }

@@ -12,4 +12,5 @@ public interface BoardService {
     void delete(Long boardNum);
     BoardDTO detail(Long boardNum);
     BoardDTO smallDetail(Long boardNum);
+    List<BoardDTO> myBoardList(Long num);
 }

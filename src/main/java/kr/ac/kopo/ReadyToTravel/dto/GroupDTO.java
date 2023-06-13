@@ -30,10 +30,10 @@ public class GroupDTO {
     private List<MemberDTO> memberDTO;
 
     private Date modifiedDate;
+
     private Date createDate;
 
     private String name;
-
     private PlanDTO plan;
 
     public void addMember(List<MemberDTO> memberList){

@@ -8,6 +8,7 @@ import kr.ac.kopo.ReadyToTravel.util.PassEncode;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -158,11 +159,11 @@ public class MemberServiceImpl implements MemberService {
     public MemberEntity profileUpdate(Long num, MemberDTO updateInfo) {
         MemberEntity member = memberRepository.findByNum(num);
 
-        if (!updateInfo.getPassword().isEmpty()){
+        if (StringUtils.hasText(updateInfo.getPassword())){
             member.saveProfile(updateInfo.getName(), PassEncode.encode(updateInfo.getPassword()));
             System.out.println("저장된 memberEntity ======" + member);
         } else {
-           member.saveProfile(updateInfo.getName(), member.getPassword());
+            member.saveProfile(updateInfo.getName(), member.getPassword());
         }
 
         return member;

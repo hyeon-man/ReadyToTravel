@@ -12,4 +12,6 @@ public interface BoardCustomRepository {
     BoardDTO getBoardDetail(Long boardNum);
 
     BoardDTO smallDetail(Long boardNum);
+
+    List<BoardDTO> myBoardList(Long num);
 }

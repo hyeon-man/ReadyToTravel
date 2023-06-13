@@ -72,7 +72,7 @@
                 <ion-icon name="menu-outline"></ion-icon>
             </div>
             <div class="user">
-                <img th:src="${'/img/' + memberDTO.profileIMG}"/>
+                <img th:src="${memberDTO.profileIMG != null ? '/img/' + memberDTO.profileIMG : '/img/default.jpg'}"/>
             </div><!--여기에 유저 이미지-->
         </div>
 

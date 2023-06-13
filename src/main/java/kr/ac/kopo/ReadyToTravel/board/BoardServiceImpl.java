@@ -94,7 +94,6 @@ public class BoardServiceImpl implements BoardService {
         return board;
     }
 
-
     @Override
     public void update(BoardDTO boardDTO) {
         BoardEntity entity = repository.findById(boardDTO.getBoardNum())
@@ -112,6 +111,10 @@ public class BoardServiceImpl implements BoardService {
         repository.deleteById(boardNum);
     }
 
+    @Override
+    public List<BoardDTO> myBoardList(Long num) {
+        return boardCustomRepository.myBoardList(num);
+    }
 
 }
 
