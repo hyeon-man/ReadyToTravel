@@ -9,6 +9,8 @@ import kr.ac.kopo.ReadyToTravel.dto.ReplyDTO;
 import kr.ac.kopo.ReadyToTravel.entity.attach.BoardAttachEntity;
 import kr.ac.kopo.ReadyToTravel.entity.board.BoardEntity;
 import kr.ac.kopo.ReadyToTravel.util.FileUpload;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -54,13 +56,13 @@ public class BoardServiceImpl implements BoardService {
         return boardNum;
     }
 
-    @Override
-    public List<BoardDTO> boardList() {
-
-        List<BoardDTO> boardList = boardCustomRepository.boardList();
-
-        return boardList;
-    }
+//    @Override
+//    public List<BoardDTO> boardList() {
+//
+//        List<BoardDTO> boardList = boardCustomRepository.boardList();
+//
+//        return boardList;
+//    }
 
     @Override
     @Transactional
@@ -90,6 +92,11 @@ public class BoardServiceImpl implements BoardService {
 
         System.out.println("board = " + board);
         return board;
+    }
+
+    @Override
+    public Page<BoardDTO> boardList(Pageable pageable) {
+        return boardCustomRepository.boardList(pageable);
     }
 
 

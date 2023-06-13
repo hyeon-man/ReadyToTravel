@@ -3,12 +3,19 @@ package kr.ac.kopo.ReadyToTravel.board;
 import kr.ac.kopo.ReadyToTravel.board.reply.ReplyService;
 import kr.ac.kopo.ReadyToTravel.dto.BoardDTO;
 import kr.ac.kopo.ReadyToTravel.dto.MemberDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
 import org.springframework.stereotype.Controller;
 import kr.ac.kopo.ReadyToTravel.dto.ReplyDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -20,11 +27,13 @@ public class BoardController {
     }
 
     @GetMapping("/board/list")
-    public String boardList(Model model) {
-        List<BoardDTO> boardList = service.boardList();
-        model.addAttribute("list", boardList);
+    public String boardList(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<BoardDTO> boardPage = service.boardList(pageable);
 
-        return "board/list";
+        model.addAttribute("list", boardPage);
+
+        return "/board/list";
     }
 
 
@@ -45,7 +54,7 @@ public class BoardController {
     }
 
     @PostMapping("/board/create")
-    public String boardCreate(BoardDTO boardDTO, @SessionAttribute(value = "memberDTO", required = false) MemberDTO memberDTO) {
+    public String boardCreate(@Validated BoardDTO boardDTO, @SessionAttribute(value = "memberDTO", required = false) MemberDTO memberDTO) {
 
         boardDTO.setBoardWriterNum(memberDTO.getNum());
         long boardNum = service.create(boardDTO);
@@ -64,7 +73,7 @@ public class BoardController {
     }
 
     @PostMapping("/board/update/{boardNum}")
-    public String boardUpdate(@PathVariable Long boardNum, BoardDTO board) {
+    public String boardUpdate(@PathVariable Long boardNum, @Validated BoardDTO board) {
 
         board.setBoardNum(boardNum);
         service.update(board);
@@ -73,9 +82,10 @@ public class BoardController {
 
     }
 
-    @DeleteMapping("/board/{boardNum}")
-    public void boardDelete(@PathVariable Long boardNum) {
+    @GetMapping("/board/delete/{boardNum}")
+    public String boardDelete(@PathVariable Long boardNum) {
 
         service.delete(boardNum);
+        return "redirect:/board/list";
     }
 }
