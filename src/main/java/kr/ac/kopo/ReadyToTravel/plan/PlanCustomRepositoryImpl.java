@@ -60,8 +60,10 @@ public class PlanCustomRepositoryImpl implements PlanCustomRepository {
     @Override
     public List<PlanDTO> myPlanList(Long num) {
         return queryFactory.select(Projections.fields(PlanDTO.class,
-            planEntity.num.as("num"),
-            planEntity.name.as("name")))
+                    planEntity.num.as("num"),
+                    planEntity.name.as("name"),
+                    planEntity.createDate.as("createDate"),
+                    planEntity.leaderNum.name.as("leaderName")))
                 .from(planEntity)
                 .leftJoin(planEntity.leaderNum, memberEntity)
                 .where(planEntity.leaderNum.num.eq(num))

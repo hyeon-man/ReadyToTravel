@@ -159,14 +159,15 @@ public class MemberController {
     }
 
     @ResponseBody
-    @GetMapping("profile/planList")
+    @GetMapping("/profile/planList")
     public List<PlanDTO> planList(@SessionAttribute MemberDTO memberDTO){
         return planService.myPlanList(memberDTO.getNum());
     }
 
     @ResponseBody
-    @GetMapping("profile/groupList")
+    @GetMapping("/profile/groupList")
     public GroupDTO groupList(@SessionAttribute MemberDTO memberDTO) {
         return groupService.myGroupList(memberDTO.getNum());
     }
+
 }

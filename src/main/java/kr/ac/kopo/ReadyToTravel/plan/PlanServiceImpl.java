@@ -1,9 +1,11 @@
 package kr.ac.kopo.ReadyToTravel.plan;
 
+import kr.ac.kopo.ReadyToTravel.dto.GroupDTO;
 import kr.ac.kopo.ReadyToTravel.dto.plan.PlanDTO;
 import kr.ac.kopo.ReadyToTravel.dto.plan.LonLatDTO;
 import kr.ac.kopo.ReadyToTravel.entity.plan.LonLatEntity;
 import kr.ac.kopo.ReadyToTravel.entity.plan.PlanEntity;
+import kr.ac.kopo.ReadyToTravel.group.GroupCustomRepository;
 import kr.ac.kopo.ReadyToTravel.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -80,7 +82,7 @@ public class PlanServiceImpl implements PlanService {
     }
 
     @Override
-    public List<PlanDTO> myPlanList(Long num) {
-        return planCustomRepository.myPlanList(num);
+    public List<PlanDTO> myPlanList(Long memberNum) {
+        return planCustomRepository.myPlanList(memberNum);
     }
 }

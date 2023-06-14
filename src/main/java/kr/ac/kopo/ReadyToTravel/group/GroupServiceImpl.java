@@ -25,6 +25,7 @@ public class GroupServiceImpl implements GroupService {
     private final GroupCustomRepository groupCustomRepository;
 
     private final PlanCustomRepository planCustomRepository;
+
     public GroupServiceImpl(GroupRepository groupRepository, GroupMembershipRepository groupMembershipRepository, InviteUrlRepository inviteUrlRepository, MemberRepository memberRepository, GroupCustomRepository groupCustomRepository, PlanCustomRepository planCustomRepository) {
         this.groupRepository = groupRepository;
         this.groupMembershipRepository = groupMembershipRepository;
@@ -156,13 +157,13 @@ public class GroupServiceImpl implements GroupService {
     public GroupDTO myGroupList(Long num) {
 
         GroupDTO myGroupList = groupCustomRepository.myGroupNum(num);
+        GroupDTO realGroup = groupCustomRepository.groupInfo(myGroupList.getNum());
+        System.out.println("realGroup = " + realGroup.getPlan());
 
-        try{
-            myGroupList.addMember(groupCustomRepository.groupInMember(myGroupList.getNum()));
-            return myGroupList;
-        } catch (NullPointerException n){
-            return null;
-        }
+        realGroup.addMember(groupCustomRepository.groupInMember(realGroup.getNum()));
+//        myGroupList.addMember();
+        return realGroup;
+
     }
 
 }

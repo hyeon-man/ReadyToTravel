@@ -34,6 +34,9 @@ public class GroupDTO {
     private Date createDate;
 
     private String name;
+
+    private String contents;
+
     private PlanDTO plan;
 
     public void addMember(List<MemberDTO> memberList){
