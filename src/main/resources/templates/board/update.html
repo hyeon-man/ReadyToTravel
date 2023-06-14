@@ -1,11 +1,133 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>RTT</title>
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/boardCreate.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
+
+    <script src="/js/jquery3.7.0.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
 </head>
 <body>
+<header>
+    <div class="logo">
+        <a href="/">
+            <b>RTT</b>
+            <h7>READY TO TRAVEL</h7>
+        </a>
+    </div>
 
+    <nav>
+        <ul>
+            <li><a href="/place">여행지</a></li>
+            <li><a href="/guide">이용방법</a></li>
+            <li><a href="/board/list">후기게시판</a></li>
+            <li><a th:if="${session.memberDTO != null}" href="/member/logout">로그아웃</a></li>
+            <li><a th:if="${session.memberDTO == null}" href="/member/login">로그인</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div id="wrap">
+    <main id="main">
+        <div class="main-left-container">
+            <form method="post" enctype="multipart/form-data" id="form-id">
+                <section class="board-wrap write white pd30">
+                    <h1 class="command-go-link">게시글 수정</h1>
+                    <div class="division-line"></div>
+                    <ul class="board-write-form">
+                        <li class="title">
+                            <div class="write-form-left">
+                                <span>제목</span>
+                            </div>
+                            <div class="write-form-right">
+                                <input th:value="${board.boardName}" type="text" id="write_subject" name="boardName">
+                            </div>
+                        </li>
+                        <li class="contents">
+                            <div class="write-form-left">
+                                <span>내용</span>
+                            </div>
+                            <div class="write-form-right">
+                                <div id="editor" class="ttb-editor" data-editor-height="500px">
+                                    <textarea class="ttb-editor" id="write_content" name="boardContent" th:text="${board.boardContent}"></textarea>
+                                </div>
+
+                                <div class="asd">
+                                    <img id="preview-image" class="image-container">
+                                </div>
+                            </div>
+                        </li>
+                        <input style="display: none;" type="file" id="upload-input" multiple="multiple" name="multipartFiles">
+
+                        <li class="contents">
+                            <div class="write-form-left">
+                                <span>사진</span>
+                            </div>
+                            <div class="write-form-right">
+                                <label for="upload-input">추가</label>
+                            </div>
+                        </li>
+                        <div class="button-wrap">
+                            <a href="../">
+                                <button type="button" class="cancel">취소</button>
+                            </a>
+                            <button class="submit" id="addBtn">등록</button>
+                        </div>
+                    </ul>
+                </section>
+            </form>
+        </div>
+    </main>
+</div>
+
+<footer>
+    <p>Copyright &copy; 2023
+    </p>
+</footer>
 </body>
+<script>
+    function readImages(input) {
+        if (input.files && input.files.length > 0) {
+            const imgDiv = document.getElementsByClassName('asd')[0];
+            imgDiv.innerHTML = ''; // 기존의 미리보기 이미지 초기화
+
+            for (let i = 0; i < input.files.length; i++) {
+                const reader = new FileReader();
+                const file = input.files[i];
+
+                reader.onload = e => {
+                    const previewImage = document.createElement('img');
+                    previewImage.src = e.target.result;
+                    previewImage.classList.add('image-container');
+                    imgDiv.appendChild(previewImage);
+                };
+
+                reader.readAsDataURL(file);
+                // addImageInputToForm(file);
+            }
+        }
+    }
+
+    const inputImage = document.getElementById('upload-input');
+    inputImage.addEventListener('change', e => {
+        readImages(e.target);
+    });
+
+    // function addImageInputToForm(file) {
+    //     const form = document.getElementById('form-id'); // 폼의 ID를 지정해주세요
+    //     const input = document.createElement('input');
+    //     input.type = 'file';
+    //     input.name = 'multipartFile';
+    //     input.style.display = 'none';
+    //     input.files = [file];
+    //
+    //     form.appendChild(input);
+    // }
+</script>
 </html>
