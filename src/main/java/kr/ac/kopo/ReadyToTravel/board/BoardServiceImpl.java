@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,8 +74,9 @@ public class BoardServiceImpl implements BoardService {
 
         //게시글에 포함된 댓글의 정보 조회
         List<ReplyDTO> replies = replyCustomRepository.getReplies(boardNum);
-        detail.setReplies(replies);
-
+        if (replies != null) {
+            detail.setReplies(replies);
+        }
         //게시글 첨부파일 조회
         List<String> attaches = boardAttachCustomRepository.findByFileNameByBoardNum(boardNum);
         detail.setFilename(attaches);
@@ -101,18 +103,47 @@ public class BoardServiceImpl implements BoardService {
 
 
     @Override
+    @Transactional
     public void update(BoardDTO boardDTO) {
-        BoardEntity entity = repository.findById(boardDTO.getBoardNum())
+        BoardEntity boardEntity = repository.findById(boardDTO.getBoardNum())
                 .orElseThrow(() -> new IllegalArgumentException("잘못된 게시글 번호"));
 
-        entity.setBoardName(boardDTO.getBoardName());
-        entity.setBoardContent(boardDTO.getBoardContent());
+        boardEntity.setBoardName(boardDTO.getBoardName());
+        boardEntity.setBoardContent(boardDTO.getBoardContent());
 
-        repository.save(entity);
+
+        if (!boardDTO.getMultipartFiles().isEmpty() && !boardDTO.getMultipartFiles().get(0).getOriginalFilename().isEmpty()) {
+            List<BoardAttachEntity> boardAttachEntity = boardAttachRepository.deleteByBoardEntityBoardNum(boardDTO.getBoardNum());
+
+            for (BoardAttachEntity attachEntity : boardAttachEntity) {
+                FileUpload.fileRemove(attachEntity.getFileName(), 1);
+            }
+
+            List<BoardAttachEntity> attachEntities = new ArrayList<>();
+
+            for (MultipartFile attach : boardDTO.getMultipartFiles()) {
+                String filename = FileUpload.fileUpload(attach, 1);
+
+                if (filename != null) {
+                    BoardAttachEntity attachEntity = new BoardAttachEntity();
+                    attachEntity.setFileName(filename);
+                    attachEntity.setBoardEntity(BoardEntity.builder().boardNum(boardDTO.getBoardNum()).build());
+                    attachEntities.add(attachEntity);
+                }
+            }
+
+            boardAttachRepository.saveAll(attachEntities);
+        }
     }
+
 
     @Override
     public void delete(Long boardNum) {
+        List<BoardAttachEntity> attachEntity = boardAttachRepository.findByBoardEntityBoardNum(boardNum);
+
+        for (int i = 0; i < attachEntity.size(); i++) {
+            FileUpload.fileRemove(attachEntity.get(i).getFileName(), 1);
+        }
 
         repository.deleteById(boardNum);
     }

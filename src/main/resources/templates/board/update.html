@@ -58,12 +58,12 @@
                                     <textarea class="ttb-editor" id="write_content" name="boardContent" th:text="${board.boardContent}"></textarea>
                                 </div>
 
-                                <div class="asd">
-                                    <img id="preview-image" class="image-container">
+                                <div class="asd" >
+                                    <img th:each="img : ${board.filename}" class="image-container" th:src="${'/img/' + img}">
                                 </div>
                             </div>
                         </li>
-                        <input style="display: none;" type="file" id="upload-input" multiple="multiple" name="multipartFiles">
+                        <input type="file" id="upload-input" multiple="multiple" name="multipartFiles">
 
                         <li class="contents">
                             <div class="write-form-left">

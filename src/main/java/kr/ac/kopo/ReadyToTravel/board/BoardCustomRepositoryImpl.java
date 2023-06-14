@@ -82,6 +82,7 @@ public class BoardCustomRepositoryImpl implements BoardCustomRepository {
      */
     public BoardDTO smallDetail(Long boardNum) {
         return queryFactory.select(Projections.fields(BoardDTO.class,
+                        boardEntity.boardNum.as("boardNum"),
                         boardEntity.boardName.as("boardName"),
                         boardEntity.boardContent.as("boardContent")))
                 .from(boardEntity)

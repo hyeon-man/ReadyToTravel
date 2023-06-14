@@ -33,7 +33,8 @@
 <section class="article-detail table-common con row">
     <div class="article-writer cell">
         <div class="circle">
-            <img class="img" th:src="${board.boardWriterProfile != null ? '/img/' + board.boardWriterProfile : '/image/defaultProfile.png'}" />
+            <img class="img"
+                 th:src="${board.boardWriterProfile != null ? '/img/' + board.boardWriterProfile : '/image/defaultProfile.png'}"/>
             <p th:text="${board.boardWriter}">작성자</p>
         </div>
     </div>
@@ -44,7 +45,7 @@
         <tbody>
         <tr class="article-title">
             <th>글 번호</th>
-            <td colspan="3" th:text="${board.boardNum}">글 번호</td>
+            <td colspan="3" th:text="${board.boardNum}" id="boardNum">글 번호</td>
         </tr>
         <tr class="article-title">
             <th> 제목</th>
@@ -58,9 +59,13 @@
         <td colspan="4" th:text="${board.boardContent}">
             내용
         </td>
-
         </tbody>
     </table>
+
+    <div class="imageList">
+        <img th:each=" img : ${board.filename}" th:src="${'/img/' + img}"/>
+    </div>
+
     <div>
         <a th:href="@{/board/delete/{boardNum}(boardNum=${board.boardNum})}">
             <button>
@@ -76,12 +81,6 @@
             </button>
         </a>
     </div>
-
-    <div th:each=" img : ${board.filename}">
-        <img th:src="${'/img/' + img}"/>
-    </div>
-
-
 </section>
 
 <div class="con reply">
@@ -174,6 +173,7 @@
     $(".replyDelete").on('click', function (event) {
         if (confirm("댓글을 삭제 할까요 ?")) {
             const replyNum = $(event.currentTarget).closest("tr").find(".replyNum").text();
+
             const boardNum = $("#boardNum").text();
             $.ajax({
                 url: "/board/reply/" + boardNum + "/remove/" + replyNum,

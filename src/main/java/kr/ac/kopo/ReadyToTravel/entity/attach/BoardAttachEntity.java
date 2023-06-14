@@ -24,7 +24,7 @@ public class BoardAttachEntity extends Attach {
     private Long boardAttachNum;
 
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "board_num")
     @NotNull
     private BoardEntity boardEntity;

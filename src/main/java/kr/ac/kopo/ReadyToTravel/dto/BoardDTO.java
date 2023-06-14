@@ -40,8 +40,8 @@ public class BoardDTO {
 
     private List<MultipartFile> multipartFiles;
 
-    private List<String> filename;
-    private List<ReplyDTO> replies;
+    private List<String> filename = new ArrayList<>();
+    private List<ReplyDTO> replies = new ArrayList<>();
 
     /**
      * @param

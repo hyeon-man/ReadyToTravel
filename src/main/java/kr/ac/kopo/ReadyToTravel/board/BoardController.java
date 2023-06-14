@@ -74,7 +74,9 @@ public class BoardController {
 
     @PostMapping("/board/update/{boardNum}")
     public String boardUpdate(@PathVariable Long boardNum, @Validated BoardDTO board) {
-
+        System.out.println("board.getMultipartFiles() = " + board.getMultipartFiles().size());
+        System.out.println("board.getMultipartFiles().get(1).getOriginalFilename() = " + board.getMultipartFiles().get(0).getOriginalFilename());
+        
         board.setBoardNum(boardNum);
         service.update(board);
 
