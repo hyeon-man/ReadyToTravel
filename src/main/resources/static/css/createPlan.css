@@ -213,7 +213,7 @@ footer {
 }
 
 #location {
-    margin-top: 10%;
+    margin-top: 2%;
     font-size: 150%;
 }
 
@@ -223,25 +223,150 @@ footer {
     justify-content: space-around;
 }
 
-.button-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border: none;
+#btnContainer {
+
 }
 
-.button-container div {
-    width: 15em;
-    height: 100%;
-}
-
-.button-container div button {
-    width: 100%;
-    height: 100%;
-    border: none;
-}
 .radio_button ul{
     display: flex;
     justify-content: space-around;
     padding-left: 0px;
+}
+
+.calendarParents {
+    width: 70%;
+    margin-bottom: 2em;
+    margin-left: 15%;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+}
+
+
+.calendarParents button{
+    text-align: center;
+}
+
+.subBtn {
+    margin-top: 3px;
+}
+
+.deleteBtn {
+    margin-left: 1em;
+}
+
+.w-btn {
+    position: relative;
+    border: none;
+    display: inline-block;
+    border-radius: 15px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.25s;
+}
+
+.w-btn-outline {
+    position: relative;
+    border-radius: 15px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.25s;
+}
+
+.w-btn-blue {
+    background-color: #6aafe6;
+    color: #d4dfe6;
+}
+
+.w-btn-blue-outline {
+    border: 3px solid #6aafe6;
+    color: #6e6e6e;
+}
+
+.w-btn-blue-outline:hover {
+    background-color: #6aafe6;
+    color: #d4dfe6;
+}
+
+.w-btn:hover {
+    letter-spacing: 2px;
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+.w-btn-outline:hover {
+    letter-spacing: 2px;
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+.w-btn-yellow-outline:hover {
+    background-color: #fce205;
+    color: #6e6e6e;
+}
+
+.w-btn-yellow-outline {
+    border: 3px solid #fce205;
+    color: #6e6e6e;
+}
+
+.w-btn-yellow {
+    background-color: #fce205;
+    color: #6e6e6e;
+}
+
+
+.w-btn-red-outline {
+    border: 3px solid #ff5f2e;
+    color: #6e6e6e;
+}
+
+.w-btn-red {
+    background-color: #ff5f2e;
+    color: #e1eef6;
+}
+
+.w-btn-red-outline:hover {
+    background-color: #ff5f2e;
+    color: #e1eef6;
+}
+
+.modal {
+    display: none; /* 모달 숨김 */
+    position: fixed; /* 고정 위치 */
+    z-index: 1; /* 다른 요소 위에 표시 */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; /* 스크롤 가능하도록 설정 */
+    background-color: rgba(0, 0, 0, 0.5); /* 반투명한 배경 */
+}
+
+.modal-content {
+    background-color: #ffffff;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#planContents {
+    width: 500px;
+    height: 300px;
 }

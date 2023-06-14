@@ -103,7 +103,7 @@ function ajaxParams(markers, marker_s, marker_e) {
 
 // 서버에 저장 할 정보 fetch
 function serverFetch(markerData) {
-    var radioVal = $('input[name="planType"]:checked').val();
+    let radioVal = $('input[name="planType"]:checked').val();
 
     var markerPoint = (createPoints(markerData));
 
@@ -111,8 +111,9 @@ function serverFetch(markerData) {
         "name": $('#planName').val(),
         "contents": $('#planContents').val(),
         "lonLatList": markerPoint,
-        "planType": radioVal
+        "type": radioVal
     }
+    console.log(planDTO);
 
     fetch('../plan/createPlan', {
         method: 'POST',
@@ -434,16 +435,25 @@ $(function () {
             saveBtn.type = "button";
             saveBtn.classList.add("calendar");
             saveBtn.classList.add("calendarBtn");
+            saveBtn.classList.add("w-btn-outline");
+            saveBtn.classList.add("w-btn-blue-outline");
+            saveBtn.setAttribute('style', 'width:228; height:37')
             saveBtn.setAttribute("data-btn", i);
-            saveBtn.textContent = (i + 1) + "일차";
+            saveBtn.textContent = (i + 1) + "일차 정보 저장";
 
             viewBtn.type = "button";
             viewBtn.classList.add("viewBtn");
+            viewBtn.classList.add("subBtn");
+            viewBtn.classList.add("w-btn-outline");
+            viewBtn.classList.add("w-btn-yellow-outline");
             viewBtn.setAttribute("data-btn", i);
             viewBtn.textContent = (i + 1) + "일차 미리보기";
 
             deleteBtn.type = "button";
             deleteBtn.classList.add("deleteBtn");
+            deleteBtn.classList.add("subBtn");
+            deleteBtn.classList.add("w-btn-outline");
+            deleteBtn.classList.add("w-btn-red-outline");
             deleteBtn.setAttribute("data-btn", i);
             deleteBtn.textContent = (i + 1) + "일차 정보 삭제";
 
@@ -575,4 +585,15 @@ function buttonClick(event) {
 $('#createPlanBtn').off("click").on("click", function () {
     console.log(markerData);
     serverFetch(markerData);
+});
+
+
+// 모달 열기
+document.getElementById("openModal").addEventListener("click", function() {
+    document.getElementById("myModal").style.display = "block";
+});
+
+// 모달 닫기
+document.getElementsByClassName("close")[0].addEventListener("click", function() {
+    document.getElementById("myModal").style.display = "none";
 });

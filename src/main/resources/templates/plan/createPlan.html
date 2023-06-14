@@ -37,6 +37,18 @@
 
 
 <div id="main2">
+    <div id="btnContainer">
+        <div>
+            <button id="createBtn" type="button">경로 최적화</button>
+        </div>
+        <div>
+            <button id="createPlanBtn">계획 생성</button>
+        </div>
+
+        <div>
+            <button id="removeBtn" type="button">마커 삭제</button>
+        </div>
+    </div>
     <div class="container">
         <div class="left-side">
             <div id="distance">
@@ -54,14 +66,12 @@
             <!-- 달력 -->
 
             <input type="text" id="daterangepicker" name="daterangepicker"
-                   style="border: none; margin-left:5%; font-size: 30px">
+                   style="border: none; margin-left:5%; font-size: 29px">
 
             <!-- 달력에서 선택한 날짜 수 -->
             <h3 id="calendarsDate"></h3>
 
             <div class="radio_button">
-                <input type="text" name="name" id="planName" placeholder="Plan Name">
-                <input type="text" name="contents" id="planContents" placeholder="Plan Contents">
                 <ul>
                     <li>
                         <input type="radio" name="planType" value="0" checked>가족
@@ -77,6 +87,20 @@
                     </li>
                 </ul>
             </div>
+
+            <label for="planName">여행 제목</label>
+            <input style="margin-bottom: 5px; margin-top: 5px" type="text" name="name" id="planName">
+            <button id="openModal">여행 설명</button>
+
+            <div id="myModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h2>Plan Contents</h2>
+                    <label for="planContents">내용</label><textarea style="width: 904px; height: 406px;" type="text"
+                                                                  name="contents" id="planContents"></textarea>
+                </div>
+            </div>
+
             <!-- DropDown Menu -->
             <div class="dropdown">
                 <button onclick="dp_menu()" class="button" type="button">여행 상세 설정</button>
@@ -91,19 +115,6 @@
         <div class="right-side map_wrap" id="map_wrap">
             <!-- T MAP -->
             <div id="map_div"></div>
-        </div>
-
-        <div class="button-container">
-            <div>
-                <button id="createBtn">경로 최적화</button>
-            </div>
-            <div>
-                <button id="createPlanBtn">계획 생성</button>
-            </div>
-
-            <div>
-                <button id="removeBtn" type="button">마커 삭제</button>
-            </div>
         </div>
     </div>
 </div>

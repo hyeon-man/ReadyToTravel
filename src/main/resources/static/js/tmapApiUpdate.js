@@ -125,7 +125,6 @@ window.onload = function initTmap() {
                         calendar: textContentBtn
                     };
 
-                    console.log(markerData);
                     serverFetch(markerData);
 
                     markerData = [];

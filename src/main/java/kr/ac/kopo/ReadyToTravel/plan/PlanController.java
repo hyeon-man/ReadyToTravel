@@ -58,9 +58,6 @@ public class PlanController {
     public Long createPlan(@RequestBody PlanDTO plan, @SessionAttribute(name = "memberDTO", required = false) MemberDTO memberDTO) {
         plan.setCreateDate(new Date());
         plan.setLeaderNum(memberDTO.getNum());
-        System.out.println("plan = " + plan);
-        System.out.println("memberDTO = " + memberDTO);
-        System.out.println("memberDTO.getNum = " + memberDTO.getNum());
 
         Long planNum = planService.createPlan(plan);
 

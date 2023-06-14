@@ -46,6 +46,7 @@ public class PlanServiceImpl implements PlanService {
     public Long createPlan(PlanDTO plan) {
         // Client가 보낸 PlanDTO entity에 save
         PlanEntity planConvertToEntity = plan.convertToEntity(plan, plan.getLeaderNum());
+        System.out.println("planConvertToEntity = " + planConvertToEntity);
         PlanEntity planEntity = planRepository.save(planConvertToEntity);
 
         // Client가 보낸 LonLatDTO entity에 save

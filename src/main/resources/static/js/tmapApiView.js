@@ -1,6 +1,18 @@
 let lonLatRealList = [];
-
+let markers = [];
+let marker_s;
+let marker_e;
+let manageMarker = [];
 window.onload = function () {
+    // map 생성
+    // Tmapv2.Map을 이용하여, 지도가 들어갈 div, 넓이, 높이를 설정합니다.
+    map = new Tmapv2.Map("map_div", {
+        center: new Tmapv2.LatLng(36.35086524077589, 127.45422567640077), // 지도 초기 좌표
+        width: "50%", // 지도의 넓이
+        height: "50%", // 지도의 높이
+        zoom: 12
+    });
+
 // 현재 페이지의 URL에서 planNum 추출
     const url = window.location.href;
     const planNum = url.split("/").pop(); // URL에서 마지막 부분 추출
@@ -36,19 +48,23 @@ window.onload = function () {
                 dateButton.classList.add('viewBtn');
                 li.appendChild(dateButton);
             }
+
             $('.viewBtn').off().on('click', function (evt) {
+
+                for (let i = 0; i < manageMarker.length; i++) {
+                    manageMarker[i].setMap(null);
+                }
 
                 // 이전에 생성된 동적 요소들을 포함하는 부모 요소를 선택합니다.
                 const parentElement = document.querySelector('.c-md-2');
 
-// tl-item 클래스를 가진 요소들을 선택합니다.
+                // tl-item 클래스를 가진 요소들을 선택합니다.
                 const tlItems = parentElement.querySelectorAll('.tl-item-inner');
 
-// tl-item 클래스를 가진 요소들을 순회하며 제거합니다.
+                // tl-item 클래스를 가진 요소들을 순회하며 제거합니다.
                 tlItems.forEach((tlItem) => {
                     tlItem.remove();
                 });
-
 
                 const locationList = document.getElementsByClassName('locationList');
 
@@ -71,6 +87,11 @@ window.onload = function () {
 
                     reverseGeo(lon, lat);
                 }
+
+                for (let i = 0; i < markers.length; i++) {
+                    markers[i].setMap(null);
+                }
+                createMarker(lonLatRealList)
                 lonLatRealList = [];
             });
         }
@@ -181,4 +202,28 @@ function reverseGeo(lon, lat) {
                 + "error:" + error);
         }
     });
+}
+
+function createMarker(lonLatList) {
+
+    for (let i = 0; i < lonLatList.length; i++) {
+        const lon = lonLatList[i].lon;
+        const lat = lonLatList[i].lat;
+        const markerType = lonLatList[i].markerType;
+
+        const marker = new Tmapv2.Marker({
+            position: new Tmapv2.LatLng(lat, lon),
+            map: map,
+            title: markerType
+        });
+
+        if (markerType === 'START') {
+            marker.setIcon("http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png");
+        } else if (markerType === 'END') {
+            marker.setIcon("http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_e.png");
+        } else if (markerType === 'VIAPOINT') {
+            markers.push(marker);
+        }
+        manageMarker.push(marker);
+    }
 }
