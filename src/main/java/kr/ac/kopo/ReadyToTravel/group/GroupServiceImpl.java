@@ -94,7 +94,7 @@ public class GroupServiceImpl implements GroupService {
     @Override
     @Transactional
     public void removeMember(long groupNum, long memberNum) {
-
+        System.out.println("삭제 요청 왔음");
         groupMembershipRepository.deleteByGroup_GroupNumAndMember_Num(groupNum, memberNum);
     }
 

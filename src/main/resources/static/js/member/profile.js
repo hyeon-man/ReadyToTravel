@@ -1,6 +1,7 @@
 // add hovered class to selected list item
 let list = document.querySelectorAll(".navigation li");
 
+
 function activeLink() {
     list.forEach((item) => {
         item.classList.remove("hovered");
@@ -18,35 +19,6 @@ toggle.onclick = function () {
     navigation.classList.toggle("active");
     main.classList.toggle("active");
 };
-
-
-
-
-
-// document.addEventListener('DOMContentLoaded', function() {
-//     // li class="my_page" 클릭 시 이벤트 핸들러
-//     document.querySelector('.my_page').addEventListener('click', function() {
-//         // id=my_page 요소로 스크롤 이동
-//         document.getElementById('my_page').scrollIntoView({ behavior: 'smooth' });
-//     });
-//     // // li class="group_page" 클릭 시 이벤트 핸들러
-//     document.querySelector('.group_page').addEventListener('click', function() {
-//         // id=group_card 요소로 스크롤 이동
-//         document.getElementById('group_card').scrollIntoView({ behavior: 'smooth' });
-//     });
-
-//     // // li class="plan_page" 클릭 시 이벤트 핸들러
-//     document.querySelector('.plan_page').addEventListener('click', function() {
-//         // id=plan_card 요소로 스크롤 이동
-//         document.getElementById('plan_card').scrollIntoView({ behavior: 'smooth' });
-//     });
-
-//     // // li class="help_page" 클릭 시 이벤트 핸들러
-//     document.querySelector('.help_page').addEventListener('click', function() {
-//         // id=help_card 요소로 스크롤 이동
-//         document.getElementById('help_card').scrollIntoView({ behavior: 'smooth' });
-//     });
-// });
 
 //모달 내정보
 document.addEventListener("DOMContentLoaded", function() {
@@ -80,7 +52,9 @@ document.addEventListener("DOMContentLoaded", function() {
         modal.style.display = "none";
         document.body.style.overflow = "auto"; // Enable scrolling on the body
     });
-});//모달 그룹페이지
+});
+
+//모달 그룹페이지
 document.addEventListener("DOMContentLoaded", function() {
     var liElement = document.querySelector(".group_page");
     var modal = document.getElementById("modal3");
@@ -164,8 +138,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 deleteA.textContent = "삭제";
 
                 const groupNum = data.num;
-                const memberNum = member.num;
-
                 deleteA.addEventListener('click', function() {
                     fetch('/member/removeMemberInGroup/' + groupNum, {
                         method: 'POST',
@@ -173,16 +145,19 @@ document.addEventListener("DOMContentLoaded", function() {
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
-                            memberNum: memberNum
+                            memberDTO: data
                         })
                     })
                         .then(response => response.json())
                         .then(data => {
                             // 요청이 성공적으로 처리되었을 때의 동작
                             console.log(data);
+
+                            console.log("멤버 넘버 success" + member);
                         })
                         .catch(error => {
                             // 요청이 실패했을 때의 동작
+                            console.log("멤버 넘버 error" + member);
                             console.error('Error:', error);
                         });
                 });
