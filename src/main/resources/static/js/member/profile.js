@@ -21,36 +21,36 @@ toggle.onclick = function () {
 
 
 
-document.addEventListener('DOMContentLoaded', function() {
-    // li class="my_page" 클릭 시 이벤트 핸들러
-    document.querySelector('.my_page').addEventListener('click', function() {
-        // id=my_page 요소로 스크롤 이동
-        document.getElementById('my_page').scrollIntoView({ behavior: 'smooth' });
-    });
-    // // li class="group_page" 클릭 시 이벤트 핸들러
-    document.querySelector('.group_page').addEventListener('click', function() {
-        // id=group_card 요소로 스크롤 이동
-        document.getElementById('group_card').scrollIntoView({ behavior: 'smooth' });
-    });
+// document.addEventListener('DOMContentLoaded', function() {
+//     // li class="my_page" 클릭 시 이벤트 핸들러
+//     document.querySelector('.my_page').addEventListener('click', function() {
+//         // id=my_page 요소로 스크롤 이동
+//         document.getElementById('my_page').scrollIntoView({ behavior: 'smooth' });
+//     });
+//     // // li class="group_page" 클릭 시 이벤트 핸들러
+//     document.querySelector('.group_page').addEventListener('click', function() {
+//         // id=group_card 요소로 스크롤 이동
+//         document.getElementById('group_card').scrollIntoView({ behavior: 'smooth' });
+//     });
 
-    // // li class="plan_page" 클릭 시 이벤트 핸들러
-    document.querySelector('.plan_page').addEventListener('click', function() {
-        // id=plan_card 요소로 스크롤 이동
-        document.getElementById('plan_card').scrollIntoView({ behavior: 'smooth' });
-    });
+//     // // li class="plan_page" 클릭 시 이벤트 핸들러
+//     document.querySelector('.plan_page').addEventListener('click', function() {
+//         // id=plan_card 요소로 스크롤 이동
+//         document.getElementById('plan_card').scrollIntoView({ behavior: 'smooth' });
+//     });
 
-    // // li class="help_page" 클릭 시 이벤트 핸들러
-    document.querySelector('.help_page').addEventListener('click', function() {
-        // id=help_card 요소로 스크롤 이동
-        document.getElementById('help_card').scrollIntoView({ behavior: 'smooth' });
-    });
-});
+//     // // li class="help_page" 클릭 시 이벤트 핸들러
+//     document.querySelector('.help_page').addEventListener('click', function() {
+//         // id=help_card 요소로 스크롤 이동
+//         document.getElementById('help_card').scrollIntoView({ behavior: 'smooth' });
+//     });
+// });
 
-//모달
+//모달 내정보
 document.addEventListener("DOMContentLoaded", function() {
     var card = document.querySelector(".my_card");
     var modal = document.getElementById("modal");
-    var closeButton = document.querySelector(".close-button");
+    var closeButton = document.querySelector(".close-button-my");
 
     card.addEventListener("click", function() {
         modal.style.display = "block";
@@ -63,28 +63,21 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
-// 드래그막기
-function disableTextSelection() {
-    return false;
-}
+//모달 여행지
+document.addEventListener("DOMContentLoaded", function() {
+    var card = document.querySelector(".my_card2");
+    var modal = document.getElementById("modal2");
+    var closeButton = document.querySelector(".close-button-place");
 
-// 모달안에있는 비밀번호보이기 토글버튼
-const togglePassword = (event) => {
-    const passwordInput = event.target.parentNode.parentNode.querySelector('input[name="password"]');
-    const icon = event.target;
+    card.addEventListener("click", function() {
+        modal.style.display = "block";
+        document.body.style.overflow = "hidden"; // Disable scrolling on the body
+    });
 
-    if (passwordInput.type === 'password') {
-        passwordInput.type = 'text';
-        icon.setAttribute('name', 'eye-off-outline');
-    } else {
-        passwordInput.type = 'password';
-        icon.setAttribute('name', 'eye-outline');
-    }
-};
-
-const eyeIcons = document.querySelectorAll('.eyes ion-icon');
-eyeIcons.forEach(icon => {
-    icon.addEventListener('click', togglePassword);
+    closeButton.addEventListener("click", function() {
+        modal.style.display = "none";
+        document.body.style.overflow = "auto"; // Enable scrolling on the body
+    });
 });
 //모달 그룹페이지
 document.addEventListener("DOMContentLoaded", function() {
@@ -96,65 +89,71 @@ document.addEventListener("DOMContentLoaded", function() {
         modal.style.display = "block";
         document.body.style.overflow = "hidden"; // Disable scrolling on the body
 
-        // 구성원을 동적으로 추가하는 함수
-        function addMember(member) {
-            var membersContainer = document.querySelector(".members");
-
-            var memberDiv = document.createElement("div");
-            memberDiv.className = "member";
-
-            var memberImage = document.createElement("img");
-            memberImage.src = member.profileIMG;
-            memberImage.alt = "member";
-            memberDiv.appendChild(memberImage);
-
-            var memberInfoDiv = document.createElement("div");
-            memberInfoDiv.style.flex = "1";
-
-            var memberId = document.createElement("p");
-            memberId.textContent = member.memberId;
-            memberInfoDiv.appendChild(memberId);
-
-            var memberName = document.createElement("p");
-            memberName.textContent = member.name;
-            memberInfoDiv.appendChild(memberName);
-
-            var memberEmail = document.createElement("p");
-            memberEmail.textContent = member.email;
-            memberInfoDiv.appendChild(memberEmail);
-
-            var memberPhoneNum = document.createElement("p");
-            memberPhoneNum.textContent = member.phoneNum;
-            memberInfoDiv.appendChild(memberPhoneNum);
-
-            memberDiv.appendChild(memberInfoDiv);
-
-            membersContainer.appendChild(memberDiv);
+        // 초기화 함수
+        function resetData() {
+            const membersContainer = document.querySelector('.members');
+            membersContainer.innerHTML = ''; // 기존 데이터 초기화
         }
 
-        // 서버에서 JSON 데이터를 받아와 구성원 정보를 동적으로 추가하는 함수
-        function fetchGroupData() {
-            fetch("/member/profile/groupData")
-                .then(response => response.json())
-                .then(data => {
-                    var titleElement = document.querySelector(".modal-content3 h3");
-                    var contentsElement = document.querySelector(".modal3-1-text");
-                    var members = data.memberDTO;
+// 데이터 처리 함수
+        function processData(data) {
+            const titleElement = document.querySelector('.groupName');
+            const contentsElement = document.querySelector('.modal3-1-text');
+            const membersContainer = document.querySelector('.members');
+            const imgElement = document.createElement('img');
+            membersContainer.appendChild(imgElement);
 
-                    titleElement.textContent = data.name;
-                    contentsElement.textContent = data.contents;
+            // membersContainer.style.display= 'flex';
 
-                    for (var i = 0; i < members.length; i++) {
-                        addMember(members[i]);
-                    }
-                })
-                .catch(error => {
-                    console.error("Error:", error);
-                });
+            // 제목 태그에 데이터 추가
+            titleElement.textContent = data.name;
+            // 컨텐츠에 데이터 추가
+            contentsElement.textContent = data.contents;
+
+            // 구성원 정보 추가
+            data.memberDTO.forEach(member => {
+
+
+                imgElement.src = "/img/" + member.profileIMG;
+                imgElement.alt = 'Profile Image';
+
+                const memberElement = document.createElement('div');
+                memberElement.className = 'member';
+                // memberElement.style.display = 'flex';
+
+                const memberIdElement = document.createElement('p');
+                memberIdElement.textContent = member.memberId;
+
+                const emailElement = document.createElement('p');
+                emailElement.textContent = member.email;
+
+                const nameElement = document.createElement('p');
+                nameElement.textContent = member.name;
+
+                const phoneNumElement = document.createElement('p');
+                phoneNumElement.textContent = member.phoneNum;
+
+                memberElement.appendChild(memberIdElement);
+                memberElement.appendChild(emailElement);
+                memberElement.appendChild(nameElement);
+                memberElement.appendChild(phoneNumElement);
+
+                membersContainer.appendChild(memberElement);
+            });
+
         }
 
-        // 그룹 데이터를 동적으로 추가
-        fetchGroupData();
+// 초기화 후 데이터 처리
+        fetch('/member/profile/groupList')
+            .then(response => response.json())
+            .then(data => {
+                resetData(); // 데이터 초기화
+                processData(data); // 데이터 처리
+            })
+            .catch(error => {
+                // fetch 요청 중에 발생한 오류를 처리합니다
+                console.log('오류 발생:', error);
+            });
     });
 
     closeButton.addEventListener("click", function() {
@@ -176,49 +175,97 @@ modal.addEventListener('click', function(e) {
         modal.style.display = 'none';
     }
 });
-// ------------------------------------이미지 비동기 변경 출처G쌤 매핑해서해보셈-----------------------
+//모달 계획페이지
+document.addEventListener("DOMContentLoaded", function() {
+    var liElement = document.querySelector(".plan_page");
+    var modal = document.getElementById("modal4");
+    var closeButton = document.querySelector(".close-button-plan");
 
-// 파일 선택 이벤트 리스너 등록
-// const fileInput = document.getElementById('fileUpload');
-// fileInput.addEventListener('change', async (event) => {
-//     const file = event.target.files[0];
-//
-//     try {
-//         const imageURL = await uploadImage(file); // 이미지 비동기 업로드 함수 호출
-//
-//         // 페이지에 업로드된 이미지 표시
-//         const previewImage = document.getElementById('previewImage');
-//         previewImage.src = imageURL;
-//
-//         console.log('이미지가 성공적으로 변경되었습니다.');
-//     } catch (error) {
-//         console.error('이미지 변경에 실패했습니다:', error);
-//     }
-// });
+    liElement.addEventListener("click", function() {
+        modal.style.display = "block";
+        document.body.style.overflow = "hidden"; // Disable scrolling on the body
+    });
 
-// 이미지 비동기 업로드 함수
-// function uploadImage(file) {
-//     return new Promise((resolve, reject) => {
-//         const formData = new FormData();
-//         formData.append('image', file);
-//
-//         const xhr = new XMLHttpRequest();
-//         xhr.open('POST', '/member/myPage/profileIMGUpdate'); // 이미지 업로드를 처리하는 서버 URL로 변경해야 함
-//
-//         xhr.onload = function () {
-//             if (xhr.status === 200) {
-//                 const response = JSON.parse(xhr.responseText);
-//                 const imageURL = response.url; // 업로드된 이미지 URL
-//                 resolve(imageURL);
-//             } else {
-//                 reject(xhr.statusText);
-//             }
-//         };
-//
-//         xhr.onerror = function () {
-//             reject('Network error');
-//         };
-//
-//         xhr.send(formData);
-//     });
-// }
+    closeButton.addEventListener("click", function() {
+        modal.style.display = "none";
+        document.body.style.overflow = "auto"; // Enable scrolling on the body
+    });
+});
+//모달 나의 여행 후기 페이지
+document.addEventListener("DOMContentLoaded", function() {
+    var liElement = document.querySelector(".review_page");
+    var modal = document.getElementById("modal5");
+    var closeButton = document.querySelector(".close-button-review");
+
+    liElement.addEventListener("click", function() {
+        modal.style.display = "block";
+        document.body.style.overflow = "hidden"; // Disable scrolling on the body
+    });
+
+    closeButton.addEventListener("click", function() {
+        modal.style.display = "none";
+        document.body.style.overflow = "auto"; // Enable scrolling on the body
+    });
+});
+// 모달안에있는 비밀번호보이기 토글버튼
+const togglePassword = (event) => {
+    const passwordTop = event.target.closest('.password-box');
+    const passwordMiddle = passwordTop.querySelector('.modal_password');
+    const passwordBot = passwordMiddle.querySelector('input');
+    const passwordIcon = passwordMiddle.querySelector('.eyes');
+    const iconBox = passwordIcon.querySelector('ion-icon');
+
+    const confirmMiddle = passwordTop.querySelector('.modal_password_confirm');
+    const confirmBot = confirmMiddle.querySelector('input');
+
+    if(passwordBot.type == 'password') {
+        passwordBot.type = 'text';
+        iconBox.setAttribute('name', 'eye-off-outline');
+    } else if(passwordBot.type == 'text') {
+        passwordBot.type = 'password';
+        iconBox.setAttribute('name', 'eye-outline');
+    }
+    if(confirmBot.type == 'password') {
+        confirmBot.type = 'text';
+    } else if(confirmBot.type == 'text') {
+        confirmBot.type = 'password';
+    }
+};
+
+const eyeIcons = document.querySelectorAll('.eyes ion-icon');
+eyeIcons.forEach(icon => {
+    icon.addEventListener('click', togglePassword);
+});
+
+
+//초대코드 버튼
+const copyButton = document.getElementById('copyButton');
+const urlInput = document.getElementById('urlInput');
+
+copyButton.addEventListener('click', function() {
+    const url = 'https://example.com'; // 복사할 URL을 여기에 입력하세요
+    copyToClipboard(url);
+});
+
+function copyToClipboard(text) {
+    const input = document.createElement('input');
+    input.style.position = 'fixed';
+    input.style.opacity = 0;
+    input.value = text;
+    document.body.appendChild(input);
+    input.select();
+    document.execCommand('copy');
+    document.body.removeChild(input);
+
+    urlInput.value = text;
+    urlInput.select();
+    urlInput.setSelectionRange(0, 99999);
+    document.execCommand('copy');
+
+    setTimeout(function(){
+        alert("복사되었습니다");
+    }, 300);
+}
+
+
+//////

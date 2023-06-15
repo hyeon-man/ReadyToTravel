@@ -839,6 +839,7 @@ button {
     flex-wrap: wrap;
     flex-direction: row;
     max-height: 250px;
+    flex:1;
 }
 
 .members img {

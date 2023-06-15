@@ -238,9 +238,9 @@
 
         <div>
             <h1 style="text-align: center; margin-top:50px;">나의 그룹</h1>
-            <h3 style="font-size: 25px;text-align: center;">제목</h3>
+            <h3 class="groupName" style="font-size: 25px;text-align: center;">제목</h3>
                 <div style="margin-left: 30px; width: 1130px; margin-top: 30px;">
-                    <p class="modal3-1-text">컨탠츠</p>
+                    <p class="modal3-1-text"></p>
                 </div>
         </div>
         <div>
@@ -251,17 +251,37 @@
                             구성원
                         </div>
                     </div>
-
-                    <div class="members">
-                        <img>
-                        <div style="flex: 1;">
-                            <p>memberId</p>
-                            <p>name</p>
-                            <p>email</p>
-                            <p>phoneNum</p>
+                    <div class="more-button"><ion-icon name="ellipsis-vertical-outline"></ion-icon></div>
+                    <div id="modal3-1" class="modal3-1">
+                        <div class="modal3-1-content">
+                            <table>
+                                <thead>
+                                <tr>
+                                    <th>아이디</th>
+                                    <th>이름</th>
+                                    <th>이메일</th>
+                                    <th>전화번호</th>
+                                    <th>관리</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>santa2909</td>
+                                    <td>황주선</td>
+                                    <td>santa2909@naver.com</td>
+                                    <td>0106351486</td>
+                                    <td><button type="button">삭제</button></td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
+                    <div class="members">
+
+
+                    </div>
                 </div>
+                <!-- more-button은 세션이 그룹장인사람에게만 노출되야합니다 -->
 
             </div>
             <div class="url-area">
