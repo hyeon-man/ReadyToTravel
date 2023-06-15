@@ -11,9 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 import java.util.Date;
 
 @RequestMapping("/plan")
@@ -30,17 +27,18 @@ public class PlanController {
 
     @GetMapping("/viewPlan/{planNum}")
 
-    public String viewPlan(@PathVariable long planNum) {
+    public String viewPlan(@PathVariable Long planNum) {
         return "/plan/viewPlan";
     }
 
     @GetMapping("/getMarker/{planNum}")
     @ResponseBody
-    public PlanDTO getMarker(@PathVariable long planNum) {
+    public PlanDTO getMarker(@PathVariable Long planNum) {
         PlanDTO view = planService.viewPlan(planNum);
 
         return view;
     }
+
     /**
      * @return plan/makePlan 페이지를 반환합니다.
      */
@@ -50,29 +48,23 @@ public class PlanController {
         return "/plan/createPlan";
     }
 
-/**
-     *
-     * @param plan (plan / List<lonlatdto> / memberNum)
-     * @param request (member session)
+    /**
+     * @param plan    (plan / List<lonlatdto> / memberNum)
+     * @param memberDTO (member session)
      * @return
- */
+     */
     @PostMapping("/createPlan")
     @ResponseBody
-    public Long createPlan(@RequestBody PlanDTO plan, HttpServletRequest request) {
+    public Long createPlan(@RequestBody PlanDTO plan, @SessionAttribute(name = "memberDTO", required = false) MemberDTO memberDTO) {
+        plan.setCreateDate(new Date());
+        plan.setLeaderNum(memberDTO.getNum());
 
-        HttpSession session = request.getSession();
+        Long planNum = planService.createPlan(plan);
 
-        MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
-
-            plan.setCreateDate(new Date());
-            plan.setLeaderNum(memberDTO.getNum());
-
-            Long planNum = planService.createPlan(plan);
-
-            if (plan.getType() != TravelType.SOLO) {
-                groupService.createGroup(planNum, plan.getLeaderNum(), plan.getName());
-            }
-            return planNum;
+        if (plan.getType() != TravelType.SOLO) {
+            groupService.createGroup(planNum, plan.getLeaderNum(), plan.getName());
+        }
+        return planNum;
     }
 
     @GetMapping("/updatePlan/{planNum}")
@@ -81,12 +73,11 @@ public class PlanController {
     }
 
     @PostMapping("/updatePlan/{planNum}")
-    public Long updatePlan(@PathVariable Long planNum, @Valid PlanDTO plan) {
+    public void updatePlan(@PathVariable Long planNum, @RequestBody PlanDTO plan, @SessionAttribute(name = "memberDTO", required = false) MemberDTO memberDTO) {
         plan.setNum(planNum);
+        plan.setLeaderNum(memberDTO.getNum());
 
         planService.updatePlan(plan);
-
-        return planNum;
     }
 
     @RequestMapping("/removePlan/{planNum}")

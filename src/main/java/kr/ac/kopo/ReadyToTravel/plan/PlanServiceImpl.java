@@ -1,7 +1,7 @@
 package kr.ac.kopo.ReadyToTravel.plan;
 
-import kr.ac.kopo.ReadyToTravel.dto.plan.PlanDTO;
 import kr.ac.kopo.ReadyToTravel.dto.plan.LonLatDTO;
+import kr.ac.kopo.ReadyToTravel.dto.plan.PlanDTO;
 import kr.ac.kopo.ReadyToTravel.entity.plan.LonLatEntity;
 import kr.ac.kopo.ReadyToTravel.entity.plan.PlanEntity;
 import kr.ac.kopo.ReadyToTravel.member.MemberRepository;
@@ -20,8 +20,9 @@ public class PlanServiceImpl implements PlanService {
     private final MemberRepository memberRepository;
 
     private final PlanCustomRepository planCustomRepository;
+
     @Override
-    public PlanDTO viewPlan(long planNum) {
+    public PlanDTO viewPlan(Long planNum) {
         PlanEntity planEntity = planRepository.findByNum(planNum);
         List<LonLatEntity> lonLatEntity = lonLatRepository.findAllByPlanEntityNum(planNum);
 
@@ -45,6 +46,7 @@ public class PlanServiceImpl implements PlanService {
     public Long createPlan(PlanDTO plan) {
         // Client가 보낸 PlanDTO entity에 save
         PlanEntity planConvertToEntity = plan.convertToEntity(plan, plan.getLeaderNum());
+        System.out.println("planConvertToEntity = " + planConvertToEntity);
         PlanEntity planEntity = planRepository.save(planConvertToEntity);
 
         // Client가 보낸 LonLatDTO entity에 save
@@ -58,24 +60,31 @@ public class PlanServiceImpl implements PlanService {
     }
 
     @Override
-    public Long updatePlan(PlanDTO plan) {
+    public void updatePlan(PlanDTO plan) {
+
         // Client가 보낸 PlanDTO entity에 save
-        PlanEntity planConvertToEntity = plan.convertToEntity(plan, plan.getLeaderNum());
-        PlanEntity planEntity = planRepository.save(planConvertToEntity);
+        PlanEntity planEntity = planRepository.findByNum(plan.getNum());
+        planEntity.setName(plan.getName());
+        planEntity.setContents(plan.getContents());
+        planRepository.save(planEntity);
 
-        // Client가 보낸 LonLatDTO entity에 save
+        List<LonLatEntity> lonLatEntityList = lonLatRepository.findByCalendar(plan.getLonLatList().get(0).getCalendar());
+
         for (int i = 0; i < plan.getLonLatList().size(); i++) {
-            LonLatDTO lonLatDTO = new LonLatDTO();
-            LonLatEntity lonLatEntities = lonLatDTO.convertToEntity(plan.getLonLatList().get(i), planEntity.getNum());
-            lonLatRepository.save(lonLatEntities);
+            LonLatDTO lonLatDTO = plan.getLonLatList().get(i);
+            LonLatEntity lonLatConvert = lonLatDTO.convertToEntity(lonLatDTO, planEntity.getNum());
+            for (LonLatEntity lonLatEntity : lonLatEntityList) {
+                if (lonLatEntity.getCalendar().equals(lonLatDTO.getCalendar())) {
+                    lonLatRepository.delete(lonLatEntity);
+                }
+            }
+            lonLatRepository.save(lonLatConvert);
         }
-
-        return planEntity.getNum();
     }
 
     @Override
     @Transactional
-    public void removePlan(Long num) {
-        planRepository.deleteById(num);
+    public void removePlan(Long planNum) {
+        planRepository.deleteById(planNum);
     }
 }

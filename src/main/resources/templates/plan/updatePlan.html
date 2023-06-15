@@ -37,18 +37,58 @@
 </header>
 
 <div id="main2">
+    <nav class="viewNav">
+        <a href="#" class="nav-item is-active">
+            <li style="list-style: none" class="viewNavLi">
+                <button class="custom-btn btn-3" id="createBtn" type="button"><span>경로 최적화</span></button>
+            </li>
+            <li style="list-style: none" class="viewNavLi">
+                <button class="custom-btn btn-3" id="updatePlanBtn"><span>계획 수정</span></button>
+            </li>
+            <li style="list-style: none" class="viewNavLi">
+                <button class="custom-btn btn-3" id="removeMarker" type="button"><span>마커 삭제</span></button>
+            </li>
+        </a>
+    </nav>
     <div class="container">
         <div class="left-side">
             <!-- 거리 -->
             <span id="result">총 거리 : </span><br>
 
+            <div>
             <ul>
                 <li id="dateLi"></li>
             </ul>
+            </div>
 
-            <div>
-                <input name="name" id="planName"></input>
-                <input name="contents" id="planContents"></input>
+            <div class="radio_button">
+                <ul>
+                    <li>
+                        <input type="radio" name="planType" value="0" checked>가족
+                    </li>
+                    <li>
+                        <input type="radio" name="planType" value="1">커플
+                    </li>
+                    <li>
+                        <input type="radio" name="planType" value="2">혼자
+                    </li>
+                    <li>
+                        <input type="radio" name="planType" value="3">친구
+                    </li>
+                </ul>
+            </div>
+
+            <label for="planName">여행 제목</label>
+            <input style="margin-bottom: 5px; margin-top: 5px" type="text" name="name" id="planName">
+            <button id="openModal">여행 설명</button>
+
+            <div id="myModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h2>Plan Contents</h2>
+                    <label for="planContents">내용</label><textarea style="width: 904px; height: 406px;" type="text"
+                                                                  name="contents" id="planContents"></textarea>
+                </div>
             </div>
         </div>
         <div class="right-side map_wrap" id="map_wrap">
@@ -56,19 +96,6 @@
             <div id="map_div"></div>
         </div>
 
-        <div>
-        </div>
-        <div class="button-container">
-            <div>
-                <button id="createBtn" type="button">경로 최적화</button>
-            </div>
-            <div>
-                <button id="updatePlanBtn">계획 수정</button>
-            </div>
-            <div>
-                <button id="removeBtn">마커삭제</button>
-            </div>
-        </div>
     </div>
 </div>
 </body>

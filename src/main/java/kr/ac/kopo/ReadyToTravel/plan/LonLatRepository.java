@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface LonLatRepository extends JpaRepository<LonLatEntity, Long> {
     List<LonLatEntity> findAllByPlanEntityNum(long planNum);
+
+    List<LonLatEntity> findByCalendar(String calendar);
 }
