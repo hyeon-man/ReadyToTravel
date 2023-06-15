@@ -113,7 +113,6 @@ function serverFetch(markerData) {
         "lonLatList": markerPoint,
         "type": radioVal
     }
-    console.log(planDTO);
 
     fetch('../plan/createPlan', {
         method: 'POST',

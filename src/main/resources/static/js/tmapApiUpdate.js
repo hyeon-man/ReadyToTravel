@@ -307,10 +307,8 @@ function serverFetch(markerData) {
         "name": $('#planName').val(),
         "contents": $('#planContents').val(),
         "lonLatList": markerPoint,
-        "planType": radioVal
+        "type": radioVal
     }
-
-    console.log(planDTO);
 
     const url = window.location.href;
     const planNum = url.split("/").pop(); // URL에서 마지막 부분 추출
@@ -366,3 +364,13 @@ function createPoints(markerData) {
     console.log(lonLatList);
     return lonLatList;
 }
+
+// 모달 열기
+document.getElementById("openModal").addEventListener("click", function() {
+    document.getElementById("myModal").style.display = "block";
+});
+
+// 모달 닫기
+document.getElementsByClassName("close")[0].addEventListener("click", function() {
+    document.getElementById("myModal").style.display = "none";
+});

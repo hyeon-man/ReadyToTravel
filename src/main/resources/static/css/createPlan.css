@@ -167,6 +167,7 @@ footer {
     display: flex;
     width: 100%;
     height: 100%;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
 }
 
 .left-side {
@@ -175,6 +176,7 @@ footer {
     display: block;
     justify-content: center;
     text-align: center;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
 }
 
 .right-side {
@@ -183,6 +185,7 @@ footer {
     display: flex;
     justify-content: center;
     align-items: center;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
 }
 
 @media only screen and (max-width: 950px) {
@@ -223,10 +226,6 @@ footer {
     justify-content: space-around;
 }
 
-#btnContainer {
-
-}
-
 .radio_button ul{
     display: flex;
     justify-content: space-around;
@@ -239,7 +238,6 @@ footer {
     margin-left: 15%;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
 }
-
 
 .calendarParents button{
     text-align: center;
@@ -369,4 +367,159 @@ footer {
 #planContents {
     width: 500px;
     height: 300px;
+}
+
+.viewNav {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 39%;
+    display: inline-flex;
+    position: relative;
+    overflow: hidden;
+    max-width: 100%;
+    height: 7%;
+    background-color: #fff;
+    padding: 0 20px;
+    border-radius: 40px;
+    box-shadow: 0 10px 40px rgba(159, 162, 177, .8);
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+.viewNav a li button {
+    margin-left: 5px;
+}
+.viewNavLi {
+    float: left;
+}
+
+.custom-btn {
+    width: 130px;
+    height: 40px;
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px 25px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 500;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+    box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+    7px 7px 20px 0px rgba(0,0,0,.1),
+    4px 4px 5px 0px rgba(0,0,0,.1);
+    outline: none;
+}
+
+/* 3 */
+.btn-3 {
+    background: skyblue;
+    background: linear-gradient(0deg, rgba(0,172,238,1) 0%, rgba(2,126,251,1) 100%);
+    width: 130px;
+    height: 40px;
+    line-height: 42px;
+    padding: 0;
+    border: none;
+
+}
+.btn-3 span {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+.btn-3:before,
+.btn-3:after {
+    position: absolute;
+    content: "";
+    right: 0;
+    top: 0;
+    background: skyblue;
+    transition: all 0.3s ease;
+}
+.btn-3:before {
+    height: 0%;
+    width: 2px;
+}
+.btn-3:after {
+    width: 0%;
+    height: 2px;
+}
+.btn-3:hover{
+    background: transparent;
+    box-shadow: none;
+}
+.btn-3:hover:before {
+    height: 100%;
+}
+.btn-3:hover:after {
+    width: 100%;
+}
+.btn-3 span:hover{
+    color: skyblue;
+}
+.btn-3 span:before,
+.btn-3 span:after {
+    position: absolute;
+    content: "";
+    left: 0;
+    bottom: 0;
+    background: skyblue;
+    transition: all 0.3s ease;
+}
+.btn-3 span:before {
+    width: 2px;
+    height: 0%;
+}
+.btn-3 span:after {
+    width: 0%;
+    height: 2px;
+}
+.btn-3 span:hover:before {
+    height: 100%;
+}
+.btn-3 span:hover:after {
+    width: 100%;
+}
+
+.planBtn{
+    margin-left: 5px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    background:skyblue;
+    color:#fff;
+    border:none;
+    position:relative;
+    height:25px;
+    font-size: 15px;
+    padding:0 2em;
+    cursor:pointer;
+    transition:800ms ease all;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+    outline:none;
+}
+.planBtn:hover{
+    background:#fff;
+    color:skyblue;
+}
+.planBtn:before,.planBtn:after{
+    content:'';
+    position:absolute;
+    top:0;
+    right:0;
+    height:2px;
+    width:0;
+    background: skyblue;
+    transition:400ms ease all;
+}
+.planBtn:after{
+    right:inherit;
+    top:inherit;
+    left:0;
+    bottom:0;
+}
+.planBtn:hover:before,.planBtn:hover:after{
+    width:100%;
+    transition:800ms ease all;
 }

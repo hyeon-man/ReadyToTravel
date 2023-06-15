@@ -37,18 +37,19 @@
 
 
 <div id="main2">
-    <div id="btnContainer">
-        <div>
-            <button id="createBtn" type="button">경로 최적화</button>
-        </div>
-        <div>
-            <button id="createPlanBtn">계획 생성</button>
-        </div>
-
-        <div>
-            <button id="removeBtn" type="button">마커 삭제</button>
-        </div>
-    </div>
+    <nav class="viewNav">
+        <a href="#" class="nav-item is-active">
+            <li style="list-style: none" class="viewNavLi">
+                <button class="custom-btn btn-3" id="createBtn" type="button"><span>경로 최적화</span></button>
+            </li>
+            <li style="list-style: none" class="viewNavLi">
+                <button class="custom-btn btn-3" id="createPlanBtn"><span>계획 생성</span></button>
+            </li>
+            <li style="list-style: none" class="viewNavLi">
+                <button class="custom-btn btn-3" id="removeBtn" type="button"><span>마커 삭제</span></button>
+            </li>
+        </a>
+    </nav>
     <div class="container">
         <div class="left-side">
             <div id="distance">
@@ -63,8 +64,8 @@
             <div>
                 <h4 id="location">지명</h4>
             </div>
-            <!-- 달력 -->
 
+            <!-- 달력 -->
             <input type="text" id="daterangepicker" name="daterangepicker"
                    style="border: none; margin-left:5%; font-size: 29px">
 
