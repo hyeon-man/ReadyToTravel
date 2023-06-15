@@ -170,4 +170,14 @@ public class MemberController {
         return groupService.myGroupList(memberDTO.getNum());
     }
 
+    @PostMapping("/removeMemberInGroup/{groupNum}")
+    @ResponseBody
+    public String removeMemberInGroup(@PathVariable long groupNum, long memberNum) {
+
+        groupService.removeMember(groupNum, memberNum);
+
+
+        return "삭제 완료";
+    }
+
 }

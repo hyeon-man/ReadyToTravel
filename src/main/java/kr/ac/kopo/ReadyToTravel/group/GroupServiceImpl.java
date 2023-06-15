@@ -157,12 +157,11 @@ public class GroupServiceImpl implements GroupService {
     public GroupDTO myGroupList(Long num) {
 
         GroupDTO myGroupList = groupCustomRepository.myGroupNum(num);
-        System.out.println("myGroupList = " + myGroupList);
         GroupDTO realGroup = groupCustomRepository.groupInfo(myGroupList.getNum());
+        System.out.println("realGroup = " + realGroup.getPlan());
 
         realGroup.addMember(groupCustomRepository.groupInMember(realGroup.getNum()));
 //        myGroupList.addMember();
-        System.out.println("realGroup = " + realGroup);
         return realGroup;
 
     }

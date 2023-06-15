@@ -25,7 +25,6 @@ public class GroupController {
     @GetMapping("/group/generateInviteCode")
     @ResponseBody
     public String generateInviteCord(GroupDTO groupDTO) {
-
         System.out.println("그룹 번호 = " + groupDTO.getNum());
 
         String inviteCord = service.generateInviteCode(groupDTO.getNum());

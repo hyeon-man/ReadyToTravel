@@ -805,7 +805,7 @@ p {
 .modal3-1-content {
     display: flex;
     flex-direction: column;
-    width: 550px;
+    width: 800px;
     height: 600px;
     margin: 0 auto;
     background-color: #fff;

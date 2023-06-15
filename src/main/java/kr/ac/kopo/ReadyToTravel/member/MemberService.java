@@ -22,7 +22,6 @@ public interface MemberService {
 
     boolean validateCode(String email, String mailValidateKey);
 
-
     void saveAttach(Long num, MultipartFile attach);
 
     MemberEntity profileUpdate(Long num, MemberDTO updateInfo);

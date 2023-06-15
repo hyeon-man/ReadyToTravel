@@ -54,12 +54,12 @@
                 </a>
             </li>
 
-            <li class="help_page">
+            <li class="review_page">
                 <a>
                         <span class="icon">
-                            <ion-icon name="help-outline"></ion-icon>
+                            <ion-icon name="newspaper-outline"></ion-icon>
                         </span>
-                    <span class="title">Help</span>
+                    <span class="title">나의 여행 후기</span>
                 </a>
             </li>
         </ul>
@@ -102,7 +102,7 @@
                 <div id="modal" class="modal">
                     <div class="modal-content">
                         <div class="modal_header">
-                            <div class="close-button">
+                            <div class="close-button close-button-my">
                                 <ion-icon name="close-outline"></ion-icon>
                             </div>
                         </div>
@@ -111,14 +111,17 @@
                         <h2>프로필 수정</h2>
                         <!-- 이미지 폼태그 -->
                         <form method="post" action="/member/profile/update" enctype="multipart/form-data">
-                            <div class="modal_photo">
+                            <div class="modal_photo ">
                                 <label for="fileUpload">
                                     <img style="width: 150px; height: 150px; border-radius: 50%; cursor: pointer;"
                                          th:src="${'/img/' + memberDTO.profileIMG}">
                                 </label>
                             </div>
-                            <div>
-                                <input type="file" id="fileUpload" name="profileFile">
+                            <div class="fileupload_button">
+                                <label for="fileUpload">
+                                    <ion-icon style="width: 30px;height: 30px;position: absolute;right: 235px;top: 235px; cursor: pointer;" name="camera-outline"></ion-icon>
+                                </label>
+                                <input type="file" id="fileUpload" name="profileFile" style="display: none;">
                             </div>
 
                             <div class="modal_id ">
@@ -133,17 +136,18 @@
                                 <input type="text" name="name" th:value="${memberDTO.name}">
                             </div>
                             <!-- 비밀번호 폼태그 -->
-
-                            <div class="modal_password">
-                                <label for="password"><span>비밀번호</span></label>
-                                <input type="password" name="password" placeholder="password">
-                                <div class="eyes">
-                                    <ion-icon style="width: 25px; height: 25px;" name="eye-outline"></ion-icon>
+                            <div class="password-box">
+                                <div class="modal_password">
+                                    <label for="password"><span>비밀번호</span></label>
+                                    <input type="password" name="password" placeholder="password">
+                                    <div class="eyes">
+                                        <ion-icon style="width: 25px; height: 25px;" name="eye-outline"></ion-icon>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="modal_password">
-                                <label for="password_confirm"><span>비밀번호 확인</span></label>
-                                <input type="password" name="password_confirm" placeholder="password">
+                                <div class="modal_password_confirm">
+                                    <label for="password_confirm"><span>비밀번호 확인</span></label>
+                                    <input type="password" name="password_confirm" placeholder="password">
+                                </div>
                             </div>
 
 
@@ -169,62 +173,41 @@
                     </div>
                 </div>
             </div>
-            <div class="place_card">
+
+            <div id="my_place" class="place_card">
                 <div class="cardHeader">
                     <h2>나의 여행지</h2>
                 </div>
-                <table>
-                    <tr>
-                        <td width="600px">
-                            <div class="imgBx"><img src="" alt=""></div>
-                        </td>
-                        <td>
-                            <h1>목포</h1>
-                            <h4>목포여행 <br> <span>가고싶다</span></h4>
-                        </td>
-                    </tr>
-                </table>
+                <div class="my_card my_card2">
+                    <div class="id_card_tag_strip"></div>
+                    <div class="id_card_hook"></div>
+                    <div class="id_card_holder">
+                        <div class="id_card">
+                            <div class="header"><img></div>
+                            <div class="photo"><img/></div>
+                            <h2>지역 이름</h2>
+                            <hr>
+                            <h3>출발날짜</h3>
+                        </div>
+                    </div>
+                </div>
+                <div id="modal2" class="modal">
+                    <div class="modal-content2">
+                        <div class="modal_header">
+                            <div class="close-button close-button-place">
+                                <ion-icon name="close-outline"></ion-icon>
+                            </div>
+                        </div>
+                        <div class="modal_place_left">
+                            <img style="height: 400px;">
+                        </div>
+                        <div class="modal_place_right">
+                            <h2>대한민국 부산</h2>
+                            <span>부산내용</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-        <!-- ================= 컨텐츠 ================ -->
-
-        <div id="group_card" class="place_card">
-            <div class="cardHeader">
-                <h2>나의 그룹</h2>
-            </div>
-
-            <table>
-                <tr>
-                    <td width="600px">
-                        <div class="imgBx"><img src="" alt=""></div>
-                    </td>
-                    <td>
-                        <h1>목포</h1>
-                        <h4>목포여행 <br> <span>가고싶다</span></h4>
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <div id="plan_card" class="place_card">
-            <div class="cardHeader">
-                <h2>나의 계획</h2>
-            </div>
-
-            <table>
-                <tr>
-                    <td width="600px">
-                        <div class="imgBx"><img src="" alt=""></div>
-                    </td>
-                    <td>
-                        <h1>목포</h1>
-                        <h4>목포여행 <br> <span>가고싶다</span></h4>
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </div>
-</div>
-</div>
 
 <!--@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@그룹 모달@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@-->
 <div id="modal3" class="modal">
@@ -261,15 +244,12 @@
                                     <th>이름</th>
                                     <th>이메일</th>
                                     <th>전화번호</th>
-                                    <th>관리</th>
+                                    <th>삭제</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td>santa2909</td>
-                                    <td>황주선</td>
-                                    <td>santa2909@naver.com</td>
-                                    <td>0106351486</td>
+                                <tr id="leaderContents">
+
                                     <td><button type="button">삭제</button></td>
                                 </tr>
                                 </tbody>
@@ -289,8 +269,84 @@
                 <button class="button" id="copyButton">초대코드 복사하기</button>
             </div>
         </div>
-
     </div>
+</div>
+<div id="modal4" class="modal">
+    <div class="modal-content4">
+        <div class="modal_header">
+            <div class="close-button close-button-plan">
+                <ion-icon name="close-outline"></ion-icon>
+            </div>
+        </div>
+        <h1 style="margin-top: 50px; text-align: center;">나의 계획</h1>
+        <div class="modal_plan">
+            <table>
+                <thead>
+                <tr>
+                    <th>글번호</th>
+                    <th>제목</th>
+                    <th>장소</th>
+                    <th>작성날짜</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr>
+                    <td>1</td>
+                    <td><a href="#">신강원빈구라임</a></td>
+                    <td>대전</td>
+                    <td>2023-06-12</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td><a href="#">신강동원빈구라임</a></td>
+                    <td>서울</td>
+                    <td>2023-06-12</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div id="modal5" class="modal">
+    <div class="modal-content5">
+        <div class="modal_header">
+            <div class="close-button close-button-review">
+                <ion-icon name="close-outline"></ion-icon>
+            </div>
+        </div>
+        <h1 style="margin-top: 50px; text-align: center;">나의 여행 후기</h1>
+        <div class="modal_review">
+            <table>
+                <thead>
+                <tr>
+                    <th>글번호</th>
+                    <th>제목</th>
+                    <th>장소</th>
+                    <th>작성날짜</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr>
+                    <td>1</td>
+                    <td><a href="#">신강원빈구라임</td></a>
+                    <td>대전</td>
+                    <td>2023-06-12</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td><a href="#">신강동원빈구라임</td></a>
+                    <td>서울</td>
+                    <td>2023-06-12</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</div>
+</div>
 </div>
 <!-- ====== ionicons ======= -->
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>

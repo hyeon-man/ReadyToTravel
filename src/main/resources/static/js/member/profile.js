@@ -21,6 +21,8 @@ toggle.onclick = function () {
 
 
 
+
+
 // document.addEventListener('DOMContentLoaded', function() {
 //     // li class="my_page" 클릭 시 이벤트 핸들러
 //     document.querySelector('.my_page').addEventListener('click', function() {
@@ -78,8 +80,7 @@ document.addEventListener("DOMContentLoaded", function() {
         modal.style.display = "none";
         document.body.style.overflow = "auto"; // Enable scrolling on the body
     });
-});
-//모달 그룹페이지
+});//모달 그룹페이지
 document.addEventListener("DOMContentLoaded", function() {
     var liElement = document.querySelector(".group_page");
     var modal = document.getElementById("modal3");
@@ -93,17 +94,21 @@ document.addEventListener("DOMContentLoaded", function() {
         function resetData() {
             const membersContainer = document.querySelector('.members');
             membersContainer.innerHTML = ''; // 기존 데이터 초기화
+
+            const leaderContents = document.querySelector('#leaderContents');
+            leaderContents.innerHTML = '';
         }
 
 // 데이터 처리 함수
         function processData(data) {
+            // memberInfo
             const titleElement = document.querySelector('.groupName');
             const contentsElement = document.querySelector('.modal3-1-text');
             const membersContainer = document.querySelector('.members');
             const imgElement = document.createElement('img');
             membersContainer.appendChild(imgElement);
-
-            // membersContainer.style.display= 'flex';
+            // memberUpdate(Group)
+            const leaderContents = document.querySelector('#leaderContents');
 
             // 제목 태그에 데이터 추가
             titleElement.textContent = data.name;
@@ -139,9 +144,63 @@ document.addEventListener("DOMContentLoaded", function() {
                 memberElement.appendChild(phoneNumElement);
 
                 membersContainer.appendChild(memberElement);
+
+
+                //leader contents
+                const memberIdTd = document.createElement('td');
+                memberIdTd.textContent = member.memberId;
+
+                const nameTd = document.createElement('td');
+                nameTd.textContent = member.name;
+
+                const emailTd = document.createElement('td');
+                emailTd.textContent = member.email;
+
+                const phoneNumTd = document.createElement('td');
+                phoneNumTd.textContent = member.phoneNum;
+
+                const deleteTd = document.createElement('td');
+                const deleteA = document.createElement('button');
+                deleteA.textContent = "삭제";
+
+                const groupNum = data.num;
+                const memberNum = member.num;
+
+                deleteA.addEventListener('click', function() {
+                    fetch('/member/removeMemberInGroup/' + groupNum, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            memberNum: memberNum
+                        })
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            // 요청이 성공적으로 처리되었을 때의 동작
+                            console.log(data);
+                        })
+                        .catch(error => {
+                            // 요청이 실패했을 때의 동작
+                            console.error('Error:', error);
+                        });
+                });
+
+                deleteTd.appendChild(deleteA);
+
+
+                leaderContents.appendChild(memberIdTd);
+                leaderContents.appendChild(nameTd);
+                leaderContents.appendChild(emailTd);
+                leaderContents.appendChild(phoneNumTd);
+                leaderContents.appendChild(deleteTd);
+
+
             });
 
         }
+
 
 // 초기화 후 데이터 처리
         fetch('/member/profile/groupList')

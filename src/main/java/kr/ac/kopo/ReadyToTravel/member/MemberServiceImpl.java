@@ -50,11 +50,20 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void singUp(MemberDTO memberDTO) {
 
-        memberDTO.setSignupDate(new Date());
-        MemberEntity entity = memberDTO.convertToEntity(memberDTO);
-        entity.setPassword(PassEncode.encode(entity.getPassword()));
 
-        memberRepository.save(entity);
+        memberRepository.save(MemberEntity
+                .builder()
+                .memberId(memberDTO.getMemberId())
+                .password(PassEncode.encode(memberDTO.getPassword()))
+                .email(memberDTO.getEmail())
+                .name(memberDTO.getName())
+                .signupDate(new Date())
+                .phoneNum(memberDTO.getPhoneNum())
+                .build());
+
+//        memberDTO.setSignupDate(new Date());
+//        MemberEntity entity = memberDTO.convertToEntity(memberDTO);
+//        entity.setPassword(PassEncode.encode(entity.getPassword()));
     }
 
     @Override
