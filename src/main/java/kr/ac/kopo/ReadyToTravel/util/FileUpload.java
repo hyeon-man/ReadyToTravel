@@ -23,15 +23,17 @@ public class FileUpload {
      * type이 1이면 게시판 사진, 2면 프로필 사진 ...
      */
     public static String fileUpload(MultipartFile attach, int type) {
+        String removePath = path;
+
         if (attach != null && !attach.isEmpty()) {
             try {
                 String filename = UUID.randomUUID().toString().substring(0, 8);
                 String ext = attach.getOriginalFilename().substring(attach.getOriginalFilename().lastIndexOf(".") + 1);
 
                 if (type == 1) {
-                    attach.transferTo(new File(path + boardPath + filename + "." + ext));
+                    attach.transferTo(new File(removePath + boardPath + filename + "." + ext));
                 } else if (type == 2) {
-                    attach.transferTo(new File(path + profilePath + filename + "." + ext));
+                    attach.transferTo(new File(removePath + profilePath + filename + "." + ext));
                 }
 
                 return filename + "." + ext;

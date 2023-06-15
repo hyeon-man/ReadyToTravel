@@ -21,7 +21,6 @@ import static kr.ac.kopo.ReadyToTravel.entity.plan.QPlanEntity.planEntity;
 @Repository
 public class GroupCustomRepositoryImpl implements GroupCustomRepository {
     public final JPAQueryFactory queryFactory;
-
     public GroupCustomRepositoryImpl(EntityManager em) {
         this.queryFactory = new JPAQueryFactory(em);
     }
@@ -32,8 +31,6 @@ public class GroupCustomRepositoryImpl implements GroupCustomRepository {
                         memberEntity.name.as("name"),
                         memberEntity.profileIMG.as("profileIMG"),
                         memberEntity.memberId.as("memberId"),
-                        memberEntity.num.as("num"),
-                        memberEntity.phoneNum.as("phoneNum"),
                         memberEntity.email.as("email")))
                 .from(memberEntity)
                 .leftJoin(groupMembership)
@@ -50,27 +47,11 @@ public class GroupCustomRepositoryImpl implements GroupCustomRepository {
                         groupEntity.name.as("name"),
                         groupEntity.createDate.as("createDate"),
                         groupEntity.modifiedDate.as("modifiedDate"),
-                        planEntity.num.as("planNum"),
-                        planEntity.leaderNum.num.as("groupLeader"),
-                        planEntity.contents.as("contents")))
+                        planEntity.as("plan")))
                 .from(groupEntity)
                 .leftJoin(planEntity)
                 .on(groupEntity.plan.num.eq(planEntity.num))
                 .where(groupEntity.groupNum.eq(groupNum))
                 .fetchOne();
     }
-
-    @Override
-    public GroupDTO myGroupNum(Long num) {
-        return queryFactory.select(Projections.fields(GroupDTO.class,
-                        groupEntity.groupNum.as("num"),
-                        groupEntity.name.as("name")))
-                .from(groupEntity)
-                .leftJoin(groupMembership)
-                .on(groupEntity.groupNum.eq(groupMembership.group.groupNum))
-                .where(groupMembership.member.num.eq(num))
-                .fetchOne();
-    }
-
-
 }

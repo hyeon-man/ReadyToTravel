@@ -34,8 +34,8 @@ public class BoardEntity {
     private Date boardDateCreate;
 
 
-    @OneToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "board_Write")
+    @OneToOne
+    @JoinColumn(name = "boardWrite")
     private MemberEntity boardWriter;
 
     @OneToMany(mappedBy = "boardEntity", cascade = CascadeType.ALL)
