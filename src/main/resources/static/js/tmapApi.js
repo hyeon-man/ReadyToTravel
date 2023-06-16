@@ -114,6 +114,17 @@ function serverFetch(markerData) {
         "type": radioVal
     }
 
+    if (planDTO.name == "" || planDTO.lonLatList.length < 0) {
+        alert("제목을 입력해주세요.");
+        return;
+    }else if (planDTO.contents == "") {
+        alert("여행 설명을 입력해주세요.");
+        return;
+    }else if (planDTO.lonLatList.length <= 0) {
+        alert("날짜마다 여행지 마커를 찍어주세요.");
+        return;
+    }
+
     fetch('../plan/createPlan', {
         method: 'POST',
         headers: {
@@ -121,6 +132,7 @@ function serverFetch(markerData) {
         },
         body: JSON.stringify(planDTO)
     }).then(response => {
+        alert("계획 생성 완료");
         return response.json();
     }).then(planNum => {
         window.location.href = "/plan/viewPlan/" + planNum;
@@ -574,6 +586,11 @@ function buttonClick(event) {
                     markers[i].setMap(map);
                 }
                 alert((intIndex + 1) + "일차의 미리보기입니다.");
+
+                $('#createBtn').off("click").on("click", function () {
+                    ajaxParams(markers, marker_s, marker_e);
+                    // buttonClick(markers, marker_s, marker_e);
+                });
             });
         }
     } else {
@@ -582,7 +599,6 @@ function buttonClick(event) {
 }
 
 $('#createPlanBtn').off("click").on("click", function () {
-    console.log(markerData);
     serverFetch(markerData);
 });
 

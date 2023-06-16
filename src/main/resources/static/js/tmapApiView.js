@@ -168,31 +168,31 @@ function reverseGeo(lon, lat) {
             result = newRoadAddr;
 
 
-// 부모 요소를 선택합니다.
+            // 부모 요소를 선택합니다.
             const yearWrap = document.querySelector('.tl-year-wrap');
             const tlEnd = document.querySelector('.tl-end-div');
 
-// tl-item 요소를 생성하고 추가합니다.
+            // tl-item 요소를 생성하고 추가합니다.
             const tlItem = document.createElement('div');
             tlItem.classList.add('tl-item');
             tlItem.classList.add('tl-item-inner');
 
-// tl-date 요소를 생성합니다.
+            // tl-date 요소를 생성합니다.
             const tlDate = document.createElement('span');
             tlDate.classList.add('tl-date');
             tlItem.appendChild(tlDate);
 
-// tl-event 요소를 생성합니다.
+            // tl-event 요소를 생성합니다.
             const tlEvent = document.createElement('div');
             tlEvent.classList.add('tl-event');
             tlItem.appendChild(tlEvent);
 
-// h2 요소를 생성하고 내용을 설정합니다.
+            // h2 요소를 생성하고 내용을 설정합니다.
             const h2 = document.createElement('h2');
             h2.textContent = result;
             tlEvent.appendChild(h2);
 
-// tl-year-wrap와 tl-end 사이에 tl-item을 추가합니다.
+            // tl-year-wrap와 tl-end 사이에 tl-item을 추가합니다.
             yearWrap.parentNode.insertBefore(tlItem, tlEnd);
 
         },

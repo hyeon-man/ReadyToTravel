@@ -41,10 +41,10 @@
             <li><a href="/guide">이용방법</a></li>
             <li><a href="/board/list">후기게시판</a></li>
             <!-- 로그인  123 -->
+            <li><a th:if="${session.memberDTO != null}" href="/member/profile" th:text="${session.memberDTO.name}"></a></li>
             <li><a th:if="${session.memberDTO != null}" href="/member/logout">로그아웃</a></li>
             <!-- 이게 비로그인 456-->
             <li><a th:if="${session.memberDTO == null}" href="/member/login">로그인</a></li>
-
         </ul>
     </nav>
 </header>

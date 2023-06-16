@@ -7,4 +7,8 @@ import java.util.List;
 
 public interface GroupRepository extends JpaRepository<GroupEntity, Long> {
 
+    GroupEntity findByPlanNum(long planNum);
+
+    void deleteByPlanNum(long planNum);
+
 }
