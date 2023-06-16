@@ -13,4 +13,6 @@ public interface GroupMembershipRepository extends JpaRepository<GroupMembership
     void deleteByGroup_GroupNumAndMember_Num(long groupNum, long memberNum);
 
     GroupMembership findByGroup_GroupNumAndMember_Num(long groupNum, long memberNum);
+
+    void deleteByGroup_GroupNum(long groupNum);
 }

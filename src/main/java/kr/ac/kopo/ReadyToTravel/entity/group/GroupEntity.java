@@ -32,7 +32,4 @@ public class GroupEntity {
     @JoinColumn(name = "plan_num")
     private PlanEntity plan;
 
-
-
-
 }

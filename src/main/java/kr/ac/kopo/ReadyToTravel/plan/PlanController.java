@@ -80,9 +80,9 @@ public class PlanController {
         planService.updatePlan(plan);
     }
 
-    @RequestMapping("/removePlan/{planNum}")
+    @GetMapping("/removePlan/{planNum}")
     public String removePlan(@PathVariable Long planNum) {
         planService.removePlan(planNum);
-        return "";
+        return "/index";
     }
 }

@@ -3,6 +3,7 @@ package kr.ac.kopo.ReadyToTravel.entity.plan;
 import kr.ac.kopo.ReadyToTravel.dto.plan.PlanDTO;
 import kr.ac.kopo.ReadyToTravel.dto.plan.LonLatDTO;
 import kr.ac.kopo.ReadyToTravel.entity.MemberEntity;
+import kr.ac.kopo.ReadyToTravel.entity.group.GroupEntity;
 import kr.ac.kopo.ReadyToTravel.plan.travelType.TravelType;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -45,9 +46,11 @@ public class PlanEntity {
     @JoinColumn(name = "leader_num")
     private MemberEntity leaderNum;
 
-
+    @OneToMany(mappedBy = "planEntity", cascade = CascadeType.ALL)
+    private List<LonLatEntity> lonLatEntities;
 
     public PlanDTO convertToDTO(PlanEntity entity, Long num, List<LonLatEntity> lonlat) {
+
         LonLatEntity lonLatEntity = new LonLatEntity();
         List<LonLatDTO> lonLatDTOList = new ArrayList<>();
 
