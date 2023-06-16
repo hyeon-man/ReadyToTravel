@@ -49,11 +49,19 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void singUp(MemberDTO memberDTO) {
 
-        memberDTO.setSignupDate(new Date());
-        MemberEntity entity = memberDTO.convertToEntity(memberDTO);
-        entity.setPassword(PassEncode.encode(entity.getPassword()));
+        memberRepository.save(MemberEntity
+                .builder()
+                .memberId(memberDTO.getMemberId())
+                .password(PassEncode.encode(memberDTO.getPassword()))
+                .email(memberDTO.getEmail())
+                .name(memberDTO.getName())
+                .signupDate(new Date())
+                .phoneNum(memberDTO.getPhoneNum())
+                .build());
 
-        memberRepository.save(entity);
+//        MemberEntity entity = memberDTO.convertToEntity(memberDTO);
+//        entity.setPassword(PassEncode.encode(entity.getPassword()));
+//        memberRepository.save(entity);
     }
 
     @Override
@@ -159,11 +167,11 @@ public class MemberServiceImpl implements MemberService {
 
         MemberEntity member = memberRepository.findByNum(num);
 
-        if (!updateInfo.getPassword().isEmpty()){
+        if (!updateInfo.getPassword().isEmpty()) {
             member.saveProfile(updateInfo.getName(), PassEncode.encode(updateInfo.getPassword()));
             System.out.println("저장된 memberEntity ======" + member);
         } else {
-           member.saveProfile(updateInfo.getName(), member.getPassword());
+            member.saveProfile(updateInfo.getName(), member.getPassword());
         }
 
         return member;
@@ -179,10 +187,10 @@ public class MemberServiceImpl implements MemberService {
         MemberEntity member = memberRepository.findByNum(num);
         String filename = FileUpload.fileUpload(attach, 2);
 
-        if (member.getProfileIMG()==null){
+        if (member.getProfileIMG() == null) {
             member.saveProfileIMG(filename);
 
-        }else {
+        } else {
             FileUpload.fileRemove(member.getProfileIMG(), 2);
             member.saveProfileIMG(filename);
 

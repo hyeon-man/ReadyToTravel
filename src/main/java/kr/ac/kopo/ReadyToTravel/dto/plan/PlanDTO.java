@@ -43,7 +43,6 @@ public class PlanDTO {
 
     private List<LonLatDTO> lonLatList;
 
-    private String placeIMG;
 
     // PlanDTO 객체를 PlanEntity로 변환하는 메소드
     public PlanEntity convertToEntity(PlanDTO dto, Long memberNum) {
