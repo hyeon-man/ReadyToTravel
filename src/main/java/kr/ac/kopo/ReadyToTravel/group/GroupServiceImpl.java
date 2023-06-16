@@ -64,21 +64,20 @@ public class GroupServiceImpl implements GroupService {
         // 초대 URL로 Invite Entity 조회
         InviteEntity invite = inviteUrlRepository.findByInviteURL(inviteURL);
 
-        if (invite.getExpirationDate().before(new Date())) {
-            // 초대 코드가 만료 되었으면 처리
-            System.out.println("만료일이 지남 초대 코드 재생성");
+        if (invite == null){
+            System.out.println("존재하지 않는 코드");
+        }else if (invite.getExpirationDate().before(new Date())){
+            //초대 코드가 만료 되었으면 처리
 
-            // 삭제 후, inviteCode 재생성
+            //기존 invite 코드 삭제 후, 재생성
             inviteUrlRepository.deleteById(invite.getNum());
             generateInviteCode(invite.getGroupEntity().getGroupNum());
-        } else if (invite == null) {
-            System.out.println("존재 하지 않는 초대 코드");
-        } else {
+        }else {
             GroupMembership findMembership = groupMembershipRepository
                     .findByGroup_GroupNumAndMember_Num(invite.getGroupEntity().getGroupNum(), memberNum);
 
             if (findMembership == null) {
-                // GroupMembership이 존재하지 않으면 새로 생성하여 그룹에 멤버 추가
+                //GroupMembership이 존재하지 않으면 새로 생성하여 그룹에 멤버 추가
                 GroupMembership membership = GroupMembership.builder()
                         .group(invite.getGroupEntity())
                         .member(MemberEntity.builder().num(memberNum).build())
@@ -113,6 +112,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public String generateInviteCode(long groupNum) {
+        //Group PK를 통한 인바이트 엔티티를 조회
         InviteEntity invite = inviteUrlRepository.findByGroupEntity_GroupNum(groupNum);
 
         if (invite == null) {

@@ -45,11 +45,13 @@ public class PlanEntity {
     @JoinColumn(name = "leader_num")
     private MemberEntity leaderNum;
 
+
+
     public PlanDTO convertToDTO(PlanEntity entity, Long num, List<LonLatEntity> lonlat) {
         LonLatEntity lonLatEntity = new LonLatEntity();
         List<LonLatDTO> lonLatDTOList = new ArrayList<>();
 
-        for (int i = 0; i <lonlat.size(); i++) {
+        for (int i = 0; i < lonlat.size(); i++) {
             LonLatDTO lonLatConvertToDTO = lonLatEntity.convertToDTO(lonlat.get(i), num);
             lonLatDTOList.add(lonLatConvertToDTO);
         }

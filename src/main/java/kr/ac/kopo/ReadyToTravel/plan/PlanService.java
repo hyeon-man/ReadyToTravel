@@ -5,17 +5,17 @@ import kr.ac.kopo.ReadyToTravel.dto.plan.PlanDTO;
 import java.util.List;
 
 public interface PlanService {
-    Long createPlan(PlanDTO plan);
-
-    Long updatePlan(PlanDTO plan);
-
-    void removePlan(Long num);
-
-    PlanDTO viewPlan(long planNum);
-
     PlanDTO planInform(Long num);
 
     List<PlanDTO> smallPlanInfo(long memberNum);
+
+    Long createPlan(PlanDTO plan);
+
+    void updatePlan(PlanDTO plan);
+
+    void removePlan(Long planNum);
+
+    PlanDTO viewPlan(Long planNum);
 
     List<PlanDTO> myPlanList(Long num);
 }

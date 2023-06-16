@@ -170,9 +170,9 @@ public class MemberController {
         return groupService.myGroupList(memberDTO.getNum());
     }
 
-    @PostMapping("/removeMemberInGroup/{groupNum}")
+    @GetMapping("/profile/removeMemberInGroup/{groupNum}")
     @ResponseBody
-    public String removeMemberInGroup(long memberNum ,@PathVariable long groupNum) {
+    public String removeMemberInGroup(@PathVariable Long groupNum, @RequestParam Long memberNum) {
         System.out.println("요청받은 그룹번호: " + groupNum + ", 요청받은 멤버 번호: " + memberNum);
          groupService.removeMember(groupNum, memberNum);
 

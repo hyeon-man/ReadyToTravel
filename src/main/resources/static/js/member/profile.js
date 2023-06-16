@@ -1,7 +1,6 @@
 // add hovered class to selected list item
 let list = document.querySelectorAll(".navigation li");
-
-
+let groupNum;
 function activeLink() {
     list.forEach((item) => {
         item.classList.remove("hovered");
@@ -133,34 +132,38 @@ document.addEventListener("DOMContentLoaded", function() {
                 const phoneNumTd = document.createElement('td');
                 phoneNumTd.textContent = member.phoneNum;
 
-                const deleteTd = document.createElement('td');
                 const deleteA = document.createElement('button');
-                deleteA.textContent = "삭제";
 
-                const groupNum = data.num;
+                var memberSession = '<%=(String)session.getAttribute("uid")%>';
+                if (memberSession.num != member.num){
+                    deleteA.textContent = "삭제";
+                } else {
+
+                }
                 deleteA.addEventListener('click', function() {
-                    fetch('/member/removeMemberInGroup/' + groupNum, {
-                        method: 'POST',
+
+
+                    fetch('/member/profile/removeMemberInGroup/' + groupNum + '?memberNum=' + member.num, {
+                        method: 'GET',
                         headers: {
                             'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            memberDTO: data
-                        })
+                        }
                     })
-                        .then(response => response.json())
+                        .then(response => response.text())
                         .then(data => {
                             // 요청이 성공적으로 처리되었을 때의 동작
+                            location.reload();
                             console.log(data);
-
-                            console.log("멤버 넘버 success" + member);
+                            console.log("멤버 넘버 success" + member.num + "GroupNum Success: " + groupNum);
                         })
                         .catch(error => {
                             // 요청이 실패했을 때의 동작
-                            console.log("멤버 넘버 error" + member);
+                            console.log("멤버 넘버 error" + member.num + "GroupNum Success" + groupNum);
                             console.error('Error:', error);
                         });
                 });
+
+
 
                 deleteTd.appendChild(deleteA);
 
@@ -181,8 +184,19 @@ document.addEventListener("DOMContentLoaded", function() {
         fetch('/member/profile/groupList')
             .then(response => response.json())
             .then(data => {
-                resetData(); // 데이터 초기화
-                processData(data); // 데이터 처리
+                if (data.num != null){
+                    groupNum = data.num;
+                    resetData(); // 데이터 초기화
+                    processData(data); // 데이터 처리
+                } else{
+                    const membersContainer = document.querySelector('.members');
+                    membersContainer.textContent = "가입된 그룹이 없습니다.";
+                    const groupEditButton = document.querySelector('.more-button');
+                    groupEditButton.style.display = "none";
+                    const inviteButton = document.querySelector("#copyButton");
+                    inviteButton.style.display="none";
+                }
+
             })
             .catch(error => {
                 // fetch 요청 중에 발생한 오류를 처리합니다

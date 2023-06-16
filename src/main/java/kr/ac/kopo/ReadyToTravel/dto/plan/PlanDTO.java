@@ -30,13 +30,9 @@ public class PlanDTO {
     @Enumerated(EnumType.ORDINAL)
     private TravelType type;
 
-    @NotNull
-    @NotBlank
     // 계획 이름
     private String name;
 
-    @NotNull
-    @NotBlank
     // 계획 주최자
     private Long leaderNum;
 
@@ -47,7 +43,6 @@ public class PlanDTO {
 
     private List<LonLatDTO> lonLatList;
 
-    private String placeIMG;
 
     // PlanDTO 객체를 PlanEntity로 변환하는 메소드
     public PlanEntity convertToEntity(PlanDTO dto, Long memberNum) {
