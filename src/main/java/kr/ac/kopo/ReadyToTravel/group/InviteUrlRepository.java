@@ -6,4 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface InviteUrlRepository extends JpaRepository<InviteEntity, Long> {
     InviteEntity findByInviteURL(String inviteURL);
     InviteEntity findByGroupEntity_GroupNum(long groupNum);
+
+    void deleteByGroupEntityGroupNum(long groupNum);
+
 }

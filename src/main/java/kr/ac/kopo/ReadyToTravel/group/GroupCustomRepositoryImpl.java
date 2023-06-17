@@ -9,13 +9,13 @@ import kr.ac.kopo.ReadyToTravel.entity.group.GroupEntity;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
-import java.lang.reflect.Member;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
-import static kr.ac.kopo.ReadyToTravel.entity.QMemberEntity.*;
-import static kr.ac.kopo.ReadyToTravel.entity.group.QGroupEntity.*;
-import static kr.ac.kopo.ReadyToTravel.entity.group.QGroupMembership.*;
+import static kr.ac.kopo.ReadyToTravel.entity.QMemberEntity.memberEntity;
+import static kr.ac.kopo.ReadyToTravel.entity.group.QGroupEntity.groupEntity;
+import static kr.ac.kopo.ReadyToTravel.entity.group.QGroupMembership.groupMembership;
 import static kr.ac.kopo.ReadyToTravel.entity.plan.QPlanEntity.planEntity;
 
 @Repository
@@ -59,6 +59,35 @@ public class GroupCustomRepositoryImpl implements GroupCustomRepository {
                 .where(groupEntity.groupNum.eq(groupNum))
                 .fetchOne();
     }
+
+    @Override
+    public Long groupNum(Long planNum) {
+        GroupDTO groupDTO =  queryFactory.select(Projections.fields(GroupDTO.class,
+                groupEntity.groupNum.as("num")))
+                .from(groupEntity)
+                .where(groupEntity.plan.num.eq(planNum))
+                .fetchOne();
+
+        Long groupNum = groupDTO.getNum();
+
+        return groupNum;
+    }
+
+    @Override
+    public List<Long> groupInMemberNum(Long groupNum) {
+        List<MemberDTO> memberDTO = queryFactory.select(Projections.fields(MemberDTO.class,
+                        groupMembership.member.num.as("num")))
+                .from(groupMembership)
+                .where(groupMembership.group.groupNum.eq(groupNum))
+                .fetch();
+
+        List<Long> memberList = new ArrayList<>();
+        for (MemberDTO dto : memberDTO) {
+            memberList.add(dto.getNum());
+        }
+        return memberList;
+    }
+
 
     @Override
     public GroupDTO myGroupNum(Long num) {

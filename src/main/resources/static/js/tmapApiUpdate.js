@@ -163,8 +163,8 @@ function createMarker(lonLatList) {
         manageMarker.push(marker);
 
         // 드래그 완료 이벤트 리스너 등록
-        marker.addListener('dragend', function () {
-            console.log(markerType + " lat : " + marker.getPosition().lat() + ", lng : " + marker.getPosition().lng());
+        marker.addListener('dragend', function (evt) {
+            // console.log("createMarker" + markerType + " lat : " + marker.getPosition().lat() + ", lng : " + marker.getPosition().lng());
         });
     }
 
@@ -190,11 +190,6 @@ function createNewMarker(title, lon, lat) {
         marker_e = newMarker
         marker_e.setIcon("http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_e.png");
     }
-
-    // 새로운 'dragend' 이벤트 리스너 등록
-    newMarker.addListener('dragend', function () {
-        console.log(title + "의 위도: " + newMarker.getPosition().lat() + ", 경도: " + newMarker.getPosition().lng());
-    });
 
     return newMarker;
 }
@@ -244,6 +239,7 @@ function ajaxReq(req) {
 
             const resultDistance = document.getElementById('result');
             resultDistance.textContent = '총 거리 : ' + tDistance;
+
             $('.planBtn').off('click').on('click', function () {
                 resultDistance.textContent = '총 거리 : ';
             });
@@ -285,6 +281,7 @@ function ajaxReq(req) {
 
 function makeViaPoints(markers) {
     var viaPoints = [];
+
     for (let i = 0; i < markers.length; i++) {
         var viaPoint = {};
         viaPoint.viaPointId = "Id";
@@ -300,7 +297,6 @@ function makeViaPoints(markers) {
 function serverFetch(markerData) {
     var radioVal = $('input[name="planType"]:checked').val();
 
-    console.log(markerData);
     var markerPoint = (createPoints(markerData));
 
     var planDTO = {
@@ -320,7 +316,7 @@ function serverFetch(markerData) {
         },
         body: JSON.stringify(planDTO)
     }).then(response => {
-        // console.log(response);
+        alert("정보가 수정되었습니다.")
         return response.json();
     }).then(data => {
         window.location.href = "/plan/viewPlan/" + planNum;
@@ -361,7 +357,6 @@ function createPoints(markerData) {
         "markerType": 2
     };
     lonLatList.push(endMarkerInfo);
-    console.log(lonLatList);
     return lonLatList;
 }
 

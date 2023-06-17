@@ -4,6 +4,10 @@ import kr.ac.kopo.ReadyToTravel.dto.plan.LonLatDTO;
 import kr.ac.kopo.ReadyToTravel.dto.plan.PlanDTO;
 import kr.ac.kopo.ReadyToTravel.entity.plan.LonLatEntity;
 import kr.ac.kopo.ReadyToTravel.entity.plan.PlanEntity;
+import kr.ac.kopo.ReadyToTravel.group.GroupCustomRepository;
+import kr.ac.kopo.ReadyToTravel.group.GroupMembershipRepository;
+import kr.ac.kopo.ReadyToTravel.group.GroupRepository;
+import kr.ac.kopo.ReadyToTravel.group.InviteUrlRepository;
 import kr.ac.kopo.ReadyToTravel.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,8 +22,12 @@ public class PlanServiceImpl implements PlanService {
     private final PlanRepository planRepository;
     private final LonLatRepository lonLatRepository;
     private final MemberRepository memberRepository;
-
+    private final GroupMembershipRepository groupMembershipRepository;
+    private final GroupRepository groupRepository;
     private final PlanCustomRepository planCustomRepository;
+    private final GroupCustomRepository groupCustomRepository;
+    private final InviteUrlRepository inviteUrlRepository;
+
 
     @Override
     public PlanDTO viewPlan(Long planNum) {
@@ -90,6 +98,19 @@ public class PlanServiceImpl implements PlanService {
     @Override
     @Transactional
     public void removePlan(Long planNum) {
+        Long groupNum = groupCustomRepository.groupNum(planNum);
+
+        inviteUrlRepository.deleteByGroupEntityGroupNum(groupNum);
+
+        List<Long> memberNums = groupCustomRepository.groupInMemberNum(groupNum);
+
+        for (Long memberNumList : memberNums) {
+            groupMembershipRepository.deleteByGroup_GroupNumAndMember_Num(groupNum, memberNumList);
+        }
+
+        groupRepository.deleteByPlanNum(planNum);
+
         planRepository.deleteById(planNum);
+
     }
 }

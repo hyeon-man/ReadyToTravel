@@ -1,21 +1,115 @@
 /* 공통요소 헤더부분 css 및 */
-@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);  body, talbe, th, td, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, textarea, blockquote, span, * {font-family: 'Noto Sans KR', sans-serif;}
-html{scroll-behavior: smooth;}
-*, *:before, *:after {box-sizing: border-box;}
-.logo a {text-decoration-line: none;color: black;}
-.logo b {font-size: 30px;}
-.logo h7 {font-size: 15px;}
-.logo:hover a{color: skyblue;}
-body {max-width: 1920px;font-family: 'Noto Serif KR', serif;margin: 0;padding: 0;overflow-x: hidden;}
-header {align-items: center; background-color:white; /* 원하는 색상으로 설정 */max-width: 1920px;color: #000;display: flex;justify-content: space-between;padding: 1%;}
-.fixed-header {align-items: center;position: fixed;top: 0;width: 100%;z-index: 9999;background-color: #fff !important;transition: background-color 500ms linear; box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.05), 0 2px 10px 0 rgba(0, 0, 0, 0.05) !important;-webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.05), 0 2px 10px 0 rgba(0, 0, 0, 0.05) !important;color: #000 !important;}
-nav {font-family: 'Noto Serif KR', serif;}
-nav li a::after {content: "";position: absolute;bottom: -1px;left: 50%;transform: translateX(-50%);height: 4px;background: #f1c40f;transition: all .2s ease-out;border-radius: 10px;width: 0;}
-nav li a:hover::after {width: 100%;}
-nav li a {color: black;padding: 10px 12px;position: relative;}
-nav ul {list-style: none;margin: 0;padding: 0;display: flex;}
-nav a {color: black;text-decoration: none;}
-footer {height: 50px;background-color: #f5f5f5;display: flex;justify-content: center;align-items: center;font-size: 14px;color: #666;}
+@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
+
+body, talbe, th, td, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, textarea, blockquote, span, * {
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+*, *:before, *:after {
+    box-sizing: border-box;
+}
+
+.logo a {
+    text-decoration-line: none;
+    color: black;
+}
+
+.logo b {
+    font-size: 30px;
+}
+
+.logo h7 {
+    font-size: 15px;
+}
+
+.logo:hover a {
+    color: skyblue;
+}
+
+body {
+    max-width: 1920px;
+    font-family: 'Noto Serif KR', serif;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+header {
+    align-items: center;
+    background-color: white; /* 원하는 색상으로 설정 */
+    max-width: 1920px;
+    color: #000;
+    display: flex;
+    justify-content: space-between;
+    padding: 1%;
+}
+
+.fixed-header {
+    align-items: center;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 9999;
+    background-color: #fff !important;
+    transition: background-color 500ms linear;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.05), 0 2px 10px 0 rgba(0, 0, 0, 0.05) !important;
+    -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.05), 0 2px 10px 0 rgba(0, 0, 0, 0.05) !important;
+    color: #000 !important;
+}
+
+nav {
+    font-family: 'Noto Serif KR', serif;
+}
+
+nav li a::after {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 4px;
+    background: #f1c40f;
+    transition: all .2s ease-out;
+    border-radius: 10px;
+    width: 0;
+}
+
+nav li a:hover::after {
+    width: 100%;
+}
+
+nav li a {
+    color: black;
+    padding: 10px 12px;
+    position: relative;
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+nav a {
+    color: black;
+    text-decoration: none;
+}
+
+footer {
+    height: 50px;
+    background-color: #f5f5f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    color: #666;
+}
+
 /* 공통요소*/
 
 #map_div {
@@ -226,7 +320,7 @@ footer {
     justify-content: space-around;
 }
 
-.radio_button ul{
+.radio_button ul {
     display: flex;
     justify-content: space-around;
     padding-left: 0px;
@@ -239,7 +333,7 @@ footer {
     box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
 }
 
-.calendarParents button{
+.calendarParents button {
     text-align: center;
 }
 
@@ -386,9 +480,11 @@ footer {
     justify-content: center;
     text-align: center;
 }
+
 .viewNav a li button {
     margin-left: 5px;
 }
+
 .viewNavLi {
     float: left;
 }
@@ -406,16 +502,16 @@ footer {
     transition: all 0.3s ease;
     position: relative;
     display: inline-block;
-    box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
-    7px 7px 20px 0px rgba(0,0,0,.1),
-    4px 4px 5px 0px rgba(0,0,0,.1);
+    box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, .5),
+    7px 7px 20px 0px rgba(0, 0, 0, .1),
+    4px 4px 5px 0px rgba(0, 0, 0, .1);
     outline: none;
 }
 
 /* 3 */
 .btn-3 {
     background: skyblue;
-    background: linear-gradient(0deg, rgba(0,172,238,1) 0%, rgba(2,126,251,1) 100%);
+    background: linear-gradient(0deg, rgba(0, 172, 238, 1) 0%, rgba(2, 126, 251, 1) 100%);
     width: 130px;
     height: 40px;
     line-height: 42px;
@@ -423,12 +519,14 @@ footer {
     border: none;
 
 }
+
 .btn-3 span {
     position: relative;
     display: block;
     width: 100%;
     height: 100%;
 }
+
 .btn-3:before,
 .btn-3:after {
     position: absolute;
@@ -438,27 +536,34 @@ footer {
     background: skyblue;
     transition: all 0.3s ease;
 }
+
 .btn-3:before {
     height: 0%;
     width: 2px;
 }
+
 .btn-3:after {
     width: 0%;
     height: 2px;
 }
-.btn-3:hover{
+
+.btn-3:hover {
     background: transparent;
     box-shadow: none;
 }
+
 .btn-3:hover:before {
     height: 100%;
 }
+
 .btn-3:hover:after {
     width: 100%;
 }
-.btn-3 span:hover{
+
+.btn-3 span:hover {
     color: skyblue;
 }
+
 .btn-3 span:before,
 .btn-3 span:after {
     position: absolute;
@@ -468,58 +573,66 @@ footer {
     background: skyblue;
     transition: all 0.3s ease;
 }
+
 .btn-3 span:before {
     width: 2px;
     height: 0%;
 }
+
 .btn-3 span:after {
     width: 0%;
     height: 2px;
 }
+
 .btn-3 span:hover:before {
     height: 100%;
 }
+
 .btn-3 span:hover:after {
     width: 100%;
 }
 
-.planBtn{
+.planBtn {
     margin-left: 5px;
     margin-bottom: 5px;
     margin-top: 5px;
-    background:skyblue;
-    color:#fff;
-    border:none;
-    position:relative;
-    height:25px;
-    font-size: 15px;
-    padding:0 2em;
-    cursor:pointer;
-    transition:800ms ease all;
-    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
-    outline:none;
-}
-.planBtn:hover{
-    background:#fff;
-    color:skyblue;
-}
-.planBtn:before,.planBtn:after{
-    content:'';
-    position:absolute;
-    top:0;
-    right:0;
-    height:2px;
-    width:0;
     background: skyblue;
-    transition:400ms ease all;
+    color: #fff;
+    border: none;
+    position: relative;
+    height: 25px;
+    font-size: 15px;
+    padding: 0 2em;
+    cursor: pointer;
+    transition: 800ms ease all;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+    outline: none;
 }
-.planBtn:after{
-    right:inherit;
-    top:inherit;
-    left:0;
-    bottom:0;
+
+.planBtn:hover {
+    background: #fff;
+    color: skyblue;
 }
-.planBtn:hover:before,.planBtn:hover:after{
-    width:100%;
-    transition:800ms ease all;
+
+.planBtn:before, .planBtn:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 2px;
+    width: 0;
+    background: skyblue;
+    transition: 400ms ease all;
+}
+
+.planBtn:after {
+    right: inherit;
+    top: inherit;
+    left: 0;
+    bottom: 0;
+}
+
+.planBtn:hover:before, .planBtn:hover:after {
+    width: 100%;
+    transition: 800ms ease all;
 }
