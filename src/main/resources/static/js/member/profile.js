@@ -1,6 +1,9 @@
 // add hovered class to selected list item
 let list = document.querySelectorAll(".navigation li");
 let groupNum;
+let groupLeaderNum;
+let groupMemberNum;
+
 function activeLink() {
     list.forEach((item) => {
         item.classList.remove("hovered");
@@ -72,32 +75,29 @@ document.addEventListener("DOMContentLoaded", function() {
             leaderContents.innerHTML = '';
         }
 
-// 데이터 처리 함수
+        // 데이터 처리 함수
         function processData(data) {
             // memberInfo
             const titleElement = document.querySelector('.groupName');
             const contentsElement = document.querySelector('.modal3-1-text');
             const membersContainer = document.querySelector('.members');
-            const imgElement = document.createElement('img');
-            membersContainer.appendChild(imgElement);
-            // memberUpdate(Group)
-            const leaderContents = document.querySelector('#leaderContents');
 
             // 제목 태그에 데이터 추가
             titleElement.textContent = data.name;
             // 컨텐츠에 데이터 추가
             contentsElement.textContent = data.contents;
 
+            console.log(data.memberDTO);
+
             // 구성원 정보 추가
             data.memberDTO.forEach(member => {
 
-
+                const imgElement = document.createElement('img');
                 imgElement.src = "/img/" + member.profileIMG;
                 imgElement.alt = 'Profile Image';
 
                 const memberElement = document.createElement('div');
                 memberElement.className = 'member';
-                // memberElement.style.display = 'flex';
 
                 const memberIdElement = document.createElement('p');
                 memberIdElement.textContent = member.memberId;
@@ -111,15 +111,15 @@ document.addEventListener("DOMContentLoaded", function() {
                 const phoneNumElement = document.createElement('p');
                 phoneNumElement.textContent = member.phoneNum;
 
+                memberElement.appendChild(imgElement);
                 memberElement.appendChild(memberIdElement);
                 memberElement.appendChild(emailElement);
                 memberElement.appendChild(nameElement);
                 memberElement.appendChild(phoneNumElement);
 
                 membersContainer.appendChild(memberElement);
-
-
-                //leader contents
+                // leader contents
+                const trElement = document.createElement('tr');
                 const memberIdTd = document.createElement('td');
                 memberIdTd.textContent = member.memberId;
 
@@ -132,76 +132,136 @@ document.addEventListener("DOMContentLoaded", function() {
                 const phoneNumTd = document.createElement('td');
                 phoneNumTd.textContent = member.phoneNum;
 
+                const deleteTd = document.createElement('td');
                 const deleteA = document.createElement('button');
 
-                var memberSession = '<%=(String)session.getAttribute("uid")%>';
-                if (memberSession.num != member.num){
+                if (data.groupLeader !== member.num) {
                     deleteA.textContent = "삭제";
-                } else {
-
-                }
-                deleteA.addEventListener('click', function() {
-
-
-                    fetch('/member/profile/removeMemberInGroup/' + groupNum + '?memberNum=' + member.num, {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    })
-                        .then(response => response.text())
-                        .then(data => {
-                            // 요청이 성공적으로 처리되었을 때의 동작
-                            location.reload();
-                            console.log(data);
-                            console.log("멤버 넘버 success" + member.num + "GroupNum Success: " + groupNum);
+                    deleteA.addEventListener('click', function() {
+                        fetch('/member/profile/removeMemberInGroup/' + groupNum + '?memberNum=' + member.num, {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
                         })
-                        .catch(error => {
-                            // 요청이 실패했을 때의 동작
-                            console.log("멤버 넘버 error" + member.num + "GroupNum Success" + groupNum);
-                            console.error('Error:', error);
-                        });
-                });
-
-
+                            .then(response => response.text())
+                            .then(data => {
+                                // 요청이 성공적으로 처리되었을 때의 동작
+                                location.reload();
+                                console.log(data);
+                                console.log("멤버 넘버 success" + member.num + "GroupNum Success: " + groupNum);
+                            })
+                            .catch(error => {
+                                // 요청이 실패했을 때의 동작
+                                console.log("멤버 넘버 error" + member.num + "GroupNum Success" + groupNum);
+                                console.error('Error:', error);
+                            });
+                    });
+                } else {
+                    deleteA.textContent = "";
+                }
 
                 deleteTd.appendChild(deleteA);
 
-
-                leaderContents.appendChild(memberIdTd);
-                leaderContents.appendChild(nameTd);
-                leaderContents.appendChild(emailTd);
-                leaderContents.appendChild(phoneNumTd);
-                leaderContents.appendChild(deleteTd);
-
-
+                const leaderContents = document.querySelector('#leaderContents');
+                trElement.appendChild(memberIdTd);
+                trElement.appendChild(nameTd);
+                trElement.appendChild(emailTd);
+                trElement.appendChild(phoneNumTd);
+                trElement.appendChild(deleteTd);
+                leaderContents.appendChild(trElement);
             });
+//모달 그룹페이지 안에 more button
+            const moreButton = document.querySelector('.more-button');
+            groupMemberNum = moreButton.getAttribute('data-value');
+            console.log("groupLeaderNum : " + groupLeaderNum);
+            if (groupLeaderNum == groupMemberNum) {
+                const modal = document.getElementById('modal3-1');
 
+                moreButton.addEventListener('click', function() {
+                    modal.style.display = 'block';
+                });
+
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                        modal.style.display = 'none';
+                    }
+                });
+            } else {
+                const moreButton = document.querySelector('.more-button');
+                moreButton.style.display = 'none';
+            }
         }
 
-
-// 초기화 후 데이터 처리
+        // 초기화 후 데이터 처리
         fetch('/member/profile/groupList')
             .then(response => response.json())
             .then(data => {
-                if (data.num != null){
+                if (data.num != null) {
                     groupNum = data.num;
+                    groupLeaderNum = data.groupLeader;
+                    console.log(data);
                     resetData(); // 데이터 초기화
                     processData(data); // 데이터 처리
-                } else{
+                } else {
                     const membersContainer = document.querySelector('.members');
                     membersContainer.textContent = "가입된 그룹이 없습니다.";
                     const groupEditButton = document.querySelector('.more-button');
                     groupEditButton.style.display = "none";
                     const inviteButton = document.querySelector("#copyButton");
-                    inviteButton.style.display="none";
+                    inviteButton.style.display = "none";
                 }
-
             })
             .catch(error => {
                 // fetch 요청 중에 발생한 오류를 처리합니다
                 console.log('오류 발생:', error);
             });
+        //초대코드 버튼
+        const copyButton = document.getElementById('copyButton');
+        const urlInput = document.getElementById('urlInput');
+        copyButton.addEventListener('click', function() {
+            fetch('/group/generateInviteCode/' + groupNum, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => response.text())
+                .then(inviteData => {
+                    // 요청이 성공적으로 처리되었을 때의 동작
+                    const url =" http://localhost:9060/group/joinGroup/" + inviteData; // 복사할 URL을 여기에 입력하세요
+
+                    copyToClipboard(url);
+                    function copyToClipboard(text) {
+                        const input = document.createElement('input');
+                        input.style.position = 'fixed';
+                        input.style.opacity = 0;
+                        input.value = text;
+                        document.body.appendChild(input);
+                        input.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(input);
+
+                        urlInput.value = text;
+                        urlInput.select();
+                        urlInput.setSelectionRange(0, 99999);
+                        document.execCommand('copy');
+
+                        setTimeout(function(){
+                            alert("복사되었습니다");
+                        }, 300);
+                    }
+
+                })
+                .catch(error => {
+                    // 요청이 실패했을 때의 동작
+                    console.error('Error:', error);
+                });
+
+
+
+        });
+
     });
 
     closeButton.addEventListener("click", function() {
@@ -210,19 +270,8 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
-//모달 그룹페이지 안에 more button
-const moreButton = document.querySelector('.more-button');
-const modal = document.getElementById('modal3-1');
 
-moreButton.addEventListener('click', function() {
-    modal.style.display = 'block';
-});
 
-modal.addEventListener('click', function(e) {
-    if (e.target === modal) {
-        modal.style.display = 'none';
-    }
-});
 //모달 계획페이지
 document.addEventListener("DOMContentLoaded", function() {
     var liElement = document.querySelector(".plan_page");
@@ -284,36 +333,3 @@ const eyeIcons = document.querySelectorAll('.eyes ion-icon');
 eyeIcons.forEach(icon => {
     icon.addEventListener('click', togglePassword);
 });
-
-
-//초대코드 버튼
-const copyButton = document.getElementById('copyButton');
-const urlInput = document.getElementById('urlInput');
-
-copyButton.addEventListener('click', function() {
-    const url = 'https://example.com'; // 복사할 URL을 여기에 입력하세요
-    copyToClipboard(url);
-});
-
-function copyToClipboard(text) {
-    const input = document.createElement('input');
-    input.style.position = 'fixed';
-    input.style.opacity = 0;
-    input.value = text;
-    document.body.appendChild(input);
-    input.select();
-    document.execCommand('copy');
-    document.body.removeChild(input);
-
-    urlInput.value = text;
-    urlInput.select();
-    urlInput.setSelectionRange(0, 99999);
-    document.execCommand('copy');
-
-    setTimeout(function(){
-        alert("복사되었습니다");
-    }, 300);
-}
-
-
-//////

@@ -15,4 +15,6 @@ public interface GroupCustomRepository {
     Long groupNum(Long planNum);
 
     List<Long> groupInMemberNum(Long groupNum);
+
+    GroupDTO myGroupNum(Long num);
 }

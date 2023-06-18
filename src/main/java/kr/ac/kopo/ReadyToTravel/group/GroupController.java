@@ -22,12 +22,12 @@ public class GroupController {
         this.service = service;
     }
 
-    @GetMapping("/group/generateInviteCode")
+    @GetMapping("/group/generateInviteCode/{groupNum}")
     @ResponseBody
-    public String generateInviteCord(GroupDTO groupDTO) {
-        System.out.println("그룹 번호 = " + groupDTO.getNum());
+    public String generateInviteCord(@PathVariable long groupNum) {
+        System.out.println("그룹 번호 = " + groupNum);
 
-        String inviteCord = service.generateInviteCode(groupDTO.getNum());
+        String inviteCord = service.generateInviteCode(groupNum);
 
         return inviteCord;
     }

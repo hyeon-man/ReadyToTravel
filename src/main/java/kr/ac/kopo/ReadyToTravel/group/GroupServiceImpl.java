@@ -161,7 +161,6 @@ public class GroupServiceImpl implements GroupService {
         System.out.println("realGroup = " + realGroup.getPlan());
 
         realGroup.addMember(groupCustomRepository.groupInMember(realGroup.getNum()));
-//        myGroupList.addMember();
         return realGroup;
 
     }
