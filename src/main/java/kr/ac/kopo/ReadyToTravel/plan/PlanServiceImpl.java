@@ -90,10 +90,6 @@ public class PlanServiceImpl implements PlanService {
             lonLatRepository.save(lonLatConvert);
         }
     }
-    @Override
-    public List<PlanDTO> myPlanList(Long memberNum) {
-        return planCustomRepository.myPlanList(memberNum);
-    }
 
     @Override
     @Transactional

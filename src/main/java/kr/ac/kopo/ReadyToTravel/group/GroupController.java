@@ -33,22 +33,17 @@ public class GroupController {
     }
 
     @GetMapping("/group/joinGroup/{inviteURL}")
-    @ResponseBody
-    public String addMember(@SessionAttribute(value = "memberDTO", required = false) MemberDTO memberDTO, @PathVariable String inviteURL) {
-        if (memberDTO == null) {
-
-            return "로그인이 필요한 기능입니다";
-        }
+    public String addMember(@SessionAttribute MemberDTO memberDTO, @PathVariable String inviteURL) {
 
         service.groupAddMember(memberDTO.getNum(), inviteURL);
         //todo 이건 그룹 페이지로 간다
-        return "완료";
+        return "redirect:/member/profile";
     }
 
 
     @GetMapping("/group/removeMember/{groupNum}")
     @ResponseBody
-    public String removeMember(@PathVariable long groupNum, @SessionAttribute(value = "memberDTO", required = false) MemberDTO memberDTO) {
+    public String removeMember(@PathVariable long groupNum, @SessionAttribute MemberDTO memberDTO) {
 
         service.removeMember(groupNum, memberDTO.getNum());
 

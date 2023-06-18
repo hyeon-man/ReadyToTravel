@@ -1,8 +1,33 @@
+function getGroupList() {
+    return new Promise((resolve, reject) => {
+        fetch('/member/profile/groupList')
+            .then(response => response.json())
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+                console.log('오류 발생:', error);
+                reject(error);
+            });
+    });
+}
+
+function getBoardList() {
+    return new Promise((resolve, reject) => {
+        fetch('/member/profile/boardList')
+            .then(response => response.json())
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+                console.log('오류 발생:', error);
+                reject(error);
+            });
+    });
+}
+
 // add hovered class to selected list item
 let list = document.querySelectorAll(".navigation li");
-let groupNum;
-let groupLeaderNum;
-let groupMemberNum;
 
 function activeLink() {
     list.forEach((item) => {
@@ -38,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function() {
         document.body.style.overflow = "auto"; // Enable scrolling on the body
     });
 });
-
+/*
 //모달 여행지
 document.addEventListener("DOMContentLoaded", function() {
     var card = document.querySelector(".my_card2");
@@ -54,7 +79,7 @@ document.addEventListener("DOMContentLoaded", function() {
         modal.style.display = "none";
         document.body.style.overflow = "auto"; // Enable scrolling on the body
     });
-});
+});*/
 
 //모달 그룹페이지
 document.addEventListener("DOMContentLoaded", function() {
@@ -67,28 +92,26 @@ document.addEventListener("DOMContentLoaded", function() {
         document.body.style.overflow = "hidden"; // Disable scrolling on the body
 
         // 초기화 함수
-        function resetData() {
+
             const membersContainer = document.querySelector('.members');
             membersContainer.innerHTML = ''; // 기존 데이터 초기화
 
-            const leaderContents = document.querySelector('#leaderContents');
-            leaderContents.innerHTML = '';
-        }
-
-        // 데이터 처리 함수
-        function processData(data) {
+            // 데이터 처리 함수
+        getGroupList().then(data => {
             // memberInfo
             const titleElement = document.querySelector('.groupName');
+            const titleLinkElement = document.createElement('a');
             const contentsElement = document.querySelector('.modal3-1-text');
             const membersContainer = document.querySelector('.members');
 
 
             // 제목 태그에 데이터 추가
-            titleElement.textContent = data.name;
+            titleLinkElement.textContent = data.name;
+            titleLinkElement.href = "http://localhost:9060/plan/viewPlan/" + data.planNum;
+            titleElement.appendChild(titleLinkElement);
             // 컨텐츠에 데이터 추가
-            contentsElement.textContent = data.contents;
 
-            // 구성원 정보 추가
+            contentsElement.textContent = data.contents;
             data.memberDTO.forEach(member => {
                 const imgElement = document.createElement('img');
                 membersContainer.appendChild(imgElement);
@@ -98,7 +121,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 const memberElement = document.createElement('div');
                 memberElement.className = 'member';
-                // memberElement.style.display = 'flex';
 
                 const memberIdElement = document.createElement('p');
                 memberIdElement.textContent = member.memberId;
@@ -118,188 +140,141 @@ document.addEventListener("DOMContentLoaded", function() {
                 memberElement.appendChild(phoneNumElement);
 
                 membersContainer.appendChild(memberElement);
+            });
 
-                // leader contents
-                const trElement = document.createElement('tr');
-                const memberIdTd = document.createElement('td');
-                memberIdTd.textContent = member.memberId;
+        });
 
-                const nameTd = document.createElement('td');
-                nameTd.textContent = member.name;
 
-                const emailTd = document.createElement('td');
-                emailTd.textContent = member.email;
+    });
 
-                const phoneNumTd = document.createElement('td');
-                phoneNumTd.textContent = member.phoneNum;
+    closeButton.addEventListener("click", function() {
+        modal.style.display = "none";
+        document.body.style.overflow = "auto"; // Enable scrolling on the body
+    });
+});
 
-                const deleteTd = document.createElement('td');
-                const deleteA = document.createElement('button');
 
-                if (data.groupLeader !== member.num) {
-                    deleteA.textContent = "삭제";
-                    deleteA.addEventListener('click', function() {
-                        fetch('/member/profile/removeMemberInGroup/' + groupNum + '?memberNum=' + member.num, {
+// 모달 그룹페이지 안에 more button
+const moreButton = document.querySelector('.more-button');
+const loginMemberNum = moreButton.dataset.value;
+const modal = document.getElementById('modal3-1');
+getGroupList().then(data => {
+    if (data.groupLeader == loginMemberNum) {
+        moreButton.addEventListener('click', function() {
+            modal.style.display = 'block';
+
+            // 데이터 초기화
+            const groupEditTbody = document.querySelector('#groupEditTbody');
+            groupEditTbody.innerHTML = '';
+
+            // 구성원 정보 추가
+            data.memberDTO.forEach(member => {
+                const groupEditTr = document.createElement('tr');
+
+                const groupEditId = document.createElement('td');
+                groupEditId.textContent = member.memberId;
+                groupEditTr.appendChild(groupEditId);
+
+                const groupEditName = document.createElement('td');
+                groupEditName.textContent = member.name;
+                groupEditTr.appendChild(groupEditName);
+
+                const groupEditEmail = document.createElement('td');
+                groupEditEmail.textContent = member.email;
+                groupEditTr.appendChild(groupEditEmail);
+
+                const groupEditPhoneNum = document.createElement('td');
+                groupEditPhoneNum.textContent = member.phoneNum;
+                groupEditTr.appendChild(groupEditPhoneNum);
+
+                const groupEditDeleteTd = document.createElement('td');
+                if (member.num == data.groupLeader) {
+                    groupEditDeleteTd.textContent = "";
+                } else {
+                    const groupEditDeleteButton = document.createElement('button');
+                    groupEditDeleteButton.textContent = "삭제";
+                    groupEditDeleteButton.addEventListener('click', function() {
+                        fetch('/member/profile/removeMemberInGroup/' + data.num + '?memberNum=' + member.num, {
                             method: 'GET',
                             headers: {
                                 'Content-Type': 'application/json'
                             }
                         })
                             .then(response => response.text())
-                            .then(data => {
+                            .then(groupEditDataResponse => {
                                 // 요청이 성공적으로 처리되었을 때의 동작
                                 location.reload();
-                                })
+                                alert("삭제 완료");
+                            })
                             .catch(error => {
                                 // 요청이 실패했을 때의 동작
                                 console.error('Error:', error);
                             });
                     });
-                } else {
-                    deleteA.textContent = "";
+
+                    groupEditDeleteTd.appendChild(groupEditDeleteButton);
                 }
+                groupEditTr.appendChild(groupEditDeleteTd);
 
-                deleteTd.appendChild(deleteA);
-
-                const leaderContents = document.querySelector('#leaderContents');
-                trElement.appendChild(memberIdTd);
-                trElement.appendChild(nameTd);
-                trElement.appendChild(emailTd);
-                trElement.appendChild(phoneNumTd);
-                trElement.appendChild(deleteTd);
-                leaderContents.appendChild(trElement);
+                groupEditTbody.appendChild(groupEditTr);
             });
-//모달 그룹페이지 안에 more button
-            const moreButton = document.querySelector('.more-button');
-            groupMemberNum = moreButton.getAttribute('data-value');
-            if (groupLeaderNum == groupMemberNum) {
-                const modal = document.getElementById('modal3-1');
-
-                moreButton.addEventListener('click', function() {
-                    modal.style.display = 'block';
-                });
-
-                modal.addEventListener('click', function(e) {
-                    if (e.target === modal) {
-                        modal.style.display = 'none';
-                    }
-                });
-            } else {
-                const moreButton = document.querySelector('.more-button');
-                moreButton.style.display = 'none';
-            }
-        }
-
-        // 초기화 후 데이터 처리
-        fetch('/member/profile/groupList')
-            .then(response => response.json())
-            .then(data => {
-                if (data.num != null) {
-                    groupNum = data.num;
-                    groupLeaderNum = data.groupLeader;
-                    resetData(); // 데이터 초기화
-                    processData(data); // 데이터 처리
-                } else {
-                    const membersContainer = document.querySelector('.members');
-                    membersContainer.textContent = "가입된 그룹이 없습니다.";
-                    const groupEditButton = document.querySelector('.more-button');
-                    groupEditButton.style.display = "none";
-                    const inviteButton = document.querySelector("#copyButton");
-                    inviteButton.style.display = "none";
-                }
-            })
-            .catch(error => {
-                // fetch 요청 중에 발생한 오류를 처리합니다
-                console.log('오류 발생:', error);
-            });
-        //초대코드 버튼
-        const copyButton = document.getElementById('copyButton');
-        const urlInput = document.getElementById('urlInput');
-        copyButton.addEventListener('click', function() {
-            fetch('/group/generateInviteCode/' + groupNum, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-                .then(response => response.text())
-                .then(inviteData => {
-                    // 요청이 성공적으로 처리되었을 때의 동작
-                    const url =" http://localhost:9060/group/joinGroup/" + inviteData; // 복사할 URL을 여기에 입력하세요
-
-                    copyToClipboard(url);
-                    function copyToClipboard(text) {
-                        const input = document.createElement('input');
-                        input.style.position = 'fixed';
-                        input.style.opacity = 0;
-                        input.value = text;
-                        document.body.appendChild(input);
-                        input.select();
-                        document.execCommand('copy');
-                        document.body.removeChild(input);
-
-                        urlInput.value = text;
-                        urlInput.select();
-                        urlInput.setSelectionRange(0, 99999);
-                        document.execCommand('copy');
-
-                        setTimeout(function(){
-                            alert("복사되었습니다");
-                        }, 300);
-                    }
-
-                })
-                .catch(error => {
-                    // 요청이 실패했을 때의 동작
-                    console.error('Error:', error);
-                });
-
-
-
         });
-
-    });
-
-    closeButton.addEventListener("click", function() {
-        modal.style.display = "none";
-        document.body.style.overflow = "auto"; // Enable scrolling on the body
-    });
+    }else {
+        moreButton.style.display="none";
+    }
 });
 
+modal.addEventListener('click', function(e) {
+    if (e.target === modal) {
+        modal.style.display = 'none';
+    }
+});
 
 
 //모달 계획페이지
-document.addEventListener("DOMContentLoaded", function() {
-    var liElement = document.querySelector(".plan_page");
-    var modal = document.getElementById("modal4");
-    var closeButton = document.querySelector(".close-button-plan");
-
-    liElement.addEventListener("click", function() {
-        modal.style.display = "block";
-        document.body.style.overflow = "hidden"; // Disable scrolling on the body
-    });
-
-    closeButton.addEventListener("click", function() {
-        modal.style.display = "none";
-        document.body.style.overflow = "auto"; // Enable scrolling on the body
-    });
-});
-//모달 나의 여행 후기 페이지
 document.addEventListener("DOMContentLoaded", function() {
     var liElement = document.querySelector(".review_page");
     var modal = document.getElementById("modal5");
     var closeButton = document.querySelector(".close-button-review");
 
-    liElement.addEventListener("click", function() {
+    liElement.addEventListener("click", function () {
         modal.style.display = "block";
         document.body.style.overflow = "hidden"; // Disable scrolling on the body
-    });
 
-    closeButton.addEventListener("click", function() {
-        modal.style.display = "none";
-        document.body.style.overflow = "auto"; // Enable scrolling on the body
+        const boardListTbody = document.querySelector('.boardListTbody');
+        boardListTbody.innerHTML = "";
+
+        getBoardList()
+            .then(data => {
+                // 구성원 정보 추가
+                data.forEach(boardList => {
+                    const boardTr = document.createElement('tr');
+
+                    const boardTitle = document.createElement('td');
+                    const baordInfoLink = document.createElement('a');
+                    boardTitle.appendChild(baordInfoLink);
+                    baordInfoLink.textContent = boardList.boardName;
+                    baordInfoLink.href = "/board/info/" + boardList.boardNum;
+
+                    const boardCreateDate = document.createElement('td');
+                    const createDate = new Date(boardList.boardDateCreate);
+                    const formattedDate = `${createDate.getFullYear()}/${createDate.getMonth() + 1}/${createDate.getDate()}`;
+                    boardCreateDate.textContent = formattedDate;
+
+                    boardTr.appendChild(boardTitle);
+                    boardTr.appendChild(boardCreateDate);
+                    boardListTbody.appendChild(boardTr);
+                });
+            });
+
+        closeButton.addEventListener("click", function () {
+            modal.style.display = "none";
+            document.body.style.overflow = "auto"; // Enable scrolling on the body
+        });
     });
 });
+
+
 // 모달안에있는 비밀번호보이기 토글버튼
 const togglePassword = (event) => {
     const passwordTop = event.target.closest('.password-box');
@@ -329,3 +304,49 @@ const eyeIcons = document.querySelectorAll('.eyes ion-icon');
 eyeIcons.forEach(icon => {
     icon.addEventListener('click', togglePassword);
 });
+
+// 초대코드 버튼
+const copyButton = document.getElementById('copyButton');
+const urlInput = document.getElementById('urlInput');
+copyButton.addEventListener('click', function() {
+    getGroupList().then(data => {
+            fetch('/group/generateInviteCode/' + data.num, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => response.text())
+                .then(inviteData => {
+                    // 요청이 성공적으로 처리되었을 때의 동작
+                    const url = "http://localhost:9060/group/joinGroup/" + inviteData; // 복사할 URL을 여기에 입력하세요
+
+                    copyToClipboard(url);
+                })
+                .catch(error => {
+                    // 요청이 실패했을 때의 동작
+                    console.error('Error:', error);
+                });
+        });
+});
+
+function copyToClipboard(text) {
+    const input = document.createElement('input');
+    input.style.position = 'fixed';
+    input.style.opacity = 0;
+    input.value = text;
+    document.body.appendChild(input);
+    input.select();
+    document.execCommand('copy');
+    document.body.removeChild(input);
+
+    urlInput.value = text;
+    urlInput.select();
+    urlInput.setSelectionRange(0, 99999);
+    document.execCommand('copy');
+
+    setTimeout(function(){
+        alert("복사되었습니다");
+    }, 300);
+}
+

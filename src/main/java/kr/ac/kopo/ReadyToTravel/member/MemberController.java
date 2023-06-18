@@ -159,12 +159,6 @@ public class MemberController {
     }
 
     @ResponseBody
-    @GetMapping("/profile/planList")
-    public List<PlanDTO> planList(@SessionAttribute MemberDTO memberDTO){
-        return planService.myPlanList(memberDTO.getNum());
-    }
-
-    @ResponseBody
     @GetMapping("/profile/groupList")
     public GroupDTO groupList(@SessionAttribute MemberDTO memberDTO) {
         return groupService.myGroupList(memberDTO.getNum());
@@ -176,7 +170,7 @@ public class MemberController {
         System.out.println("요청받은 그룹번호: " + groupNum + ", 요청받은 멤버 번호: " + memberNum);
          groupService.removeMember(groupNum, memberNum);
 
-        return "삭제 완료";
+        return "deleteSucces";
     }
 
 }

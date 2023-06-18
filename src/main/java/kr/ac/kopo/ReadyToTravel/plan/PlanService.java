@@ -17,5 +17,4 @@ public interface PlanService {
 
     PlanDTO viewPlan(Long planNum);
 
-    List<PlanDTO> myPlanList(Long num);
 }

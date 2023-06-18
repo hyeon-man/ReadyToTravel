@@ -45,14 +45,14 @@
                 </a>
             </li>
 
-            <li class="plan_page">
+            <!--<li class="plan_page">
                 <a>
                         <span class="icon">
                             <ion-icon name="calendar-number-outline"></ion-icon>
                         </span>
                     <span class="title">계획페이지</span>
                 </a>
-            </li>
+            </li>-->
 
             <li class="review_page">
                 <a>
@@ -209,144 +209,131 @@
                 </div>
             </div>
 
-<!--@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@그룹 모달@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@-->
-<div id="modal3" class="modal">
-    <div class="modal-content3">
+            <!--@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@그룹 모달@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@-->
+            <div id="modal3" class="modal">
+                <div class="modal-content3">
 
-        <div class="modal_header">
-            <div class="close-button close-button-group">
-                <ion-icon name="close-outline"></ion-icon>
-            </div>
-        </div>
-
-        <div>
-            <h1 style="text-align: center; margin-top:50px;">나의 그룹</h1>
-            <h3 class="groupName" style="font-size: 25px;text-align: center;">제목</h3>
-                <div style="margin-left: 30px; width: 1130px; margin-top: 30px;">
-                    <p class="modal3-1-text"></p>
-                </div>
-        </div>
-        <div>
-            <div class="right-content">
-                <div class="task-box yellow">
-                    <div class="description-task">
-                        <div class="task-name">
-                            구성원
+                    <div class="modal_header">
+                        <div class="close-button close-button-group">
+                            <ion-icon name="close-outline"></ion-icon>
                         </div>
                     </div>
-                    <div class="more-button" th:data-value="${memberDTO.num}"><ion-icon name="ellipsis-vertical-outline"></ion-icon></div>
-                    <div id="modal3-1" class="modal3-1">
-                        <div class="modal3-1-content">
-                            <table>
-                                <thead>
-                                <tr>
-                                    <th>아이디</th>
-                                    <th>이름</th>
-                                    <th>이메일</th>
-                                    <th>전화번호</th>
-                                    <th>삭제</th>
-                                </tr>
-                                </thead>
-                                <tbody id="leaderContents">
-                                <tr>
 
-                                    <td class="deleteTd"></td>
-                                </tr>
-                                </tbody>
-                            </table>
+                    <div>
+                        <h1 style="text-align: center; margin-top:50px;">나의 그룹</h1>
+                        <h3 class="groupName" style="font-size: 25px;text-align: center;"></h3>
+                        <div style="margin-left: 30px; width: 1130px; margin-top: 30px;">
+                            <p class="modal3-1-text"></p>
                         </div>
                     </div>
-                    <div class="members">
+                    <div>
+                        <div class="right-content">
+                            <div class="task-box yellow">
+                                <div class="description-task">
+                                    <div class="task-name">
+                                        구성원
+                                    </div>
+                                </div>
+                                <div class="more-button" th:data-value="${memberDTO.num}"><ion-icon name="ellipsis-vertical-outline"></ion-icon></div>
+                                <div id="modal3-1" class="modal3-1">
+                                    <div class="modal3-1-content">
+                                        <table>
+                                            <thead>
+                                            <tr>
+                                                <th>아이디</th>
+                                                <th>이름</th>
+                                                <th>이메일</th>
+                                                <th>전화번호</th>
+                                                <th>삭제</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="groupEditTbody">
+                                            <tr>
+
+                                                <td class="deleteTd"></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="members">
 
 
+                                </div>
+                            </div>
+                            <!-- more-button은 세션이 그룹장인사람에게만 노출되야합니다 -->
+
+                        </div>
+                        <div class="url-area">
+                            <input type="text" id="urlInput" readonly style="display: none;">
+                            <button class="button" id="copyButton">초대코드 복사하기</button>
+                        </div>
                     </div>
                 </div>
-                <!-- more-button은 세션이 그룹장인사람에게만 노출되야합니다 -->
-
             </div>
-            <div class="url-area">
-                <input type="text" id="urlInput" readonly style="display: none;">
-                <button class="button" id="copyButton">초대코드 복사하기</button>
+            <!--<div id="modal4" class="modal">
+                <div class="modal-content4">
+                    <div class="modal_header">
+                        <div class="close-button close-button-plan">
+                            <ion-icon name="close-outline"></ion-icon>
+                        </div>
+                    </div>
+                    <h1 style="margin-top: 50px; text-align: center;">나의 계획</h1>
+                    <div class="modal_plan">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>글번호</th>
+                                <th>제목</th>
+                                <th>장소</th>
+                                <th>작성날짜</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td><a href="#">신강원빈구라임</a></td>
+                                <td>대전</td>
+                                <td>2023-06-12</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td><a href="#">신강동원빈구라임</a></td>
+                                <td>서울</td>
+                                <td>2023-06-12</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>-->
+            <div id="modal5" class="modal">
+                <div class="modal-content5">
+                    <div class="modal_header">
+                        <div class="close-button close-button-review">
+                            <ion-icon name="close-outline"></ion-icon>
+                        </div>
+                    </div>
+                    <h1 style="margin-top: 50px; text-align: center;">나의 여행 후기</h1>
+                    <div class="modal_review">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>제목</th>
+                                <th>작성날짜</th>
+                            </tr>
+                            </thead>
+
+                            <tbody class="boardListTbody">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<div id="modal4" class="modal">
-    <div class="modal-content4">
-        <div class="modal_header">
-            <div class="close-button close-button-plan">
-                <ion-icon name="close-outline"></ion-icon>
-            </div>
-        </div>
-        <h1 style="margin-top: 50px; text-align: center;">나의 계획</h1>
-        <div class="modal_plan">
-            <table>
-                <thead>
-                <tr>
-                    <th>글번호</th>
-                    <th>제목</th>
-                    <th>장소</th>
-                    <th>작성날짜</th>
-                </tr>
-                </thead>
-
-                <tbody>
-                <tr>
-                    <td>1</td>
-                    <td><a href="#">신강원빈구라임</a></td>
-                    <td>대전</td>
-                    <td>2023-06-12</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td><a href="#">신강동원빈구라임</a></td>
-                    <td>서울</td>
-                    <td>2023-06-12</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-<div id="modal5" class="modal">
-    <div class="modal-content5">
-        <div class="modal_header">
-            <div class="close-button close-button-review">
-                <ion-icon name="close-outline"></ion-icon>
-            </div>
-        </div>
-        <h1 style="margin-top: 50px; text-align: center;">나의 여행 후기</h1>
-        <div class="modal_review">
-            <table>
-                <thead>
-                <tr>
-                    <th>글번호</th>
-                    <th>제목</th>
-                    <th>장소</th>
-                    <th>작성날짜</th>
-                </tr>
-                </thead>
-
-                <tbody>
-                <tr>
-                    <td>1</td>
-                    <td><a href="#">신강원빈구라임</td></a>
-                    <td>대전</td>
-                    <td>2023-06-12</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td><a href="#">신강동원빈구라임</td></a>
-                    <td>서울</td>
-                    <td>2023-06-12</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-</div>
-</div>
 </div>
 <!-- ====== ionicons ======= -->
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
@@ -356,3 +343,4 @@
 </body>
 
 </html>
+

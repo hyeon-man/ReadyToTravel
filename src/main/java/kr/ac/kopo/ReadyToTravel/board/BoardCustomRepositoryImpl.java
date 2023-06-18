@@ -115,7 +115,8 @@ public class BoardCustomRepositoryImpl implements BoardCustomRepository {
     public List<BoardDTO> myBoardList(Long num) {
         return queryFactory.select(Projections.fields(BoardDTO.class,
                         boardEntity.boardNum.as("boardNum"),
-                        boardEntity.boardName.as("boardName")))
+                        boardEntity.boardName.as("boardName"),
+                        boardEntity.boardDateCreate.as("boardDateCreate")))
                 .from(boardEntity)
                 .leftJoin(boardEntity.boardWriter, memberEntity)
                 .where(boardEntity.boardWriter.num.eq(num))
