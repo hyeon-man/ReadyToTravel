@@ -82,22 +82,23 @@ document.addEventListener("DOMContentLoaded", function() {
             const contentsElement = document.querySelector('.modal3-1-text');
             const membersContainer = document.querySelector('.members');
 
+
             // 제목 태그에 데이터 추가
             titleElement.textContent = data.name;
             // 컨텐츠에 데이터 추가
             contentsElement.textContent = data.contents;
 
-            console.log(data.memberDTO);
-
             // 구성원 정보 추가
             data.memberDTO.forEach(member => {
-
                 const imgElement = document.createElement('img');
+                membersContainer.appendChild(imgElement);
+
                 imgElement.src = "/img/" + member.profileIMG;
                 imgElement.alt = 'Profile Image';
 
                 const memberElement = document.createElement('div');
                 memberElement.className = 'member';
+                // memberElement.style.display = 'flex';
 
                 const memberIdElement = document.createElement('p');
                 memberIdElement.textContent = member.memberId;
@@ -111,13 +112,13 @@ document.addEventListener("DOMContentLoaded", function() {
                 const phoneNumElement = document.createElement('p');
                 phoneNumElement.textContent = member.phoneNum;
 
-                memberElement.appendChild(imgElement);
                 memberElement.appendChild(memberIdElement);
                 memberElement.appendChild(emailElement);
                 memberElement.appendChild(nameElement);
                 memberElement.appendChild(phoneNumElement);
 
                 membersContainer.appendChild(memberElement);
+
                 // leader contents
                 const trElement = document.createElement('tr');
                 const memberIdTd = document.createElement('td');
