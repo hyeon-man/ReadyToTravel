@@ -149,12 +149,9 @@ document.addEventListener("DOMContentLoaded", function() {
                             .then(data => {
                                 // 요청이 성공적으로 처리되었을 때의 동작
                                 location.reload();
-                                console.log(data);
-                                console.log("멤버 넘버 success" + member.num + "GroupNum Success: " + groupNum);
-                            })
+                                })
                             .catch(error => {
                                 // 요청이 실패했을 때의 동작
-                                console.log("멤버 넘버 error" + member.num + "GroupNum Success" + groupNum);
                                 console.error('Error:', error);
                             });
                     });
@@ -175,7 +172,6 @@ document.addEventListener("DOMContentLoaded", function() {
 //모달 그룹페이지 안에 more button
             const moreButton = document.querySelector('.more-button');
             groupMemberNum = moreButton.getAttribute('data-value');
-            console.log("groupLeaderNum : " + groupLeaderNum);
             if (groupLeaderNum == groupMemberNum) {
                 const modal = document.getElementById('modal3-1');
 
@@ -201,7 +197,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (data.num != null) {
                     groupNum = data.num;
                     groupLeaderNum = data.groupLeader;
-                    console.log(data);
                     resetData(); // 데이터 초기화
                     processData(data); // 데이터 처리
                 } else {
