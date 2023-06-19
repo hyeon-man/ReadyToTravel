@@ -15,5 +15,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .addPathPatterns("/plan/updatePlan")
                 .addPathPatterns("/plan/createPlan")
                 .addPathPatterns("/group/**");
+
     }
 }

@@ -6,9 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface BoardAttachRepository extends JpaRepository<BoardAttachEntity, Long> {
-    List<String> findAllByBoardEntity_BoardNum(long boardNum);
-
     List<BoardAttachEntity> deleteByBoardEntityBoardNum(long boardNum);
-
     List<BoardAttachEntity> findByBoardEntityBoardNum(long boardNum);
 }

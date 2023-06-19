@@ -5,11 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.util.List;
-
 import static kr.ac.kopo.ReadyToTravel.entity.attach.QBoardAttachEntity.boardAttachEntity;
-
-//import static kr.ac.kopo.ReadyToTravel.entity.attach.QBoardAttachEntity.boardAttachEntity;
-
 
 @Repository
 public class BoardAttachCustomRepositoryImpl implements BoardAttachCustomRepository {

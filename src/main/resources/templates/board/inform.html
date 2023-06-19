@@ -22,7 +22,8 @@
             <li><a href="/guide">이용방법</a></li>
             <li><a href="/board/list">후기게시판</a></li>
             <!-- 로그인  123 -->
-            <li><a th:if="${session.memberDTO != null}" href="/member/profile" th:text="${session.memberDTO.name}"></a></li>
+            <li><a th:if="${session.memberDTO != null}" href="/member/profile" th:text="${session.memberDTO.name}"></a>
+            </li>
             <li><a th:if="${session.memberDTO != null}" href="/member/logout">로그아웃</a></li>
             <!-- 이게 비로그인 456-->
             <li><a th:if="${session.memberDTO == null}" href="/member/login">로그인</a></li>
@@ -92,6 +93,10 @@
                 <col width="100px">
             </colgroup>
             <tbody>
+            <tr th:if="${board.replies.size() == 0}">
+                <td colspan="5">댓글이 없습니다.</td>
+            </tr>
+
             <tr th:each="reply : ${board.replies}" th:if="${board.replies.size() > 0}">
                 <td th:text="${reply.replyNum}" class="replyNum">댓글 번호</td>
                 <td th:text="${reply.writerName}" class="writerName">작성자 이름</td>
@@ -105,9 +110,6 @@
                 </div>
             </tr>
 
-            <tr th:if="${board.replies.size() == 0}">
-                <td colspan="5">댓글이 없습니다.</td>
-            </tr>
 
             </tbody>
         </table>
@@ -133,62 +135,71 @@
 
 </body>
 <script>
-    $(".replyUpdate").on('click', function (event) {
+    $(document).ready(function () {
+        $(".replyUpdate").on('click', function (event) {
+            const textArea = $(event.currentTarget).closest("tr").find(".content");
 
-        const textArea = $(event.currentTarget).closest("tr").find(".content");
-        const target = $(event.currentTarget).closest("td").find(".writerName");
-        textArea.remove()
-        // todo 이거 하다 말았는데 모달 말고 그냥 p태그 지우고 , input으로 바꾼다음 할거임
-        const input = document.createElement("input");
-        input.value = textArea;
-        input.name = "content";
-        console.log(input.value)
-        input.append(event)
+            const input = document.createElement("input");
+            input.value = textArea.text();
+            input.name = "content";
+            input.classList.add("content");
 
+            const saveButton = document.createElement("button");
+            saveButton.classList.add("saveReply");
+            saveButton.textContent = "저장";
 
-        const contentText = $(event.currentTarget).closest("tr").find(".content").text();
-
-        //여기다가 수정된 텍스트 갖고와야함
-        const replyNum = $(event.currentTarget).closest("tr").find(".replyNum").text();
-        const boardNum = $("#boardNum").text();
-        console.log("content 텍스트:", contentText);
-        console.log("댓글 번호:", replyNum);
-
-        $.ajax({
-            url: "/board/reply/" + boardNum + "/update/" + replyNum,
-            method: "POST",
-            data: {
-                content: "수정된 텍스트213"
-            },
-            success: function () {
-                // const prevUrl = window.location.href;
-                // window.location.href = prevUrl;
-            },
-            error: function (xhr, status, error) {
-                console.log("업데이트 실패:", error);
-
-            }
+            textArea.replaceWith(input, saveButton);
+            $(event.currentTarget).remove(); // 수정 버튼 제거
+            $(".replyDelete").remove(); // 삭제 버튼 제거
         });
     });
 
-    $(".replyDelete").on('click', function (event) {
-        if (confirm("댓글을 삭제 할까요 ?")) {
-            const replyNum = $(event.currentTarget).closest("tr").find(".replyNum").text();
 
+    $(document).on('click', '.saveReply', function (event) {
+            const input = $(event.currentTarget).prev("input");
+            const content = input.val();
+            const replyNum = $(event.currentTarget).closest("tr").find(".replyNum").text();
             const boardNum = $("#boardNum").text();
+
+            replyUpdate(replyNum, boardNum, content);
+        });
+
+        function replyUpdate(replyNum, boardNum, content) {
             $.ajax({
-                url: "/board/reply/" + boardNum + "/remove/" + replyNum,
-                method: "GET",
+                url: "/board/reply/" + boardNum + "/update/" + replyNum,
+                method: "POST",
+                data: {
+                    content: content
+                },
                 success: function () {
-                    const prevUrl = window.location.href;
-                    window.location.href = prevUrl;
+                    window.location.href = window.location.href;
                 },
                 error: function (xhr, status, error) {
                     console.log("업데이트 실패:", error);
                 }
             });
         }
-    })
+
+        $(".replyDelete").on('click', function (event) {
+            if (confirm("댓글을 삭제 할까요 ?")) {
+                const replyNum = $(event.currentTarget).closest("tr").find(".replyNum").text();
+
+                const boardNum = $("#boardNum").text();
+                $.ajax({
+                    url: "/board/reply/" + boardNum + "/remove/" + replyNum,
+                    method: "GET",
+                    success: function () {
+                        const prevUrl = window.location.href;
+                        window.location.href = prevUrl;
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("업데이트 실패:", error);
+                    }
+                });
+            }
+        });
+
+
 </script>
 
 </html>
