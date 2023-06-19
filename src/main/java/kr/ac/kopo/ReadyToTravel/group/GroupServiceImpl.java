@@ -25,6 +25,7 @@ public class GroupServiceImpl implements GroupService {
     private final GroupCustomRepository groupCustomRepository;
 
     private final PlanCustomRepository planCustomRepository;
+
     public GroupServiceImpl(GroupRepository groupRepository, GroupMembershipRepository groupMembershipRepository, InviteUrlRepository inviteUrlRepository, MemberRepository memberRepository, GroupCustomRepository groupCustomRepository, PlanCustomRepository planCustomRepository) {
         this.groupRepository = groupRepository;
         this.groupMembershipRepository = groupMembershipRepository;
@@ -63,15 +64,15 @@ public class GroupServiceImpl implements GroupService {
         // 초대 URL로 Invite Entity 조회
         InviteEntity invite = inviteUrlRepository.findByInviteURL(inviteURL);
 
-        if (invite.getExpirationDate().before(new Date())) {
-            // 초대 코드가 만료 되었으면 처리
-            System.out.println("만료일이 지남 초대 코드 재생성");
+        if (invite == null) {
+            System.out.println("존재하지 않는 초대 코드");
 
-            // 삭제 후, inviteCode 재생성
+        } else if (invite.getExpirationDate().before(new Date())) {
+            // 초대 코드가 만료 되었으면 처리
+
+            // 기존 invite 코드 삭제 후, 재생성
             inviteUrlRepository.deleteById(invite.getNum());
             generateInviteCode(invite.getGroupEntity().getGroupNum());
-        } else if (invite == null) {
-            System.out.println("존재 하지 않는 초대 코드");
         } else {
             GroupMembership findMembership = groupMembershipRepository
                     .findByGroup_GroupNumAndMember_Num(invite.getGroupEntity().getGroupNum(), memberNum);
@@ -112,13 +113,15 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public String generateInviteCode(long groupNum) {
+        //Group PK를 통한 인바이트 엔티티를 조회
         InviteEntity invite = inviteUrlRepository.findByGroupEntity_GroupNum(groupNum);
 
+        //만약에 조회 해온 invete가 null일 때
         if (invite == null) {
-
+            //uuid 생성
             String randomUUID = UUID.randomUUID().toString().substring(0, 8);
-            System.out.println(randomUUID);
 
+            //만료 일자 생성 기본값은 현재 날짜 기준 + 1
             Calendar cal = Calendar.getInstance();
             cal.setTime(new Date());
             cal.add(Calendar.DATE, 1);
@@ -129,11 +132,12 @@ public class GroupServiceImpl implements GroupService {
                     .groupEntity(GroupEntity.builder().groupNum(groupNum).build())
                     .expirationDate(expirationDate)
                     .build();
+            //DB Save 후 url만 리턴
             inviteUrlRepository.save(createInvite);
 
             return createInvite.getInviteURL();
         }
-
+        //null이 아니면 (존재하는게 있으면)
         return invite.getInviteURL();
     }
 
@@ -147,7 +151,6 @@ public class GroupServiceImpl implements GroupService {
 
         PlanDTO plan = planCustomRepository.findByNum(group.getPlanNum());
         group.addPlan(plan);
-
 
         return group;
     }

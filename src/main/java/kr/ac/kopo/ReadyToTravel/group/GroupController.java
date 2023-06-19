@@ -10,10 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-// TODO: 2023-05-11
-//  1. 그룹에 속한 회원을 삭제하는 로직 ! 완료
-//  2. 그룹에 대한 정보를 변경하는 로직
-//  3. 그룹에 대한
 @Controller
 public class GroupController {
     final GroupService service;
@@ -24,9 +20,7 @@ public class GroupController {
 
     @GetMapping("/group/generateInviteCode")
     @ResponseBody
-    public String generateInviteCord(GroupDTO groupDTO) {
-
-        System.out.println("그룹 번호 = " + groupDTO.getNum());
+    public String generateInviteCode(GroupDTO groupDTO) {
 
         String inviteCord = service.generateInviteCode(groupDTO.getNum());
 
@@ -42,8 +36,8 @@ public class GroupController {
         }
 
         service.groupAddMember(memberDTO.getNum(), inviteURL);
-        //todo 이건 그룹 페이지로 간다
-        return "완료";
+
+        return "redirect:/member/profile";
     }
 
 
@@ -66,15 +60,14 @@ public class GroupController {
 
     /**
      * 그룹 조회
+     *
      * @param groupNum
      * @return
      */
     @GetMapping("/group/info/{groupNum}")
     public String groupInfo(@PathVariable long groupNum) {
 
-
         GroupDTO groupDTO = service.groupInMember(groupNum);
-        System.out.println(groupDTO);
 
         return "/group/info";
     }

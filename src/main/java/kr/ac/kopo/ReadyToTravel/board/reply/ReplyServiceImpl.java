@@ -15,11 +15,9 @@ import java.util.Optional;
 @Service
 public class ReplyServiceImpl implements ReplyService {
     final private ReplyRepository replyRepository;
-
     public ReplyServiceImpl(ReplyRepository replyRepository) {
         this.replyRepository = replyRepository;
     }
-
     @Override
     public void addReply(ReplyDTO reply) {
         ReplyEntity replyEntity = ReplyEntity.builder()
@@ -29,7 +27,6 @@ public class ReplyServiceImpl implements ReplyService {
                 .content(reply.getContent())
                 .boardEntity(BoardEntity.builder().boardNum(reply.getBoardNum()).build())
                 .build();
-
         replyRepository.save(replyEntity);
     }
 

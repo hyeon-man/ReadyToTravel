@@ -127,18 +127,16 @@ public class MemberServiceImpl implements MemberService {
         MemberDTO emailCheck = memberCustomRepository.findByEmail(email);
 
         if (emailCheck == null) {
-            System.out.println("사용 가능한 이메일 입니다.");
-
             String uuid = UUID.randomUUID().toString().replaceAll("-", "");
             uuid = uuid.substring(0, 8);
 
             mailService.sendMailForEmail(email, uuid);
             cacheConfig.putValue(email, uuid);
+
             return true;
 
         } else {
 
-            System.out.println("존재하는 이메일 입니다");
             return false;
         }
 
@@ -155,9 +153,11 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public boolean validateCode(String email, String mailValidateKey) {
         if (cacheConfig.getValue(email) == null || !cacheConfig.getValue(email).equals(mailValidateKey)) {
+
             return false;
         } else {
-            System.out.println("good");
+
+
             return true;
         }
     }
@@ -169,7 +169,7 @@ public class MemberServiceImpl implements MemberService {
 
         if (!updateInfo.getPassword().isEmpty()) {
             member.saveProfile(updateInfo.getName(), PassEncode.encode(updateInfo.getPassword()));
-            System.out.println("저장된 memberEntity ======" + member);
+
         } else {
             member.saveProfile(updateInfo.getName(), member.getPassword());
         }
