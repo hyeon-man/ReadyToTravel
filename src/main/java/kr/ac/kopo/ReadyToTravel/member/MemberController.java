@@ -42,10 +42,13 @@ public class MemberController {
     }
 
     @GetMapping("/removerMember/{memberNum}")
-    public void delete(@PathVariable long memberNum) {
+    public void delete(@PathVariable long memberNum, HttpSession session) {
 
         service.removeMember(memberNum);
+
+        session.removeAttribute("memberDTO");
     }
+
 
     @GetMapping("/initPassword")
     public String initPassword() {

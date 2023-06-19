@@ -63,6 +63,31 @@ document.addEventListener("DOMContentLoaded", function() {
         document.body.style.overflow = "auto"; // Enable scrolling on the body
     });
 });
+
+
+//회원탈퇴
+const removeMemberButton = document.querySelector('.button2');
+removeMemberButton.addEventListener('click', function () {
+    if (confirm( "정말로 회원탈퇴를 진행하시겠습니까?")) {
+        fetch('/member/removerMember/' + loginMemberNum, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => response.text())
+            .then(data => {
+
+                window.location.replace("/");
+            })
+            .catch(error => {
+                // 요청이 실패했을 때의 동작
+                console.error('Error:', error);
+            });
+    } else {
+        console.log("noRemoverMember")
+    }
+});
 /*
 //모달 여행지
 document.addEventListener("DOMContentLoaded", function() {
@@ -193,7 +218,7 @@ getGroupList().then(data => {
                 groupEditTr.appendChild(groupEditPhoneNum);
 
                 const groupEditDeleteTd = document.createElement('td');
-                if (member.num == data.groupLeader) {
+                if (loginMemberNum == data.groupLeader) {
                     groupEditDeleteTd.textContent = "";
                 } else {
                     const groupEditDeleteButton = document.createElement('button');
