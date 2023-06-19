@@ -1,7 +1,9 @@
 package kr.ac.kopo.ReadyToTravel.util;
 
+import kr.ac.kopo.ReadyToTravel.board.BoardRepository;
 import kr.ac.kopo.ReadyToTravel.entity.MemberEntity;
 import kr.ac.kopo.ReadyToTravel.entity.PlaceEntity;
+import kr.ac.kopo.ReadyToTravel.entity.board.BoardEntity;
 import kr.ac.kopo.ReadyToTravel.member.MemberRepository;
 import kr.ac.kopo.ReadyToTravel.root.PlaceRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -15,10 +17,12 @@ import java.util.List;
 public class SampleDataLoader implements CommandLineRunner {
     private final PlaceRepository placeRepository;
     private final MemberRepository memberRepository;
+    private final BoardRepository boardRepository;
 
-    public SampleDataLoader(PlaceRepository placeRepository, MemberRepository memberRepository) {
+    public SampleDataLoader(PlaceRepository placeRepository, MemberRepository memberRepository, BoardRepository boardRepository) {
         this.placeRepository = placeRepository;
         this.memberRepository = memberRepository;
+        this.boardRepository = boardRepository;
     }
 
     @Override
@@ -229,7 +233,7 @@ public class SampleDataLoader implements CommandLineRunner {
         memberEntities.add(jooSeon);
 
         MemberEntity kangWon = MemberEntity.builder()
-                .email("ekdrms5153@naver.com")
+                .email("kangWon@naver.com")
                 .memberId("admin4")
                 .name("신강원")
                 .password("1ARVn2Auq2/WAqx2gNrL+q3RNjAzXpUfCXrzkA6d4Xa22yhRLy4AC50E+6UTPoscbo31nbOoq51gvkuXzJ6B2w==")
@@ -239,7 +243,131 @@ public class SampleDataLoader implements CommandLineRunner {
                 .build();
         memberEntities.add(kangWon);
 
+        List<BoardEntity> boardEntities = new ArrayList<>();
+        BoardEntity board1 = BoardEntity.builder()
+                .boardName("환상의 섬, 제주도 여행")
+                .boardContent("제주도는 한국에서 가장 인기 있는 여행지 중 하나입니다. 황금모래로 이루어진 아름다운 해변, 신비로운 용암 동굴, 그리고 맑은 공기와 아름다운 자연 풍경이 돋보이는 풍부한 산악지대 등 다양한 관광 명소를 제공합니다. 또한, 특색 있는 제주도의 음식과 문화를 체험할 수 있는 장소들도 많이 있습니다. 제주도로의 여행은 자연과 문화를 동시에 즐길 수 있는 멋진 경험이 될 것입니다.")
+                .boardDateCreate(new Date())
+                .boardWriter(hyeonMin)
+                .build();
+        boardEntities.add(board1);
+
+        BoardEntity board2 = BoardEntity.builder()
+                .boardName("충주로 떠나는 역사와 자연의 여행")
+                .boardContent("충주는 역사적인 유적과 아름다운 자연 경관이 어우러진 매력적인 여행지입니다. 청주호와 남한강이 충주를 감싸고 있어서 물 관련 여행을 즐기기에도 좋습니다. 또한, 충주에는 성심당과 국립충주박물관과 같은 역사적인 유적지도 많이 있어서 문화적인 즐거움도 함께 누릴 수 있습니다. 충주로의 여행은 역사와 자연을 동시에 체험할 수 있는 특별한 경험이 될 것입니다.")
+                .boardDateCreate(new Date())
+                .boardWriter(kangWon)
+                .build();
+        boardEntities.add(board2);
+
+        BoardEntity board3 = BoardEntity.builder()
+                .boardName("포항 해양도시에서 즐기는 바다 여행")
+                .boardContent("포항은 매력적인 해양 도시로 유명합니다. 넓은 해변과 아름다운 바다 풍경을 감상할 수 있는 장소가 많이 있습니다. 특히, 경포대는 그 유명한 관광 명소 중 하나로, 맑은 날에는 일출과 일몰을 함께 경험할 수 있는 특별한 장소입니다. 또한, 포항에는 다양한 해양 스포츠를 즐길 수 있는 시설도 많아서 물의 즐거움을 만끽할 수 있습니다. 포항으로의 여행은 바다에서의 여유로운 시간과 함께 휴식과 즐거움을 느낄 수 있는 좋은 기회가 될 것입니다.")
+                .boardDateCreate(new Date())
+                .boardWriter(jooSeon)
+                .build();
+        boardEntities.add(board3);
+
+        BoardEntity board4 = BoardEntity.builder()
+                .boardName("대전에서 만나는 과학과 문화의 도시")
+                .boardContent("대전은 과학과 문화의 중심지로 알려진 도시입니다. 다양한 과학 박물관과 연구소, 전시관이 위치해 있어 과학에 대한 흥미로운 경험을 할 수 있습니다. 대전 EXPO 공원은 그 중에서도 유명한 관광 명소로, 다양한 전시와 체험 프로그램을 통해 과학과 미래에 대한 흥미를 자극합니다. 또한, 대전에는 문화와 예술을 즐길 수 있는 공연장과 박물관, 미술관 등도 많이 있습니다. 대전으로의 여행은 지적인 즐거움과 예술적 감동을 동시에 느낄 수 있는 멋진 경험이 될 것입니다.")
+                .boardDateCreate(new Date())
+                .boardWriter(jaeHyeon)
+                .build();
+        boardEntities.add(board4);
+
+        BoardEntity board5 = BoardEntity.builder()
+                .boardName("자연과 즐거움이 어우러진 강릉 여행")
+                .boardContent("강릉은 아름다운 자연 경관과 다양한 관광 명소로 유명한 도시입니다. 대한민국 최고의 해변인 남이섬과 명품 산수화로 유명한 오죽헌, 그리고 신선한 해산물을 맛볼 수 있는 강릉시장 등 다양한 장소를 방문할 수 있습니다. 또한, 강릉은 동해바다에서 서핑이나 해양레포츠를 즐길 수 있는 최적의 장소이기도 합니다. 자연과 즐거움이 어우러진 강릉으로의 여행은 힐링과 즐거움을 동시에 느낄 수 있는 멋진 경험이 될 것입니다.")
+                .boardDateCreate(new Date())
+                .boardWriter(kangWon)
+                .build();
+        boardEntities.add(board5);
+
+        BoardEntity board6 = BoardEntity.builder()
+                .boardName("고성, 자연 속의 평화와 아름다움")
+                .boardContent("고성은 강원도의 아름다운 자연 속에 위치한 평화로운 도시입니다. 청정한 산과 강, 그리고 푸른 바다가 어우러진 풍경은 매력적입니다. 여기에서는 다양한 자연 관광지를 즐길 수 있습니다. 고성 강문해변에서는 해수욕과 해돋이를 즐길 수 있으며, 고성 내동선사유적지에서는 고려시대의 역사와 문화를 체험할 수 있습니다. 또한, 고성은 맛있는 해산물과 강원도 특산품을 맛볼 수 있는 맛집과 시장도 많이 있습니다. 고성으로의 여행은 평화로운 자연과 풍부한 맛과 문화를 경험할 수 있는 특별한 시간이 될 것입니다.")
+                .boardDateCreate(new Date())
+                .boardWriter(jaeHyeon)
+                .build();
+        boardEntities.add(board6);
+
+        BoardEntity board7 = BoardEntity.builder()
+                .boardName("인천의 매력을 느끼다")
+                .boardContent("인천은 역사와 현대적인 도시의 매력이 공존하는 도시입니다. 인천 차이나타운에서는 중국 문화와 음식을 즐길 수 있으며, 송도 센트럴파크에서는 시원한 바다 풍경과 함께 산책을 즐길 수 있습니다. 또한, 인천 대공원에서는 자연과 놀이시설을 함께 즐길 수 있으며, 인천 테마파크에서는 다양한 엔터테인먼트를 즐길 수 있습니다. 인천으로의 여행은 다채로운 매력과 특색 있는 문화를 경험할 수 있는 멋진 시간이 될 것입니다.")
+                .boardDateCreate(new Date())
+                .boardWriter(hyeonMin)
+                .build();
+        boardEntities.add(board7);
+
+        BoardEntity board8 = BoardEntity.builder()
+                .boardName("포천의 자연과 역사를 만나다")
+                .boardContent("포천은 아름다운 자연 경관과 풍부한 역사 유적으로 유명한 여행지입니다. 포천 호수공원에서는 신선한 공기를 마시며 산책을 즐길 수 있으며, 포천 스카이워크에서는 아름다운 전망을 감상할 수 있습니다. 또한, 포천 소리체험박물관에서는 소리와 음악에 대한 색다른 체험을 할 수 있으며, 포천 성지숲에서는 조용한 시간을 보낼 수 있습니다. 포천으로의 여행은 자연 속에서 힐링하며 역사와 문화를 함께 체험할 수 있는 멋진 여행이 될 것입니다.")
+                .boardDateCreate(new Date())
+                .boardWriter(jooSeon)
+                .build();
+        boardEntities.add(board8);
+
+
+        BoardEntity board9 = BoardEntity.builder()
+                .boardName("청주에서 즐기는 문화와 맛")
+                .boardContent("청주는 다양한 문화와 맛을 즐길 수 있는 도시로 알려져 있습니다. 청주 박물관에서는 지역의 역사와 문화를 알아볼 수 있으며, 청주 성곽에서는 아름다운 전망을 감상할 수 있습니다. 또한, 청주의 맛집과 음식 문화를 체험할 수 있는 곳들도 많이 있습니다. 청주 향교는 전통적인 건물과 문화를 감상할 수 있는 장소로, 한국의 역사와 전통에 대해 알아갈 수 있습니다. 청주로의 여행은 다양한 맛과 문화를 즐기며 특별한 경험을 만들어갈 수 있는 멋진 여행이 될 것입니다.")
+                .boardDateCreate(new Date())
+                .boardWriter(kangWon)
+                .build();
+        boardEntities.add(board9);
+
+        BoardEntity board10 = BoardEntity.builder()
+                .boardName("자연의 아름다움을 느낄 수 있는 삼척")
+                .boardContent("삼척은 자연의 아름다움과 다양한 관광 명소로 유명한 도시입니다. 삼척 바다는 푸른 물과 아름다운 해안선이 돋보이며, 해수욕과 해양 스포츠를 즐길 수 있습니다. 또한, 삼척의 산과 계곡은 등산과 자연 감상을 즐길 수 있는 최적의 장소입니다. 삼척의 랜드마크인 삼척대교는 아름다운 경치를 감상할 수 있는 곳으로, 멋진 사진을 찍을 수 있습니다. 삼척으로의 여행은 자연 속에서 힐링하고 여유를 누릴 수 있는 특별한 경험을 선사해줄 것입니다.")
+                .boardDateCreate(new Date())
+                .boardWriter(jaeHyeon)
+                .build();
+        boardEntities.add(board10);
+
+        BoardEntity board11 = BoardEntity.builder()
+                .boardName("문화와 역사의 도시, 세종")
+                .boardContent("세종은 한국의 문화와 역사를 체험할 수 있는 도시입니다. 한글의 발명자인 세종대왕을 기리기 위해 만들어진 도시로, 세종대왕 기념관이 위치해 있습니다. 또한, 세종은 문화와 예술의 중심지로서 다양한 공연장, 미술관, 박물관 등이 있어 예술을 즐길 수 있는 장소들이 많습니다. 세종으로의 여행은 한국의 역사와 문화를 체험하며 깊이 있고 의미 있는 여행을 즐길 수 있을 것입니다.")
+                .boardDateCreate(new Date())
+                .boardWriter(hyeonMin)
+                .build();
+        boardEntities.add(board11);
+
+        BoardEntity board12 = BoardEntity.builder()
+                .boardName("역사와 문화가 어우러진 천안")
+                .boardContent("천안은 역사와 문화가 어우러진 매력적인 도시입니다. 천안의 대표적인 관광지로는 천안행궁과 병천면세점이 있습니다. 천안행궁은 조선시대 왕실의 거처로서 역사적인 가치를 지니고 있으며, 병천면세점은 쇼핑을 즐길 수 있는 명소입니다. 또한, 천안에는 다양한 문화예술 공연장과 박물관, 전시관 등도 있어 예술과 문화를 즐길 수 있는 장소들이 많습니다. 천안으로의 여행은 역사와 문화를 만끽하며 특별한 경험을 할 수 있을 것입니다.")
+                .boardDateCreate(new Date())
+                .boardWriter(kangWon)
+                .build();
+        boardEntities.add(board12);
+
+        BoardEntity board13 = BoardEntity.builder()
+                .boardName("자연과 산책로로 떠나는 당진 여행")
+                .boardContent("당진은 아름다운 자연과 다양한 산책로로 유명한 여행지입니다. 당진 해안도로는 해안 풍경과 함께 산책과 자전거 타기를 즐길 수 있는 멋진 장소입니다. 또한, 당진의 자연 속에 위치한 호수와 공원들은 휴식과 여유를 즐길 수 있는 최적의 장소입니다. 당진으로의 여행은 자연 속에서 힐링과 즐거움을 동시에 느낄 수 있는 멋진 경험이 될 것입니다.")
+                .boardDateCreate(new Date())
+                .boardWriter(hyeonMin)
+                .build();
+        boardEntities.add(board13);
+
+        BoardEntity board14 = BoardEntity.builder()
+                .boardName("해변과 해산물로 맛보는 부산 여행")
+                .boardContent("부산은 아름다운 해변과 풍부한 해산물로 유명한 도시입니다. 해운대, 광안리, 동백섬 등 부산의 해변은 매력적인 휴양지로 알려져 있습니다. 또한, 부산은 싱싱한 해산물을 맛볼 수 있는 다양한 식당과 시장이 있어 미식가들에게도 좋은 선택지입니다. 부산으로의 여행은 바다와 해산물을 즐기며 편안한 시간을 보낼 수 있는 멋진 경험을 선사할 것입니다.")
+                .boardDateCreate(new Date())
+                .boardWriter(jooSeon)
+                .build();
+        boardEntities.add(board14);
+
+        BoardEntity board15 = BoardEntity.builder()
+                .boardName("다채로운 문화와 현대적인 도시의 매력, 서울")
+                .boardContent("서울은 다채로운 문화와 현대적인 도시의 매력으로 많은 이들에게 사랑받는 여행지입니다. 궁궐과 전통 시장, 현대적인 쇼핑몰과 거리 등 다양한 관광 명소를 제공합니다. 또한, 서울은 한국의 역사와 문화를 체험할 수 있는 박물관과 전시관도 많이 있어 학문적인 즐거움을 느낄 수 있습니다. 서울로의 여행은 다양한 매력과 활동을 즐길 수 있는 멋진 경험을 선사할 것입니다.")
+                .boardDateCreate(new Date())
+                .boardWriter(jaeHyeon)
+                .build();
+        boardEntities.add(board15);
+
+
         placeRepository.saveAll(placeList);
         memberRepository.saveAll(memberEntities);
+        boardRepository.saveAll(boardEntities);
     }
 }

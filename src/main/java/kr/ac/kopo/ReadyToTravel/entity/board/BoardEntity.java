@@ -27,7 +27,7 @@ public class BoardEntity {
     @Column
     private String boardName;
 
-    @Column
+    @Column(length = 500)
     private String boardContent;
 
     @Column

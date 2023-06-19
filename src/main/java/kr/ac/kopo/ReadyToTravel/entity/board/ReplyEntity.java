@@ -27,7 +27,7 @@ public class ReplyEntity {
     private Date writeDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "board_num", nullable = false)
+    @JoinColumn(name = "board_num")
     private BoardEntity boardEntity;
 
     @OneToOne(fetch = FetchType.EAGER)

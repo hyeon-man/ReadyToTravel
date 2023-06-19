@@ -25,7 +25,6 @@ public class GroupServiceImpl implements GroupService {
     private final GroupCustomRepository groupCustomRepository;
 
     private final PlanCustomRepository planCustomRepository;
-
     public GroupServiceImpl(GroupRepository groupRepository, GroupMembershipRepository groupMembershipRepository, InviteUrlRepository inviteUrlRepository, MemberRepository memberRepository, GroupCustomRepository groupCustomRepository, PlanCustomRepository planCustomRepository) {
         this.groupRepository = groupRepository;
         this.groupMembershipRepository = groupMembershipRepository;
@@ -64,20 +63,21 @@ public class GroupServiceImpl implements GroupService {
         // 초대 URL로 Invite Entity 조회
         InviteEntity invite = inviteUrlRepository.findByInviteURL(inviteURL);
 
-        if (invite == null){
-            System.out.println("존재하지 않는 코드");
-        }else if (invite.getExpirationDate().before(new Date())){
-            //초대 코드가 만료 되었으면 처리
+        if (invite == null) {
+            System.out.println("존재하지 않는 초대 코드");
 
-            //기존 invite 코드 삭제 후, 재생성
+        } else if (invite.getExpirationDate().before(new Date())) {
+            // 초대 코드가 만료 되었으면 처리
+
+            // 기존 invite 코드 삭제 후, 재생성
             inviteUrlRepository.deleteById(invite.getNum());
             generateInviteCode(invite.getGroupEntity().getGroupNum());
-        }else {
+        } else {
             GroupMembership findMembership = groupMembershipRepository
                     .findByGroup_GroupNumAndMember_Num(invite.getGroupEntity().getGroupNum(), memberNum);
 
             if (findMembership == null) {
-                //GroupMembership이 존재하지 않으면 새로 생성하여 그룹에 멤버 추가
+                // GroupMembership이 존재하지 않으면 새로 생성하여 그룹에 멤버 추가
                 GroupMembership membership = GroupMembership.builder()
                         .group(invite.getGroupEntity())
                         .member(MemberEntity.builder().num(memberNum).build())
@@ -93,7 +93,7 @@ public class GroupServiceImpl implements GroupService {
     @Override
     @Transactional
     public void removeMember(long groupNum, long memberNum) {
-        System.out.println("삭제 요청 왔음");
+
         groupMembershipRepository.deleteByGroup_GroupNumAndMember_Num(groupNum, memberNum);
     }
 
@@ -115,11 +115,13 @@ public class GroupServiceImpl implements GroupService {
         //Group PK를 통한 인바이트 엔티티를 조회
         InviteEntity invite = inviteUrlRepository.findByGroupEntity_GroupNum(groupNum);
 
+        //만약에 조회 해온 invete가 null일 때
         if (invite == null) {
-
+            //uuid 생성
             String randomUUID = UUID.randomUUID().toString().substring(0, 8);
             System.out.println(randomUUID);
 
+            //만료 일자 생성 기본값은 현재 날짜 기준 + 1
             Calendar cal = Calendar.getInstance();
             cal.setTime(new Date());
             cal.add(Calendar.DATE, 1);
@@ -130,11 +132,12 @@ public class GroupServiceImpl implements GroupService {
                     .groupEntity(GroupEntity.builder().groupNum(groupNum).build())
                     .expirationDate(expirationDate)
                     .build();
+            //DB Save 후 url만 리턴
             inviteUrlRepository.save(createInvite);
 
             return createInvite.getInviteURL();
         }
-
+        //null이 아니면 (존재하는게 있으면)
         return invite.getInviteURL();
     }
 
