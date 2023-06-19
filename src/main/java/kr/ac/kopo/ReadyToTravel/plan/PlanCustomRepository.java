@@ -10,4 +10,5 @@ public interface PlanCustomRepository {
     PlanDTO memberAndPlanInfo(Long num);
 
     List<PlanDTO> smallPlanInfo(long memberNum);
+
 }

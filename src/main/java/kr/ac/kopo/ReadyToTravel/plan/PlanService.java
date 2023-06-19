@@ -16,4 +16,6 @@ public interface PlanService {
     void removePlan(Long planNum);
 
     PlanDTO viewPlan(Long planNum);
+
+    Long findLeader(Long planNum);
 }

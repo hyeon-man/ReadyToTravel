@@ -15,7 +15,6 @@
 </head>
 <body>
 <div class="container">
-
     <div class="navigation">
         <ul>
             <li class="logo">
@@ -44,16 +43,15 @@
                 </a>
             </li>
 
-            <!-- TODO href 걸어줘야함 -->
             <li class="plan_page">
-                <a href="/">
+                <a href="/board/list">
                         <span class="icon">
                         </span>
                     <span class="title">후기 게시판</span>
                 </a>
             </li>
 
-            <li class="group_page">
+            <li class="group_page" th:if="${member == leader}">
                 <a id="planUpdate">
                         <span class="icon">
                         </span>
@@ -61,7 +59,7 @@
                 </a>
             </li>
 
-            <li class="group_page">
+            <li class="group_page" th:if="${member == leader}">
                 <a id="planDelete">
                         <span class="icon">
                         </span>

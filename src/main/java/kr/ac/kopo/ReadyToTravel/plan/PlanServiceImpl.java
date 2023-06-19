@@ -40,6 +40,11 @@ public class PlanServiceImpl implements PlanService {
     }
 
     @Override
+    public Long findLeader(Long planNum) {
+        return planRepository.findByNum(planNum).getLeaderNum().getNum();
+    }
+
+    @Override
     public PlanDTO planInform(Long num) {
 
         return planCustomRepository.memberAndPlanInfo(num);

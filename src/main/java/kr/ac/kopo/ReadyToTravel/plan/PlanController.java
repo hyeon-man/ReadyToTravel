@@ -26,8 +26,13 @@ public class PlanController {
 
 
     @GetMapping("/viewPlan/{planNum}")
+    public String viewPlan(@PathVariable Long planNum, @SessionAttribute MemberDTO memberDTO, Model model) {
+        Long memberNum = memberDTO.getNum();
+        model.addAttribute("member", memberNum);
 
-    public String viewPlan(@PathVariable Long planNum) {
+        Long leaderNum = planService.findLeader(planNum);
+        model.addAttribute("leader", leaderNum);
+
         return "/plan/viewPlan";
     }
 
@@ -82,7 +87,9 @@ public class PlanController {
 
     @GetMapping("/removePlan/{planNum}")
     public String removePlan(@PathVariable Long planNum) {
+
         planService.removePlan(planNum);
+
         return "redirect:/";
     }
 }
