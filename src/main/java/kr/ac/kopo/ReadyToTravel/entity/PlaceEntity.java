@@ -22,6 +22,4 @@ public class PlaceEntity {
     @Column(length = 500)
     private String comment;
     private String fileName;
-
-
 }

@@ -98,6 +98,11 @@ public class BoardServiceImpl implements BoardService {
         return boardCustomRepository.boardList(pageable);
     }
 
+    @Override
+    public List<BoardDTO> myBoardList(Long num) {
+        return boardCustomRepository.myBoardList(num);
+    }
+
 
     @Override
     @Transactional

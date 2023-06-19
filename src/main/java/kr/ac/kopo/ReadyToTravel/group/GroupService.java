@@ -18,5 +18,7 @@ public interface GroupService {
     String generateInviteCode(long groupNum);
 
     GroupDTO groupInMember(long groupNum);
+
+    GroupDTO myGroupList(Long memberNum);
 }
 

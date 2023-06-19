@@ -73,4 +73,16 @@ public class BoardCustomRepositoryImpl implements BoardCustomRepository {
 
         return new PageImpl<>(content, pageable, total);
     }
+
+    @Override
+    public List<BoardDTO> myBoardList(Long num) {
+        return queryFactory.select(Projections.fields(BoardDTO.class,
+                        boardEntity.boardNum.as("boardNum"),
+                        boardEntity.boardName.as("boardName"),
+                        boardEntity.boardDateCreate.as("boardDateCreate")))
+                .from(boardEntity)
+                .leftJoin(boardEntity.boardWriter, memberEntity)
+                .where(boardEntity.boardWriter.num.eq(num))
+                .fetch();
+    }
 }

@@ -15,4 +15,6 @@ public interface BoardService {
     BoardDTO smallDetail(Long boardNum);
 
     Page<BoardDTO> boardList(Pageable pageable);
+
+    List<BoardDTO> myBoardList(Long num);
 }

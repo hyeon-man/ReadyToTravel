@@ -25,7 +25,6 @@ public class GroupServiceImpl implements GroupService {
     private final GroupCustomRepository groupCustomRepository;
 
     private final PlanCustomRepository planCustomRepository;
-
     public GroupServiceImpl(GroupRepository groupRepository, GroupMembershipRepository groupMembershipRepository, InviteUrlRepository inviteUrlRepository, MemberRepository memberRepository, GroupCustomRepository groupCustomRepository, PlanCustomRepository planCustomRepository) {
         this.groupRepository = groupRepository;
         this.groupMembershipRepository = groupMembershipRepository;
@@ -120,6 +119,7 @@ public class GroupServiceImpl implements GroupService {
         if (invite == null) {
             //uuid 생성
             String randomUUID = UUID.randomUUID().toString().substring(0, 8);
+            System.out.println(randomUUID);
 
             //만료 일자 생성 기본값은 현재 날짜 기준 + 1
             Calendar cal = Calendar.getInstance();
@@ -152,7 +152,20 @@ public class GroupServiceImpl implements GroupService {
         PlanDTO plan = planCustomRepository.findByNum(group.getPlanNum());
         group.addPlan(plan);
 
+
         return group;
+    }
+
+    @Override
+    public GroupDTO myGroupList(Long memberNum) {
+
+        GroupDTO myGroupList = groupCustomRepository.myGroupNum(memberNum);
+        GroupDTO realGroup = groupCustomRepository.groupInfo(myGroupList.getNum());
+        System.out.println("realGroup = " + realGroup.getPlan());
+
+        realGroup.addMember(groupCustomRepository.groupInMember(realGroup.getNum()));
+        return realGroup;
+
     }
 
 }

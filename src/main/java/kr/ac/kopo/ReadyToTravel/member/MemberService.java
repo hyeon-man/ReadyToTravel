@@ -12,8 +12,6 @@ public interface MemberService {
 
     void singUp(MemberDTO memberDTO);
 
-    void removeMember(Long num);
-
     MemberDTO login(MemberDTO memberDTO);
 
     boolean initPass(String id, String email) throws MessagingException;
@@ -21,7 +19,6 @@ public interface MemberService {
     boolean sendEmailCode(String email);
 
     boolean validateCode(String email, String mailValidateKey);
-
 
     void saveAttach(Long num, MultipartFile attach);
 

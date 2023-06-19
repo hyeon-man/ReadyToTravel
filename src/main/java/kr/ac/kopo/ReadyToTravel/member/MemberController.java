@@ -1,14 +1,15 @@
 package kr.ac.kopo.ReadyToTravel.member;
 
 import kr.ac.kopo.ReadyToTravel.board.BoardService;
+import kr.ac.kopo.ReadyToTravel.dto.BoardDTO;
 import kr.ac.kopo.ReadyToTravel.dto.GroupDTO;
 import kr.ac.kopo.ReadyToTravel.dto.MemberDTO;
 import kr.ac.kopo.ReadyToTravel.dto.plan.PlanDTO;
+import kr.ac.kopo.ReadyToTravel.group.GroupService;
 import kr.ac.kopo.ReadyToTravel.plan.PlanService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpSession;
@@ -21,10 +22,13 @@ public class MemberController {
     private final BoardService boardService;
     private final PlanService planService;
 
-    public MemberController(MemberService service, BoardService boardService, PlanService planService) {
+    private final GroupService groupService;
+
+    public MemberController(MemberService service, BoardService boardService, PlanService planService, GroupService groupService) {
         this.service = service;
         this.boardService = boardService;
         this.planService = planService;
+        this.groupService = groupService;
     }
 
     @GetMapping("/checkId/{id}")
@@ -35,12 +39,6 @@ public class MemberController {
         } else {
             return "FAIL";
         }
-    }
-
-    @GetMapping("/removerMember/{memberNum}")
-    public void delete(@PathVariable long memberNum) {
-
-        service.removeMember(memberNum);
     }
 
     @GetMapping("/initPassword")
@@ -130,7 +128,6 @@ public class MemberController {
         MemberDTO member = service.memberInfoByNum(memberNum);
         model.addAttribute("memberDTO", member);
 
-//        List<PlanDTO> plans = planService.smallPlanInfo(memberNum);
 
 
         return "member/profile";
@@ -149,4 +146,31 @@ public class MemberController {
         return "redirect:/member/profile";
     }
 
+    @ResponseBody
+    @GetMapping("/profile/boardList")
+    public List<BoardDTO> boardList(@SessionAttribute MemberDTO memberDTO){
+        return boardService.myBoardList(memberDTO.getNum());
+    }
+
+    @ResponseBody
+    @GetMapping("/profile/groupList")
+    public GroupDTO groupList(@SessionAttribute MemberDTO memberDTO) {
+        return groupService.myGroupList(memberDTO.getNum());
+    }
+
+    @GetMapping("/profile/removeMemberInGroup/{groupNum}")
+    @ResponseBody
+    public String removeMemberInGroup(@PathVariable Long groupNum, @RequestParam Long memberNum) {
+        System.out.println("요청받은 그룹번호: " + groupNum + ", 요청받은 멤버 번호: " + memberNum);
+         groupService.removeMember(groupNum, memberNum);
+
+        return "deleteSucces";
+    }
+
+
+    @ResponseBody
+    @GetMapping("/profile/calendar")
+    public PlanDTO calendarPlanInfo(@SessionAttribute MemberDTO memberDTO){
+        return planService.findPlan(memberDTO.getNum());
+    }
 }

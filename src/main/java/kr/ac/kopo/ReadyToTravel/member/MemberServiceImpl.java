@@ -8,6 +8,7 @@ import kr.ac.kopo.ReadyToTravel.util.PassEncode;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -49,6 +50,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void singUp(MemberDTO memberDTO) {
 
+
         memberRepository.save(MemberEntity
                 .builder()
                 .memberId(memberDTO.getMemberId())
@@ -59,20 +61,9 @@ public class MemberServiceImpl implements MemberService {
                 .phoneNum(memberDTO.getPhoneNum())
                 .build());
 
+//        memberDTO.setSignupDate(new Date());
 //        MemberEntity entity = memberDTO.convertToEntity(memberDTO);
 //        entity.setPassword(PassEncode.encode(entity.getPassword()));
-//        memberRepository.save(entity);
-    }
-
-    @Override
-    public void removeMember(Long num) {
-        Optional<MemberEntity> optionalMemberEntity = memberRepository.findById(num);
-
-        if (optionalMemberEntity.isPresent()) {
-            memberRepository.deleteById(num);
-        } else {
-            System.out.println(num + "에 해당하는 회원이 없습니다");
-        }
     }
 
     @Override
@@ -167,7 +158,7 @@ public class MemberServiceImpl implements MemberService {
 
         MemberEntity member = memberRepository.findByNum(num);
 
-        if (!updateInfo.getPassword().isEmpty()) {
+        if (StringUtils.hasText(updateInfo.getPassword())){
             member.saveProfile(updateInfo.getName(), PassEncode.encode(updateInfo.getPassword()));
 
         } else {
@@ -187,10 +178,10 @@ public class MemberServiceImpl implements MemberService {
         MemberEntity member = memberRepository.findByNum(num);
         String filename = FileUpload.fileUpload(attach, 2);
 
-        if (member.getProfileIMG() == null) {
+        if (member.getProfileIMG()==null){
             member.saveProfileIMG(filename);
 
-        } else {
+        }else {
             FileUpload.fileRemove(member.getProfileIMG(), 2);
             member.saveProfileIMG(filename);
 

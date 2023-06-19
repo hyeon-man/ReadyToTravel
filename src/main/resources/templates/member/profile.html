@@ -8,9 +8,11 @@
     <!-- ======= Styles ====== -->
     <link rel="stylesheet" href="/css/profile.css">
     <link rel="shortcut icon" href="/image/RTT-favicon.png" type="image/x-icon">
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
+    <!-- fullcalendar CDN -->
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/main.min.css' rel='stylesheet' />
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/main.min.js'></script>
+    <!-- fullcalendar 언어 CDN -->
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/locales-all.min.js'></script>
 </head>
 
 <body>
@@ -21,7 +23,6 @@
             <li class="logo">
                 <a href="/">
                         <span class="mainicon">
-                            <!-- <img src="/image/rttlogo.png" style="width: 45px; height: 45px;"> -->
                             <img src="/image/rttlogo.png" style="width: 45px; height: 45px;">
                         </span>
                     <span class="title">Ready To Travel</span>
@@ -46,19 +47,19 @@
                 </a>
             </li>
 
-            <li class="plan_page">
+            <!--<li class="plan_page">
                 <a>
                         <span class="icon">
                             <ion-icon name="calendar-number-outline"></ion-icon>
                         </span>
                     <span class="title">계획페이지</span>
                 </a>
-            </li>
+            </li>-->
 
             <li class="review_page">
                 <a>
                         <span class="icon">
-                            <ion-icon name="help-outline"></ion-icon>
+                            <ion-icon name="newspaper-outline"></ion-icon>
                         </span>
                     <span class="title">나의 여행 후기</span>
                 </a>
@@ -72,8 +73,9 @@
             <div class="toggle">
                 <ion-icon name="menu-outline"></ion-icon>
             </div>
-             <div class="user"><img th:src="${'/img/' + memberDTO.profileIMG}"/></div>
-<!--            <div class="user"><img src="image/ca.jfif"></div>-->
+            <div class="user">
+                <img th:src="${memberDTO.profileIMG != null ? '/img/' + memberDTO.profileIMG : '/img/default.jpg'}"/>
+            </div><!--여기에 유저 이미지-->
         </div>
 
         <!-- ======================= 여행지/ID카드 ================== -->
@@ -87,9 +89,11 @@
                     <div class="id_card_hook"></div>
                     <div class="id_card_holder">
                         <div class="id_card">
-                            <div class="header"><img src="/image/rttlogo.png"></div>
-                             <div class="photo"><img th:src="${'/img/' + memberDTO.profileIMG}"/></div>
-<!--                            <div class="photo"><img src="image/ca.jfif"/></div>-->
+                            <div class="header"><img src="/image/rttlogo.png">
+                            </div>
+                            <div class="photo">
+                                <img th:src="${'/img/' + memberDTO.profileIMG}"/>
+                            </div>
                             <h2 th:text="${memberDTO.name}">회원 이름</h2>
                             <hr>
                             <h3 th:text="${#dates.format(memberDTO.signupDate, 'yyyy-MM-dd')}">회원 가입일</h3>
@@ -104,13 +108,15 @@
                                 <ion-icon name="close-outline"></ion-icon>
                             </div>
                         </div>
+
+
                         <h2>프로필 수정</h2>
                         <!-- 이미지 폼태그 -->
                         <form method="post" action="/member/profile/update" enctype="multipart/form-data">
-                            <div class="modal_photo">
+                            <div class="modal_photo ">
                                 <label for="fileUpload">
-                                     <img style="width: 150px; height: 150px; border-radius: 50%; cursor: pointer;"th:src="${'/img/' + memberDTO.profileIMG}">
-<!--                                    <img style="width: 150px; height: 150px; border-radius: 50%; cursor: pointer;" src="image/ca.jfif">-->
+                                    <img style="width: 150px; height: 150px; border-radius: 50%; cursor: pointer;"
+                                         th:src="${'/img/' + memberDTO.profileIMG}">
                                 </label>
                             </div>
                             <div class="fileupload_button">
@@ -169,43 +175,17 @@
                     </div>
                 </div>
             </div>
-            <div id="my_place" class="place_card">
+
+            <div class="calendar_card">
                 <div class="cardHeader">
-                    <h2>나의 여행지</h2>
+                    <h2>캘린더</h2>
                 </div>
-                <div class="my_card my_card2">
-                    <div class="id_card_tag_strip"></div>
-                    <div class="id_card_hook"></div>
-                    <div class="id_card_holder">
-                        <div class="id_card">
-                            <div class="header"><img src="/image/rttlogo.png"></div>
-                            <div class="photo"><img src="/image/busan.jpg"/></div>
-                            <h2 th:text="${memberDTO.name}">지역 이름</h2>
-                            <hr>
-                            <h3 th:text="${#dates.format(memberDTO.signupDate, 'yyyy-MM-dd')}">출발날짜</h3>
-                        </div>
-                    </div>
-                </div>
-                <div id="modal2" class="modal">
-                    <div class="modal-content2">
-                        <div class="modal_header">
-                            <div class="close-button close-button-place">
-                                <ion-icon name="close-outline"></ion-icon>
-                            </div>
-                        </div>
-                        <div class="modal_place_left">
-                            <img style="height: 400px;" src="/image/busan.jpg">
-                        </div>
-                        <div class="modal_place_right">
-                            <h2>대한민국 부산</h2>
-                            <span>부산내용</span>
-                        </div>
-                    </div>
+                <div id='calendar-container' class="calendarSetting">
+                    <div id='calendar'></div>
                 </div>
             </div>
 
-
-            <!-- ================= 컨텐츠 ================ -->
+            <!--@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@그룹 모달@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@-->
             <div id="modal3" class="modal">
                 <div class="modal-content3">
 
@@ -217,10 +197,10 @@
 
                     <div>
                         <h1 style="text-align: center; margin-top:50px;">나의 그룹</h1>
-                        <h3 style="font-size: 25px;text-align: center;">그룹명</h2>
-                            <div style="margin-left: 30px; width: 1130px; margin-top: 30px;">
-                                <p class="modal3-1-text">그룹설명그룹설명그룹설명그룹설명그룹설명그룹설명그룹설명그룹설명그룹설명그룹설명그룹설명그룹설명그룹설명그룹설명그룹설명그룹설명그룹설명그룹설명그룹설명그룹설명그룹설명그룹설명그룹설명그룹설명그룹설명그룹설명그룹설명그룹설명그룹설명그룹설명그룹설명그룹설명그룹설명그룹설명그룹설명그룹설명그룹설명그룹설명그룹설명</p>
-                            </div>
+                        <h3 class="groupName" style="font-size: 25px;text-align: center;"></h3>
+                        <div style="margin-left: 30px; width: 1130px; margin-top: 30px;">
+                            <p class="modal3-1-text"></p>
+                        </div>
                     </div>
                     <div>
                         <div class="right-content">
@@ -230,8 +210,7 @@
                                         구성원
                                     </div>
                                 </div>
-                                <!-- more-button은 세션이 그룹장인사람에게만 노출되야합니다 -->
-                                <div class="more-button"><ion-icon name="ellipsis-vertical-outline"></ion-icon></div>
+                                <div class="more-button" th:data-value="${memberDTO.num}"><ion-icon name="ellipsis-vertical-outline"></ion-icon></div>
                                 <div id="modal3-1" class="modal3-1">
                                     <div class="modal3-1-content">
                                         <table>
@@ -241,52 +220,24 @@
                                                 <th>이름</th>
                                                 <th>이메일</th>
                                                 <th>전화번호</th>
-                                                <th>관리</th>
+                                                <th>삭제</th>
                                             </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody id="groupEditTbody">
                                             <tr>
-                                                <td>santa2909</td>
-                                                <td>황주선</td>
-                                                <td>santa2909@naver.com</td>
-                                                <td>0106351486</td>
-                                                <td><button type="button">삭제</button></td>
+
+                                                <td class="deleteTd"></td>
                                             </tr>
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
                                 <div class="members">
-                                    <img src="https:/images.unsplash.com/photo-1491349174775-aaafddd81942?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=934&amp;q=80" alt="member">
-                                    <div style="flex: 1;">
-                                        <p>아이디</p>
-                                        <p>이름</p>
-                                        <p>이메일</p>
-                                        <p>전화번호</p>
-                                    </div>
-                                    <img src="https://images.unsplash.com/photo-1476657680631-c07285ff2581?ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=2210&amp;q=80" alt="member-2">
-                                    <div style="flex: 1;">
-                                        <p>아이디</p>
-                                        <p>이름</p>
-                                        <p>이메일</p>
-                                        <p>전화번호</p>
-                                    </div>
-                                    <img src="https://images.unsplash.com/photo-1496345875659-11f7dd282d1d?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=2250&amp;q=80" alt="member-3">
-                                    <div style="flex: 1;">
-                                        <p>아이디</p>
-                                        <p>이름</p>
-                                        <p>이메일</p>
-                                        <p>전화번호</p>
-                                    </div>
-                                    <img src="https://images.unsplash.com/photo-1455504490126-80ed4d83b3b9?ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=2250&amp;q=80" alt="member-4">
-                                    <div style="flex: 1;">
-                                        <p>아이디</p>
-                                        <p>이름</p>
-                                        <p>이메일</p>
-                                        <p>전화번호</p>
-                                    </div>
+
+
                                 </div>
                             </div>
+                            <!-- more-button은 세션이 그룹장인사람에게만 노출되야합니다 -->
 
                         </div>
                         <div class="url-area">
@@ -294,10 +245,9 @@
                             <button class="button" id="copyButton">초대코드 복사하기</button>
                         </div>
                     </div>
-
                 </div>
             </div>
-            <div id="modal4" class="modal">
+            <!--<div id="modal4" class="modal">
                 <div class="modal-content4">
                     <div class="modal_header">
                         <div class="close-button close-button-plan">
@@ -306,46 +256,6 @@
                     </div>
                     <h1 style="margin-top: 50px; text-align: center;">나의 계획</h1>
                     <div class="modal_plan">
-                        <table>
-                            <thead>
-                            <tr>
-                                <th>계획 번호</th>
-                                <th>계획 제목</th>
-                                <th>리더명</th>
-                                <th>그룹명</th>
-                                <th>작성날짜</th>
-                            </tr>
-                            </thead>
-
-                            <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td><a href="#">신강원빈과 함께 하는 대전여행</td></a>
-                                <td>신강원</td>
-                                <td>신강원원이</td>
-                                <td>2023-06-12</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td><a href="#">나혼자 첫여행</td></a>
-                                <td>(나자신이름)</td>
-                                <td>(그룹없이혼자면x표시)</td>
-                                <td>2023-06-12</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <div id="modal5" class="modal">
-                <div class="modal-content5">
-                    <div class="modal_header">
-                        <div class="close-button close-button-review">
-                            <ion-icon name="close-outline"></ion-icon>
-                        </div>
-                    </div>
-                    <h1 style="margin-top: 50px; text-align: center;">나의 여행 후기</h1>
-                    <div class="modal_review">
                         <table>
                             <thead>
                             <tr>
@@ -359,16 +269,40 @@
                             <tbody>
                             <tr>
                                 <td>1</td>
-                                <td><a href="#">신강원빈구라임</td></a>
+                                <td><a href="#">신강원빈구라임</a></td>
                                 <td>대전</td>
                                 <td>2023-06-12</td>
                             </tr>
                             <tr>
                                 <td>2</td>
-                                <td><a href="#">신강동원빈구라임</td></a>
+                                <td><a href="#">신강동원빈구라임</a></td>
                                 <td>서울</td>
                                 <td>2023-06-12</td>
                             </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>-->
+            <div id="modal5" class="modal">
+                <div class="modal-content5">
+                    <div class="modal_header">
+                        <div class="close-button close-button-review">
+                            <ion-icon name="close-outline"></ion-icon>
+                        </div>
+                    </div>
+                    <h1 style="margin-top: 50px; text-align: center;">나의 여행 후기</h1>
+                    <div class="modal_review">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>제목</th>
+                                <th>작성날짜</th>
+                            </tr>
+                            </thead>
+
+                            <tbody class="boardListTbody">
+
                             </tbody>
                         </table>
                     </div>
@@ -377,8 +311,6 @@
         </div>
     </div>
 </div>
-
-
 <!-- ====== ionicons ======= -->
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
@@ -387,3 +319,4 @@
 </body>
 
 </html>
+
