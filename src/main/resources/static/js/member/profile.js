@@ -99,48 +99,54 @@ document.addEventListener("DOMContentLoaded", function() {
             // 데이터 처리 함수
         getGroupList().then(data => {
             // memberInfo
-            const titleElement = document.querySelector('.groupName');
-            const titleLinkElement = document.createElement('a');
-            const contentsElement = document.querySelector('.modal3-1-text');
-            const membersContainer = document.querySelector('.members');
+            if (data.num == null){
+                const groupNull = document.querySelector('.description-task');
+                groupNull.textContent = "등록된 그룹이 없습니다."
+            } else {
+                const titleElement = document.querySelector('.groupName');
+                const titleLinkElement = document.createElement('a');
+                const contentsElement = document.querySelector('.modal3-1-text');
+                const membersContainer = document.querySelector('.members');
 
 
-            // 제목 태그에 데이터 추가
-            titleLinkElement.textContent = data.name;
-            titleLinkElement.href = "http://localhost:9060/plan/viewPlan/" + data.planNum;
-            titleElement.appendChild(titleLinkElement);
-            // 컨텐츠에 데이터 추가
+                // 제목 태그에 데이터 추가
+                titleLinkElement.textContent = data.name;
+                titleLinkElement.href = "http://localhost:9060/plan/viewPlan/" + data.planNum;
+                titleElement.appendChild(titleLinkElement);
+                // 컨텐츠에 데이터 추가
 
-            contentsElement.textContent = data.contents;
-            data.memberDTO.forEach(member => {
-                const imgElement = document.createElement('img');
-                membersContainer.appendChild(imgElement);
+                contentsElement.textContent = data.contents;
+                data.memberDTO.forEach(member => {
+                    const imgElement = document.createElement('img');
+                    membersContainer.appendChild(imgElement);
 
-                imgElement.src = "/img/" + member.profileIMG;
-                imgElement.alt = 'Profile Image';
+                    imgElement.src = "/img/" + member.profileIMG;
+                    imgElement.alt = 'Profile Image';
 
-                const memberElement = document.createElement('div');
-                memberElement.className = 'member';
+                    const memberElement = document.createElement('div');
+                    memberElement.className = 'member';
 
-                const memberIdElement = document.createElement('p');
-                memberIdElement.textContent = member.memberId;
+                    const memberIdElement = document.createElement('p');
+                    memberIdElement.textContent = member.memberId;
 
-                const emailElement = document.createElement('p');
-                emailElement.textContent = member.email;
+                    const emailElement = document.createElement('p');
+                    emailElement.textContent = member.email;
 
-                const nameElement = document.createElement('p');
-                nameElement.textContent = member.name;
+                    const nameElement = document.createElement('p');
+                    nameElement.textContent = member.name;
 
-                const phoneNumElement = document.createElement('p');
-                phoneNumElement.textContent = member.phoneNum;
+                    const phoneNumElement = document.createElement('p');
+                    phoneNumElement.textContent = member.phoneNum;
 
-                memberElement.appendChild(memberIdElement);
-                memberElement.appendChild(emailElement);
-                memberElement.appendChild(nameElement);
-                memberElement.appendChild(phoneNumElement);
+                    memberElement.appendChild(memberIdElement);
+                    memberElement.appendChild(emailElement);
+                    memberElement.appendChild(nameElement);
+                    memberElement.appendChild(phoneNumElement);
 
-                membersContainer.appendChild(memberElement);
-            });
+                    membersContainer.appendChild(memberElement);
+                });
+
+            }
 
         });
 
@@ -159,7 +165,6 @@ const moreButton = document.querySelector('.more-button');
 const loginMemberNum = moreButton.dataset.value;
 const modal = document.getElementById('modal3-1');
 getGroupList().then(data => {
-    if (data.groupLeader == loginMemberNum) {
         moreButton.addEventListener('click', function() {
             modal.style.display = 'block';
 
@@ -219,9 +224,6 @@ getGroupList().then(data => {
                 groupEditTbody.appendChild(groupEditTr);
             });
         });
-    }else {
-        moreButton.style.display="none";
-    }
 });
 
 modal.addEventListener('click', function(e) {
@@ -231,7 +233,7 @@ modal.addEventListener('click', function(e) {
 });
 
 
-//모달 계획페이지
+//모달 후기페이지
 document.addEventListener("DOMContentLoaded", function() {
     var liElement = document.querySelector(".review_page");
     var modal = document.getElementById("modal5");
@@ -246,25 +248,30 @@ document.addEventListener("DOMContentLoaded", function() {
 
         getBoardList()
             .then(data => {
-                // 구성원 정보 추가
-                data.forEach(boardList => {
-                    const boardTr = document.createElement('tr');
+                if (data.boardNum == null){
+                    const boardNull = document.querySelector('.modal_review');
+                    boardNull.textContent = "등록된 후기 게시물이 없습니다";
+                } else{
+                    data.forEach(boardList => {
+                        // 후기 게시판 추가
+                        const boardTr = document.createElement('tr');
 
-                    const boardTitle = document.createElement('td');
-                    const baordInfoLink = document.createElement('a');
-                    boardTitle.appendChild(baordInfoLink);
-                    baordInfoLink.textContent = boardList.boardName;
-                    baordInfoLink.href = "/board/info/" + boardList.boardNum;
+                        const boardTitle = document.createElement('td');
+                        const baordInfoLink = document.createElement('a');
+                        boardTitle.appendChild(baordInfoLink);
+                        baordInfoLink.textContent = boardList.boardName;
+                        baordInfoLink.href = "/board/info/" + boardList.boardNum;
 
-                    const boardCreateDate = document.createElement('td');
-                    const createDate = new Date(boardList.boardDateCreate);
-                    const formattedDate = `${createDate.getFullYear()}/${createDate.getMonth() + 1}/${createDate.getDate()}`;
-                    boardCreateDate.textContent = formattedDate;
+                        const boardCreateDate = document.createElement('td');
+                        const createDate = new Date(boardList.boardDateCreate);
+                        const formattedDate = `${createDate.getFullYear()}/${createDate.getMonth() + 1}/${createDate.getDate()}`;
+                        boardCreateDate.textContent = formattedDate;
 
-                    boardTr.appendChild(boardTitle);
-                    boardTr.appendChild(boardCreateDate);
-                    boardListTbody.appendChild(boardTr);
-                });
+                        boardTr.appendChild(boardTitle);
+                        boardTr.appendChild(boardCreateDate);
+                        boardListTbody.appendChild(boardTr);
+                    });
+                }
             });
 
         closeButton.addEventListener("click", function () {
