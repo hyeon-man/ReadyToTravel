@@ -83,6 +83,6 @@ public class PlanController {
     @GetMapping("/removePlan/{planNum}")
     public String removePlan(@PathVariable Long planNum) {
         planService.removePlan(planNum);
-        return "/index";
+        return "redirect:/";
     }
 }

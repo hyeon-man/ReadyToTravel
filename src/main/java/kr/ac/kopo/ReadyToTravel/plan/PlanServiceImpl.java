@@ -106,6 +106,5 @@ public class PlanServiceImpl implements PlanService {
         groupRepository.deleteByPlanNum(planNum);
 
         planRepository.deleteById(planNum);
-
     }
 }

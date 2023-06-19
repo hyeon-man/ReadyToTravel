@@ -17,6 +17,22 @@ window.onload = function () {
     const url = window.location.href;
     const planNum = url.split("/").pop(); // URL에서 마지막 부분 추출
 
+    $('#planUpdate').off().on('click', function () {
+        const a = document.getElementById('planUpdate');
+        a.href = '/plan/updatePlan/' + planNum;
+    });
+
+    $('#planDelete').off().on('click', function () {
+        const a = document.getElementById('planDelete');
+        a.href = '/plan/removePlan/' + planNum;
+        if (confirm("정말 삭제하시겠습니까?")) {
+            alert("삭제되었습니다.")
+        } else {
+            alert("취소되었습니다.")
+            a.href = '/plan/viewPlan/' + planNum;
+        }
+    });
+
     $.ajax({
         type: "GET",
         url: `/plan/getMarker/${planNum}`,//
