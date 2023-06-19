@@ -9,7 +9,7 @@ window.onload = function () {
     map = new Tmapv2.Map("map_div", {
         center: new Tmapv2.LatLng(36.35086524077589, 127.45422567640077), // 지도 초기 좌표
         width: "50%", // 지도의 넓이
-        height: "50%", // 지도의 높이
+        height: "100%", // 지도의 높이
         zoom: 12
     });
 
@@ -41,12 +41,23 @@ window.onload = function () {
             // textContent 값을 정렬
             buttonTexts.sort();
 
+            console.log(buttonTexts);
+
             // 정렬된 값들을 기반으로 버튼을 동적으로 생성하여 추가
             for (const text of buttonTexts) {
-                const dateButton = document.createElement('button');
-                dateButton.textContent = text;
+                const dateButton = document.createElement('a');
+                const appendLi = document.createElement('li');
+                const iconSpan= document.createElement('span');
+                const titleSpan = document.createElement('span');
+                iconSpan.classList = 'icon';
+                appendLi.classList = 'review_page';
+                titleSpan.classList.add('title');
+                titleSpan.textContent = text;
                 dateButton.classList.add('viewBtn');
-                li.appendChild(dateButton);
+                dateButton.appendChild(iconSpan);
+                dateButton.appendChild(titleSpan);
+                appendLi.appendChild(dateButton);
+                li.parentNode.appendChild(appendLi);
             }
 
             $('.viewBtn').off().on('click', function (evt) {
