@@ -41,15 +41,6 @@ public class MemberController {
         }
     }
 
-    @GetMapping("/removerMember/{memberNum}")
-    public void delete(@PathVariable long memberNum, HttpSession session) {
-
-        service.removeMember(memberNum);
-
-        session.removeAttribute("memberDTO");
-    }
-
-
     @GetMapping("/initPassword")
     public String initPassword() {
 
@@ -136,7 +127,6 @@ public class MemberController {
         MemberDTO member = service.memberInfoByNum(memberNum);
         model.addAttribute("memberDTO", member);
 
-//        List<PlanDTO> plans = planService.smallPlanInfo(memberNum);
 
 
         return "member/profile";
@@ -178,8 +168,8 @@ public class MemberController {
 
 
     @ResponseBody
-    @GetMapping("/profile/calander")
-    public PlanDTO calenderPlanInfo(@SessionAttribute MemberDTO memberDTO){
+    @GetMapping("/profile/calendar")
+    public PlanDTO calendarPlanInfo(@SessionAttribute MemberDTO memberDTO){
         return planService.findPlan(memberDTO.getNum());
     }
 }

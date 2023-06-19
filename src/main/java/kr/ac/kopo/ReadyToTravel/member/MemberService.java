@@ -12,8 +12,6 @@ public interface MemberService {
 
     void singUp(MemberDTO memberDTO);
 
-    void removeMember(Long num);
-
     MemberDTO login(MemberDTO memberDTO);
 
     boolean initPass(String id, String email) throws MessagingException;

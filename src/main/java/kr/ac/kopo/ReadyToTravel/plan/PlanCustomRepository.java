@@ -1,5 +1,6 @@
 package kr.ac.kopo.ReadyToTravel.plan;
 
+import kr.ac.kopo.ReadyToTravel.dto.plan.LonLatDTO;
 import kr.ac.kopo.ReadyToTravel.dto.plan.PlanDTO;
 
 import java.util.List;
@@ -11,5 +12,5 @@ public interface PlanCustomRepository {
 
     List<PlanDTO> smallPlanInfo(long memberNum);
 
-    PlanDTO findPlanByGroupNum(Long groupNum);
+    List<LonLatDTO> findLonLatByNum(Long num);
 }

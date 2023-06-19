@@ -67,17 +67,6 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void removeMember(Long num) {
-        Optional<MemberEntity> optionalMemberEntity = memberRepository.findById(num);
-
-        if (optionalMemberEntity.isPresent()) {
-            memberRepository.deleteById(num);
-        } else {
-            System.out.println(num + "에 해당하는 회원이 없습니다");
-        }
-    }
-
-    @Override
     public MemberDTO login(MemberDTO memberDTO) {
         MemberDTO member = memberCustomRepository
                 .findIdAndPassword(memberDTO.getMemberId(), PassEncode.encode(memberDTO.getPassword()));

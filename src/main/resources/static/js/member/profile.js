@@ -20,7 +20,21 @@ function getBoardList() {
                 resolve(data);
             })
             .catch(error => {
-                console.log('오류 발생:', error);
+                console.error('오류 발생:', error);
+                reject(error);
+            });
+    });
+}
+
+function getPlanList(){
+    return new Promise((resolve, reject) => {
+        fetch('/member/profile/calendar')
+            .then(response => response.json())
+            .then(data=>{
+                resolve(data);
+            })
+            .catch(error => {
+                console.error('오류발생:', error);
                 reject(error);
             });
     });
@@ -65,47 +79,6 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
-//회원탈퇴
-const removeMemberButton = document.querySelector('.button2');
-removeMemberButton.addEventListener('click', function () {
-    if (confirm( "정말로 회원탈퇴를 진행하시겠습니까?")) {
-        fetch('/member/removerMember/' + loginMemberNum, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-            .then(response => response.text())
-            .then(data => {
-
-                window.location.replace("/");
-            })
-            .catch(error => {
-                // 요청이 실패했을 때의 동작
-                console.error('Error:', error);
-            });
-    } else {
-        console.log("noRemoverMember")
-    }
-});
-/*
-//모달 여행지
-document.addEventListener("DOMContentLoaded", function() {
-    var card = document.querySelector(".my_card2");
-    var modal = document.getElementById("modal2");
-    var closeButton = document.querySelector(".close-button-place");
-
-    card.addEventListener("click", function() {
-        modal.style.display = "block";
-        document.body.style.overflow = "hidden"; // Disable scrolling on the body
-    });
-
-    closeButton.addEventListener("click", function() {
-        modal.style.display = "none";
-        document.body.style.overflow = "auto"; // Enable scrolling on the body
-    });
-});*/
-
 //모달 그룹페이지
 document.addEventListener("DOMContentLoaded", function() {
     var liElement = document.querySelector(".group_page");
@@ -129,15 +102,12 @@ document.addEventListener("DOMContentLoaded", function() {
                 groupNull.textContent = "등록된 그룹이 없습니다."
             } else {
                 const titleElement = document.querySelector('.groupName');
-                const titleLinkElement = document.createElement('a');
                 const contentsElement = document.querySelector('.modal3-1-text');
                 const membersContainer = document.querySelector('.members');
 
 
                 // 제목 태그에 데이터 추가
-                titleLinkElement.textContent = data.name;
-                titleLinkElement.href = "http://localhost:9060/plan/viewPlan/" + data.planNum;
-                titleElement.appendChild(titleLinkElement);
+                titleElement.textContent = data.name;
                 // 컨텐츠에 데이터 추가
 
                 contentsElement.textContent = data.contents;
@@ -190,6 +160,7 @@ const moreButton = document.querySelector('.more-button');
 const loginMemberNum = moreButton.dataset.value;
 const modal = document.getElementById('modal3-1');
 getGroupList().then(data => {
+    if (data.groupLeader == loginMemberNum) {
         moreButton.addEventListener('click', function() {
             modal.style.display = 'block';
 
@@ -218,7 +189,7 @@ getGroupList().then(data => {
                 groupEditTr.appendChild(groupEditPhoneNum);
 
                 const groupEditDeleteTd = document.createElement('td');
-                if (loginMemberNum == data.groupLeader) {
+                if (member.num == data.groupLeader) {
                     groupEditDeleteTd.textContent = "";
                 } else {
                     const groupEditDeleteButton = document.createElement('button');
@@ -249,6 +220,9 @@ getGroupList().then(data => {
                 groupEditTbody.appendChild(groupEditTr);
             });
         });
+    }else {
+        moreButton.style.display="none";
+    }
 });
 
 modal.addEventListener('click', function(e) {
@@ -273,7 +247,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         getBoardList()
             .then(data => {
-                if (data.boardNum == null){
+                if (data == ""){
                     const boardNull = document.querySelector('.modal_review');
                     boardNull.textContent = "등록된 후기 게시물이 없습니다";
                 } else{
@@ -351,7 +325,7 @@ copyButton.addEventListener('click', function() {
                 .then(response => response.text())
                 .then(inviteData => {
                     // 요청이 성공적으로 처리되었을 때의 동작
-                    const url = "http://localhost:9060/group/joinGroup/" + inviteData; // 복사할 URL을 여기에 입력하세요
+                    const url = window.location.host + "/group/joinGroup/" + inviteData; // 복사할 URL을 여기에 입력하세요
 
                     copyToClipboard(url);
                 })
@@ -382,30 +356,69 @@ function copyToClipboard(text) {
     }, 300);
 }
 document.addEventListener('DOMContentLoaded', function() {
-    // calendar element 취득
     var calendarEl = document.getElementById('calendar');
-    // full-calendar 생성하기
-    var calendar = new FullCalendar.Calendar(calendarEl, {
-        height: '690px', // calendar 높이 설정
-        expandRows: true, // 화면에 맞게 높이 재설정
-        // 해더에 표시할 툴바
-        headerToolbar: {
-            left: 'prev,next today',
-            center: 'title',
-            right: ''
-        },
-        nowIndicator: true, // 현재 시간 마크
-        locale: 'ko', // 한국어 설정
-        // 이벤트
-        events: [
-            {
-                title: 'Click for Google',
-                url: 'http://google.com/', // 클릭시 해당 url로 이동
-                start: '2023-06-17',
-                end: '2023-06-20'
+    getPlanList().then(data => {
+        if (data.lonLatList && data.lonLatList.length > 0) {
+            let minDate = new Date(data.lonLatList[0].calendar);
+            let maxDate = new Date(data.lonLatList[0].calendar);
+
+            for (let i = 1; i < data.lonLatList.length; i++) {
+                const currentDate = new Date(data.lonLatList[i].calendar);
+
+                if (currentDate < minDate) {
+                    minDate = currentDate;
+                }
+
+                if (currentDate > maxDate) {
+                    maxDate = currentDate;
+                }
             }
-        ]
+            maxDate.setDate(maxDate.getDate() + 1);
+
+            // 날짜를 원하는 포맷으로 변환
+            const startDate = formatDate(minDate);
+            const endDate = formatDate(maxDate);
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                height: '690px',
+                expandRows: true,
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: ''
+                },
+                nowIndicator: true,
+                locale: 'ko',
+                events: [
+                    {
+                        title: data.name,
+                        url: '/plan/viewPlan/' + data.num,
+                        start: startDate,
+                        end: endDate
+                    }
+                ]
+            });
+            calendar.render();
+        } else {
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                height: '690px',
+                expandRows: true,
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: ''
+                },
+                nowIndicator: true,
+                locale: 'ko'
+            });
+            calendar.render();
+        }
     });
-    // 캘린더 랜더링
-    calendar.render();
 });
+
+function formatDate(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}

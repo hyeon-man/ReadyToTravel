@@ -9,6 +9,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @ToString
 @Table(name = "place")
 public class PlaceEntity {
@@ -21,4 +22,6 @@ public class PlaceEntity {
     @Column(length = 500)
     private String comment;
     private String fileName;
+
+
 }

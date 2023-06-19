@@ -101,5 +101,14 @@ public class GroupCustomRepositoryImpl implements GroupCustomRepository {
                 .fetchOne();
     }
 
+    @Override
+    public GroupDTO findPlanNumByGroupNum(Long groupNum) {
+        return queryFactory.select(Projections.fields(GroupDTO.class,
+                groupEntity.plan.num.as("planNum")))
+                .from(groupEntity)
+                .where(groupEntity.groupNum.eq(groupNum))
+                .fetchOne();
+    }
+
 
 }
