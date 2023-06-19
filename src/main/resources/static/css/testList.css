@@ -1,6 +1,6 @@
 /* 공통요소 헤더부분 css 및 */
 @import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
-
+footer {height: 50px;background-color: #f5f5f5;display: flex;justify-content: center;align-items: center;font-size: 14px;color: #666; position: absolute; bottom: 0px; width: 100%;}
 body, talbe, th, td, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, textarea, blockquote, span, * {
     font-family: 'Noto Sans KR', sans-serif;
 }
@@ -61,6 +61,7 @@ header {
     color: #000 !important;
 }
 
+
 nav {
     font-family: 'Noto Serif KR', serif;
 }
@@ -108,6 +109,9 @@ footer {
     align-items: center;
     font-size: 14px;
     color: #666;
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
 }
 
 /* 공통요소*/
@@ -124,7 +128,8 @@ body, ul, li, h1, h2, h3, h4, h5, h6 {
 }
 
 a:link {
-    color: lightblue;
+    color: black;
+
 }
 
 /* 라이브러리 */
@@ -201,7 +206,7 @@ a:link {
 /* 커스텀 */
 /* 반응형 레이아웃 */
 .con {
-    max-width: 1400px;
+    max-width: 1260px;
 }
 
 .con-min-width {
@@ -253,8 +258,10 @@ html, body {
 }
 
 .article-detail {
-    border: 2px solid lightgray;
     margin-top: 20px;
+    border-radius: 15px;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 7px 25px;
+
 }
 
 .article-detail > table {
@@ -272,7 +279,7 @@ html, body {
 
 .article-detail > table tr:not(.article-body), .article-detail > table tr:not(.article-body) > td {
     height: 20px;
-    font-size: 0.8rem;
+    font-size: 1rem;
 }
 
 .article-detail > table tr.article-title > td {
@@ -286,10 +293,7 @@ html, body {
 }
 
 .article-detail > .article-writer {
-    width: 200px;
     height: 200px;
-    background-color: lightgray;
-    border-bottom: 1px solid lightgray;
     text-align: center;
 }
 
@@ -303,9 +307,10 @@ html, body {
 
 .reply {
     margin-top: 20px;
-    border: 2px solid lightgray;
     padding: 15px;
     box-sizing: border-box;
+    border-radius: 15px;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 7px 25px;
 }
 
 .reply-form {
@@ -364,10 +369,10 @@ html, body {
 }
 
 .circle {
-    width: 200px; /* 원하는 크기로 조정 */
-    height: 200px;
-    border-radius: 50%; /* 반지름을 50%로 설정하여 동그란 모양으로 만듦 */
+    width: 150px; /* 원하는 크기로 조정 */
+    height: 140px;
     overflow: hidden; /* 이미지를 원 모양으로 자르기 위해 overflow 속성을 hidden으로 설정 */
+    border-radius: 15px;
 }
 
 .circle img {
@@ -377,6 +382,17 @@ html, body {
 }
 
 .imageList img{
-    width: 100px;
-    height: 100px;
+    width: 350px;
+    height: 350px;
+    margin-left: 4%;
+    margin-bottom: 4%;
+}
+.icon{
+    font-size: 20px;
+    color: black;
+    display: flex;
+    justify-content: flex-end;
+}
+.asd img:hover {
+    transform: scale(2.0);
 }
