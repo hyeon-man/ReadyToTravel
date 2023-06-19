@@ -90,14 +90,14 @@ public class GroupCustomRepositoryImpl implements GroupCustomRepository {
 
 
     @Override
-    public GroupDTO myGroupNum(Long num) {
+    public GroupDTO myGroupNum(Long memberNum) {
         return queryFactory.select(Projections.fields(GroupDTO.class,
                         groupEntity.groupNum.as("num"),
                         groupEntity.name.as("name")))
                 .from(groupEntity)
                 .leftJoin(groupMembership)
                 .on(groupEntity.groupNum.eq(groupMembership.group.groupNum))
-                .where(groupMembership.member.num.eq(num))
+                .where(groupMembership.member.num.eq(memberNum))
                 .fetchOne();
     }
 

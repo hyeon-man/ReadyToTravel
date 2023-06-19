@@ -39,7 +39,6 @@ public class PlanServiceImpl implements PlanService {
         return planDTO;
     }
 
-
     @Override
     public PlanDTO planInform(Long num) {
 
@@ -108,5 +107,12 @@ public class PlanServiceImpl implements PlanService {
 
         planRepository.deleteById(planNum);
 
+    }
+    @Override
+    public PlanDTO findPlan(Long memberNum) {
+
+        PlanDTO planDTO = planCustomRepository.findPlanByGroupNum(groupCustomRepository.myGroupNum(memberNum).getNum());
+
+        return null;
     }
 }

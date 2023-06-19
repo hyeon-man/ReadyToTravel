@@ -381,4 +381,31 @@ function copyToClipboard(text) {
         alert("복사되었습니다");
     }, 300);
 }
-
+document.addEventListener('DOMContentLoaded', function() {
+    // calendar element 취득
+    var calendarEl = document.getElementById('calendar');
+    // full-calendar 생성하기
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        height: '690px', // calendar 높이 설정
+        expandRows: true, // 화면에 맞게 높이 재설정
+        // 해더에 표시할 툴바
+        headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: ''
+        },
+        nowIndicator: true, // 현재 시간 마크
+        locale: 'ko', // 한국어 설정
+        // 이벤트
+        events: [
+            {
+                title: 'Click for Google',
+                url: 'http://google.com/', // 클릭시 해당 url로 이동
+                start: '2023-06-17',
+                end: '2023-06-20'
+            }
+        ]
+    });
+    // 캘린더 랜더링
+    calendar.render();
+});

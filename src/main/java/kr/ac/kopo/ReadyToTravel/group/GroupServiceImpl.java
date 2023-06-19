@@ -154,9 +154,9 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public GroupDTO myGroupList(Long num) {
+    public GroupDTO myGroupList(Long memberNum) {
 
-        GroupDTO myGroupList = groupCustomRepository.myGroupNum(num);
+        GroupDTO myGroupList = groupCustomRepository.myGroupNum(memberNum);
         GroupDTO realGroup = groupCustomRepository.groupInfo(myGroupList.getNum());
         System.out.println("realGroup = " + realGroup.getPlan());
 

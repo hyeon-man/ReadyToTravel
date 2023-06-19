@@ -19,6 +19,6 @@ public interface GroupService {
 
     GroupDTO groupInMember(long groupNum);
 
-    GroupDTO myGroupList(Long num);
+    GroupDTO myGroupList(Long memberNum);
 }
 

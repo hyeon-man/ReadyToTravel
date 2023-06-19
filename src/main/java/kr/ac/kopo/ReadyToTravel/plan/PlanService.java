@@ -17,4 +17,5 @@ public interface PlanService {
 
     PlanDTO viewPlan(Long planNum);
 
+    PlanDTO findPlan(Long memberNum);
 }

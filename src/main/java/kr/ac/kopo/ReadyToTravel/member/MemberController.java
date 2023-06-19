@@ -176,4 +176,10 @@ public class MemberController {
         return "deleteSucces";
     }
 
+
+    @ResponseBody
+    @GetMapping("/profile/calander")
+    public PlanDTO calenderPlanInfo(@SessionAttribute MemberDTO memberDTO){
+        return planService.findPlan(memberDTO.getNum());
+    }
 }

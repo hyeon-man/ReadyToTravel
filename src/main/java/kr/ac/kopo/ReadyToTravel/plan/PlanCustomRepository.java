@@ -11,4 +11,5 @@ public interface PlanCustomRepository {
 
     List<PlanDTO> smallPlanInfo(long memberNum);
 
+    PlanDTO findPlanByGroupNum(Long groupNum);
 }

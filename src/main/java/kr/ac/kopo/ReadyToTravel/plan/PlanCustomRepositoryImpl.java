@@ -47,4 +47,15 @@ public class PlanCustomRepositoryImpl implements PlanCustomRepository {
                 .fetch();
     }
 
+    @Override
+    public PlanDTO findPlanByGroupNum(Long groupNum) {
+        return queryFactory.select(Projections.fields(PlanDTO.class,
+                planEntity.num.as("num"),
+                planEntity.name.as("name"),
+                planEntity.lonLatEntities.as("lonLatList")))
+                .from(planEntity)
+                .where()
+                .fetchOne();
+    }
+
 }
