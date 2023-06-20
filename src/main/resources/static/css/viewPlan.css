@@ -184,6 +184,7 @@ footer {
     max-width: 1170px;
     width: 100%;
     font-family: 'Roboto', sans-serif;
+    display: flex;
 }
 
 .tl-header div {
@@ -378,4 +379,5 @@ footer {
 
 #map_div {
     margin: 2em;
+    display: block;!important;
 }

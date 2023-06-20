@@ -12,7 +12,7 @@
     <div class="logo">
         <a href="/">
             <b>RTT</b>
-            <h7>READY TO TRAVEL</h7>
+            <h7> READY TO TRAVEL</h7>
         </a>
     </div>
     <!--NAV-->
@@ -30,12 +30,12 @@
         </ul>
     </nav>
 </header>
-
+<div style="max-width: 1260px;margin: 0 auto;}">
 <h1 class="con">게시글 상세</h1>
 <section class="article-detail table-common con row">
     <div class="article-writer cell">
         <div class="circle">
-            <img class="img"
+            <img style="height: 100%;border-radius: 15px;" class="img"
                  th:src="${board.boardWriterProfile != null ? '/img/' + board.boardWriterProfile : '/image/defaultProfile.png'}"/>
             <p th:text="${board.boardWriter}">작성자</p>
         </div>
@@ -58,7 +58,7 @@
             <th>작성 일시</th>
             <td th:text="${#dates.format(board.boardDateCreate, 'MM-dd hh:mm:ss')}">날짜</td>
         </tr>
-        <td colspan="4" th:text="${board.boardContent}">
+        <td style="padding-top: 100px; padding-bottom: 150px" colspan="4" th:text="${board.boardContent}">
             내용
         </td>
         </tbody>
@@ -68,20 +68,18 @@
         <img th:each=" img : ${board.filename}" th:src="${'/img/' + img}"/>
     </div>
 
-    <div>
-        <a th:href="@{/board/delete/{boardNum}(boardNum=${board.boardNum})}">
-            <button>
-                게시글 삭제
-            </button>
-        </a>
-    </div>
+    <div class="icon">
+        <div>
+            <a style="font-size: 35px;" th:href="@{/board/delete/{boardNum}(boardNum=${board.boardNum})}">
+                <ion-icon name="trash-outline"></ion-icon>
+            </a>
+        </div>
 
-    <div>
-        <a th:href="@{/board/update/{boardNum}(boardNum=${board.boardNum})}">
-            <button>
-                게시글 수정
-            </button>
-        </a>
+        <div>
+            <a style="font-size: 35px;" th:href="@{/board/update/{boardNum}(boardNum=${board.boardNum})}">
+                <ion-icon name="pencil-outline"></ion-icon>
+            </a>
+        </div>
     </div>
 </section>
 
@@ -103,7 +101,7 @@
                 <td th:text="${reply.content}" class="content">댓글 내용</td>
                 <td th:text="${#dates.format(reply.writeDate, 'MM-dd hh:mm:ss')}"></td>
                 <div th:if="${session.memberDTO != null}">
-                    <td th:if="${session.memberDTO.num == reply.writer}">
+                    <td style="text-align: right" th:if="${session.memberDTO.num == reply.writer}">
                         <button class="replyUpdate">수정</button>
                         <button class="replyDelete">삭제</button>
                     </td>
@@ -117,22 +115,26 @@
         <form method="post" th:action="@{'/board/reply/' + ${board.boardNum} + '/add'}">
             <section class="reply-form">
                 <textarea name="content" rows="4" cols="180" style="resize: none"></textarea>
-                <button>댓글 작성</button>
+                <button style="width: 100px;">댓글 작성</button>
             </section>
         </form>
     </section>
 </div>
-
-
-<a href="../list">
-    <button type="button">이전</button>
-</a>
-
-
-<footer>
-    <p>Copyright &copy; 2023</p>
+</div>
+<footer style="    height: 100px;
+    background-color: #f5f5f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    color: #666;
+    position: relative;
+    bottom: 0px;
+    width: 100%;
+    margin-top: 50px;">
+    <p>Copyright &copy; 2023.RTT.Allright reverved.
+    </p>
 </footer>
-
 </body>
 <script>
     $(document).ready(function () {
@@ -201,5 +203,7 @@
 
 
 </script>
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
 </html>
