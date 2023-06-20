@@ -2,13 +2,16 @@ package kr.ac.kopo.ReadyToTravel.plan;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import kr.ac.kopo.ReadyToTravel.dto.plan.LonLatDTO;
 import kr.ac.kopo.ReadyToTravel.dto.plan.PlanDTO;
+import kr.ac.kopo.ReadyToTravel.entity.plan.LonLatEntity;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
 import static kr.ac.kopo.ReadyToTravel.entity.QPlaceEntity.placeEntity;
+import static kr.ac.kopo.ReadyToTravel.entity.plan.QLonLatEntity.lonLatEntity;
 import static kr.ac.kopo.ReadyToTravel.entity.plan.QPlanEntity.planEntity;
 
 @Repository
@@ -45,4 +48,14 @@ public class PlanCustomRepositoryImpl implements PlanCustomRepository {
                 )).from()
                 .fetch();
     }
+
+    @Override
+    public List<LonLatDTO> findLonLatByNum(Long num) {
+        return queryFactory.selectDistinct(Projections.fields(LonLatDTO.class,
+                        lonLatEntity.calendar.as("calendar")))
+                .from(lonLatEntity)
+                .fetch();
+    }
+
+
 }

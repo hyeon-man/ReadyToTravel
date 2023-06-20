@@ -1,5 +1,6 @@
 package kr.ac.kopo.ReadyToTravel.plan;
 
+import kr.ac.kopo.ReadyToTravel.dto.GroupDTO;
 import kr.ac.kopo.ReadyToTravel.dto.plan.LonLatDTO;
 import kr.ac.kopo.ReadyToTravel.dto.plan.PlanDTO;
 import kr.ac.kopo.ReadyToTravel.entity.plan.LonLatEntity;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -112,4 +114,44 @@ public class PlanServiceImpl implements PlanService {
 
         planRepository.deleteById(planNum);
     }
+    @Override
+    public PlanDTO findPlan(Long memberNum) {
+
+        PlanDTO planDTO = planCustomRepository.findByNum(
+                groupCustomRepository.findPlanNumByGroupNum(
+                        groupCustomRepository.myGroupNum(memberNum).getNum()
+                ).getPlanNum()
+        );
+        List<LonLatDTO> lonLatList = planCustomRepository.findLonLatByNum(planDTO.getNum());
+        String smallestDate = lonLatList.get(0).getCalendar();
+        String largestDate = lonLatList.get(0).getCalendar();
+
+        // 최댓값과 최솟값 찾기
+        for (LonLatDTO lonLat : lonLatList) {
+            if (lonLat.getCalendar().compareTo(smallestDate) < 0) {
+                smallestDate = lonLat.getCalendar();
+            }
+            if (lonLat.getCalendar().compareTo(largestDate) > 0) {
+                largestDate = lonLat.getCalendar();
+            }
+        }
+
+        // 최댓값과 최솟값 리스트 생성
+        List<LonLatDTO> filteredList = new ArrayList<>();
+        for (LonLatDTO lonLat : lonLatList) {
+            if (lonLat.getCalendar().equals(smallestDate) || lonLat.getCalendar().equals(largestDate)) {
+                filteredList.add(lonLat);
+            }
+        }
+
+
+        planDTO.setLonLatList(filteredList);
+        System.out.println(planDTO.getLonLatList());
+        return planDTO;
+
+
+    }
 }
+
+
+

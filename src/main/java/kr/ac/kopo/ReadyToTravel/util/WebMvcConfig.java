@@ -13,6 +13,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .addPathPatterns("/member/profile/**")
                 .addPathPatterns("/board/create")
                 .addPathPatterns("/plan/updatePlan")
-                .addPathPatterns("/plan/createPlan");
+                .addPathPatterns("/plan/createPlan")
+                .addPathPatterns("/group/**");
+
     }
 }

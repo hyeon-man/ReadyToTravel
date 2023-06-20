@@ -12,7 +12,7 @@
     <div class="logo">
         <a href="/">
             <b>RTT</b>
-            <h7>READY TO TRAVEL</h7>
+            <h7> READY TO TRAVEL</h7>
         </a>
     </div>
     <!--NAV-->
@@ -22,19 +22,20 @@
             <li><a href="/guide">이용방법</a></li>
             <li><a href="/board/list">후기게시판</a></li>
             <!-- 로그인  123 -->
-            <li><a th:if="${session.memberDTO != null}" href="/member/profile" th:text="${session.memberDTO.name}"></a></li>
+            <li><a th:if="${session.memberDTO != null}" href="/member/profile" th:text="${session.memberDTO.name}"></a>
+            </li>
             <li><a th:if="${session.memberDTO != null}" href="/member/logout">로그아웃</a></li>
             <!-- 이게 비로그인 456-->
             <li><a th:if="${session.memberDTO == null}" href="/member/login">로그인</a></li>
         </ul>
     </nav>
 </header>
-
+<div style="max-width: 1260px;margin: 0 auto;}">
 <h1 class="con">게시글 상세</h1>
 <section class="article-detail table-common con row">
     <div class="article-writer cell">
         <div class="circle">
-            <img class="img"
+            <img style="height: 100%;border-radius: 15px;" class="img"
                  th:src="${board.boardWriterProfile != null ? '/img/' + board.boardWriterProfile : '/image/defaultProfile.png'}"/>
             <p th:text="${board.boardWriter}">작성자</p>
         </div>
@@ -57,7 +58,7 @@
             <th>작성 일시</th>
             <td th:text="${#dates.format(board.boardDateCreate, 'MM-dd hh:mm:ss')}">날짜</td>
         </tr>
-        <td colspan="4" th:text="${board.boardContent}">
+        <td style="padding-top: 100px; padding-bottom: 150px" colspan="4" th:text="${board.boardContent}">
             내용
         </td>
         </tbody>
@@ -67,20 +68,18 @@
         <img th:each=" img : ${board.filename}" th:src="${'/img/' + img}"/>
     </div>
 
-    <div>
-        <a th:href="@{/board/delete/{boardNum}(boardNum=${board.boardNum})}">
-            <button>
-                게시글 삭제
-            </button>
-        </a>
-    </div>
+    <div class="icon">
+        <div>
+            <a style="font-size: 35px;" th:href="@{/board/delete/{boardNum}(boardNum=${board.boardNum})}">
+                <ion-icon name="trash-outline"></ion-icon>
+            </a>
+        </div>
 
-    <div>
-        <a th:href="@{/board/update/{boardNum}(boardNum=${board.boardNum})}">
-            <button>
-                게시글 수정
-            </button>
-        </a>
+        <div>
+            <a style="font-size: 35px;" th:href="@{/board/update/{boardNum}(boardNum=${board.boardNum})}">
+                <ion-icon name="pencil-outline"></ion-icon>
+            </a>
+        </div>
     </div>
 </section>
 
@@ -92,22 +91,23 @@
                 <col width="100px">
             </colgroup>
             <tbody>
+            <tr th:if="${board.replies.size() == 0}">
+                <td colspan="5">댓글이 없습니다.</td>
+            </tr>
+
             <tr th:each="reply : ${board.replies}" th:if="${board.replies.size() > 0}">
                 <td th:text="${reply.replyNum}" class="replyNum">댓글 번호</td>
                 <td th:text="${reply.writerName}" class="writerName">작성자 이름</td>
                 <td th:text="${reply.content}" class="content">댓글 내용</td>
                 <td th:text="${#dates.format(reply.writeDate, 'MM-dd hh:mm:ss')}"></td>
                 <div th:if="${session.memberDTO != null}">
-                    <td th:if="${session.memberDTO.num == reply.writer}">
+                    <td style="text-align: right" th:if="${session.memberDTO.num == reply.writer}">
                         <button class="replyUpdate">수정</button>
                         <button class="replyDelete">삭제</button>
                     </td>
                 </div>
             </tr>
 
-            <tr th:if="${board.replies.size() == 0}">
-                <td colspan="5">댓글이 없습니다.</td>
-            </tr>
 
             </tbody>
         </table>
@@ -115,80 +115,95 @@
         <form method="post" th:action="@{'/board/reply/' + ${board.boardNum} + '/add'}">
             <section class="reply-form">
                 <textarea name="content" rows="4" cols="180" style="resize: none"></textarea>
-                <button>댓글 작성</button>
+                <button style="width: 100px;">댓글 작성</button>
             </section>
         </form>
     </section>
 </div>
-
-
-<a href="../list">
-    <button type="button">이전</button>
-</a>
-
-
-<footer>
-    <p>Copyright &copy; 2023</p>
+</div>
+<footer style="    height: 100px;
+    background-color: #f5f5f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    color: #666;
+    position: relative;
+    bottom: 0px;
+    width: 100%;
+    margin-top: 50px;">
+    <p>Copyright &copy; 2023.RTT.Allright reverved.
+    </p>
 </footer>
-
 </body>
 <script>
-    $(".replyUpdate").on('click', function (event) {
+    $(document).ready(function () {
+        $(".replyUpdate").on('click', function (event) {
+            const textArea = $(event.currentTarget).closest("tr").find(".content");
 
-        const textArea = $(event.currentTarget).closest("tr").find(".content");
-        const target = $(event.currentTarget).closest("td").find(".writerName");
-        textArea.remove()
-        // todo 이거 하다 말았는데 모달 말고 그냥 p태그 지우고 , input으로 바꾼다음 할거임
-        const input = document.createElement("input");
-        input.value = textArea;
-        input.name = "content";
-        console.log(input.value)
-        input.append(event)
+            const input = document.createElement("input");
+            input.value = textArea.text();
+            input.name = "content";
+            input.classList.add("content");
 
+            const saveButton = document.createElement("button");
+            saveButton.classList.add("saveReply");
+            saveButton.textContent = "저장";
 
-        const contentText = $(event.currentTarget).closest("tr").find(".content").text();
-
-        //여기다가 수정된 텍스트 갖고와야함
-        const replyNum = $(event.currentTarget).closest("tr").find(".replyNum").text();
-        const boardNum = $("#boardNum").text();
-        console.log("content 텍스트:", contentText);
-        console.log("댓글 번호:", replyNum);
-
-        $.ajax({
-            url: "/board/reply/" + boardNum + "/update/" + replyNum,
-            method: "POST",
-            data: {
-                content: "수정된 텍스트213"
-            },
-            success: function () {
-                // const prevUrl = window.location.href;
-                // window.location.href = prevUrl;
-            },
-            error: function (xhr, status, error) {
-                console.log("업데이트 실패:", error);
-
-            }
+            textArea.replaceWith(input, saveButton);
+            $(event.currentTarget).remove(); // 수정 버튼 제거
+            $(".replyDelete").remove(); // 삭제 버튼 제거
         });
     });
 
-    $(".replyDelete").on('click', function (event) {
-        if (confirm("댓글을 삭제 할까요 ?")) {
-            const replyNum = $(event.currentTarget).closest("tr").find(".replyNum").text();
 
+    $(document).on('click', '.saveReply', function (event) {
+            const input = $(event.currentTarget).prev("input");
+            const content = input.val();
+            const replyNum = $(event.currentTarget).closest("tr").find(".replyNum").text();
             const boardNum = $("#boardNum").text();
+
+            replyUpdate(replyNum, boardNum, content);
+        });
+
+        function replyUpdate(replyNum, boardNum, content) {
             $.ajax({
-                url: "/board/reply/" + boardNum + "/remove/" + replyNum,
-                method: "GET",
+                url: "/board/reply/" + boardNum + "/update/" + replyNum,
+                method: "POST",
+                data: {
+                    content: content
+                },
                 success: function () {
-                    const prevUrl = window.location.href;
-                    window.location.href = prevUrl;
+                    window.location.href = window.location.href;
                 },
                 error: function (xhr, status, error) {
                     console.log("업데이트 실패:", error);
                 }
             });
         }
-    })
+
+        $(".replyDelete").on('click', function (event) {
+            if (confirm("댓글을 삭제 할까요 ?")) {
+                const replyNum = $(event.currentTarget).closest("tr").find(".replyNum").text();
+
+                const boardNum = $("#boardNum").text();
+                $.ajax({
+                    url: "/board/reply/" + boardNum + "/remove/" + replyNum,
+                    method: "GET",
+                    success: function () {
+                        const prevUrl = window.location.href;
+                        window.location.href = prevUrl;
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("업데이트 실패:", error);
+                    }
+                });
+            }
+        });
+
+
 </script>
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
 </html>

@@ -4,6 +4,7 @@
     <title>Ready To Travel</title>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>
     <link rel="stylesheet" href="/css/createPlan.css">
+    <!--    <link rel="stylesheet" href="/css/profile.css">-->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=yIMaVf12xnauu7aRo40iL6EWEJXjwVhnbBr6Lc3d"></script>
     <!--tmap API js 자리-->
@@ -12,45 +13,94 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 </head>
 <body>
-<header>
-    <!--LOGO-->
-    <div class="logo">
-        <a href="/">
-            <b>RTT</b>
-            <h7>&nbsp;READY TO TRAVEL</h7>
-        </a>
-    </div>
-    <!--NAV-->
-    <nav>
+<div class="container">
+    <div class="navigation">
         <ul>
-            <li><a href="/place">여행지</a></li>
-            <li><a href="/guide">이용방법</a></li>
-            <li><a href="/board/list">후기게시판</a></li>
-            <!-- 로그인  123 -->
-            <li><a th:if="${session.memberDTO != null}" href="/member/profile" th:text="${session.memberDTO.name}"></a></li>
-            <li><a th:if="${session.memberDTO != null}" href="/member/logout">로그아웃</a></li>
-            <!-- 이게 비로그인 456-->
-            <li><a th:if="${session.memberDTO == null}" href="/member/login">로그인</a></li>
+            <li class="logo">
+                <a href="/">
+                        <span class="mainicon">
+                            <!-- <img src="/image/rttlogo.png" style="width: 45px; height: 45px;"> -->
+                            <img src="/image/rttlogo.png" style="width: 45px; height: 45px;">
+                        </span>
+                    <span class="title">Ready To Travel</span>
+                </a>
+            </li>
+
+            <li class="my_page hovered">
+                <a>
+                        <span class="icon">
+                            <ion-icon name="person-circle-outline"></ion-icon>
+                        </span>
+                    <span class="title">마이페이지</span>
+                </a>
+            </li>
+
+            <li class="group_page">
+                <a>
+                        <span class="icon">
+                            <ion-icon name="people-outline"></ion-icon>
+                        </span>
+                    <span class="title">그룹페이지</span>
+                </a>
+            </li>
+
+            <li class="plan_page">
+                <a>
+                        <span class="icon">
+                            <ion-icon name="calendar-number-outline"></ion-icon>
+                        </span>
+                    <span class="title">계획페이지</span>
+                </a>
+            </li>
+
+            <li class="review_page">
+                <a>
+                        <span class="icon">
+                            <ion-icon name="help-outline"></ion-icon>
+                        </span>
+                    <span class="title">나의 여행 후기</span>
+                </a>
+            </li>
+
+            <li class="review_page">
+                <a id="createBtn">
+                        <span class="icon">
+
+                        </span>
+                    <span class="title">경로 최적화</span>
+                </a>
+            </li>
+
+            <li class="review_page">
+                <a id="createPlanBtn">
+                        <span class="icon">
+
+                        </span>
+                    <span class="title">계획 생성</span>
+                </a>
+            </li>
+
+            <li class="review_page">
+                <a id="removeBtn">
+                        <span class="icon">
+
+                        </span>
+                    <span class="title">마커 삭제</span>
+                </a>
+            </li>
         </ul>
-    </nav>
-</header>
+    </div>
 
+    <!-- ========================= 햄버거버튼 토글 ==================== -->
 
-<div id="main2">
-    <nav class="viewNav">
-        <a href="#" class="nav-item is-active">
-            <li style="list-style: none" class="viewNavLi">
-                <button class="custom-btn btn-3" id="createBtn" type="button"><span>경로 최적화</span></button>
-            </li>
-            <li style="list-style: none" class="viewNavLi">
-                <button class="custom-btn btn-3" id="createPlanBtn"><span>계획 생성</span></button>
-            </li>
-            <li style="list-style: none" class="viewNavLi">
-                <button class="custom-btn btn-3" id="removeBtn" type="button"><span>마커 삭제</span></button>
-            </li>
-        </a>
-    </nav>
-    <div class="container">
+    <div class="main">
+        <div class="topbar">
+            <div class="toggle">
+                <ion-icon name="menu-outline"></ion-icon>
+            </div>
+            <div class="user"></div>
+        </div>
+
         <div class="left-side">
             <div id="distance">
                 <!-- 거리 -->
@@ -97,7 +147,7 @@
                 <div class="modal-content">
                     <span class="close">&times;</span>
                     <h2>Plan Contents</h2>
-                    <label for="planContents">내용</label><textarea style="width: 904px; height: 406px;" type="text"
+                    <label for="planContents">내용</label><textarea style="width:100%; height: 406px; resize: none" type="text"
                                                                   name="contents" id="planContents"></textarea>
                 </div>
             </div>
@@ -113,12 +163,18 @@
                 </ul>
             </div>
         </div>
-        <div class="right-side map_wrap" id="map_wrap">
+
+        <div class="right-side" id="map_wrap">
             <!-- T MAP -->
             <div id="map_div"></div>
         </div>
+
     </div>
+
 </div>
 </body>
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 <script type="text/javascript" src="/js/tmapApi.js"></script>
+<script type="text/javascript" src="/js/member/profile.js"></script>
 </html>

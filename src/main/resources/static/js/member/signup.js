@@ -191,6 +191,11 @@ function signup() {
         form.passwd_valid.focus();
         return;
     }
+    if (form.password.value.search(/\s/) != -1){
+        alert("비밀번호는 공백 없이 입력해주세요.");
+        console.log(form.password.value);
+        return;
+    }
 
     if (form.password.value != form.passwd_valid.value) {
         alert("비밀번호가 일치하지 않습니다");

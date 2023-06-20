@@ -3,7 +3,6 @@ package kr.ac.kopo.ReadyToTravel.board;
 import kr.ac.kopo.ReadyToTravel.board.attach.BoardAttachCustomRepository;
 import kr.ac.kopo.ReadyToTravel.board.attach.BoardAttachRepository;
 import kr.ac.kopo.ReadyToTravel.board.reply.ReplyCustomRepository;
-import kr.ac.kopo.ReadyToTravel.dto.AttachDTO;
 import kr.ac.kopo.ReadyToTravel.dto.BoardDTO;
 import kr.ac.kopo.ReadyToTravel.dto.ReplyDTO;
 import kr.ac.kopo.ReadyToTravel.entity.attach.BoardAttachEntity;
@@ -81,8 +80,6 @@ public class BoardServiceImpl implements BoardService {
         List<String> attaches = boardAttachCustomRepository.findByFileNameByBoardNum(boardNum);
         detail.setFilename(attaches);
 
-        System.out.println(attaches);
-
         return detail;
     }
 
@@ -90,15 +87,20 @@ public class BoardServiceImpl implements BoardService {
     @Transactional
     public BoardDTO smallDetail(Long boardNum) {
         BoardDTO board = boardCustomRepository.smallDetail(boardNum);
+
         board.setFilename(boardAttachCustomRepository.findByFileNameByBoardNum(boardNum));
 
-        System.out.println("board = " + board);
         return board;
     }
 
     @Override
     public Page<BoardDTO> boardList(Pageable pageable) {
         return boardCustomRepository.boardList(pageable);
+    }
+
+    @Override
+    public List<BoardDTO> myBoardList(Long num) {
+        return boardCustomRepository.myBoardList(num);
     }
 
 

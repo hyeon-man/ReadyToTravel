@@ -130,6 +130,9 @@ footer {
 /********** timeline *************/
 .timeline {
     width: 100%;
+
+    font-family: 'Roboto', sans-serif;
+    display: flex;
 }
 
 .tl-header div {
@@ -286,6 +289,7 @@ footer {
     position: fixed;
 }
 
+
 #mainContent #map_div {
     display: inline-block; /* 가로로 나열하기 위해 block레벨 요소를 inline-block레벨로 전환 */
     width: 200px; /* 영역 크기 지정 안해주면 inline 레벨처럼 내용물 만큼만 차지하기 때문에 크기 지정 */
@@ -377,4 +381,5 @@ footer {
 
 #result {
     font-size: 20px;
+
 }

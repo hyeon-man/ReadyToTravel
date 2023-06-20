@@ -22,34 +22,28 @@ public class GroupController {
         this.service = service;
     }
 
-    @GetMapping("/group/generateInviteCode")
+    @GetMapping("/group/generateInviteCode/{groupNum}")
     @ResponseBody
-    public String generateInviteCord(GroupDTO groupDTO) {
+    public String generateInviteCord(@PathVariable long groupNum) {
+        System.out.println("그룹 번호 = " + groupNum);
 
-        System.out.println("그룹 번호 = " + groupDTO.getNum());
-
-        String inviteCord = service.generateInviteCode(groupDTO.getNum());
+        String inviteCord = service.generateInviteCode(groupNum);
 
         return inviteCord;
     }
 
     @GetMapping("/group/joinGroup/{inviteURL}")
-    @ResponseBody
-    public String addMember(@SessionAttribute(value = "memberDTO", required = false) MemberDTO memberDTO, @PathVariable String inviteURL) {
-        if (memberDTO == null) {
-
-            return "로그인이 필요한 기능입니다";
-        }
+    public String addMember(@SessionAttribute MemberDTO memberDTO, @PathVariable String inviteURL) {
 
         service.groupAddMember(memberDTO.getNum(), inviteURL);
         //todo 이건 그룹 페이지로 간다
-        return "완료";
+        return "redirect:/member/profile";
     }
 
 
     @GetMapping("/group/removeMember/{groupNum}")
     @ResponseBody
-    public String removeMember(@PathVariable long groupNum, @SessionAttribute(value = "memberDTO", required = false) MemberDTO memberDTO) {
+    public String removeMember(@PathVariable long groupNum, @SessionAttribute MemberDTO memberDTO) {
 
         service.removeMember(groupNum, memberDTO.getNum());
 
