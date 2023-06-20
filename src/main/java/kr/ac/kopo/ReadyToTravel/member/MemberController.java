@@ -128,8 +128,6 @@ public class MemberController {
         MemberDTO member = service.memberInfoByNum(memberNum);
         model.addAttribute("memberDTO", member);
 
-
-
         return "member/profile";
     }
 

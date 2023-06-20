@@ -126,6 +126,14 @@ footer {
     margin-bottom: 15px;
 }
 
+.planOptionDropdown {
+    position: relative;
+    display: inline-block;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    width: 50%;
+}
+
 .button {
     padding: 10px 40px;
     font-size: 20px;
@@ -571,56 +579,6 @@ footer {
     width: 100%;
 }
 
-.planBtn {
-    margin-left: 5px;
-    margin-bottom: 5px;
-    margin-top: 5px;
-    background: skyblue;
-    color: #fff;
-    border: none;
-    position: relative;
-    height: 25px;
-    font-size: 15px;
-    padding: 0 2em;
-    cursor: pointer;
-    transition: 800ms ease all;
-    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
-    outline: none;
-}
-
-.planBtn:hover {
-    background: #fff;
-    color: skyblue;
-}
-
-.planBtn:before, .planBtn:after {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    height: 2px;
-    width: 0;
-    background: skyblue;
-    transition: 400ms ease all;
-}
-
-.planBtn:after {
-    right: inherit;
-    top: inherit;
-    left: 0;
-    bottom: 0;
-}
-
-.planBtn:hover:before, .planBtn:hover:after {
-    width: 100%;
-    transition: 800ms ease all;
-}
-
-
-
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
-
-
 * {
     font-family: 'Noto Sans KR', sans-serif;
     margin: 0;
@@ -913,23 +871,20 @@ p {
         margin-right: 50px;
     }
 }
-#openModal{
-    width: 61px;
+
+.planOption{
+    width: 100%;
     height: 43px;
-    font-family: 'Roboto', sans-serif;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 2.5px;
-    font-weight: 500;
+    font-size: 14px;
     color: #000;
-    background-color: #f5f5f5;
     border: none;
     transition: all 0.3s ease 0s;
     cursor: pointer;
     outline: none;
-    background: none;
+    box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+    border-radius: 15px;
 }
-#openModal:hover{
+.planOption:hover{
     background-color: skyblue;
     box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
     color: #fff;

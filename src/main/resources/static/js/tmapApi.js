@@ -59,19 +59,13 @@ function onClick(e) {
         if (title === 'Start') {
             marker_s = marker;
             marker_s.setIcon("http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png");
-
-            // console.log("start lat : " + marker_s.getPosition().lat() + ", start lng : " + marker_s.getPosition().lng());
         } else if (title === 'End') {
             marker_e = marker;
             marker_e.setIcon("http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_e.png");
-
-            // console.log("end lat : " + marker_e.getPosition().lat() + ", end lng : " + marker_e.getPosition().lng());
         } else {
             markers.push(marker);
-
             $('#createBtn').off("click").on("click", function () {
                 ajaxParams(markers, marker_s, marker_e);
-                // buttonClick(markers, marker_s, marker_e);
             });
         }
     }
@@ -144,7 +138,7 @@ function serverFetch(markerData) {
 // 최적화된 경로 api
 function ajaxReq(req) {
     var headers = {};
-    headers["appKey"] = "yIMaVf12xnauu7aRo40iL6EWEJXjwVhnbBr6Lc3d";
+    headers["appKey"] = "6MTwtT0OK18O1A8FGiL349WFB2UyKhI11K5MsjXN";
 
     $.ajax({
         type: "POST",
@@ -205,7 +199,7 @@ function ajaxReq(req) {
 // x, y 좌표를 가지고 주소를 반환해줌 + 주소의 특정 이름으로 그 지역의 날씨 알려주는 기상청 api도 포함
 function reverseGeo(lon, lat) {
     var headers = {};
-    headers["appKey"] = "yIMaVf12xnauu7aRo40iL6EWEJXjwVhnbBr6Lc3d";
+    headers["appKey"] = "6MTwtT0OK18O1A8FGiL349WFB2UyKhI11K5MsjXN";
 
     $.ajax({
         method: "GET",
