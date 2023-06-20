@@ -14,7 +14,7 @@ window.onload = function initTmap() {
     // Tmapv2.Map을 이용하여, 지도가 들어갈 div, 넓이, 높이를 설정합니다.
     map = new Tmapv2.Map("map_div", {
         center: new Tmapv2.LatLng(36.35086524077589, 127.45422567640077), // 지도 초기 좌표
-        width: "100%", // 지도의 넓이
+        width: "150%", // 지도의 넓이
         height: "100%", // 지도의 높이
         zoom: 15
     });
@@ -612,3 +612,4 @@ document.getElementById("openModal").addEventListener("click", function() {
 document.getElementsByClassName("close")[0].addEventListener("click", function() {
     document.getElementById("myModal").style.display = "none";
 });
+
