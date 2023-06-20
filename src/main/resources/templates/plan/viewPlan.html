@@ -4,66 +4,112 @@
     <title>Ready To Travel</title>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>
     <link rel="stylesheet" href="/css/viewPlan.css">
+    <link rel="stylesheet" href="/css/profile.css">
+    <link rel="shortcut icon" href="/image/RTT-favicon.png" type="image/x-icon">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=6MTwtT0OK18O1A8FGiL349WFB2UyKhI11K5MsjXN"></script>
+    <script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=6Q3ySMpue88CUObnAszWH6dpde24rGCPRqHtUYC8"></script>
     <!--tmap API js 자리-->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 </head>
 <body>
-<header>
-    <!--LOGO-->
-    <div class="logo">
-        <a href="/">
-            <b>RTT</b>
-            <h7>&nbsp;READY TO TRAVEL</h7>
-        </a>
+<div class="container">
+    <div class="navigation">
+        <ul>
+            <li class="logo">
+                <a href="/">
+                        <span class="mainicon">
+                            <!-- <img src="/image/rttlogo.png" style="width: 45px; height: 45px;"> -->
+                            <img src="/image/rttlogo.png" style="width: 45px; height: 45px;">
+                        </span>
+                    <span class="title">Ready To Travel</span>
+                </a>
+            </li>
+
+            <li class="my_page hovered">
+                <a href="/place">
+                        <span class="icon">
+                        </span>
+                    <span class="title">여행지</span>
+                </a>
+            </li>
+
+            <li class="group_page">
+                <a href="/guide">
+                        <span class="icon">
+                        </span>
+                    <span class="title">이용 방법</span>
+                </a>
+            </li>
+
+            <li class="plan_page">
+                <a href="/board/list">
+                        <span class="icon">
+                        </span>
+                    <span class="title">후기 게시판</span>
+                </a>
+            </li>
+
+            <li class="group_page" th:if="${member == leader}">
+                <a id="planUpdate">
+                        <span class="icon">
+                        </span>
+                    <span class="title">계획 수정</span>
+                </a>
+            </li>
+
+            <li class="group_page" th:if="${member == leader}">
+                <a id="planDelete">
+                        <span class="icon">
+                        </span>
+                    <span class="title">계획 삭제</span>
+                </a>
+            </li>
+
+            <li class="group_page" th:if="${member == leader}">
+                <a id="removeBtn">
+                        <span class="icon">
+                        </span>
+                    <span class="title">경로 삭제</span>
+                </a>
+            </li>
+
+            <li id="locationName"></li>
+        </ul>
     </div>
 
-    <!--NAV-->
-    <!--NAV-->
-    <nav>
-        <ul>
-            <li><a href="/place">여행지</a></li>
-            <li><a href="/guide">이용방법</a></li>
-            <li><a href="/board/list">후기게시판</a></li>
-            <!-- 로그인  123 -->
-            <li><a th:if="${session.memberDTO != null}" href="/member/profile" th:text="${session.memberDTO.name}"></a></li>
-            <li><a th:if="${session.memberDTO != null}" href="/member/logout">로그아웃</a></li>
-            <!-- 이게 비로그인 456-->
-            <li><a th:if="${session.memberDTO == null}" href="/member/login">로그인</a></li>
-        </ul>
-    </nav>
-</header>
-
-<div class="container">
-    <div class="timeline">
-        <nav class="viewNav">
-            <a href="#" class="nav-item is-active">
-                <li style="list-style: none" id="locationName"></li>
-            </a>
-            <span class="nav-indicator"></span>
-        </nav>
-
-        <div id="map_div">
-        </div>
-
-        <div class="c-md-2">
-            <div class="tl-item tl-year-wrap">
-                <span class="tl-year-back">&nbsp;</span><span class="tl-year">2023</span>
-                <div class="tl-event">
-                    <h2 id="planName"></h2>
-                    <h2 id="planContents"></h2>
-                </div>
+    <div class="main">
+        <div class="topbar">
+            <div class="toggle">
+                <ion-icon name="menu-outline"></ion-icon>
             </div>
+        </div>
+        <div class="timeline">
 
-            <div class="tl-item tl-end-div">
-                <div class="tl-end">&nbsp;</div>
+            <div id="mainContent">
+                <div class="c-md-2">
+                    <div class="tl-item tl-year-wrap">
+                        <span class="tl-year-back">&nbsp;</span><span class="tl-year">2023</span>
+                        <div class="tl-event">
+                            <h2 id="result"></h2>
+                            <h2 id="planName"></h2>
+                            <h2 id="planContents"></h2>
+                        </div>
+                    </div>
+                    <div class="tl-item tl-end-div">
+                        <div class="tl-end">&nbsp;</div>
+                    </div>
+                </div>
+
+                <div id="map_div">
+                </div>
             </div>
         </div>
     </div>
 </div>
 </body>
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 <script type="text/javascript" src="/js/tmapApiView.js"></script>
 </html>

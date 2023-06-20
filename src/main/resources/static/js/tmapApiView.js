@@ -3,19 +3,39 @@ let markers = [];
 let marker_s;
 let marker_e;
 let manageMarker = [];
+let mapLat;
+let mapLon;
+var map;
+
 window.onload = function () {
     // map 생성
     // Tmapv2.Map을 이용하여, 지도가 들어갈 div, 넓이, 높이를 설정합니다.
     map = new Tmapv2.Map("map_div", {
         center: new Tmapv2.LatLng(36.35086524077589, 127.45422567640077), // 지도 초기 좌표
         width: "50%", // 지도의 넓이
-        height: "50%", // 지도의 높이
-        zoom: 12
+        height: "100%", // 지도의 높이
+        zoom: 15
     });
 
 // 현재 페이지의 URL에서 planNum 추출
     const url = window.location.href;
     const planNum = url.split("/").pop(); // URL에서 마지막 부분 추출
+
+    $('#planUpdate').off().on('click', function () {
+        const a = document.getElementById('planUpdate');
+        a.href = '/plan/updatePlan/' + planNum;
+    });
+
+    $('#planDelete').off().on('click', function () {
+        const a = document.getElementById('planDelete');
+        a.href = '/plan/removePlan/' + planNum;
+        if (confirm("정말 삭제하시겠습니까?")) {
+            alert("삭제되었습니다.")
+        } else {
+            alert("취소되었습니다.")
+            a.href = '/plan/viewPlan/' + planNum;
+        }
+    });
 
     $.ajax({
         type: "GET",
@@ -43,14 +63,22 @@ window.onload = function () {
 
             // 정렬된 값들을 기반으로 버튼을 동적으로 생성하여 추가
             for (const text of buttonTexts) {
-                const dateButton = document.createElement('button');
-                dateButton.textContent = text;
+                const dateButton = document.createElement('a');
+                const appendLi = document.createElement('li');
+                const iconSpan = document.createElement('span');
+                const titleSpan = document.createElement('span');
+                iconSpan.classList = 'icon';
+                appendLi.classList = 'review_page';
+                titleSpan.classList.add('title');
+                titleSpan.textContent = text;
                 dateButton.classList.add('viewBtn');
-                li.appendChild(dateButton);
+                dateButton.appendChild(iconSpan);
+                dateButton.appendChild(titleSpan);
+                appendLi.appendChild(dateButton);
+                li.parentNode.appendChild(appendLi);
             }
 
             $('.viewBtn').off().on('click', function (evt) {
-
                 for (let i = 0; i < manageMarker.length; i++) {
                     manageMarker[i].setMap(null);
                 }
@@ -91,7 +119,8 @@ window.onload = function () {
                 for (let i = 0; i < markers.length; i++) {
                     markers[i].setMap(null);
                 }
-                createMarker(lonLatRealList)
+                createMarker(lonLatRealList, map)
+                ajaxParams(markers, marker_s, marker_e);
                 lonLatRealList = [];
             });
         }
@@ -101,7 +130,7 @@ window.onload = function () {
 function reverseGeo(lon, lat) {
 
     var headers = {};
-    headers["appKey"] = "6MTwtT0OK18O1A8FGiL349WFB2UyKhI11K5MsjXN";
+    headers["appKey"] = "6Q3ySMpue88CUObnAszWH6dpde24rGCPRqHtUYC8";
 
     $.ajax({
         method: "GET",
@@ -205,6 +234,7 @@ function reverseGeo(lon, lat) {
 }
 
 function createMarker(lonLatList) {
+    $('#removeBtn').trigger("click");
 
     for (let i = 0; i < lonLatList.length; i++) {
         const lon = lonLatList[i].lon;
@@ -217,13 +247,145 @@ function createMarker(lonLatList) {
             title: markerType
         });
 
+        $('#removeBtn').off().on("click", function () {
+            console.log("동작함");
+            marker.setMap(null);
+            marker_s = null;
+            marker_e = null;
+            markers = [];
+        });
+
         if (markerType === 'START') {
+            marker_s = marker;
+            var lonlat = new Tmapv2.LatLng(marker_s.getPosition().lat(), marker_s.getPosition().lng());
+            map.setCenter(lonlat); // 지도의 중심 좌표를 설정합니다.
             marker.setIcon("http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png");
         } else if (markerType === 'END') {
+            marker_e = marker;
             marker.setIcon("http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_e.png");
-        } else if (markerType === 'VIAPOINT') {
+        } else {
             markers.push(marker);
         }
+
         manageMarker.push(marker);
     }
 }
+
+function ajaxParams(markers, marker_s, marker_e) {
+    if (marker_s != null && marker_e != null) {
+
+        var viaPoints = makeViaPoints(markers);
+        const data_s = marker_s.getPosition();
+        const data_e = marker_e.getPosition();
+
+        const params = {
+            reqCoordType: "WGS84GEO",
+            resCoordType: "EPSG3857",
+            startName: "출발",
+            startX: data_s.lng().toString(),
+            startY: data_s.lat().toString(),
+            startTime: "202304120800",
+            endName: "도착",
+            endX: data_e.lng().toString(),
+            endY: data_e.lat().toString(),
+            viaPoints
+        };
+        ajaxReq(params);
+    }
+}
+
+function makeViaPoints(markers) {
+    var viaPoints = [];
+    for (let i = 0; i < markers.length; i++) {
+        var viaPoint = {};
+        viaPoint.viaPointId = "Id" + i;
+        viaPoint.viaPointName = "경유지" + i;
+        data_via = markers[i].getPosition()
+        viaPoint.viaX = data_via.lng().toString();
+        viaPoint.viaY = data_via.lat().toString();
+        viaPoints.push(viaPoint);
+    }
+    return viaPoints;
+}
+
+function ajaxReq(req) {
+
+    var headers = {};
+    headers["appKey"] = "6Q3ySMpue88CUObnAszWH6dpde24rGCPRqHtUYC8";
+
+    $.ajax({
+        type: "POST",
+        headers: headers,
+        url: "https://apis.openapi.sk.com/tmap/routes/routeOptimization10?version=1&format=json",//
+        async: false,
+        contentType: "application/json",
+        data: JSON.stringify(req),
+        success: function (response) {
+
+            var resultData = response.properties;
+            var resultFeatures = response.features;
+
+            // 결과 출력
+            var tDistance = (resultData.totalDistance / 1000).toFixed(1) + "km";
+            // var tTime = "총 시간 : " + (resultData.totalTime / 60).toFixed(0) + "분";
+
+            const resultDistance = document.getElementById('result');
+            resultDistance.textContent = "총 거리 : " + tDistance;
+
+            for (var i in resultFeatures) {
+                var geometry = resultFeatures[i].geometry;
+                var properties = resultFeatures[i].properties;
+
+                const drawInfoArr = [];
+                if (geometry.type == "LineString") {
+                    for (var j in geometry.coordinates) {
+                        // 경로들의 결과값(구간)들을 포인트 객체로 변환
+                        var latlng = new Tmapv2.Point(geometry.coordinates[j][0], geometry.coordinates[j][1]);
+                        // 포인트 객체를 받아 좌표값으로 변환
+                        var convertPoint = new Tmapv2.Projection.convertEPSG3857ToWGS84GEO(latlng);
+                        // 포인트객체의 정보로 좌표값 변환 객체로 저장
+                        var convertChange = new Tmapv2.LatLng(convertPoint._lat, convertPoint._lng);
+
+                        drawInfoArr.push(convertChange);
+                    }
+
+                    let polyline = new Tmapv2.Polyline({
+                        path: drawInfoArr,
+                        strokeColor: "#3399FF",
+                        strokeWeight: 3,
+                        map: map,
+                    });
+
+                    $('#removeBtn').on("click", function () {
+                        polyline.setMap(null);
+                    });
+                }
+            }
+        },
+        error: function (request, status, error) {
+            console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+        }
+    });
+}
+
+// add hovered class to selected list item
+let list = document.querySelectorAll(".navigation li");
+
+function activeLink() {
+    list.forEach((item) => {
+        item.classList.remove("hovered");
+    });
+    this.classList.add("hovered");
+}
+
+list.forEach((item) => item.addEventListener("click", activeLink));
+
+// Menu Toggle
+let toggle = document.querySelector(".toggle");
+let navigation = document.querySelector(".navigation");
+let main = document.querySelector(".main");
+
+toggle.onclick = function () {
+    navigation.classList.toggle("active");
+    main.classList.toggle("active");
+};

@@ -11,12 +11,11 @@ html{scroll-behavior: smooth;}
 body {max-width: 1920px;font-family: 'Noto Serif KR', serif;margin: 0;padding: 0;overflow-x: hidden;}
 header {align-items: center; background-color:white; /* 원하는 색상으로 설정 */max-width: 1920px;color: #000;display: flex;justify-content: space-between;padding: 1%;}
 .fixed-header {align-items: center;position: fixed;top: 0;width: 100%;z-index: 9999;background-color: #fff !important;transition: background-color 500ms linear; box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.05), 0 2px 10px 0 rgba(0, 0, 0, 0.05) !important;-webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.05), 0 2px 10px 0 rgba(0, 0, 0, 0.05) !important;color: #000 !important;}
-nav {font-family: 'Noto Serif KR', serif;}
-nav li a::after {content: "";position: absolute;bottom: -1px;left: 50%;transform: translateX(-50%);height: 4px;background: #f1c40f;transition: all .2s ease-out;border-radius: 10px;width: 0;}
-nav li a:hover::after {width: 100%;}
-nav li a {color: black;padding: 10px 12px;position: relative;}
-nav ul {list-style: none;margin: 0;padding: 0;display: flex;}
-nav a {color: black;text-decoration: none;}
+#mainNav li a::after {content: "";position: absolute;bottom: -1px;left: 50%;transform: translateX(-50%);height: 4px;background: #f1c40f;transition: all .2s ease-out;border-radius: 10px;width: 0;}
+#mainNav li a:hover::after {width: 100%;}
+#mainNav li a {color: black;padding: 10px 12px;position: relative;}
+#mainNav ul {list-style: none;margin: 0;padding: 0;display: flex;}
+#mainNav a {color: black;text-decoration: none;}
 footer {height: 50px;background-color: #f5f5f5;display: flex;justify-content: center;align-items: center;font-size: 14px;color: #666;}
 /* 공통요소*/
 .dropdown {
@@ -81,56 +80,6 @@ body {
     overflow-x: hidden;
 }
 
-header {
-    max-width: 1920px;
-    color: #000;
-    display: flex;
-    justify-content: space-between;
-    padding: 1%;
-    transition: background-color 500ms linear;
-    -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2);
-}
-
-nav {
-    font-family: 'Noto Serif KR', serif;
-}
-
-nav li a::after {
-    content: "";
-    position: absolute;
-    bottom: -1px;
-    left: 50%;
-    transform: translateX(-50%);
-    height: 4px;
-    background: #f1c40f;
-    transition: all .2s ease-out;
-    border-radius: 10px;
-    width: 0;
-}
-
-nav li a:hover::after {
-    width: 100%;
-}
-
-nav li a {
-    color: black;
-    padding: 10px 12px;
-    position: relative;
-}
-
-nav ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-}
-
-
-nav a {
-    color: black;
-    text-decoration: none;
-}
-
 /* 푸터 */
 footer {
     height: 50px;
@@ -165,7 +114,6 @@ footer {
 @media (min-width: 850px) {
     .c-md-2 {
         width: 43%;
-        margin: 3%;
     }
 }
 
@@ -181,8 +129,8 @@ footer {
 /*********************************/
 /********** timeline *************/
 .timeline {
-    max-width: 1170px;
     width: 100%;
+
     font-family: 'Roboto', sans-serif;
     display: flex;
 }
@@ -302,22 +250,6 @@ footer {
     margin-top: -1px; /* IE EDGE bug */
 }
 
-/********** timeline *************/
-/*********************************/
-.viewNav {
-    margin-top: 3em;
-    margin-left: 13%;
-    display: inline-flex;
-    position: relative;
-    overflow: hidden;
-    max-width: 100%;
-    height: 7%;
-    background-color: #fff;
-    padding: 0 20px;
-    border-radius: 40px;
-    box-shadow: 0 10px 40px rgba(159, 162, 177, .8);
-}
-
 .nav-item {
     color: #83818c;
     padding: 20px;
@@ -351,33 +283,103 @@ footer {
     border-radius: 8px 8px 0 0;
 }
 
-.viewBtn {
-    box-shadow:inset 0px 1px 0px 0px #bbdaf7;
-    background:linear-gradient(to bottom, skyblue 5%, skyblue 100%);
-    background-color:skyblue;
-    border-radius:20px;
-    border:1px solid skyblue;
-    display:inline-block;
-    cursor:pointer;
-    color:#ffffff;
-    font-family:Arial;
-    font-size:15px;
-    font-weight:bold;
-    padding:6px 24px;
-    text-decoration:none;
-    text-shadow:0px 1px 0px skyblue;
-    margin-left: 4px;
-}
-.viewBtn:hover {
-    background:linear-gradient(to bottom, #378de5 5%, #79bbff 100%);
-    background-color:#378de5;
-}
-.viewBtn:active {
-    position:relative;
-    top:1px;
+#map_div {
+    margin: 0;
+    padding: 0;
+    position: fixed;
 }
 
-#map_div {
-    margin: 2em;
-    display: block;!important;
+
+#mainContent #map_div {
+    display: inline-block; /* 가로로 나열하기 위해 block레벨 요소를 inline-block레벨로 전환 */
+    width: 200px; /* 영역 크기 지정 안해주면 inline 레벨처럼 내용물 만큼만 차지하기 때문에 크기 지정 */
+    height: 200px; /* 영역 크기 지정 안해주면 inline 레벨처럼 내용물 만큼만 차지하기 때문에 크기 지정 */
+}
+
+#mainContent .c-md-2 {
+    display: inline-block; /* 가로로 나열하기 위해 block레벨 요소를 inline-block레벨로 전환 */
+}
+
+.nav__cont {
+    position: fixed;
+    width: 60px;
+    top: 0;
+    height: 100vh;
+    z-index: 100;
+    background-color: #202020;
+    overflow: hidden;
+    transition: width 0.3s ease;
+    cursor: pointer;
+    box-shadow: 4px 7px 10px rgba(0, 0, 0, 0.4);
+}
+.nav__cont:hover {
+    width: 200px;
+}
+@media screen and (min-width: 600px) {
+    .nav__cont {
+        width: 80px;
+    }
+}
+
+.nav {
+    list-style-type: none;
+    color: white;
+}
+.nav:first-child {
+    padding-top: 1.5rem;
+}
+
+.nav__items {
+    padding-bottom: 4rem;
+    font-family: "roboto";
+}
+.nav__items a {
+    position: relative;
+    display: block;
+    top: -35px;
+    padding-left: 25px;
+    padding-right: 15px;
+    transition: all 0.3s ease;
+    margin-left: 25px;
+    margin-right: 10px;
+    text-decoration: none;
+    color: white;
+    font-family: "roboto";
+    font-weight: 100;
+    font-size: 1.35em;
+}
+.nav__items a:after {
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 2px;
+    background: radial-gradient(circle at 94.02% 88.03%, #54a4ff, transparent 100%);
+    opacity: 0;
+    transition: all 0.5s ease;
+    z-index: -10;
+}
+.nav__items:hover a:after {
+    opacity: 1;
+}
+.nav__items svg {
+    width: 26px;
+    height: 26px;
+    position: relative;
+    left: -25px;
+    cursor: pointer;
+}
+@media screen and (min-width: 600px) {
+    .nav__items svg {
+        width: 32px;
+        height: 32px;
+        left: -15px;
+    }
+}
+
+#result {
+    font-size: 20px;
+
 }
