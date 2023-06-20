@@ -130,9 +130,6 @@ footer {
 /********** timeline *************/
 .timeline {
     width: 100%;
-
-    font-family: 'Roboto', sans-serif;
-    display: flex;
 }
 
 .tl-header div {
@@ -177,7 +174,7 @@ footer {
 }
 
 .tl-event {
-    width: 100%;
+    width: 200%;
     position: relative;
     padding-bottom: 50px;
     margin-top: -1px; /* IE EDGE bug */
@@ -284,9 +281,9 @@ footer {
 }
 
 #map_div {
+    position: fixed;
     margin: 0;
     padding: 0;
-    position: fixed;
 }
 
 
@@ -381,5 +378,4 @@ footer {
 
 #result {
     font-size: 20px;
-
 }

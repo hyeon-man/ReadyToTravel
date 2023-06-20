@@ -58,6 +58,7 @@ public class MemberServiceImpl implements MemberService {
                 .email(memberDTO.getEmail())
                 .name(memberDTO.getName())
                 .signupDate(new Date())
+                .profileIMG("defaultProfile.png")
                 .phoneNum(memberDTO.getPhoneNum())
                 .build());
 
