@@ -24,7 +24,6 @@ public class PlanController {
 
     private final GroupService groupService;
 
-
     @GetMapping("/viewPlan/{planNum}")
     public String viewPlan(@PathVariable Long planNum, @SessionAttribute MemberDTO memberDTO, Model model) {
         Long memberNum = memberDTO.getNum();

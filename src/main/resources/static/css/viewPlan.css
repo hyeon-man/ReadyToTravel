@@ -374,3 +374,7 @@ footer {
         left: -15px;
     }
 }
+
+#result {
+    font-size: 20px;
+}

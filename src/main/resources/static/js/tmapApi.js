@@ -117,10 +117,10 @@ function serverFetch(markerData) {
     if (planDTO.name == "" || planDTO.lonLatList.length < 0) {
         alert("제목을 입력해주세요.");
         return;
-    }else if (planDTO.contents == "") {
+    } else if (planDTO.contents == "") {
         alert("여행 설명을 입력해주세요.");
         return;
-    }else if (planDTO.lonLatList.length <= 0) {
+    } else if (planDTO.lonLatList.length <= 0) {
         alert("날짜마다 여행지 마커를 찍어주세요.");
         return;
     }
@@ -144,7 +144,7 @@ function serverFetch(markerData) {
 // 최적화된 경로 api
 function ajaxReq(req) {
     var headers = {};
-    headers["appKey"] = "6MTwtT0OK18O1A8FGiL349WFB2UyKhI11K5MsjXN";
+    headers["appKey"] = "yIMaVf12xnauu7aRo40iL6EWEJXjwVhnbBr6Lc3d";
 
     $.ajax({
         type: "POST",
@@ -205,7 +205,7 @@ function ajaxReq(req) {
 // x, y 좌표를 가지고 주소를 반환해줌 + 주소의 특정 이름으로 그 지역의 날씨 알려주는 기상청 api도 포함
 function reverseGeo(lon, lat) {
     var headers = {};
-    headers["appKey"] = "6MTwtT0OK18O1A8FGiL349WFB2UyKhI11K5MsjXN";
+    headers["appKey"] = "yIMaVf12xnauu7aRo40iL6EWEJXjwVhnbBr6Lc3d";
 
     $.ajax({
         method: "GET",
@@ -589,7 +589,6 @@ function buttonClick(event) {
 
                 $('#createBtn').off("click").on("click", function () {
                     ajaxParams(markers, marker_s, marker_e);
-                    // buttonClick(markers, marker_s, marker_e);
                 });
             });
         }
@@ -604,11 +603,11 @@ $('#createPlanBtn').off("click").on("click", function () {
 
 
 // 모달 열기
-document.getElementById("openModal").addEventListener("click", function() {
+document.getElementById("openModal").addEventListener("click", function () {
     document.getElementById("myModal").style.display = "block";
 });
 
 // 모달 닫기
-document.getElementsByClassName("close")[0].addEventListener("click", function() {
+document.getElementsByClassName("close")[0].addEventListener("click", function () {
     document.getElementById("myModal").style.display = "none";
 });
